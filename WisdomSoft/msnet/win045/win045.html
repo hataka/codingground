@@ -1,0 +1,153 @@
+<html>
+ <head>
+ <title>アップダウン</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>アップダウン</h1>
+<hr>
+ <h2>数値の入力</h2>
+多くのプログラムでは、ユーザーに何らかの数値情報の入力を要求することがあります<br>
+それは時間や年齢、サイズや長さなど、意味のある数値情報です<br>
+しかし、このような数値情報は必ず何らかの範囲が定められているでしょう<br>
+<br>
+年齢を 200 と入力している場合、それは明らかに間違っているでしょうし<br>
+29時80分-24秒という時間も存在するわけがありません<br>
+<br>
+このような数値情報をユーザーに入力してもらう場合<br>
+プログラムはテキストを数値に変換し、それが正しい値かを調べる必要があります<br>
+これは、以外に多くの場面で使う割りに極めて面倒な作業です<br>
+<br>
+そこで、数値の入力はテキストボックスではなく<strong>アップダウンコントロール</strong>を使います<br>
+これは、従来スピンコントロールと呼ばれていたコントロールです<br>
+<br>
+アップダウンコントロールは、<strong>System.Windows.Forms.UpDownBase</strong> から派生します<br>
+UpDownBase は上下2つのボタンが付いているテキストボックスを抽象化したクラスです<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ScrollableControl
+               System.Windows.Forms.ContainerControl
+                  System.Windows.Forms.UpDownBase
+
+public abstract class UpDownBase : ContainerControl</b></pre>
+
+基本的に、このクラスは上下ボタンつきのテキストボックスを抽象化したもので<br>
+このユーザーインターフェイスをどのように用いるかという挙動は派生クラスに委ねられます<br>
+<br>
+数値の入力は <strong>System.Windows.Forms.NumericUpDown</strong> クラスで実装されます<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ScrollableControl
+               System.Windows.Forms.ContainerControl
+                  System.Windows.Forms.UpDownBase
+                     System.Windows.Forms.NumericUpDown
+
+public class NumericUpDown : UpDownBase, ISupportInitialize</b></pre>
+
+このクラスのコンストラクタも、他のコントロール実装クラス同様に<br>
+引数を受け取らないデフォルトコンストラクタのみです<br>
+<br>
+NumericUpDown では、内部で数値を decimal 型として扱っています<br>
+128ビット型の高精度な管理を行うため、大きい数字を扱うこともできます<br>
+このコントロールが管理する数値には <strong>NumericUpDown.Value</strong> でアクセスできます<br>
+<br><b>
+public decimal Value {get; set;}<br>
+<br></b>
+デフォルトで、Value は 0 に設定されます<br>
+入力可能な数値は、最大値が <strong>NumericUpDown.Maximum</strong> プロパティ<br>
+最小値が <strong>NumericUpDown.Minimum</strong> プロパティでアクセスできます<br>
+<br><b>
+public decimal Maximum {get; set;}<br>
+public decimal Minimum {get; set;}<br>
+<br></b>
+Maximum はデフォルトで 100、Minimum は 0 が設定されます<br>
+ユーザーは、テキストも含めて自由にコントロールに入力することができますが<br>
+プログラムが Value プロパティから値を受け取る時は適切な値に変換されます<br>
+Maximum より多い場合は Maximum に、Minimum より低い場合は Minimum になります<br>
+ただし、プログラムが Value を通して範囲外の値を代入すると例外が発生します<br>
+<br>
+アップダウンコントロールについている上下ボタンを押すと<br>
+コントロールの数値がインクリメントされたり、デクリメントされたりします<br>
+この範囲は <strong>NumericUpDown.Increment</strong> で設定できます<br>
+<br><b>
+public decimal Increment {get; set;}<br>
+<br></b>
+デフォルトでは、ボタンを押すと 1 ずつ上下するようになっていますが<br>
+Increment プロパティを用いて 5 を設定すれば、5 ずつ上下するようになります<br>
+
+<pre class="prg">using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	NumericUpDown numericUpDown1 = new NumericUpDown();
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		numericUpDown1.Bounds = new Rectangle(10 , 10 , 200 , 20);
+		numericUpDown1.Maximum = 999;
+		numericUpDown1.Increment = 5;
+		
+		Controls.Add(numericUpDown1);
+	}
+}</pre>
+<img src="img/00.101.jpg" class="img"><br>
+<br>
+図を見ると、通常のテキストボックスとは異なり<br>
+コントロールの右端に上下ボタンがあることが確認できます<br>
+<br>
+Value の値が変更されると <strong>NumericUpDown.ValueChanged</strong> イベントが発生します<br>
+または、<strong>NumericUpDown.OnValueChanged()</strong> メソッドが呼び出されます<br>
+<br><b>
+public event EventHandler ValueChanged;<br>
+protected virtual void OnValueChanged(EventArgs e);<br>
+<br></b>
+ユーザーやプログラムが値を変更するとこのイベントが発生します<br>
+コントロールを継承している場合は OnValueChanged() メソッドをオーバーライドできます<br>
+このイベントを監視すれば、ユーザーがアップダウンボタンを押したタイミングを捉えられます<br>
+<br>
+<pre class="prg">using System;
+using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	NumericUpDown numericUpDown1 = new NumericUpDown();
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		BackColor = Color.Black;
+		numericUpDown1.Bounds = new Rectangle(10 , 10 , 200 , 20);
+		numericUpDown1.Maximum = 255;
+		numericUpDown1.ValueChanged += new EventHandler(_ValueChanged);
+		
+		Controls.Add(numericUpDown1);
+	}
+
+	private void _ValueChanged(object sender , EventArgs e) {
+		int color = (int)numericUpDown1.Value;
+		BackColor = Color.FromArgb(color , color , color);
+	}
+}</pre>
+<img src="img/00.102.jpg" class="img"><br>
+<br>
+このプログラムは、コントロールの値を元に背景色を変更します<br>
+背景色を変更するタイミングは、ValueChanged イベントの発生時です<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win44.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win46.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

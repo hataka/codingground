@@ -1,0 +1,87 @@
+<html>
+ <head>
+ <title>ウィンドウスタイル</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ウィンドウスタイル</h1>
+<hr>
+ <h2>スタイルを設定・取得する</h2>
+Win32 API で Windows プログラミングを経験したことがある方は<br>
+ウィンドウの作成時に、CreateWindow() メソッドでウィンドウスタイルを指定したでしょう<br>
+.NET の Control クラスもまた、スタイルを設定するメソッドを提供しています<br>
+<br>
+スタイルの設定は <strong>Control.SetStyle()</strong> メソッドを使います<br>
+このメソッドは、次のように定義されています<br>
+<br><b>
+protected void SetStyle(ControlStyles flag , bool value);<br>
+<br></b>
+flag にはコントロールスタイルを示すビットフラグを指定します<br>
+指定したフラグを設定するならば value には true を、そうでなければ false を指定します<br>
+<br>
+スタイルビットは <strong>System.Windows.Forms.ControlStyles</strong> 列挙型で表されます<br>
+
+<pre><b>[Flags]
+[Serializable]
+public enum ControlStyles</b></pre>
+
+この列挙型は、次のような意味を持つメンバを持っています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>AllPaintingInWmPaint	<td>コントロールはウィンドウ メッセージ<br>WM_ERASEBKGND を無視することによって、ちらつきを抑えます<br>このスタイルは、 UserPaint が true に設定されている場合だけ適用されます
+<tr><td>CacheText		<td>コントロールは、必要に応じて毎回 Handle から<br>テキストのコピーを取得するのではなく、テキストのコピーを保持しています<br>このスタイルは、既定では false に設定されます<br>この動作によってパフォーマンスは向上しますが<br>テキストを同期させておくことが難しくなります
+<tr><td>ContainerControl	<td>コントロールは、コンテナのような機能を果たします
+<tr><td>DoubleBuffer		<td>描画はバッファで実行され、完了後に、結果が画面に出力されます<br>ダブル バッファリングは、コントロールの描画によるちらつきを防ぎます<br>ダブル バッファリングを完全に有効にするには<br>UserPaint ビットと AllPaintingInWmPaint ビットを true に設定する必要もあります
+<tr><td>EnableNotifyMessage	<td>true の場合、コントロールの WndProc に送信されたすべてのメッセージに対して<br>OnNotifyMessage メソッドが呼び出されます<br>このスタイルは、既定では false に設定されます
+<tr><td>FixedHeight		<td>コントロールの高さは固定されています
+<tr><td>FixedWidth		<td>コントロールの幅は固定されています
+<tr><td>Opaque			<td>コントロールが不透明に描画され、背景は描画されません
+<tr><td>ResizeRedraw		<td>コントロールのサイズが変更されると、そのコントロールが再描画されます
+<tr><td>Selectable		<td>コントロールはフォーカスを取得できます
+<tr><td>StandardClick		<td>コントロールは、標準の Click 動作を実装します
+<tr><td>StandardDoubleClick	<td>コントロールは、標準の DoubleClick 動作を実装します<br>このスタイルは、 StandardClick が設定されていない場合は無視されます
+<tr><td>SupportsTransparentBackColor	<td>コントロールはアルファ値が 255 未満の BackColor を受け入れ<br>透明度をシミュレートします<br>この透明度は、 UserPaint ビットが true に設定され<br>親コントロールが Control から派生している場合だけシミュレートされます
+<tr><td>UserMouse		<td>コントロールがマウスの操作を独自に処理し<br>OSではマウス イベントが処理されません
+<tr><td>UserPaint		<td>コントロールは、OSによってではなく、独自に描画されます<br>このスタイルは、 Control から派生したクラスだけに適用されます
+</table>
+<br>
+
+例えば、通常のアプリケーションはコントロールのサイズが変更されれば<br>
+新しいサイズで全体を描画しなおす必要があるため、サイズ変更と同時に再描画します<br>
+これを実現するには ResizeRedraw フラグを指定すればよいのです<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		SetStyle(ControlStyles.ResizeRedraw , true);
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawString(Size.ToString() , Font , Brushes.Black , 0 , 0);
+	}
+}</pre>
+<img src="img/00.056.jpg" class="img"><br>
+<br>
+
+通常、デフォルトではウィンドウのサイズを変更しても全体は再描画されません<br>
+サイズを拡大したときのみ、拡大した分の無効領域が描画されるだけです<br>
+しかし、このプログラムでは ResizeRedraw を設定したため<br>
+ウィンドウのサイズを変更すると、クライアント領域全体が再描画されます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win23.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win25.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

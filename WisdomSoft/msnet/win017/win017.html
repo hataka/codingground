@@ -1,0 +1,50 @@
+<html>
+ <head>
+ <title>座標単位</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>座標単位</h1>
+<hr>
+ <h2>ピクセル以外の単位</h2>
+.NET では、Graphics クラスのデフォルトの座標単位は常にピクセルですが<br>
+アプリケーションによっては、インチやミリメートル等の単位を使いたいかもしれません<br>
+<br>
+Font クラスのコンストラクタはに GraphicsUnit 列挙型を指定する引数がありましたが<br>
+実は、Graphics クラスには GraphicsUnit を設定するプロパティがあります<br>
+それが <strong>Graphics.PageUnit</strong> プロパティです<br>
+<br><b>
+public GraphicsUnit PageUnit {get; set;}<br>
+<br></b>
+このプロパティによって、Graphics オブジェクトの座標単位を取得したり<br>
+または目的の座標単位に設定することができるようになります<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+				
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.PageUnit = GraphicsUnit.Millimeter;
+		g.DrawLine(Pens.Black , 0 , 5 , 30 , 5);
+		g.DrawLine(Pens.Black , 0 , 10 , 50 , 10);
+		g.DrawLine(Pens.Black , 0 , 15 , 70 , 15);
+	}
+}</pre>
+<img src="img/00.046.jpg" class="img"><br>
+<br>
+このプログラムは、座標系をミリメートル単位に変更して描画したものです<br>
+線は上から3cm、5cm、7cmの長さになっています<br>
+実世界の物の長さと互換性をとる必要がある場合に便利ですね<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win16.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win18.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

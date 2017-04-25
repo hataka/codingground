@@ -1,0 +1,179 @@
+<html>
+ <head>
+ <title>キー入力</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>キー入力</h1>
+<hr>
+ <h2>キーボードイベント</h2>
+通常、文字を入力する場合はすでに用意されているテキスト入力用のコントロールを使います<br>
+キー入力用のコントロールについては後ほど説明するとします<br>
+<br>
+しかし、これ以外にも簡易処理などのために直接キー入力を受けつけたり<br>
+タイピングゲームなどのように、ウィンドウに直接入力してもらう必要がある場合があります<br>
+これを行うには、キーボードイベントを処理しなければなりません<br>
+<br>
+キーボードのキーを押すと <strong>Control.OnKeyDown()</strong> メソッドと<br>
+登録されている <strong>Control.KeyDown</strong> イベントが呼び出されます<br>
+同様に、キーを離せば <strong>Control.OnKeyUp()</strong> メソッドと<br>
+登録されている <strong>Control.KeyUp</strong> イベントが呼び出されます<br>
+<br><b>
+protected virtual void OnKeyDown(KeyEventArgs e);<br>
+protected virtual void OnKeyUp(KeyEventArgs e);<br>
+public event KeyEventHandler KeyDown;<br>
+public event KeyEventHandler KeyUp;<br>
+<br></b>
+
+e には、入力されたキーの情報をパックした KeyEventArgs オブジェクトが指定されます<br>
+これは <strong>System.Windows.Forms.KeyEventArgs</strong> クラスです<br>
+<pre><b>Object
+   EventArgs
+      KeyEventArgs
+
+public class KeyEventArgs : EventArgs</b></pre>
+
+このクラスのコンストラクタは次のようになっています<br>
+<br><b>
+public KeyEventArgs(Keys keyData);<br>
+<br></b>
+keyData には、入力されたキーを示す Keys 列挙型の値を指定します<br>
+この <strong>System.Windows.Forms.Keys</strong> 列挙型は、キーを示すために使われます<br>
+<br><b>
+public enum Keys<br>
+<br></b>
+この列挙型のメンバは、キーの数に合わせて数多く存在するため<br>
+この場では省略しますが、基本的には直感的に理解できる名前になっています<br>
+くわしくは、Microsoft のヘルプを参照してください<br>
+<br>
+イベントが発生した時に押された、または離されたキーを知るには<br>
+<strong>KeyEventArgs.KeyCode</strong> または<br>
+<strong>KeyEventArgs.KeyData</strong> プロパティを使います<br>
+KeyCode はキーコードを、KeyData はキーのデータを返すと定義されています<br>
+<br><b>
+public Keys KeyCode {get;}<br>
+public Keys KeyData {get;}<br>
+<br></b>
+これらのプロパティは、イベント発生時のキーを表す Keys の値を返します<br>
+この時の、ネイティブなキーコードを取得したい場合は<br>
+<strong>KeyEventArgs.KeyValue</strong> プロパティで得ることができます<br>
+<br><b>
+public int KeyValue {get;}<br>
+<br></b>
+通常、使う必要はないと思われますが<br>
+ネイティブな API とやりとりをする時や、特別にコードが必要な場合に使えるでしょう<br>
+<br>
+Control クラスのイベントメンバを使ってキーイベントを処理する場合<br>
+<strong>KeyEventArgs.KeyValue.KeyEventHandler</strong> デリゲートを使います<br>
+<pre><b>public delegate void KeyEventHandler(
+	object sender , KeyEventArgs e
+);</b></pre>
+sender には、イベント発生元のオブジェクトが<br>
+e には発生時のキー情報を示す KeyEventArgs オブジェクトが指定されます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	string key;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawString(key , Font , Brushes.Black , 0 , 0);
+	}
+	override protected void OnKeyDown(KeyEventArgs e) {
+		key = "OnKeyDown = " + e.KeyData;
+		Invalidate();
+	}
+	override protected void OnKeyUp(KeyEventArgs e) {
+		key = "OnKeyUp = " + e.KeyCode;
+		Invalidate();
+	}
+}</pre>
+<img src="img/00.054.jpg" class="img"><br>
+<br>
+このプログラムは、キーボードイベントが発生すると<br>
+KeyEventArgs から Keys の値を取得して、その文字列表現を表示します<br>
+<br>
+システムに密接に関連したキーは入力に対して重要な存在です<br>
+すなわち、Alt キー、Shift キー、Control キーの3っつです<br>
+これらのキーに関しては、イベント発生時に押されているかどうかを調べる<br>
+専用のプロパティが定義されているので、これを使うと便利でしょう<br>
+<br>
+Alt キーは <strong>KeyEventArgs.Alt</strong> プロパティ<br>
+Shift キーは <strong>KeyEventArgs.Shift</strong> プロパティ<br>
+Control キーは <strong>KeyEventArgs.Control</strong> プロパティを使います<br>
+<br><b>
+public virtual bool Alt {get;}<br>
+public virtual bool Shift {get;}<br>
+public bool Control {get;}<br>
+<br></b>
+これらのプロパティは、キーが押されていれば true を<br>
+キーが離されていれば false を返します<br>
+<br>
+押されるキーそのものには興味が無く、単純に入力された文字を受け取りたい場合<br>
+上のようなやり方では、Keys 列挙型と変換する文字のテーブルが必要です<br>
+しかし、そのようなことをしなくても <strong>Control.OnKeyPress()</strong> メソッド<br>
+または <strong>Control.KeyPress</strong> イベントを用いれば簡単に実現できます<br>
+<br><b>
+protected virtual void OnKeyPress(KeyPressEventArgs e);<br>
+public event KeyPressEventHandler KeyPress;<br>
+<br></b>
+e には、KeyPressEventArgs 型オブジェクトを指定します<br>
+これは <strong>System.Windows.Forms.KeyPressEventArgs</strong> クラスです<br>
+<pre><b>Object
+   EventArgs
+      KeyPressEventArgs
+
+public class KeyPressEventArgs : EventArgs</b></pre>
+このクラスのコンストラクタは次のように定義されています<br>
+<br><b>
+public KeyPressEventArgs(char keyChar);<br>
+<br></b>
+keyChar には、入力されたキーの文字を指定します<br>
+イベントが発生し、これを処理するメソッドは<br>
+<strong>KeyPressEventArgs.KeyChar</strong> プロパティを使ってこれを得られます<br>
+<br><b>
+public char KeyChar {get;}<br>
+<br></b>
+このプロパティを使えば、入力されたキーの文字を直接受け取ることができます<br>
+コントロールが直接キーの文字を得る必要がある場合に使うことができるでしょう<br>
+<br>
+Control のイベントメンバを使ってこれを処理する場合<br>
+<strong>System.Windows.Forms.KeyPressEventHandler</strong> デリゲートを使います<br>
+<pre><b>public delegate void KeyPressEventHandler(
+	object sender , KeyPressEventArgs e
+);</b></pre>
+
+sender にはイベント発生もとのオブジェクトを<br>
+e には入力されたキーの情報を保有する KeyPressEventArgs オブジェクトを指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	string key;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawString(key , Font , Brushes.Black , 0 , 0);
+	}
+	override protected void OnKeyPress(KeyPressEventArgs e) {
+		key = "OnKeyPress = " + e.KeyChar;
+		Invalidate();
+	}
+}</pre>
+このプログラムは、先ほどのプログラムを OnKeyPress() メソッドに変え<br>
+入力イベントに対して、入力されたキーの文字をウィンドウに描画するように変更しました<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win21.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win23.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

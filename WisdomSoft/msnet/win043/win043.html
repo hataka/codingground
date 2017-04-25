@@ -1,0 +1,77 @@
+<html>
+ <head>
+ <title>ツールチップ</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ツールチップ</h1>
+<hr>
+ <h2>説明用テキスト</h2>
+ツールチップは、コントロール上にマウスカーソルが停止すると<br>
+小さなウィンドウを表示して、コントロールの説明をするために使います<br>
+ツールチップは <strong>System.Windows.Forms.ToolTip</strong> クラスで実装されています<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.ToolTip
+
+public sealed class ToolTip : Component, IExtenderProvider</b></pre>
+
+ツールチップは、シールドクラスなので拡張することはできません<br>
+このクラスのコンストラクタは、デフォルトコンストラクタしか定義されていません<br>
+<br>
+ツールチップをコントロールに関連付けるには <strong>ToolTip.SetToolTip()</strong> メソッドを使います<br>
+ツールチップで表示する文字列も、このメソッドで指定します<br>
+<br><b>
+public void SetToolTip(Control control , string caption);<br>
+<br></b>
+control にはツールチップを関連付けるコントロールを<br>
+caption にはコントロールを説明する文字列を指定します<br>
+ツールチップが関連付けられているコントロール上で<br>
+マウスカーソルを一定時間（通常 0.5秒)待機させると、ツールチップが表示されます<br>
+
+<pre class="prg">using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		ToolTip tip = new ToolTip();
+		tip.SetToolTip(this , "Kitty on your lap");
+	}
+}</pre>
+<img src="img/00.098.jpg" class="img"><br>
+<br>
+このプログラムでは、ツールチップをフォームに関連付けています<br>
+そのため、フォーム上にカーソルを待機させると、上の図のように説明ウィンドウが表示されます<br>
+<br>
+コントロールに関連付けられているツールチップの情報は<br>
+<strong>ToolTip.GetToolTip()</strong> メソッドで得られます<br>
+<br><b>
+public string GetToolTip(Control control);<br>
+<br></b>
+control には調べるコントロールを指定します<br>
+このメソッドは、コントロールに関連付けられているツールチップテキストを返します<br>
+<br>
+また、特定のコントロールのツールチップを解除したい場合は<br>
+SetToolTip() メソッドで<strong>テキストを null</strong>にすれば解除されます<br>
+<strong>ToolTip.RemoveAll()</strong> メソッドを使えば、全てのツールチップを解除します<br>
+<br><b>
+public void RemoveAll();<br>
+<br></b>
+このメソッドを呼び出せば、このツールチップインスタンスに関連付けられている<br>
+全てのコントロールのツールチップを解除することができます<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win42.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win44.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

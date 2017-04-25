@@ -1,0 +1,254 @@
+<html>
+ <head>
+ <title>論理ペン</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>論理ペン</h1>
+<hr>
+ <h2>高度なペンの使い方</h2>
+ペンといえば、文字や絵を書く時に使うペンを思い出しますが<br>
+すでに説明したように、GDI+ では線を引く時にシステムが参照するペンがあります<br>
+これを<strong>論理ペン</strong>と呼びますが、GUI プログラムでは重要な要素です<br>
+<br>
+漫画家が、どのような線を描くかによってGペンだとかカブラペン、丸ペンというように<br>
+状況に応じてペンを選択するように、GDI+ でも描きたい線によってペンを選択します<br>
+以前簡単に説明した Pen オブジェクトは、単純にインスタンスを生成しただけでしたが<br>
+今回は、より具体的に、このクラスの使い方を説明します<br>
+<br>
+Pen クラスには、以前紹介した2つのコンストラクタ以外に<br>
+論理ブラシを用いてペンが塗りつぶす内部を指定することも可能です<br>
+以下は、Pen クラスのコンストラクタの全容です<br>
+<br><b>
+public Pen(Brush brush);<br>
+public Pen(Color color);<br>
+public Pen(Brush brush , float width);<br>
+public Pen(Color color, float width);<br>
+<br></b>
+brush には、ペンの内部を塗りつぶす Brush オブジェクトを<br>
+color には、ペンの色を表す Color オブジェクトを指定します<br>
+width には、ペンの太さをピクセル単位で指定します<br>
+<br>
+ここで設定した情報は、各種プロパティで取得、再設定することができます<br>
+ブラシは <strong>Pen.Brush</strong>、色は <strong>Pen.Color</strong>、<br>
+太さは <strong>Pen.Width</strong> プロパティでアクセスすることができます<br>
+<br><b>
+public Brush Brush {get; set;}<br>
+public Color Color {get; set;}<br>
+public float Width {get; set;}<br>
+<br></b>
+Brush はペンが用いているブラシ、Color はペンの色<br>
+Width はペンの太さを表すプロパティです<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Brush myBrush = new HatchBrush(
+			HatchStyle.Horizontal  ,
+			Color.FromArgb(0xFF , 0xFF , 0xFF)
+		);
+		Pen myPen = new Pen(myBrush , 10);
+		g.DrawLine(myPen , 0 , 0 , 200 , 100);
+	}
+}</pre>
+<img src="img/00.020.jpg" class="img"><br>
+<br>
+このプログラムは、ブラシを用いた太いペンでラインを引いています<br>
+単色の代わりに、指定したブラシが使われていることが確認できます<br>
+<br>
+また、ペンで規則的な幾何学模様を描かせたい場合は<br>
+<strong>Pen.DashStyle</strong> プロパティを使うとよいでしょう<br>
+<br><b>
+public DashStyle DashStyle {get; set;}<br>
+<br></b>
+このプロパティは、ペンのダッシュスタイルを指定します<br>
+これは <strong>System.Drawing.Drawing2D.DashStyle</strong> 列挙型です<br>
+<br><b>
+public enum DashStyle<br>
+<br></b>
+この列挙型には、以下のようなメンバが定義されています<br>
+これらのメンバを用いて、ペンのダッシュスタイルを指定します<br>
+<br>
+<table border="1">
+<tr><th>定数<th>解説
+<tr><td>Custom		<td>ユーザ定義のカスタムダッシュスタイルを示す
+<tr><td>Dash		<td>ダッシュを含んだ線を示す
+<tr><td>DashDot		<td>ダッシュとドットを繰り返す線を示す
+<tr><td>DashDotDot	<td>ダッシュ、ドット、ドットを繰り返す線を示す
+<tr><td>Dot		<td>ドットを含んだ線を示す
+<tr><td>Solid		<td>切れ目のない通常の線を示す
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 5);
+		DashStyle[] ds = {
+			DashStyle.Dash , DashStyle.DashDot ,
+			DashStyle.DashDotDot , DashStyle.Dot , DashStyle.Solid
+		};
+		for (int i = 0 , y = 10 ; i &#60; ds.Length ; i++ , y += 20) {
+			myPen.DashStyle = ds[i];
+			g.DrawLine(myPen , 10 , y , 200 , y);
+		}
+	}
+}</pre>
+<img src="img/00.021.jpg" class="img"><br>
+<br>
+これは、定義された DashStyle 列挙型のメンバを用いて<br>
+ペンのダッシュスタイルを指定して、繰り返し処理によって各スタイルを列挙したものです<br>
+<br>
+さらに、ダッシュスタイルは<strong>独自のカスタムダッシュ</strong>を定義できます<br>
+カスタムダッシュを設定するには <strong>Pen.DashPattern</strong> プロパティを使います<br>
+<br><b>
+public float[] DashPattern {get; set;}<br>
+<br></b>
+このプロパティで、ダッシュパターンを取得、及び設定することができます<br>
+ダッシュパターンは、float 型の配列で「線 , 間 , 線 , 間」というように構成されます<br>
+これをどのような間隔にするかを、カスタムダッシュで設定することができるのです<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 5);
+		float[] fDash = { 5.0f , 1.0f , 1.0f , 1.0f , 3.0f , 1.0f};
+		myPen.DashPattern = fDash;
+		g.DrawLine(myPen , 10 , 10 , 400 , 10);
+	}
+}</pre>
+<img src="img/00.022.jpg" class="img"><br>
+<br>
+このペンは、5 , 1 , 1 , 3 , 1 という間隔でラインが引かれます<br>
+ユーザ定義のダッシュを用いれば、線の間隔は自在に指定することができます<br>
+
+<br><hr>
+<h2>ペン先</h2>
+通常、線の描き始めや終わり部分は角のついた平坦なものです<br>
+しかし、場合によっては丸くしたり、尖らせたりしたいと思うかもしれません<br>
+<br>
+GDI+ ではこれらの要求に応じられるように線の形を定義することができます<br>
+これを<strong>キャップスタイル</strong>と呼び、いくつかのプロパティで設定できます<br>
+<strong>Pen.StartCap</strong> プロパティは描き始めのキャップスタイルを<br>
+<strong>Pen.EndCap</strong> プロパティは描き終わりのキャップスタイルを指定することができます<br>
+<br><b>
+public LineCap StartCap {get; set;}<br>
+public LineCap EndCap {get; set;}<br>
+<br></b>
+このプロパティ型は <strong>System.Drawing.Drawing2D.LineCap</strong> 列挙型です<br>
+この列挙型は、定義済みキャップスタイルを提供します<br>
+<br><b>
+public enum LineCap<br>
+<br></b>
+この列挙型のメンバは、以下のものが定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>AnchorMask	<td>線キャップがアンカー・キャップであるかどうかに関係なく<br>チェックするために使われるマスクを示す
+<tr><td>ArrowAnchor	<td>矢形のアンカー・キャップを示す
+<tr><td>Custom		<td>ユーザー定義のキャップであることを示す
+<tr><td>DiamondAnchor	<td>ダイアモンド形のアンカー・キャップを示す
+<tr><td>Flat		<td>平坦なキャップを示す
+<tr><td>NoAnchor		<td>アンカーを指定しない
+<tr><td>Round		<td>丸いキャップを示す
+<tr><td>RoundAnchor	<td>丸いアンカー・キャップを示す
+<tr><td>Square		<td>正方形のキャップを示す
+<tr><td>SquareAnchor	<td>正方形のアンカー・キャップを示す
+<tr><td>Triangle		<td>三角のキャップを示す 
+</table>
+<br>
+これを、Pen のキャップ用プロパティに指定することで<br>
+キャップスタイルが変更され、特徴あるペン先を表現することができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 10);
+		g.DrawLine(myPen , 10 , 10 , 200 , 10);
+
+		myPen.StartCap = myPen.EndCap = LineCap.Round;
+		g.DrawLine(myPen , 10 , 30 , 200 , 30);
+	}
+}</pre>
+<img src="img/00.023.jpg" class="img"><br>
+<br>
+このプログラムは、デフォルトのキャップスタイルと<br>
+変更したキャップスタイルの違いを確認するためのものです<br>
+図の上の線はデフォルト、下は Round メンバのキャップスタイルで描画したものです<br>
+ペン先が丸くなり、柔らかい線になっていることが確認できます<br>
+<br>
+キャップスタイルを、切れ目のあるダッシュスタイルと併用する場合<br>
+ダッシュの切れ目のキャップを設定したいと考えるかもしれません<br>
+この場合は <strong>Pan.DashCap</strong> プロパティを用いて設定できます<br>
+<br><b>
+public DashCap DashCap {get; set;}<br>
+<br></b>
+このプロパティは <strong>System.Drawing.Drawing2D.DashCap</strong> 列挙形です<br>
+この列挙形は、ダッシュの切れ目のキャップを表しています<br>
+<br><b>
+public enum DashCap<br>
+<br></b>
+この列挙形のメンバは、以下のようなものがあります<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Flat	<td>正方形の平坦なキャップを示す
+<tr><td>Round	<td>丸いキャップを示す
+<tr><td>Triangle	<td>三角形のキャップを示す
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 10);
+
+		myPen.DashStyle = DashStyle.DashDotDot;
+		g.DrawLine(myPen , 10 , 10 , 200 , 10);
+
+		myPen.DashCap = DashCap.Round;
+		g.DrawLine(myPen , 10 , 30 , 200 , 30);
+	}
+}</pre>
+<img src="img/00.024.jpg" class="img"><br>
+<br>
+上の線は、ダッシュスタイルだけを設定して描画し<br>
+下の線は、さらにダッシュ用のキャップスタイルを設定して描画しています<br>
+ダッシュの切れ目に、指定したキャップスタイルが適応されているのがわかります<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win6.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win8.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

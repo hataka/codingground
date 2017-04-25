@@ -1,0 +1,205 @@
+<html>
+ <head>
+ <title>フォントの列挙</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>フォントの列挙</h1>
+<hr>
+ <h2>利用可能なフォントの情報</h2>
+前回は、直接フォント名を文字列で指定していましたが、Font() コンストラクタでは<br>
+<strong>System.Drawing.FontFamily</strong> クラスを用いて指定する方法もあります<br>
+<br>
+このクラスは、フォント名（タイプフェイス）のグループを管理することができ<br>
+これを用いれば、確実にシステムにインストールされているフォントを使うことができます<br>
+<pre><b>Object
+   MarshalByRefObject
+      FontFamily
+
+public sealed class FontFamily : MarshalByRefObject, IDisposable</b></pre>
+
+このクラスは、<strong>FontFamily.Families</strong> 静的プロパティを提供しています<br>
+このプロパティは、カレントグラフィック・コンテキストと関連付けられる<br>
+FontFamily オブジェクトの配列を返します<br>
+<br><b>
+public static FontFamily[] Families {get;}<br>
+<br></b>
+グラフィック・コンテキストとは、描画対象のデバイスの識別子を意味します<br>
+GDI+ において、これは Graphics クラスを示しています<br>
+通常、グラフィック・コンテキストはディスプレイを表します<br>
+<br>
+FontFamily からフォント名を取得するには <strong>Font.Name</strong> プロパティを用います<br>
+<br><b>
+public string Name {get;}<br>
+<br></b>
+これらのプロパティを用いることによって、カレントグラフィック・コンテキストで利用可能な<br>
+フォント名を取得したり、Font オブジェクトを作成するということが可能になります<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		FontFamily[] ff = FontFamily.Families;
+		for (int i = 0 , y = 0 ; i &#60; ff.Length ; i++ , y += 15) {
+			Font ft = new Font("MS Serif" , 12);
+			Point pt = new Point(0 , y);
+			g.DrawString(ff[i].Name , ft , Brushes.Black , pt);
+		}
+	}
+}</pre>
+<img src="img/00.029.jpg" class="img"><br>
+<br>
+このプログラムは、FontFamily クラスを用いて<br>
+カレントグラフィック・コンテキストに関連付けられているフォント名を列挙します<br>
+おそらく、ウィンドウには表示しきれないほどの数が表示されるでしょう<br>
+<br>
+グラフィックス・コンテキストを指定して FontFamily の配列を取得したい場合は<br>
+<strong>FontFamily.GetFamilies()</strong> メソッドを使います<br>
+<br><b>
+public static FontFamily[] GetFamilies(Graphics graphics);<br>
+<br></b>
+graphics には、対象となる Graphics オブジェクトを指定します<br>
+メソッドは、指定したグラフィック・コンテキストで使用可能な FontFamily の配列を返します<br>
+<br>
+また、一般的な Serif、SansSerif、Monospace フォントを取得することもできます<br>
+これは <strong>FontFamily.GenericMonospace</strong>、<strong>FontFamily.GenericSansSerif</strong><br>
+<strong>FontFamily.GenericSerif</strong>、これら静的プロパティで取得できます<br>
+<br><b>
+public static FontFamily GenericMonospace {get;}<br>
+public static FontFamily GenericSansSerif {get;}<br>
+public static FontFamily GenericSerif {get;}<br>
+<br></b>
+GenericMonospace は一般的な Monospace、GenericSansSerif は SansSerif<br>
+GenericSerif は Serif を表す FontFamily オブジェクトを返します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		FontFamily[] ff = {
+			FontFamily.GenericMonospace ,
+			FontFamily.GenericSansSerif ,
+			FontFamily.GenericSerif
+		};
+		for (int i = 0 , y = 0 ; i &#60; ff.Length ; i++ , y += 15) {
+			Font ft = new Font(ff[i] , 12);
+			Point pt = new Point(0 , y);
+			g.DrawString(ff[i].Name , ft , Brushes.Black , pt);
+		}
+	}
+}</pre>
+<img src="img/00.030.jpg" class="img"><br>
+<br>
+このプログラムは、それぞれの FontFamily を配列に格納し<br>
+各フォントでフォント名を列挙しています<br>
+<br>
+この他に FontFamily クラスのコンストラクタでインスタンスを生成し<br>
+そこから、必要な情報を取得するという方法もあります<br>
+FontFamily クラスのコンストラクタは、次のようなものがあります<br>
+<br><b>
+public FontFamily(GenericFontFamilies genericFamily);<br>
+public FontFamily(string name);<br>
+public FontFamily(string name , FontCollection fontCollection);<br>
+<br></b>
+genericFamily には、一般的なフォントを表す GenericFontFamilies 列挙型を指定します<br>
+name は作成する FontFamily インスタンスが表すフォントの名前を<br>
+fontCollection は、この FontFamily を含む FontCollection オブジェクトを指定します<br>
+<br>
+FontCollection 型については、この後で詳しく解説します<br>
+GenericFontFamilies を使う場合は、静的プロパティの Generic* を使うケースと同じです<br>
+これは <strong>System.Drawing.Text.GenericFontFamilies</strong> 列挙型です<br>
+<br><b>
+public enum GenericFontFamilies<br>
+<br></b>
+System.Drawint.Text 名前空間は、フォントなどに関連した型を提供しています<br>
+GenericFontFamilies には、以下のようなメンバが定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Monospace	<td>一般的な Monospace フォントを示す
+<tr><td>SansSerif		<td>一般的な SansSerif フォントを示す
+<tr><td>Serif		<td>一般的な Serif フォントを示す
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		FontFamily[] ff = {
+			new FontFamily("Mural Script") ,
+			new FontFamily(System.Drawing.
+				Text.GenericFontFamilies.Serif)
+		};
+		for (int i = 0 , y = 0 ; i &#60; ff.Length ; i++ , y += 15) {
+			Font ft = new Font(ff[i] , 12);
+			Point pt = new Point(0 , y);
+			g.DrawString(ff[i].Name , ft , Brushes.Black , pt);
+		}
+	}
+}</pre>
+このプログラムは、生成した FontFamily が示すフォントでフォントの名前を描画します<br>
+<br>
+<strong>System.Drawing.Text.FontCollection</strong> クラスを用いれば<br>
+インストールされているフォントや、独自のフォントなどを取得できます<br>
+<br><b>
+public abstract class FontCollection : IDisposable<br>
+<br></b>
+このクラスは、フォントのコレクションを表すためのものです<br>
+ここで重要なのは <strong>FontCollection.Families</strong> プロパティです<br>
+<br><b>
+public FontFamily[] Families {get;}<br>
+<br></b>
+これは、フォントコレクションが表す FontFamily 型の配列を取得するプロパティです<br>
+フォントコレクションが何を表しているかは、この抽象クラスを実体化しているクラスによります<br>
+例えば <strong>System.Drawing.Text.InstalledFontCollection</strong> クラスは<br>
+システム上にインストールされているフォントコレクションを管理しています<br>
+<pre><b>
+Object
+   FontCollection
+      InstalledFontCollection
+
+public sealed class InstalledFontCollection : FontCollection</b></pre>
+
+このクラスのコンストラクタは、引数の無いコンストラクタ一つだけです<br>
+インスタンスを作成すれば、あとは Families プロパティで配列を取得できます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Text;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		FontFamily[] ff = (new InstalledFontCollection()).Families;
+		for (int i = 0 , y = 0 ; i &#60; ff.Length ; i++ , y += 15) {
+			Font ft = new Font("MS Serif" , 12);
+			Point pt = new Point(0 , y);
+			g.DrawString(ff[i].Name , ft , Brushes.Black , pt);
+		}
+	}
+}</pre>
+このプログラムは、システムにインストールされているフォントを列挙します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win9.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win11.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

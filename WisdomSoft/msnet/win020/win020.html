@@ -1,0 +1,246 @@
+<html>
+ <head>
+ <title>マウスイベント</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>マウスイベント</h1>
+<hr>
+ <h2>オーバーライドによるイベント処理</h2>
+マウスは、今やパーソナルコンピュータの入力装置の必需品となっています<br>
+Windows はマウスが無くても操作できるようになっていますし<br>
+アプリケーションは、マウスが無くても制御できるように設計されなければなりません<br>
+<br>
+しかし、ペイントソフトなどではポインティングデバイス無しには使えないでしょうし<br>
+多くのエンドユーザーはキーボードよりマウスを使うことに慣れているのが現状です<br>
+一般の GUI アプリケーションは、マウスの入力を上手に処理しなければなりません<br>
+<br>
+.NET アプリケーションのイベントシステムは、極めて優れた設計になっています<br>
+筆者が知る限りでは、これ以上に優れたシステムはみたことがありません<br>
+Win32 API や Java、MFC よりも柔軟で、理想的な構造になっているのです<br>
+<br>
+この柔軟性は<strong>2つのイベント処理方法</strong>を持つことで実現されています<br>
+それは、<strong>デリゲートとオーバーライド</strong>の2通りの処理です<br>
+まずは、このうちのオーバーライドを用いた実現方法から解説しましょう<br>
+<br>
+OnPaint() メソッドは、無効矩形が作られると呼び出されるというイベントの一つです<br>
+これは Control クラスで定義されていて、オーバーライドすることによって<br>
+その機能を拡張し、イベント発生時に処理するコードを容易に指定することができます<br>
+その他のイベントも、これと同じ考え方で On***() という名前のメソッドで定義されています<br>
+<br>
+この方法は非常に簡単にコントロールの機能を拡張する手段として使えます<br>
+メソッドをオーバーライドすれば、後は望み通りのタイミングで<br>
+システムがメソッドを呼び出してくれるので、面倒な手続きは一切ありません<br>
+<br>
+マウスカーソルがコントロールのクライアント領域に侵入すると<br>
+<strong>Control.OnMouseEnter()</strong> メソッドが呼び出され<br>
+カーソルがコントロールの外に出ると <strong>Control.OnMouseLeave()</strong> が呼ばれます<br>
+<br><b>
+protected virtual void OnMouseEnter(EventArgs e);<br>
+protected virtual void OnMouseHover(EventArgs e);<br>
+<br></b>
+このメソッドをオーバーライドすることによって、それぞれのイベントを処理できます<br>
+e には、このイベントの情報を表す EventArgs オブジェクトが指定されます<br>
+<br>
+パラメータ型は <strong>System.EventArgs</strong> クラスです<br>
+このクラスは、イベント発生時にメソッドに伝える情報をパッケージ化する基本クラスです<br>
+<br><b>
+public class EventArgs<br>
+<br></b>
+コンストラクタもデフォルトのものしか定義されておらず、特に説明することはありません<br>
+このクラスは、イベントメソッドのパラメータのルートクラスとして定義されています<br>
+<br>
+マウスのボタンが押されると <strong>Control.OnMouseDown()</strong> メソッドが<br>
+離されると <strong>Control.OnMouseUp()</strong> メソッドが呼び出されます<br>
+これによって、マウスクリックを処理することができるようになります<br>
+<br><b>
+protected virtual void OnMouseDown(MouseEventArgs e);<br>
+protected virtual void OnMouseUp(MouseEventArgs e);<br>
+<br></b>
+e には、マウスの情報をパックした MouseEventArgs オブジェクトが指定されます<br>
+このクラス型については、すぐ後で詳しく説明します<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnMouseDown(MouseEventArgs e) {
+		Text = "Event = MouseDown";
+	}
+	override protected void OnMouseUp(MouseEventArgs e) {
+		Text = "Event = MouseUp";
+	}
+	override protected void OnMouseEnter(System.EventArgs e) {
+		Text = "Event = MouseEnter";
+	}
+	override protected void OnMouseLeave(System.EventArgs e) {
+		Text = "Event = MouseLeave";
+	}
+}</pre>
+<img src="img/00.051.jpg" class="img"><br>
+<br>
+このプログラムは、各マウスイベントに応じて<br>
+発生したイベントを表す文字列をウィンドウテキストに設定します<br>
+<br>
+マウスイベントが発生した時に、マウスの情報をメソッドに届ける役割を持つのが<br>
+<strong>System.Windows.Forms.MouseEventArgs</strong> クラスです<br>
+<pre><b>Object
+   EventArgs
+      MouseEventArgs
+
+public class MouseEventArgs : EventArgs</b></pre>
+
+このクラスは、次のようなコンストラクタを定義しています<br>
+<pre><b>public MouseEventArgs(
+	MouseButtons button , int clicks ,
+	int x , int y , int delta
+);</b></pre>
+このコンストラクタの各引数こそ、マウスの状態を表す情報です<br>
+button には、押されたマウスボタンを表す MouseButtons 列挙型の値を<br>
+clicks にはマウスボタンのクリック回数を指定します<br>
+<br>
+x と y には、イベント発生時のマウスの X 座標と Y 座標を<br>
+delta はホイールマウスのホイール回転量を表す値を指定します<br>
+このコンストラクタを使って明示的に MouseEventArgs 型インスタンスを作成すれば<br>
+システムではなくプログラムから、意図的にイベントを発生させることも可能です<br>
+<br>
+マウスのボタンは <strong>System.Windows.Forms.MouseButtons</strong> 列挙型で表されます<br>
+<br><b>
+public enum MouseButtons<br>
+<br></b>
+この列挙型は、次のような意味のあるメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Left	<td>マウスの左ボタンが押された
+<tr><td>Middle	<td>マウスの中央ボタンが押された
+<tr><td>None	<td>マウスのボタンは押されなかった
+<tr><td>Right	<td>マウスの右ボタンが押された
+<tr><td>XButton1	<td>ファースト X ボタンが押された<br>（Microsoft インテリマウス専用）
+<tr><td>XButton2	<td>セカンド X ボタンが押された<br>（Microsoft インテリマウス専用）
+</table>
+<br>
+MouseEventArgs クラスは、各種の情報を取得できるプロパティを公開しています<br>
+イベント発生時に押されたボタンは <strong>MouseEventArgs.Button</strong> で、<br>
+クリック数は <strong>MouseEventArgs.Clicks</strong> プロパティ、<br>
+ホイールの回転量は <strong>MouseEventArgs.Delta</strong> プロパティ、<br>
+座標は <strong>MouseEventArgs.X</strong> と <strong>MouseEventArgs.Y</strong> で得られます<br>
+<br><b>
+public MouseButtons Button {get;}<br>
+public int Clicks {get;}<br>
+public int Delta {get;}<br>
+public int X {get;}<br>
+public int Y {get;}<br>
+<br></b>
+イベントを処理する時にこれらのプロパティを用いれば<br>
+ボタンが押された時の座標に対する処理などを行うことができるようになります<br>
+<br>
+マウスがコントロールの上で移動すると <strong>Control.OnMouseMove()</strong> が発生します<br>
+このイベントと、先ほどのマウスの情報を使ってマウスの位置を表示させてみましょう<br>
+<br><b>
+protected virtual void OnMouseMove(MouseEventArgs e);<br>
+<br></b>
+e に、イベント発生時のマウス情報を持つ MouseEventArgs オブジェクトが指定されます<br>
+ここから、X と Y プロパティを使ってマウスの座標を取得します<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnMouseMove(MouseEventArgs e) {
+		Text = "X = " + e.X + " : Y = " + e.Y;
+	}
+}</pre>
+<img src="img/00.052.jpg" class="img"><br>
+<br>
+このプログラムは、ウィンドウのタイトルバーにカーソルの座標を表示します<br>
+カーソルの座標は、コントロールのクライアント座標であることに注意してください<br>
+
+<br><hr>
+<h2>デリゲートによるイベントの実装</h2>
+オーバーライドによるイベントの処理は、極めて簡単に実現する手段ですが<br>
+イベントを処理するために、元のコントロールを継承する必要があります<br>
+また、On**() メソッドは protected なので外部からアクセスすることもできません<br>
+<br>
+しかし、実は高度なアプリケーションとなるとイベントは単一コントロールに終わりません<br>
+Adobe 社の Photoshop 等の高度なペインとソフトを例に挙げると<br>
+ユーザーがタブレットで、キャンバスに絵を描くと、当然そのウィンドウはイベントを処理します<br>
+そして、表示されているCGは描画イベントを発生させてビットマップを再度表示するでしょう<br>
+<br>
+ただし、Photoshop はこの他にプレビューウィンドウやレイヤーウィンドウ<br>
+ヒストリーなどのツールウィンドウがあり、これもイベントに合わせて更新する必要があります<br>
+ところが、On***() でこれを作ると考えると、入力されたウィンドウはイベントが発生しますが<br>
+その他のツールウィンドウにも、このイベントを通知するとなると様々な工夫が必要です<br>
+<br>
+Java は MVC アーキテクチャやインターフェイスを駆使してイベントの登録などを行い<br>
+コントロール（コンポーネント）がこれを適切に処理して呼び出す必要がありました<br>
+<br>
+.NET の場合は、デリゲートとイベントという素晴らしい機能が存在するため<br>
+イベントを受けるコントロールに、呼び出してほしいメソッドを要求できます<br>
+すばらしいことに、このメソッドはインスタンスにこだわることはありません<br>
+<br>
+Control クラスは、On**() メソッドに対応した公開インスタンスイベントを定義しています<br>
+イベントの名前は、On**() メソッドの On を省略した名前に統一されています<br>
+例えば　OnPaint() メソッドに対して <strong>Control.Paint</strong> イベントが定義されています<br>
+<br>
+マウスイベントであれば、<strong>Control.MouseDown</strong>、<strong>Control.MouseUp</strong>、<br>
+<strong>Control.MouseEnter</strong>、<strong>Control.MouseLeave</strong>、<br>
+そして、<strong>Control.MouseMove</strong> イベントという形で定義されています<br>
+<br><b>
+public event MouseEventHandler MouseDown;<br>
+public event MouseEventHandler MouseUp;<br>
+public event EventHandler MouseEnter;<br>
+public event EventHandler MouseLeave;<br>
+public event MouseEventHandler MouseMove;<br>
+<br></b>
+イベント発生のタイミングは、On**() というときの場合と同じです<br>
+マルチキャストが可能なため、イベントに対して簡単にプラグインを導入できます<br>
+<br>
+イベントの型は <strong>System.Windows.Forms.MouseEventHandler</strong> と<br>
+<strong>System.EventHandler</strong> デリゲート型であり、次のように定義されています<br>
+
+<pre><b>public delegate void MouseEventHandler(
+	object sender , MouseEventArgs e
+);
+public delegate void EventHandler(
+	object sender , EventArgs e
+);</b></pre>
+sender にはこのイベントの送り主、すなわち発生元のコントロールが<br>
+e には、On***() メソッドのパラメータ同様に、イベント情報を持つオブジェクトが指定されます<br>
+イベントの送り主が確定しているのであれば、アップキャストして重要なメンバに<br>
+外部のメソッドからアクセスするという事が可能になります<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.MouseMove += new MouseEventHandler(_MouseMove);
+		Application.Run(win);
+	}
+
+	static protected void _MouseMove(object obj , MouseEventArgs e) {
+		((Control)obj).Text = "X = " + e.X + " : Y = " + e.Y;
+	}
+}</pre>
+このプログラムは、先ほどの OnMouseMove() を処理するサンプルプログラムを参考に<br>
+まったく同じ処理を、Control が提供するイベントメンバを使って実現したものです<br>
+.NET のデリゲートは、メソッドのインスタンスにこだわらないという特徴を持っているため<br>
+このように静的なメソッドでコントロールのイベントを受け取るという事が可能です<br>
+<br>
+ここで重要なのは、イベントメンバはシステムではなくプログラムから呼ばれます<br>
+実は、イベントメンバを呼び出しているのは Control クラスの On***() メソッドです<br>
+そのため、On***() メソッドをオーバーライドしてしまうと、イベントが呼び出せません<br>
+<br>
+そこで、通常は On***() イベントをオーバーライドした場合<br>
+処理の最後に基底クラスの On***() メソッドを呼び出すようにしましょう<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win19.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win21.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

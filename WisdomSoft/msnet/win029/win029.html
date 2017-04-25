@@ -1,0 +1,316 @@
+<html>
+ <head>
+ <title>メッセージボックス</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>メッセージボックス</h1>
+<hr>
+ <h2>メッセージボックスを表示する</h2>
+単純な情報や警告をユーザーに知らせる単純なダイアログウィンドウを表示するには<br>
+通常は、Windows がサポートするメッセージボックスを利用します<br>
+<br>
+これは、すでに作成されているモーダルダイアログウィンドウです<br>
+モーダルダイアログボックスとは、表示されている間プログラムが進行しないウィンドウで<br>
+ユーザーが OK ボタンを押すなどしない限り<br>
+ダイアログ発生元のオーナーウィンドウをアクティブにすることはできません<br>
+<br>
+メッセージボックスは <strong>System.Windows.Forms.MessageBox</strong> クラスを使います<br>
+このクラスはシステムに問い合わせる手段であり、インスタンスを生成することはできません<br>
+<br><b>
+public class MessageBox<br>
+<br></b>
+このクラスは、<strong>MessageBox.Show()</strong> 静的メソッドが定義されています<br>
+このメソッドこそ、システムに問い合わせてメッセージボックスを表示させるもので<br>
+このメソッド以外は、object クラスから特に変更はありません<br>
+
+<pre><b>public static DialogResult Show(string text);
+public static DialogResult Show(IWin32Window owner , string text);
+public static DialogResult Show(string text , string caption);
+
+public static DialogResult Show(
+	IWin32Window owner ,
+	string text , string caption
+);
+
+public static DialogResult Show(
+	string text , string caption ,
+	MessageBoxButtons buttons
+);
+
+public static DialogResult Show(
+	IWin32Window owner , 
+	string text , string caption , MessageBoxButtons buttons
+);
+
+public static DialogResult Show(
+	string text , string caption ,
+	MessageBoxButtons buttons , MessageBoxIcon icon
+);
+
+public static DialogResult Show(
+	IWin32Window owner ,
+	string text , string caption ,
+	MessageBoxButtons buttons , MessageBoxIcon icon
+);
+
+public static DialogResult Show(
+	string text , string caption,
+	MessageBoxButtons buttons , MessageBoxIcon icon ,
+	MessageBoxDefaultButton defaultButton
+);
+
+public static DialogResult Show(
+	IWin32Window owner , string text , string caption,
+	MessageBoxButtons buttons , MessageBoxIcon icon ,
+	MessageBoxDefaultButton defaultButton
+);
+
+public static DialogResult Show(
+	string text , string caption ,
+	MessageBoxButtons buttons , MessageBoxIcon icon ,
+	MessageBoxDefaultButton defaultButton ,
+	MessageBoxOptions options
+);
+
+public static DialogResult Show(
+	IWin32Window owner , string text , string caption ,
+	MessageBoxButtons buttons , MessageBoxIcon icon ,
+	MessageBoxDefaultButton defaultButton ,
+	MessageBoxOptions options
+);</b></pre>
+
+ずいぶんさまざまな機能があって、難しそうに感じますが<br>
+見慣れない型のほとんどは単純な列挙型なので問題はありません<br>
+<br>
+text にはメッセージボックスでユーザーに伝える文字列を指定します<br>
+owner は、このメッセージボックスのオーナーオブジェクトを指定します<br>
+caption には、メッセージボックスのタイトルバーに表示する文字列を指定します<br>
+<br>
+buttons はメッセージボックスに表示されるボタンを表す列挙型メンバを<br>
+icon にはメッセージボックスに表示されるアイコンを示す列挙型メンバを<br>
+defaultButton には、既定のボタンを示す列挙型メンバを<br>
+options には、表示などに関連したオプションを指定する列挙型メンバを指定します<br>
+<br>
+このメソッドの戻り値は、ダイアログの戻り値を示す列挙型です<br>
+これは、ユーザーがダイアログに対してどのようなボタンを押したかを表しています<br>
+この列挙型について詳しくはすぐ後に説明します<br>
+<br>
+たくさんあるので、少しずつ順を追って機能を見ていきましょう<br>
+まず、最も簡単なのは文字列だけを指定する方法です<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		MessageBox.Show("Do you like a cat?" , "Kitty on your lap");
+	}
+}</pre>
+<img src="img/00.065.jpg" class="img"><br>
+<br>
+このプログラムを実行すると、上の図のようなメッセージボックスを表示します<br>
+メッセージボックスが表示されている間、アプリケーションは処理を中断しています<br>
+OK ボタンを押せば、メッセージボックスは閉じられ次のステップに処理が移動するため<br>
+アプリケーションはそのままプログラムを終了します<br>
+<br>
+owner パラメータは <strong>IWin32Window</strong> という型です<br>
+通常、Microsoft のネーミング規則で頭文字が大文字の I で、その後に名前が続くと<br>
+これはインターフェイスであるという意味で、すなわちこれはインターフェイス型です<br>
+この型は <strong>System.Windows.Forms.IWin32Window</strong> インターフェイスです<br>
+
+<pre><b>[ComVisible(true)]
+[Guid("")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+public interface IWin32Window</b></pre>
+
+このクラスは、コントロールの参照を数値で識別するための値を取得するための<br>
+<strong>IWin32Window.Handle</strong> プロパティを宣言しています<br>
+<pre><b>[ComVisible(true)]
+[Guid("")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+IntPtr Handle {get;}</b></pre>
+
+このインターフェイスを実装したクラスは、コントロールを識別するための<br>
+Windows システムが管理する数値を返す Handle プロパティを実装しなければなりません<br>
+実は、このインターフェイスは <strong>Control クラスが実装</strong>しています<br>
+オーナーウィンドウを指定したい場合は、Control クラスの継承クラスを指定するとよいでしょう<br>
+<br>
+buttons パラメータを指定すれば、メッセージボックスに表示するボタンを指定できます<br>
+デフォルトでは OK ボタンしか表示されませんが、これを用いることで<br>
+YES/NO やキャンセルなどのボタンを表示することができるようになります<br>
+この指定には <strong>System.Windows.Forms.MessageBoxButtons</strong> 列挙型を使います<br>
+
+<pre><b>[Serializable]
+public enum MessageBoxButtons</b></pre>
+
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>AbortRetryIgnore	<td>[中止] ボタン、[再試行] ボタン、および [無視] ボタンを表示します
+<tr><td>OK			<td>[OK] ボタンを表示します
+<tr><td>OKCancel		<td>[OK] ボタンと [キャンセル] ボタンを表示します
+<tr><td>RetryCancel		<td>[再試行] ボタンと [キャンセル] ボタンを表示します
+<tr><td>YesNo			<td>[はい] ボタンと [いいえ] ボタンを表示します
+<tr><td>YesNoCancel		<td>[はい] ボタン、[いいえ] ボタン、および [キャンセル] ボタンを表示します
+</table>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		MessageBox.Show("Do you know a Hizano Ueno Partner?" , 
+			"Kitty on your lap" , MessageBoxButtons.YesNo);
+	}
+}</pre>
+
+<img src="img/00.066.jpg" class="img"><br>
+<br>
+図を見てわかるように、このプログラムではメッセージボックスのボタンを指定しています<br>
+ところで、ボタンが複数個表示されている場合、どのボタンが押されたのかを知りたいですよね<br>
+そのために、このメソッドは DialogResult 型の戻り値を返します<br>
+<br>
+これは <strong>System.Windows.Forms.DialogResult</strong> 列挙型です<br>
+
+<pre><b>[Serializable]
+[ComVisible(true)]
+public enum DialogResult</b></pre>
+
+この列挙型は、次のようなメンバを持っています<br>
+それぞれのメンバは、どのボタンが押されたのかを示します<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Abort	<td>ダイアログ ボックスの戻り値は Abort です<br>(通常は "中止" というラベルが指定されたボタンから送られます)
+<tr><td>Cancel	<td>ダイアログ ボックスの戻り値は Cancel です<br>(通常は "キャンセル" というラベルが指定されたボタンから送られます)
+<tr><td>Ignore	<td>ダイアログ ボックスの戻り値は Ignore です<br>(通常は "無視" というラベルが指定されたボタンから送られます)
+<tr><td>No	<td>ダイアログ ボックスの戻り値は No です<br>(通常は "いいえ" というラベルが指定されたボタンから送られます)
+<tr><td>None	<td>ダイアログ ボックスからの戻り値はありません<br>つまり、モーダル ダイアログ ボックスの実行が継続します
+<tr><td>OK	<td>ダイアログ ボックスの戻り値は OK です<br>(通常は OK というラベルが指定されたボタンから送られます)
+<tr><td>Retry	<td>ダイアログ ボックスの戻り値は Retry です<br>(通常は "再試行" というラベルが指定されたボタンから送られます)
+<tr><td>Yes	<td>ダイアログ ボックスの戻り値は Yes です<br>(通常は "はい" というラベルが指定されたボタンから送られます)
+</table>
+<br>
+これを利用すれば、ユーザーが押したボタンによって異なる処理を行うことができます<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		switch (MessageBox.Show("Do you know a Hizano Ueno Partner?" , 
+			"Kitty on your lap" , MessageBoxButtons.YesNo)) {
+		case DialogResult.Yes:
+			MessageBox.Show("It has been an interesting game.");
+			break;
+		case DialogResult.No:
+			MessageBox.Show("This is a game that Nekomimi girls appear.");
+			break;
+		}
+	}
+}</pre>
+
+このプログラムは、メッセージボックスの戻り値を監視することによって<br>
+「はい」ボタンと「いいえ」ボタンを押した時の処理を分岐させています<br>
+<br>
+icon パラメータを指定すれば、さらにメッセージボックスにアイコンを付加することができます<br>
+注目してほしい警告などを表示する時は、特にアイコンをつけることが推奨されます<br>
+このアイコンは <strong>System.Windows.Forms.MessageBoxIcon</strong> 列挙型で表されます<br>
+
+<pre><b>[Serializable]
+public enum MessageBoxIcon</b></pre>
+
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>Asterisk	<td>円で囲まれた小文字の i から成る記号を表示します
+<tr><td>Error		<td>背景が赤の円で囲まれた白い X から成る記号を表示します
+<tr><td>Exclamation	<td>背景が黄色の三角形で囲まれた感嘆符から成る記号を表示します
+<tr><td>Hand		<td>背景が赤の円で囲まれた白い X から成る記号を表示します
+<tr><td>Information	<td>円で囲まれた小文字の i から成る記号を表示します
+<tr><td>None		<td>記号を表示しません
+<tr><td>Question	<td>円で囲まれた疑問符から成る記号を表示します
+<tr><td>Stop		<td>背景が赤の円で囲まれた白い X から成る記号を表示します
+<tr><td>Warning		<td>背景が黄色の三角形で囲まれた感嘆符から成る記号を表示します
+</table>
+<br>
+オブジェクト指向の設計者ならば、なぜ Icon オブジェクトの静的メンバを持つ<br>
+メッセージボックス用のアイコンコレクションクラスを作らなかったのかと思うでしょう<br>
+これは、おそらく単純に Win32 API のMessageBox() 関数を呼び出しているからです<br>
+MessageBox() 関数は、アイコンなどの指定には全て論理的な意味を持つ数値で行います<br>
+
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		MessageBox.Show("Kitty on your lap!" , "I love cat" , 
+			MessageBoxButtons.OK , MessageBoxIcon.Exclamation);
+	}
+}</pre>
+<img src="img/00.067.jpg" class="img"><br>
+<br>
+このプログラムを実行すると、図のようにアイコン付きのメッセージボックスを表示します<br>
+<br>
+defaultButton パラメータを指定すれば、既定ボタンを設定できます<br>
+既定ボタンとは、デフォルトで Enter キーを押して入力されるボタンです<br>
+フォーカスが当てられているこのボタンは、他のボタンよりもやや強調されているでしょう<br>
+通常は、最も左側のボタンが既定ボタンに設定されています<br>
+<br>
+これを設定するには<br>
+<strong>System.Windows.Forms.MessageBoxDefaultButton</strong> 列挙型を使います<br>
+
+<pre><b>[Serializable]
+public enum MessageBoxDefaultButton</b></pre>
+
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Button1		<td>1 番目のボタンが既定のボタンです
+<tr><td>Button2		<td>2 番目のボタンが既定のボタンです
+<tr><td>Button3		<td>3 番目のボタンが既定のボタンです
+</table>
+<br>
+1番目というのは、通常左のボタンから数えます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		MessageBox.Show("Kitty on your lap!" , "I love cat" , 
+			MessageBoxButtons.YesNo , MessageBoxIcon.Exclamation ,
+			MessageBoxDefaultButton.Button2);
+	}
+}</pre>
+<img src="img/00.068.jpg" class="img"><br>
+<br>
+このプログラムのメッセージボックスは、2番目のボタンを既定ボタンとしています<br>
+<br>
+あまり使用することはないと思いますが、その他のオプションを指定することもできます<br>
+これには <strong>System.Windows.Forms.MessageBoxOptions</strong> 列挙型を使います<br>
+
+<pre><b>[Flags]
+[Serializable]
+public enum MessageBoxOptions</b></pre>
+
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>DefaultDesktopOnly	<td>メッセージ ボックスをアクティブ デスクトップに表示します<br>この定数は、システムが対話形式のウィンドウ ステーションの<br>既定のデスクトップだけにメッセージ ボックスを表示することを除いて<br>ServiceNotification と同じです
+<tr><td>RightAlign		<td>メッセージ ボックスのテキストを右揃えで表示します
+<tr><td>RtlReading		<td>メッセージ ボックスのテキストを右から左へ読むように指定します
+<tr><td>ServiceNotification	<td>メッセージ ボックスをアクティブ デスクトップに表示します<br>呼び出し元は、ユーザーにイベントを通知するサービスです<br>この関数は、コンピュータにログオンしているユーザーがいない場合でも<br>現在のアクティブ デスクトップにメッセージ ボックスを表示します
+</table>
+<br>
+通常、これらのオプションは設定することはないと思われますが<br>
+例えば、アラビア語のような右から左へ読み進める言語を表示する場合などは使うことになるでしょう<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win28.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win30.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

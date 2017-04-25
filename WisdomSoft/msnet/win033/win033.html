@@ -1,0 +1,108 @@
+<html>
+ <head>
+ <title>ポップアップ</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ポップアップ</h1>
+<hr>
+ <h2>ショートカットメニュー</h2>
+コントロールを右クリックした時に表示される小さなメニューウィンドウのことを<br>
+ポップアップメニュー、ショートカットメニュー、または状況依存メニューなどといいます<br>
+<br>
+これを表示するには <strong>System.Windows.Forms.ContextMenu</strong> を使います<br>
+このクラスもまた Menu クラスを継承した重要なクラスのひとつです<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Menu
+            System.Windows.Forms.ContextMenu
+
+public class ContextMenu : Menu</b></pre>
+
+このクラスのコンストラクタは、次のようなものが定義されています<br>
+<br><b>
+public ContextMenu();<br>
+public ContextMenu(MenuItem[] menuItems);<br>
+<br></b>
+menuItem には、ポップアップに追加するメニュー項目の配列を指定します<br>
+基本的に、このクラスは Menu から大きな変化はありません<br>
+これまでのように、MenuIetmCollection.Add() を使って項目を制御できます<br>
+<br>
+ポップアップを表示するには <strong>ContextMenu.Show()</strong> メソッドを使います<br>
+
+<br><b>
+public void Show(Control control , Point pos);<br>
+<br></b>
+
+control には、表示するポップアップに関連付けるコントロールを<br>
+pos にはポップアップを表示する位置を示す Point を指定します<br>
+この座標は、関連付けられたコントロールのクライアント座標として扱われます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	ContextMenu cm;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseUp(MouseEventArgs e) {
+		if (e.Button != MouseButtons.Right) return;
+		cm.Show(this , new Point(e.X , e.Y));
+	}
+
+	public WinMain() {
+		MenuItem[] mi = {
+			new MenuItem("Maiden☆Breeder") ,
+			new MenuItem("Magical nyan nyan TARUTO") ,
+			new MenuItem("Tokyo mew mew") ,
+			new MenuItem("Kitty on your lap")
+		};
+		cm = new ContextMenu(mi);
+	}
+}</pre>
+<img src="img/00.076.jpg" class="img"><br>
+<br>
+このプログラムは、クライアント領域を右クリックすると<br>
+図のように設定したポップアップメニューが表示されるというものです<br>
+<br>
+このプログラムは OnMouseUp() メソッドをオーバーライドしてポップアップを表示しました<br>
+しかし、実は <strong>Contoro.ContextMenu</strong> プロパティに ContextMenu を設定すれば<br>
+これらの処理を自動化してくれます<br>
+<br><b>
+public virtual ContextMenu ContextMenu {get; set;}<br>
+<br></b>
+ポップアップメニューに一般的な挙動を求めるのであれば、これで十分でしょう<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	ContextMenu cm;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MenuItem[] mi = {
+			new MenuItem("Maiden☆Breeder") ,
+			new MenuItem("Magical nyan nyan TARUTO") ,
+			new MenuItem("Tokyo mew mew") ,
+			new MenuItem("Kitty on your lap")
+		};
+		cm = new ContextMenu(mi);
+		ContextMenu = cm;
+	}
+}</pre>
+このプログラムは、先ほどのプログラムとまったく同じ結果になりますが<br>
+イベントはオーバーライドで処理しているのではなく、Control.ContextMenu に<br>
+ContextMenu オブジェクトを設定することでポップアップを表示させています<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win32.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win34.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

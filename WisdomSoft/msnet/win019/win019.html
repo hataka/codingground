@@ -1,0 +1,141 @@
+<html>
+ <head>
+ <title>ウィンドウの制御</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ウィンドウの制御</h1>
+<hr>
+ <h2>ウィンドウ文字列</h2>
+全てのコントロールには、コントロールに関連付けられる文字列のプロパティがあります<br>
+この文字列がどのように利用されるかは、基本的にコントロールの役割で変化しますが<br>
+エディットウィンドウならば、入力されている文字列になるでしょうし<br>
+ボタンならば、ボタンに表示される文字列という形で、文字列が利用されます<br>
+<br>
+この、コントロールに関連付けられる文字列は<br>
+<strong>Control.Text</strong> プロパティで設定したり取得したりすることができます<br>
+<br><b>
+public virtual string Text {get; set;}<br>
+<br></b>
+Form クラスを継承した、タイトルバーを保有するウィンドウの場合<br>
+この文字列はタイトルバーやタスクバーのアイコンに表示される文字列として利用されます<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.Text = "Kitty on your lap";
+		Application.Run(win);
+	}
+}</pre>
+<img src="img/00.049.jpg" class="img"><br>
+<br>
+このプログラムは、ウィンドウのタイトルバーに文字列を表示させています<br>
+図を見てわかるように、ウィンドウのタイトルバーに指定した文字列が表示されています<br>
+
+<br><hr>
+<h2>背景と前景</h2>
+Control クラスは、プロパティで背景色や前景色を設定することができます<br>
+具体的にこれがどのように反映されるかは、そのコントロールによって異なりますが<br>
+カスタムコントロールも含め、コントロールはこれにしたがって描画を行うべきです<br>
+<br>
+プログラムは、コントロールの外部からこういった公開プロパティを制御することで<br>
+コントロールのフォント、色、背景色などを要求することができるべきであると考えられます<br>
+<br>
+背景色は <strong>Control.BackColor</strong> プロパティで定めることができます<br>
+また、背景イメージを <strong>Control.BackgroundImage</strong> プロパティで指定して<br>
+コントロールに対し、背景に静止画を使うように要求することもできます<br>
+<br><b>
+public virtual Color BackColor {get; set;}<br>
+public virtual Image BackgroundImage {get; set;}<br>
+<br></b>
+見てわかるように、このプロパティは仮想プロパティです<br>
+要求された背景色やイメージをどう使うかは、実装されるコントロールしだいです<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.BackColor = Color.White;
+		Application.Run(win);
+	}
+}</pre>
+このプログラムは、Form クラスの BackColor を白色に設定しています<br>
+実行すると、予想通り背景が白いウィンドウが生成されます<br>
+<br>
+動揺の考え方で、前景色やフォントを設定、または取得することもできます<br>
+前景色は <strong>Control.ForeColor</strong> プロパティで<br>
+フォントは <strong>Control.Font</strong> プロパティでアクセスできます<br>
+<br><b>
+public virtual Color ForeColor {get; set;}<br>
+public virtual Font Font {get; set;}<br>
+<br></b>
+これを用いれば、コントロールに対して文字列や図形を描画する時に<br>
+特定のフォントや色を使ってほしいという要求を外部から知らせることができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.Font = new Font(args[0] , 30);
+		Application.Run(win);
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Brush brush = new SolidBrush(ForeColor);
+		g.DrawString("Kitty on your lap" , Font , brush , 0 , 0);
+	}
+}</pre>
+このプログラムは、コマンドライン引数で指定したフォント名のフォントで<br>
+ウィンドウに、設定されている前景色のブラシを用いて文字列を描画します<br>
+
+<br><hr>
+<h2>ウィンドウの表示</h2>
+コントロールを破棄せずに、単純にコントロールを隠したい場合などは<br>
+コントロールの表示/非表示を制御するプロパティやメソッドを使います<br>
+これは <strong>Control.Visible</strong> プロパティで表現されます<br>
+<br><b>
+public bool Visible {get; set;}<br>
+<br></b>
+true ならば表示されることを意味し、false ならば隠れることを意味します<br>
+また、これを間接的に false に設定する <strong>Control.Hide()</strong> メソッドと<br>
+true に設定する <strong>Control.Show()</strong> メソッドというものも存在します<br>
+<br><b>
+public void Hide();<br>
+public void Show();<br>
+<br></b>
+筆者はこういった作業はプロパティで行うべきであると考えます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain mainWin = new WinMain();
+		WinMain subWin = new WinMain();
+
+		mainWin.Text = "This is Main Window";
+		subWin.Text = "This is Sub Window";
+		subWin.Visible = true;
+
+		Application.Run(mainWin);
+	}
+}</pre>
+<img src="img/00.050.jpg" class="img"><br>
+<br>
+このプログラムは、2つのウィンドウを生成しています<br>
+Run() メソッドに渡して、終了動作に関連付けるメインウィンドウは<br>
+Run() メソッドが自動的にウィンドウを生成、表示してくれますが<br>
+これに渡していない subWin は、手動で Visible を true にして表示しています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win18.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win20.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

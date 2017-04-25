@@ -1,0 +1,112 @@
+<html>
+ <head>
+ <title>ウィンドウフォーム</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ウィンドウフォーム</h1>
+<hr>
+ <h2>GUI アプリケーション</h2>
+多くの場合、.NET の基礎を System.Console 名前空間を用いて学習したでしょう<br>
+特に、.NET 独自の言語である C# を学習する時には、これを用いたはずです<br>
+<br>
+しかし、.NET を実践で用いるには、当然 GUI アプリケーションの建築が必要となります<br>
+Microsoft .NET はこの要求にも高度に応えてくれるでしょう<br>
+<br>
+Microsoft .NET の GUI アプリケーションは<br>
+<strong>System.Windows.Forms</strong> 名前空間を用います<br>
+この名前空間は、Windows の基本的なコントロールやウィンドウ、イベントなど<br>
+GUI アプリケーションに必要不可欠な機能をカプセル化しています<br>
+<br>
+筆者の講座は、その全てが総合開発環境を用いることなく<br>
+本質を理解するために、コマンドラインから Framework SDK を用います<br>
+Microsoft が提供するグラフィカルな Visual シリーズは用いないので<br>
+テキストによるコードで、細部までプログラムできるように講座を進めていきます<br>
+<br>
+C 言語による Win32 API を直接呼び出すプログラムは大変難しいものです<br>
+強力なプログラムを作れる反面、理解が難しく開発にはそれなりの技術力が必要なため<br>
+利用者も少数派で書籍も少ないというデメリットが存在しました<br>
+<br>
+.NET における GUI プログラミングは、オブジェクト指向の恩恵を受けることになります<br>
+MFC もオブジェクト指向ではありましたが、C++ 言語は完全なオブジェクト指向ではありません<br>
+しかし、C# 言語と .NET クラスライブラリは統一された完成度の高いオブジェクト指向であり<br>
+Java の AWT や Swing 等と比較しても、統一された高い完成度を感じさせます<br>
+<br>
+GUI プログラムの作成には <strong>System.Windows.Forms.Form</strong> クラスを継承します<br>
+このクラスには、ウィンドウの基本的な機能と処理がパッケージ化されています<br>
+私たちは、必要に応じてこれをオーバーライドして機能を書きかえることができるのです<br>
+<pre><b>Object
+   MarshalByRefObject
+      Component
+         Control
+            ScrollableControl
+               ContainerControl
+                  Form
+
+public class Form : ContainerControl</b></pre>
+
+見てのように、ずいぶんと深い階層に存在するクラスなのですが<br>
+これは、ウィンドウも基本的なコンポーネントから構成され、その上に成り立っているからです<br>
+<br>
+ウィンドウを生成する場合、Main() メソッドの処理が問題となります<br>
+Main() メソッドがすぐに終了してしまえば、プログラムも勝手に終了してしまいます<br>
+GUI プログラムの場合、Main() メソッドは<strong>メッセージループ</strong>の処理を行います<br>
+<br>
+メッセージループとは、マウスやキーボードなどのイベントを監視するループ処理を指します<br>
+これを行うには <strong>System.Windows.Forms.Application</strong> クラスを用います<br>
+このクラスは Windows アプリケーションの基本動作を制御する役割を持っています<br>
+<br><b>
+public sealed class Application<br>
+<br></b>
+このクラスは、メッセージループを起動する <strong>Application.Run()</strong> 静的メソッドを持ちます<br>
+このメソッドを用いれば、フォームを表示して基本的なイベントに対応させることができます<br>
+<br><b>
+public static void Run();<br>
+public static void Run(ApplicationContext context);<br>
+public static void Run(Form mainForm);<br>
+<br></b>
+パラメータを指定しない場合、フォームの無い状態でメッセージループを起動させます<br>
+フォームが無い場合は、Form クラスのようなものがアプリケーションを終了してくれないので<br>
+どこかでアプリケーションの終了を明示しなければ、無限ループに陥ってしまいます<br>
+<br>
+context は ApplicationContext でメッセージループを走らせます<br>
+このクラスは、アプリケーション・スレッドに関連した情報を表すものです<br>
+この場では説明できないため、後ほど機会があれば詳しく解説します<br>
+<br>
+mainForm には、メッセージループを用いる Form オブジェクトを指定します<br>
+この場合、このフォームがメインウィンドウとなります<br>
+メッセージループが作られると同時に、ウィンドウが自動的に表示されます<br>
+<br>
+Form オブジェクトを Run() に渡せば、メインウィンドウが表示され<br>
+このウィンドウは、最小化、最大化、アプリケーションの終了などの基本機能を持ちます<br>
+たったこれだけの作業で Windows プログラムができてしまうため<br>
+Win32 API を直接制御する方法から比べると、極めて簡単で美しい設計だと感じるでしょう<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+}</pre>
+<img src="img/00.000.jpg" class="img"><br>
+<br>
+どうでしょう、わずか7行足らずで基本的なウィンドウプログラムが完成しました<br>
+ウィンドウの破棄や終了処理は、Form クラスが行ってくれています<br>
+<br>
+私たちは、このような基本機能が完成されているオブジェクトを最初に定義し<br>
+これに、必要な機能を付け足したり、すでにある機能を書き換えたりすることができるのです<br>
+まさに、オブジェクト指向の賜物といえるでしょう<br>
+<br>
+因みに、コマンドプロンプトから起動すると問題ないように思えますが<br>
+エクスプローラーから起動した場合、プロンプトが表示されるという問題点があります<br>
+これを解決するには、コンパイラオプションで <strong>/t:winexe</strong> を指定します<br>
+こうすれば、ウィンドウだけが美しく表示されることでしょう<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win2.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

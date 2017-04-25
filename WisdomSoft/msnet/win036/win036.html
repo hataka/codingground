@@ -1,0 +1,192 @@
+<html>
+ <head>
+ <title>ボタン</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ボタン</h1>
+<hr>
+ <h2>様々なボタンの機能</h2>
+GUI アプリケーションにおいて、ボタンは最も基本的なコントロールであり<br>
+ユーザーから見ても、最も直感的な操作が可能なインターフェイスでしょう<br>
+今回は、このボタンをウィンドウに付け、より高度な UI 開発技術を身につけます<br>
+<br>
+.NET では <strong>System.Windows.Forms.ButtonBase</strong> 抽象クラスで<br>
+ボタンが持つべきであると思われる基本的なビヘイビアを宣言しています<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ButtonBase
+
+public abstract class ButtonBase : Control</b></pre>
+
+コントロール設計者は、ボタンを作成する時はこのクラスを拡張するべきです<br>
+これによって、クラス利用者はボタンの概観や内部の機能に問わず<br>
+基本的なボタンの挙動を ButtonBase クラスのメンバを使って制御することができます<br>
+<br>
+もちろん .NET のボタンも ButtonBase クラスを継承しています<br>
+最も一般的なボタンは <strong>System.Windows.Forms.Button</strong> でしょう<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ButtonBase
+               System.Windows.Forms.Button
+
+public class Button : ButtonBase, IButtonControl</b></pre>
+
+このクラスのコンストラクタはデフォルトコンストラクタのみです<br>
+ボタンに表示する文字列は、Contorl.Text プロパティで設定することができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		Button bt = new Button();
+		bt.Text = "Kitty on your lap";
+		bt.Bounds = new Rectangle(0 , 0 , 200, 50);
+		Controls.Add(bt);
+	}
+}</pre>
+<img src="img/00.079.jpg" class="img"><br>
+<br>
+このプログラムは、クライアント領域に通常のボタンを追加しています<br>
+ボタンは 200 × 50 の大きさで、Text プロパティを用いてボタンのテキストを設定しています<br>
+<br>
+実は、ボタンといっても説明するのはこのくらいしかありません<br>
+Button クラスもまた Control クラスを継承しているので、基本的な挙動の全ては<br>
+Control クラスから継承されるか、ButtonBase でオーバーライドしているくらいです<br>
+そのため、概観やイベントなどは Control クラスのプロパティでほとんど設定できます<br>
+<br>
+しかし、いくつのかのボタンに特化したプロパティが追加されているので、これを紹介します<br>
+ボタンにイメージを要求するには <strong>ButtonBase.Image</strong> プロパティを使います<br>
+<br><b>
+public Image Image {get; set;}<br>
+<br></b>
+このプロパティは、ボタンに表示するイメージを設定したり、取得することができます<br>
+デフォルトでは null ですが、イメージをボタンに貼り付けることができます<br>
+イメージの位置は <strong>ButtonBase.ImageAlign</strong> プロパティで設定します<br>
+<br><b>
+public ContentAlignment ImageAlign {get; set;}<br>
+<br></b>
+このプロパティは、イメージの配置方法を示す列挙型のメンバ値を示します<br>
+これは、<strong>System.Drawing.ContentAlignment</strong> 列挙型です<br>
+<pre><b>[Serializable]
+public enum ContentAlignment</b></pre>
+
+この列挙型のメンバは、次のように定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>BottomCenter	<td>コンテンツは下部では垂直に、中央では平行に配置されます
+<tr><td>BottomLeft	<td>コンテンツは下部では垂直に、左側では平行に配置されます
+<tr><td>BottomRight	<td>コンテンツは下部では垂直に、右側では平行に配置されます
+<tr><td>MiddleCenter	<td>コンテンツは中段では垂直に、中央では平行に配置されます
+<tr><td>MiddleLeft	<td>コンテンツは中段では垂直に、左側では平行に配置されます
+<tr><td>MiddleRight	<td>コンテンツは中段では垂直に、右側では平行に配置されます
+<tr><td>TopCenter	<td>コンテンツは上部では垂直に、中央では平行に配置されます
+<tr><td>TopLeft		<td>コンテンツは上部では垂直に、左側では平行に配置されます
+<tr><td>TopRight	<td>コンテンツは上部では垂直に、右側では平行に配置されます
+</table>
+<br>
+ButtonBase クラスのデフォルトは MiddleCenter に設定されています<br>
+必要に応じて変更してください<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		Button bt = new Button();
+		bt.Image = new Bitmap("test.jpg");
+		bt.Bounds = new Rectangle(0 , 0 , 400, 200);
+		bt.MouseUp += new MouseEventHandler(OnButton);
+		Controls.Add(bt);
+	}
+	public void OnButton(object sender , MouseEventArgs e) {
+		MessageBox.Show("Kitty on your lap");
+	}
+}</pre>
+<img src="img/00.080.jpg" class="img"><br>
+<br>
+このプログラムでは、イメージを表示する大きなボタンを表示しています<br>
+さらに、ボタンを押すとメッセージボックスを表示するイベントも追加してみました<br>
+<br>
+同様に、イメージの追加にイメージリストを使うことも可能です<br>
+イメージリストの追加は <strong>ButtonBase.ImageList</strong> プロパティで<br>
+インデックスの指定は <strong>ButtonBase.ImageIndex</strong> プロパティで制御できます<br>
+<br><b>
+public ImageList ImageList {get; set;}<br>
+public int ImageIndex {get; set;}<br>
+<br></b>
+イメージリストを追加した場合 Image プロパティは null に設定されます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+        public static void Main(string[] args) {
+                Application.Run(new WinMain());
+        }
+
+        public WinMain() {
+                ImageList img = new ImageList();
+                img.ImageSize = new Size(200 , 100);
+                img.Images.Add(new Bitmap("test.jpg"));
+
+                Button bt = new Button();
+                bt.Size = img.ImageSize;
+                bt.ImageList = img;
+                bt.ImageIndex = 0;
+                Controls.Add(bt);
+        }
+}</pre>
+このプログラムは、先ほどのプログラムのようにボタンにイメージを表示しますが<br>
+イメージリストを使って表示している点で異なっています<br>
+イベントに応じてボタンのイメージを変更するような場合、この方が便利でしょう<br>
+<br>
+通常、ボタンのテキストは中央に配置されますが<br>
+必要に応じて、ボタンのテキストの位置を変更することができます<br>
+テキストの位置を設定するには <strong>ButtonBase.TextAlign</strong> プロパティを使います<br>
+<br><b>
+public virtual ContentAlignment TextAlign {get; set;}<br>
+<br></b>
+このプロパティには ImageAlign プロパティ同様に<br>
+位置を示す ContentAlignment 列挙型メンバを指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		Button bt = new Button();
+		bt.Size = new Size(200 , 30);
+		bt.Text = "Kitty on your lap";
+		bt.TextAlign = ContentAlignment.MiddleLeft;
+		Controls.Add(bt);
+	}
+}</pre>
+<img src="img/00.082.jpg" class="img"><br>
+<br>
+図を見れば、テキストが左寄りになっていることがわかると思います<br>
+これは TextAlign プロパティを変更した結果です<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win35.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win37.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

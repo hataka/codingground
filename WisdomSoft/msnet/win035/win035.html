@@ -1,0 +1,149 @@
+<html>
+ <head>
+ <title>イメージリスト</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>イメージリスト</h1>
+<hr>
+ <h2>イメージのコレクションを管理</h2>
+高度なグラフィックス処理アプリケーションを建築しようと考えた場合<br>
+あるいは、浮動的にイメージを管理するコントロールを作成しようと思った場合<br>
+一般的に考えられるのは、イメージを配列で扱うという方法です<br>
+<br>
+オブジェクト指向であり、インデクサがサポートされる C# ではこの方法で十分ですが<br>
+Windows には、プログラマに代わってイメージのコレクションを管理してくれる機能があります<br>
+それは、標準コントロールのイメージリストコントロールです<br>
+<br>
+.NET では <strong>System.Windows.Forms.ImageList</strong> クラスで表されます<br>
+Image クラスとは直接の関係はなく、GDI+ ではなく比較的コントロール近い存在です<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.ImageList
+
+public sealed class ImageList : Component</b></pre>
+
+このクラスのコンストラクタには、次のようなものがあります<br>
+<br><b>
+public ImageList();<br>
+public ImageList(IContainer container);<br>
+<br></b>
+
+container にはイメージリストと関連付けるコンテナを指定します<br>
+<strong>コンテナ</strong>とは、他のコンポーネントを含むことができるオブジェクトを意味します<br>
+この <strong>System.ComponentModel.IContainer</strong> インターフェイスの実装は<br>
+<strong>Component.Container</strong> プロパティから取得することができます<br>
+<br><b>
+public IContainer Container {get;}<br>
+<br></b>
+Component クラスといえば Control クラスの基底クラスなので<br>
+全てのコントロールは Container プロパティからコンテナにアクセスできるのです<br>
+<br>
+すでに、メニューやコントロールの設計を見てきたので想像できると思いますが<br>
+やはりイメージリストも、インスタンスにイメージを追加する形でコレクションを管理します<br>
+コレクションを管理するのは、やはり内部クラスです<br>
+<br>
+<strong>System.Windows.Forms.ImageList.ImageCollection</strong> クラスは<br>
+ImageList クラスの内部で定義されている、イメージ管理用の内部クラスです<br>
+<pre><b>public sealed class ImageList.ImageCollection :
+	IList , ICollection , IEnumerable</b></pre>
+
+このクラスを利用することで、イメージリストにイメージを追加し<br>
+インデックス番号でこれを取得するようなプログラムが簡単にできるようになります<br>
+ImageCollection には <strong>ImageList.Images</strong> プロパティからアクセスできます<br>
+<br><b>
+public ImageList.ImageCollection Images {get;}<br>
+<br></b>
+
+イメージを追加するには <strong>ImageCollection.Add()</strong> を使います<br>
+
+<br><b>
+public void Add(Icon value);<br>
+public void Add(Image value);<br>
+public int Add(Image value, Color transparentColor);<br>
+<br></b>
+value には、追加する Icon 型か Image 型のイメージを指定します<br>
+transperentColor にはイメージをマスクする色を指定します<br>
+<br>
+イメージリスト内のイメージのサイズは常に同じサイズにスケーリングされます<br>
+このサイズは <strong>ImageList.ImageSize</strong> プロパティで設定できます<br>
+<br><b>
+public Size ImageSize {get; set;}<br>
+<br></b>
+デフォルトで、イメージのサイズは 16 × 16 ピクセルに設定されています<br>
+このプロパティを使って、イメージリストのサイズを目的のサイズに変更してください<br>
+
+<br>
+追加したイメージは、<strong>ImageCollection.Item()</strong> で取得することができます<br>
+インデックスは、やはりイメージが追加された順番に割り当てられます<br>
+現在のイメージの数は <strong>ImageCollection.Count</strong> プロパティで得られます<br>
+<br><b>
+public Image this[int index] {get; set;}<br>
+public int Count {get;}<br>
+<br></b>
+
+index には取得、または設定するイメージリストのイメージのインデックスを指定します<br>
+リスト内のイメージを取得して描画する時は、このようにインデクサから得てもよいのですが<br>
+<strong>ImageList.Draw()</strong> メソッドによって、簡単に描画することができます<br>
+<pre><b>public void Draw(
+	Graphics g , Point pt , int index
+);
+public void Draw(
+	Graphics g , int x , int y , int index
+);
+public void Draw(
+	Graphics g ,
+	int x , int y , int width , int height , int index
+);</b></pre>
+
+g には、描画先のデバイスコンテキストを示す Graphics オブジェクトを<br>
+x には描画する X 座標、y には Y 座標、width には幅、height には高さを指定します<br>
+index は、イメージリスト内の描画するイメージのインデックスを指定します<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+        int index = 0;
+        ImageList img;
+        public static void Main(string[] args) {
+                Application.Run(new WinMain(args));
+        }
+
+        public WinMain(string[] imgFiles) {
+                img = new ImageList();
+                img.ImageSize = new Size(100 , 100);
+                img.Images.Add(new Bitmap(imgFiles[0]));
+                img.Images.Add(new Bitmap(imgFiles[1]));
+        }
+        override protected void OnPaint(PaintEventArgs e) {
+                img.Draw(e.Graphics , 0 , 0 , index);
+        }
+
+        override protected void OnMouseEnter(System.EventArgs e)
+                index = 1;
+                Invalidate();
+        }
+        override protected void OnMouseLeave(System.EventArgs e)
+                index = 0;
+                Invalidate();
+        }
+
+}</pre>
+<img src="img/00.081.jpg" class="img"><br>
+<br>
+このプログラムは、コマンドライン引数で指定した2つのイメージから<br>
+イメージリストを作成して、それをクライアント領域に描画しています<br>
+マウスがクライアント領域に入ると、インデックスを変更して表示する絵を変更します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win34.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win36.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

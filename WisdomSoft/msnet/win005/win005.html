@@ -1,0 +1,311 @@
+<html>
+ <head>
+ <title>論理ブラシ</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>論理ブラシ</h1>
+<hr>
+ <h2>図を塗りつぶす</h2>
+これまでの閉じた図形は、単純に輪郭をペンで描画しただけのものでした<br>
+では、長方形や円弧を特定の色などで塗りつぶしたい場合はどうするのでしょうか<br>
+<br>
+Graphics クラスでは、Draw* というメソッドの他に、似たようなメソッドで<br>
+Fill* という塗りつぶし専用のメソッド郡を提供しています<br>
+図形の内部を塗りつぶしたい場合は、この Fill* という種類のメソッドを使います<br>
+<br>
+長方形を塗りつぶすには <strong>Graphics.FillRectangle()</strong> メソッドを使います<br>
+<br><b>
+public void FillRectangle(Brush brush , Rectangle rect);<br>
+public void FillRectangle(Brush brush , RectangleF rect);<br>
+public void FillRectangle(Brush brush , int x , int y , int width , int height);<br>
+public void FillRectangle(Brush brush , float x , float y , float width , float height);<br>
+<br></b>
+brush には、塗りつぶしに用いる論理ブラシを示す Brush オブジェクトを<br>
+rect には、長方形の領域を表す構造体のオブジェクトを指定します<br>
+x と y は、長方形の左上角を示す座標、width と height は幅と高さを指定します<br>
+<br>
+第一パラメータを除けば、DrawRectangle() メソッドと同じです<br>
+塗りつぶしの描画では、論理ペンの代わりに<strong>論理ブラシ</strong>を用います<br>
+これは <strong>System.Drawing.Brush</strong> 抽象クラスで表されます<br>
+<pre><b>Object
+   MarshalByRefObject
+      Brush
+
+public abstract class Brush : MarshalByRefObject, ICloneable, IDisposable</b></pre>
+
+なぜ、ブラシはペンと異なり抽象クラスで表現されているのでしょうか？<br>
+それは、ブラシという性質上、単純に色で塗りつぶすだけではなく<br>
+必要に応じて、画像を使ったテクスチャや、複雑な図形で塗りつぶしてもよいと考えられ<br>
+ブラシはこの要求に応えられるように、Brush を拡張して用途に応じて使い分けます<br>
+<br>
+最も簡単なブラシは <strong>System.Drawing.SolidBrush</strong> クラスです<br>
+このブラシは、単一の色で塗りつぶす時の用いることができます<br>
+<br><b>
+public sealed class SolidBrush : Brush<br>
+<br></b>
+このように、SolidBrush クラスは Brush 抽象クラスを継承しています<br>
+こうして、Brush 型に暗黙的変換を行うことができるように設計されているのです<br>
+このクラスの公開コンストラクタは次のように定義されています<br>
+<br><b>
+public SolidBrush(Color color);<br>
+<br></b>
+color には、ブラシの色を示す Color オブジェクトを指定します<br>
+作成した SolidBrush の色へは <strong>SolidBrush.Color</strong> プロパティでアクセスできます<br>
+<br><b>
+public Color Color {get; set;}<br>
+<br></b>
+必要に応じて、このプロパティから色を取得したり変更することができます<br>
+単純な1色の塗りつぶしには、このブラシが有効です<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Brush myBrush = new SolidBrush(Color.FromArgb(0 , 0xFF , 0));
+
+		g.FillRectangle(myBrush , new Rectangle(10 , 10 , 200 , 100));
+	}
+}</pre>
+<img src="img/00.011.jpg" class="img"><br>
+<br>
+このプログラムは、緑色の SolidBrush によって長方形が塗りつぶされています<br>
+もし、複数の色を混在させたグラデーションで塗りつぶしたいならば<br>
+<strong>System.Drawing.Drawing2D.LinearGradientBrush</strong> クラスを使います<br>
+System.Drawing.Drawing2D 名前空間は、高度な2次元グラフィック処理を提供しています<br>
+<br><b>
+public sealed class LinearGradientBrush : Brush<br>
+<br></b>
+これは、簡単な設定だけで美しいグラデーションを描画できる強力なブラシです<br>
+コンストラクタは次のようなものが定義されています<br>
+<pre><b>
+public LinearGradientBrush(
+	Point point1 , Point point2 ,
+	Color color1 , Color color2
+);
+public LinearGradientBrush(
+	PointF point1 , PointF point2 ,
+	Color color1 , Color color2
+);
+public LinearGradientBrush(
+	Rectangle rect , Color color1 , Color color2 ,
+	LinearGradientMode linearGradientMode
+);
+public LinearGradientBrush(
+	Rectangle rect ,
+	Color color1 , Color color2 , float angle
+);
+public LinearGradientBrush(
+	RectangleF rect , Color color1 , Color color2 ,
+	LinearGradientMode linearGradientMode
+);
+public LinearGradientBrush(
+	RectangleF rect ,
+	Color color1 , Color color2 , float angle
+);
+public LinearGradientBrush(
+	Rectangle rect , Color color1 , Color color2 ,
+	float angle , bool isAngleScaleable
+);
+public LinearGradientBrush(
+	RectangleF rect , Color color1 , Color color2 ,
+	float angle , bool isAngleScaleable
+);</b></pre>
+
+point1 にはグラデーションの開始地点、point2 は終端地点を示す構造体を指定します<br>
+color1 はグラデーションの開始色、color2 は終端の色を指定します<br>
+塗りつぶし処理では、指定した範囲で color1 から color2 に向けて色が変化します<br>
+<br>
+rect の場合は、グラデーションで塗りつぶす範囲を構造体で指定します<br>
+linearGradientMode には、どの方向で塗りつぶすかを指定する列挙型です<br>
+この列挙型については、すぐ後で詳しく解説します<br>
+<br>
+angle は塗りつぶし範囲を表す矩形の X 座標を基点に<br>
+塗りつぶす方向の角度を時計回りで指定します<br>
+isAngleScaleable が true であれば、このクラスと結び付けられている変換処理に<br>
+angle が影響を受けるということを表し、そうでなければ false を指定します<br>
+<br>
+LinearGradientBrush クラスは、ジオメトリ変換処理の設定用メソッドを提供していて<br>
+isAngleScaleable はこの変換処理が角度に影響するかどうかを表すものですが<br>
+この場では、ジオメトリ変換などは扱わないため省略します<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle rect = new Rectangle(10 , 10 , 200 , 100);
+		Brush myBrush = new LinearGradientBrush(
+			rect , Color.FromArgb(0xFF , 0 , 0) ,
+			Color.FromArgb(0 , 0 , 0xFF) , 45.0f
+		);
+
+		g.FillRectangle(myBrush , rect);
+	}
+}</pre>
+<img src="img/00.012.jpg" class="img"><br>
+<br>
+図のように、プログラムを実行すると綺麗なグラデーションの長方形が描画されます<br>
+LinearGradientBrush ブラシを使えば、このようなグラデーションを簡単に実現できます<br>
+JPEG に圧縮しているためグラデーションが粗いですが、実際はもっと美しいです<br>
+<br>
+長方形を指定するコンストラクタのケースで、グラデーションの方向を指定する場合<br>
+<strong>System.Drawing.Drawing2D.LinearGradientMode</strong> 列挙型を使う方法もあります<br>
+<br><b>
+public enum LinearGradientMode<br>
+<br></b>
+この列挙型のメンバは、次のものが定義されています<br>
+<br>
+<table border="1">
+<tr><th>定数<th>解説
+<tr><td>BackwardDiagonal	<td>右上から左下に勾配を指定
+<tr><td>ForwardDiagonal	<td>左上から右下に勾配を指定
+<tr><td>Horizontal		<td>左から右に勾配を指定
+<tr><td>Vertical		<td>上から下に勾配を指定
+</table>
+<br>
+この列挙型のメンバを用いて、方向を指定することができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle rect = new Rectangle(10 , 10 , 200 , 100);
+		LinearGradientMode[] mode = {
+			LinearGradientMode.BackwardDiagonal ,
+			LinearGradientMode.ForwardDiagonal ,
+			LinearGradientMode.Horizontal ,
+			LinearGradientMode.Vertical
+		};
+		for (int i = 0 ; i &#60; 4 ; i++) {
+			Brush myBrush = new LinearGradientBrush(
+				rect , Color.FromArgb(0xFF , 0 , 0) ,
+				Color.FromArgb(0 , 0 , 0) , mode[i]
+			);
+
+			g.FillRectangle(myBrush , rect);
+			if (i == 1) { rect.X = 10; rect.Y += 110; }
+			else rect.X += 210;
+		}
+	}
+}</pre>
+<img src="img/00.013.jpg" class="img"><br>
+<br>
+このプログラムは、それぞれの列挙型メンバの効果を確認するためのものです<br>
+グラデーションの色は、赤から黒に向かいます<br>
+<br>
+また、単色に対して単純な網目模様を用いた効果を用いたい場合<br>
+<strong>System.Drawing.Drawing2D.HatchBrush</strong> クラスを用いると良いでしょう<br>
+<br><b>
+public sealed class HatchBrush : Brush<br>
+<br></b>
+このクラスのコンストラクタは、次のように定義されています<br>
+<br><b>
+public HatchBrush(HatchStyle hatchstyle , Color foreColor);<br>
+public HatchBrush(HatchStyle hatchstyle , Color foreColor , Color backColor);<br>
+<br></b>
+hatchstyle には、ブラシの模様を定めるスタイルを指定します<br>
+foreColor は模様ラインの色を、backColor には背景色を指定します<br>
+<br>
+ハッチブラシの模様は、第一引数のハッチスタイルで決定されます<br>
+これは、<strong>System.Drawing.Drawing2D.HatchStyle</strong> 列挙型を用います<br>
+<br><b>
+public enum HatchStyle<br>
+<br></b>
+この列挙型では、以下のメンバが定義されています<br>
+模様は、文章では説明が難しいのでそれぞれ実験して試してください<br>
+<br>
+<table border="1">
+<tr><th colspan="2">メンバ
+<tr><td>BackwardDiagonal		<td>Cross
+<tr><td>DarkDownwardDiagonal	<td>DarkHorizontal
+<tr><td>DarkUpwardDiagonal		<td>DarkVertical
+<tr><td>DashedDownwardDiagonal	<td>DashedHorizontal
+<tr><td>DashedUpwardDiagonal	<td>DashedVertical
+<tr><td>DiagonalBrick		<td>DiagonalCross
+<tr><td>Divot			<td>DottedDiamond
+<tr><td>DottedGrid			<td>ForwardDiagonal
+<tr><td>Horizontal			<td>HorizontalBrick
+<tr><td>LargeCheckerBoard		<td>LargeConfetti
+<tr><td>LargeGrid			<td>LightDownwardDiagonal
+<tr><td>LightHorizontal		<td>LightUpwardDiagonal
+<tr><td>LightVertical		<td>Max
+<tr><td>Min			<td>NarrowHorizontal
+<tr><td>NarrowVertical		<td>OutlinedDiamond
+<tr><td>Percent05			<td>Percent10
+<tr><td>Percent20			<td>Percent25
+<tr><td>Percent30			<td>Percent40
+<tr><td>Percent50			<td>Percent60
+<tr><td>Percent70			<td>Percent75
+<tr><td>Percent80			<td>Percent90
+<tr><td>Plaid			<td>Shingle
+<tr><td>SmallCheckerBoard		<td>SmallConfetti
+<tr><td>SmallGrid			<td>SolidDiamond
+<tr><td>Sphere			<td>Trellis
+<tr><td>Vertical			<td>Wave
+<tr><td>Weave			<td>WideDownwardDiagonal
+<tr><td>WideUpwardDiagonal		<td>ZigZag   
+</table>
+<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle rect = new Rectangle(10 , 10 , 200 , 100);
+		Brush myBrush = new HatchBrush(
+			HatchStyle.Cross , 	Color.FromArgb(0xFF , 0xFF , 0xFF));
+
+		g.FillRectangle(myBrush , rect);
+	}
+}</pre>
+<img src="img/00.014.jpg" class="img"><br>
+<br>
+このプログラムでは Cross スタイルのハッチブラシで矩形を塗りつぶしています<br>
+この時、前景色（線の色）は白に設定し、背景色はデフォルトにしてあります<br>
+<br>
+ハッチブラシの情報は <strong>HatchBrush.BackgroundColor</strong><br>
+<strong>HatchBrush.ForegroundColor</strong> 及び<br>
+<strong>HatchBrush.HatchStyle</strong> プロパティで取得することができます<br>
+<br><b>
+public Color BackgroundColor {get;}<br>
+public Color ForegroundColor {get;}<br>
+public HatchStyle HatchStyle {get;}<br>
+<br></b>
+BackgroundColor はブラシの背景色、ForegroundColor は前景色<br>
+HatchStyle はハッチスタイルを返す読み取り専用プロパティです<br>
+ハッチブラシオブジェクトの情報が必要になった場合に用いると良いでしょう<br>
+<br>
+さて、この他にも画像を使ったブラシなども存在しますが<br>
+画像などについては、まだ説明していないので後ほど紹介します<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win4.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win6.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

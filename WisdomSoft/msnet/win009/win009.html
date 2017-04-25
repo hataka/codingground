@@ -1,0 +1,269 @@
+<html>
+ <head>
+ <title>文字の描画</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>文字の描画</h1>
+<hr>
+ <h2>フォントと文字列</h2>
+今回は、ウィンドウのクライアント領域に文字列を描画してみたいと思います<br>
+しかし、GDI+ の文字列関連クラスは予想以上に膨大で複雑になっています<br>
+これは、高度なレベルでフォントや文字列の属性を表現できるように設計されているためです<br>
+<br>
+フォントなどの関係があるため、GUI での文字列の描画はコンソールのようにはいきません<br>
+これまでの図形メソッドと同じ様に、色や座標などが複雑に関連してくるのです<br>
+文字列を描画するには <strong>Graphics.DrawString()</strong> メソッドを使います<br>
+<pre><b>public void DrawString(
+	string s , Font font ,
+	Brush brush , PointF point
+);
+public void DrawString(
+	string s , Font font ,
+	Brush brush , RectangleF layoutRectangle
+);
+public void DrawString(
+	string s , Font font ,
+	Brush brush , PointF point , StringFormat format
+);
+public void DrawString(
+	string s , Font font ,
+	Brush brush , RectangleF layoutRectangle , StringFormat format
+);
+public void DrawString(
+	string s , Font font ,
+	Brush brush , float x , float y
+);
+public void DrawString(
+	string s , Font font ,
+	Brush brush , float x , float y , StringFormat format
+);</b></pre>
+s には描画する文字列を、font には描画に使う Font オブジェクトを指定します<br>
+brush には、描画する文字列の色などに使われるブラシを指定します<br>
+<br>
+point は、描画する文字列の左上の座標を示す PointF 構造体を<br>
+layoutRectangle には文字列を描画する長方形を示す RectangleF 構造体を指定します<br>
+後者を指定した場合、この内部にのみ文字列が描画されます<br>
+<br>
+x と y には、文字列の描画する開始座標を示す X 座標と Y 座標を指定します<br>
+format は、描画する文字列の属性を示す StringFormat オブジェクトを指定します<br>
+<br>
+さて、新しい型が登場してきましたが、一つずつ使い方を解説していきましょう<br>
+まず、描画するフォントは <strong>System.Drawing.Font</strong> クラスで表されます<br>
+<pre><b>Object
+   MarshalByRefObject
+      Font
+
+public sealed class Font : MarshalByRefObject,
+	ICloneable, ISerializable, IDisposable</b></pre>
+このクラスのコンストラクタは、次のようなものが定義されています<br>
+<pre><b>public Font(Font prototype , FontStyle newStyle);
+public Font(FontFamily family , float emSize);
+public Font(string familyName , float emSize);
+public Font(FontFamily family , float emSize , FontStyle style);
+public Font(FontFamily family , float emSize ,  GraphicsUnit unit);
+public Font(string familyName , float emSize , FontStyle style);
+public Font(string familyName , float emSize , GraphicsUnit unit);
+
+public Font(
+	FontFamily family , float emSize ,
+	FontStyle style , GraphicsUnit unit
+);
+public Font(
+	string familyName , float emSize ,
+	FontStyle style , GraphicsUnit unit
+);</b></pre>
+prototype には元となる既存のフォントを、newStyle には新しい FontStyle を指定します<br>
+family には、新しいフォントのフォントファミリを表す FontFamily オブジェクトを指定します<br>
+emSize は、フォントのサイズを数値で指定します<br>
+<br>
+familyName にはフォントファミリを表す名前を直接文字列で指定します<br>
+例えば "MS ゴシック" や "MS Serif" という形になるでしょう<br>
+もちろん、システムがインストールしているフォントでなければなりません<br>
+<br>
+style には、新しいフォントのフォントスタイルを表す FontStyle オブジェクトを<br>
+unit は新しいフォントの計測単位を表す GraphicsUnit オブジェクトを指定します<br>
+<br>
+また、ずいぶんと新しい型が現れましたが、この場では省略します<br>
+すぐ後で、このクラスについて詳しく解説するので、そこを参照してください<br>
+今回は familyName でフォント名を指定する方法を採用します<br>
+<br>
+DrawString() メソッドでは、StringFormat 型を指定することもありましたが<br>
+これは <strong>System.Drawing.StringFormat</strong> クラスを用いています<br>
+<pre><b>Object
+   MarshalByRefObject
+      StringFormat
+
+public sealed class StringFormat :
+	MarshalByRefObject, ICloneable, IDisposable</b></pre>
+
+このクラスは、文字列操作情報や言語特有の性質をカバーするために用います<br>
+例えば、右から左に文字が進むヘブライ語やアラビア語なども、これでサポートできます<br>
+このクラスのコンストラクタは次のように定義されています<br>
+<br><b>
+public StringFormat();<br>
+public StringFormat(StringFormat format);<br>
+public StringFormat(StringFormatFlags options);<br>
+public StringFormat(StringFormatFlags options , int language);<br>
+<br></b>
+format は新しいインスタンスの生成の初期化に<br>
+既存の StringFormat を用いたい場合に指定します<br>
+options には、StringFormatFlags 列挙型から目的のフラグを指定します<br>
+language は、文字列の言語を表す数値を指定します<br>
+<br>
+options で指定するのは <strong>System.Drawing.StringFormatFlags</strong> 列挙型です<br>
+この列挙型は、文字列フォーマットを表すフラグを定義しています<br>
+<br><b>
+public enum StringFormatFlags<br>
+<br></b>
+文字列フォーマットを表すメンバは、以下のように定義されています<br>
+これを用いれば、日本語の垂直方向の文字列表現なども可能になります<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>DirectionRightToLeft	<td>文字列は右から左へ向かうことを示す
+<tr><td>DirectionVertical		<td>文字列は垂直に表示されることを示す
+<tr><td>DisplayFormatControl	<td>文字列は左から右へ向かうことを示す
+<tr><td>FitBlackBox		<td>制御用長方形から標識がはみ出さないことを示す<br>デフォルトでは、必要に応じて長方形からはみ出ることがある
+<tr><td>LineLimit			<td>完全な行だけは、長方形の外に配置されることを示す<br>長方形は、少なくとも1行分以上の高さを指定しなければならない
+<tr><td>MeasureTrailingSpaces	<td>デフォルトでは、制御用長方形を返すと<br>MeasureString() メソッドによって各行の終わりのスペースが除外される<br>そのスペースを測定値に含めるためにこのフラグを指定する
+<tr><td>NoClip			<td>制御用長方形からはみ出た標識を表示することを許可する
+<tr><td>NoFontFallback		<td>要求されたフォントがサポートされていない場合<br>代理フォントに頼るものを使用不能にする
+<tr><td>NoWrap			<td>長方形の範囲内でフォーマットするならば<br>行の間を包むことを使用不能にする
+</table>
+<br>
+以下のプログラムは、最も単純な文字列の描画です<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Font ft = new Font("Mural Script" , 40);
+		PointF pt = new PointF(0 , 0);
+		g.DrawString("Kitty on your lap" , ft , Brushes.Black , pt);
+	}
+}</pre>
+<img src="img/00.026.jpg" class="img"><br>
+<br>
+このプログラムでは Mural Script というフォントを用いていることがわかります<br>
+もちろん、ここで指定する文字列はインストールされているフォントにしてください<br>
+<br>
+文字列フォーマットを指定すれば、日本語の垂直に進む文字列や<br>
+長方形で描画領域を指定した場合の処理などを指定することができるようになります<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Font ft = new Font("MS Serif" , 20);
+		PointF pt = new PointF(0 , 0);
+		g.DrawString("猫耳LOVE" , ft , Brushes.Black , pt ,
+			new StringFormat(StringFormatFlags.DirectionVertical));
+	}
+}</pre>
+<img src="img/00.027.jpg" class="img"><br>
+<br>
+このプログラムは、文字列を垂直に表示するように指定してあります<br>
+そのため、文字列は原点から下に向かって描画されています<br>
+
+<br><hr>
+<h2>フォントの属性</h2>
+Font クラスを使いこなすことによって、より柔軟で<br>
+演出力のあふれる文字列表現を行うことができるようになります<br>
+<br>
+最も必要とされるのは<strong>フォントスタイル</strong>でしょう<br>
+これは、<strong>System.Drawing.FontStyle</strong> 列挙型で定義されています<br>
+<br><b>
+public enum FontStyle<br>
+<br></b>
+この列挙型は、次のようなメンバを定義しています<br>
+これを、Font クラスのコンストラクタで指定すれば、そのスタイルが適応されます<br>
+また、複数のスタイルを論理和で組み合わせて指定することもできます<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Bold	<td>太字
+<tr><td>Italic	<td>斜体
+<tr><td>Regular	<td>デフォルトの標準スタイル
+<tr><td>Strikeout	<td>打消し文字
+<tr><td>Underline	<td>アンダーライン
+</table>
+<br>
+
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Font ftBold = new Font("MS Serif" , 20 , FontStyle.Strikeout);
+		Font ftItalic = new Font(ftBold , FontStyle.Italic | FontStyle.Underline);
+		
+		PointF pt = new PointF(0 , 0);
+		g.DrawString("Kitty on your lap" , ftBold , Brushes.Black , pt);
+		pt.Y += 25;
+		g.DrawString("Maiden Breeder" , ftItalic , Brushes.Black , pt);
+	}
+}</pre>
+<img src="img/00.028.jpg" class="img"><br>
+<br>
+このプログラムは、打消し線付きの文字列とアンダーライン付き斜体文字列を描画します<br>
+よく使われるテキストの演出ですね<br>
+<br>
+また、通常は文字の大きさで使われる単位はピクセルですが<br>
+<strong>System.Drawing.GraphicsUnit</strong> 列挙型を用いることによって<br>
+インチやミリメートルなどの単位で、フォントの大きさを指定できるようになります<br>
+印刷関係でよく用いられるポイントなども使えるため、この機能もまた重要です<br>
+<br><b>
+public enum GraphicsUnit<br>
+<br></b>
+この列挙型のメンバは、次のようなものが定義されています<br>
+これを Font クラスのコンストラクタで指定すれば、計測方法が適応されます<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Display	<td>1/75 インチ単位
+<tr><td>Document	<td>文書単位（1/300インチ）
+<tr><td>Inch	<td>インチ単位
+<tr><td>Millimeter	<td>ミリメートル単位
+<tr><td>Pixel	<td>デバイスピクセル単位
+<tr><td>Point	<td>プリンタのポイント単位（1/72インチ）
+<tr><td>World	<td>ワールド単位
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Font ft = new Font("MS Serif" , 1 , GraphicsUnit.Inch);
+		PointF pt = new PointF(0 , 0);
+		g.DrawString("Kitty on your lap" , ft , Brushes.Black , pt);
+	}
+}</pre>
+このプログラムは、計測単位をインチ単位の設定しています<br>
+そのため、このフォントのサイズは 1 ですが、1 ピクセルと異なり大きいです<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win8.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win10.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

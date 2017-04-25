@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
+  <output>
+    <movie outputType="CustomBuild" />
+    <movie input="" />
+    <movie path="" />
+    <movie fps="30" />
+    <movie width="800" />
+    <movie height="600" />
+    <movie version="0" />
+    <movie minorVersion="0" />
+    <movie platform="Custom" />
+    <movie background="#FFFFFF" />
+  </output>
+  <!-- Other classes to be compiled into your SWF -->
+  <classpaths>
+    <!-- example: <class path="..." /> -->
+  </classpaths>
+  <!-- Build options -->
+  <build>
+    <option verbose="False" />
+    <option strict="False" />
+    <option infer="False" />
+    <option useMain="True" />
+    <option useMX="True" />
+    <option warnUnusedImports="False" />
+    <option traceMode="FlashConnectExtended" />
+    <option traceFunction="" />
+    <option libraryPrefix="" />
+    <option excludeFile="" />
+    <option groupClasses="False" />
+    <option frame="1" />
+    <option keep="True" />
+  </build>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
+  <compileTargets>
+    <!-- example: <compile path="..." /> -->
+  </compileTargets>
+  <!-- Assets to embed into the output SWF -->
+  <library>
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+  </library>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <hidden path="obj" />
+    <hidden path="bin" />
+    <hidden path="main.csproj" />
+    <hidden path="main.org.cs" />
+    <hidden path="main.suo" />
+    <hidden path="win001_1.csproj" />
+    <hidden path="main.ppr" />
+    <hidden path="main.fdp" />
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand>cmd.exe /k build.bat</preBuildCommand>
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False">wscript.exe //nologo RunApp.wsf</postBuildCommand>
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="RunApp.wsf" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>

@@ -1,0 +1,311 @@
+<html>
+ <head>
+ <title>線の描画</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>線の描画</h1>
+<hr>
+ <h2>GDI+</h2>
+.NET のグラフィックス機能は、Windows の基本的な描画機構である GDI を拡張し<br>
+より高度な処理を直感的に行えるようにした <strong>GDI+</strong> と呼ばれるもので<br>
+これは <strong>System.Drawing</strong> 名前空間に以下にまとめられています<br>
+<br>
+Form オブジェクトのクライアント領域に図形を描画するには<br>
+まず <strong>System.Drawing.Graphics</strong> オブジェクトを取得しなければなりません<br>
+<pre><b>Object
+   MarshalByRefObject
+      Graphics
+
+public sealed class Graphics : MarshalByRefObject, IDisposable</b></pre>
+
+このクラスは、描画に関連する様々な基本機能を提供しています<br>
+図形や面の塗りつぶし、テキストの描画などには、このオブジェクトが必要です<br>
+ただし、このクラスはコンストラクタを非公開としているため、コンストラクタは呼び出せません<br>
+<br>
+一般に、私たちはこのオブジェクトをコントロールから取得しなければいけません<br>
+コントロールは <strong>System.Windows.Forms.Control</strong> クラスで表されます<br>
+<pre><b>Object
+   MarshalByRefObject
+      Component
+         Control
+
+public class Control : Component, ISynchronizeInvoke, IWin32Window<br></pre></b>
+
+このクラスは、コントロールの基本的な機能を提供するクラスです<br>
+ウィンドウもコントロールの一つであり、Form クラスはこのクラスを継承しています<br>
+<br>
+コントロールについては、後ほどより詳しく解説しますが<br>
+ここで重要なのは、Form クラスは Control クラスを継承しているということです<br>
+そのため、Control クラスが持つ基本的な機能をそのまま使うことができます<br>
+<br>
+Windows プログラムのほとんどは、この Control クラスを知ることにあります<br>
+描画を行うには、<strong>Control.OnPaint()</strong> メソッドをオーバーライドします<br>
+<br><b>
+protected virtual void OnPaint(PaintEventArgs e);<br>
+<br></b>
+Control クラスは、プロテクテッドメソッドで、多くの On*() という仮想メソッドを宣言しています<br>
+これは <strong>イベント</strong> を処理するための一つの手段と考えられます<br>
+イベントとは、マウスやキーが押されるなどの、ウィンドウに対するユーザーからの要求や<br>
+何らかの条件がそろったことをウィンドウに通知するために送られるコールバックを意味します<br>
+<br>
+この OnPaint() メソッドを呼び出すのは、私たちではなく .NET （すなわち システム）です<br>
+システムは、ウィンドウが描画処理を必要とした場合に、このメソッドを呼び出します<br>
+<br>
+パラメータの e には、PaintEventArgs オブジェクトが指定されます<br>
+このクラスは、描画イベントに必要なデータをカプセル化しています<br>
+単純に、描画イベントの発生元から処理先にデータを転送させる手段と考えてください<br>
+<pre><b>Object
+   EventArgs
+      PaintEventArgs
+
+public class PaintEventArgs : EventArgs, IDisposable</b></pre>
+
+このクラスで最も重要なのは、<strong>PaintEventArgs.Graphics</strong> プロパティです<br>
+この読み取りプロパティが、System.Drawing.Graphics オブジェクトを返してくれます<br>
+<br><b>
+public Graphics Graphics {get;}<br>
+<br></b>
+このプロパティから Graphics オブジェクトを受け取れば<br>
+後は Graphics クラスの機能を利用して描画処理を行うだけです<br>
+<br>
+まず始めに、単純な線をウィンドウのクライアント領域に描画してみましょう<br>
+線の描画には <strong>Graphicsc.DrawLine()</strong> メソッドを使います<br>
+<br><b>
+public void DrawLine(Pen pen , int x1 , int y1 , int x2 , int y2);<br>
+public void DrawLine(Pen pen , float x1 , float y1 , float x2 , float y2);<br>
+<br></b>
+pen には、線の描画に用いる Pen オブジェクトを指定します<br>
+x1 と y1 には、それぞれ描画の開始位置を表す X 及び Y 座標を<br>
+x2 と y2 には、それぞれ線の終点を表す X 及び Y 座標を指定します<br>
+<br>
+.NET におけるペンは <strong>System.Drawing.Pen</strong> クラスで表されます<br>
+ペンとは、枠を描画する時に使われる仮想的なペンを表す GDI オブジェクトの一つで<br>
+線の太さや色などの情報を含んでいます<br>
+<pre><b>Object
+   MarshalByRefObject
+      Pen
+
+public sealed class Pen : MarshalByRefObject, ICloneable, IDisposable</b></pre>
+
+ペンオブジェクトを作成するには、以下のコンストラクタを使用します<br>
+実際には、これ以外にもオーバーロードされたコンストラクタが定義されていますが<br>
+Pen クラスについての詳細は「論理ペン」の章で解説します<br>
+
+<br><b>
+public Pen(Color color);<br>
+public Pen(Color color, float width);<br>
+<br></b>
+
+color には、ペンの色を表す Color オブジェクトを指定します<br>
+width には、ペンの太さをピクセル単位で指定します<br>
+<br>
+GDI+ では、色を表現するには <strong>System.Drawing.Color</strong> 構造体を用います<br>
+この構造体は、システム定義の色や RGB 値などを用いた色の表現を提供します<br>
+<br><b>
+public struct Color<br>
+<br></b>
+この構造体は、コンストラクタを公開していません<br>
+そのため、直接 new 演算子を用いてインスタンスを作ることはできません<br>
+通常は <strong>Color.FromArgb()</strong> 静的メソッドを使って色を生成します<br>
+<br><b>
+public static Color FromArgb(int argb);<br>
+public static Color FromArgb(int red , int green , int blue);<br>
+public static Color FromArgb(int alpha , int red , int green , int blue);<br>
+public static Color FromArgb(int alpha , Color baseColor);<br>
+<br></b>
+argb には、最上位からバイト単位で、アルファ値、赤、緑、青の色を表す<br>
+int 型の 32 ビットカラー値で、一般的には16進数の2桁ずつで表現します<br>
+alpha はアルファ、red は赤、green は緑、blue は青の要素を表す 0 〜 255 までの数値です<br>
+<br>
+alpha と baseColor を指定するシグネチャのメソッドの場合は<br>
+baseColor に alpha で指定した新しいアルファ値を採用した色を返します<br>
+<br>
+さて、これで指定した色、指定した幅のペンオブジェクトを作成できます<br>
+これを DrawLine() メソッドで指定すれば、そのペンでラインが引かれます<br>
+GDI+ のデフォルト座標系は、X 座標は右へ、Y 座標は下へ向かって増加します<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		Application.Run(win);
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0xFF , 0 , 0) , 10.0f);
+		g.DrawLine(myPen , 0 , 0 , 200 , 100);
+	}
+}</pre>
+<img src="img/00.001.jpg" class="img"><br>
+<br>
+これは、太さ 10 ピクセルの赤いペンで、(0 , 0) から (200 , 100) の位置まで線を引いています<br>
+多くのグラフィックス処理は、常にこのような形で行います<br>
+<br>
+スクリーンのある点を示す座標は、2つの数値型で表すこともできますが<br>
+それをまとめた <strong>System.Drawing.Point()</strong> 構造体で表すこともできます<br>
+<br><b>
+public struct Point<br>
+<br></b>
+この構造体は、主に X と Y 座標を表す情報をパッケージ化する目的を持ち<br>
+以下のようなコンストラクタを用いてインスタンスを作成できます<br>
+<br><b>
+public Point(int dw);<br>
+public Point(Size sz);<br>
+public Point(int x , int y);<br>
+<br></b>
+dw には、下位16ビットに X 座標、上位 16 ビットに Y 座標を指定します<br>
+sz の場合は、Size オブジェクトの情報を元に座標を決定します<br>
+x には X 座標を、y には Y 座標を表す値を直接指定できます<br>
+<br>
+Point 構造体には、座標を表す <strong>Point.X</strong> と <strong>Point.Y</strong> プロパティがあります<br>
+このプロパティにアクセスすることによって、オブジェクトの座標を読み書きします<br>
+<br><b>
+public int X {get; set;}<br>
+public int Y {get; set;}<br>
+<br></b>
+Size オブジェクトとは <strong>System.Drawing.Size</strong> クラス型のインスタンスで<br>
+このクラスは Point 構造体と極めて似た性質を持っていますが<br>
+論理的な意味が、座標ではなくサイズ（幅と高さ）を表す点で異なります<br>
+<br><b>
+public struct Size<br>
+<br></b>
+この構造体もまた、Point 構造体から作ることも可能になっています<br>
+インスタンスの生成には、以下のコンストラクタを用います<br>
+<br><b>
+public Size(Point pt);<br>
+public Size(int width , int height);<br>
+<br></b>
+pt には、幅と高さを表す Point 構造体のオブジェクトを指定します<br>
+X 座標が幅、Y 座標が高さとして扱われます<br>
+width には幅を、height には高さを数値で指定します<br>
+<br>
+Size クラスは、幅を表す <strong>Size.Width</strong> プロパティと<br>
+高さを表す <strong>Size.Height</strong> プロパティを持ちます<br>
+<br><b>
+public int Width {get; set;}<br>
+public int Height {get; set;}<br>
+<br></b>
+これらは、Size クラスが示す幅と高さにアクセスすることができます<br>
+論理的な意味が違うというだけで、実体は Point クラスと同じであることがわかります<br>
+<br>
+実は、Graphics クラスの DrawLine() メソッドは Point 構造体も使えます<br>
+これを使えば、カプセル化された座標情報で描画処理を行えるのです<br>
+<br><b>
+public void DrawLine(Pen pen , Point pt1, Point pt2);<br>
+public void DrawLine(Pen pen , PointF pt1 , PointF pt2);<br>
+<br></b>
+pt1 には始点を、pt2 には終点を表すオブジェクトを指定します<br>
+PointF というのは <strong>System.Drawing.PointF</strong> 構造体のことです<br>
+これは、座標の表現に浮動小数を持ちいれるように float 型をメンバに採用したものです<br>
+同様に <strong>System.Drawing.SizeF</strong> 構造体というものも存在します<br>
+基本的な機能は Point や Size 構造体と同じなので、詳細は省略します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	Point pt1 , pt2;
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.pt1 = new Point(0 , 0);
+		win.pt2 = new Point(200 , 100);
+		Application.Run(win);
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0xFF , 0 , 0) , 10.0f);
+		g.DrawLine(myPen , pt1 , pt2);
+	}
+}</pre>
+このプログラムは、先ほどのプログラムを Point 構造体を用いて再現したものです<br>
+結果は同じですが、描画時の座標を Point 構造体で指定しているところが異なります<br>
+整数型を直接指定する時よりも、より構造化した美しいプログラムを描けるため<br>
+座標が動的に、かつ複雑に変化する場合はこの方法が望まれると思います<br>
+
+<br><hr>
+<h2>連続した線</h2>
+例えば、DrawLine() メソッドの機能を用いて長方形を描画する場合<br>
+少なくとも4回以上もメソッドを呼び出さなければなりません<br>
+用いるペンが全て同じ場合でも、この作業が必要となります<br>
+<br>
+このように、同時に同一のペンで複数の線を描画するような場合は<br>
+DrawLine() メソッドを何度も呼び出すと、面倒でプログラムの整合性が低下します<br>
+そこで、<strong>Graphics.DrawLines()</strong> メソッドを使うと便利でしょう<br>
+<br><b>
+public void DrawLines(Pen pen , Point[] points);<br>
+public void DrawLines(Pen pen , PointF[] points);<br>
+<br></b>
+pen にはペンを表す Pen オブジェクトを<br>
+points には、描画する座標を表す Point または PointF 構造体の配列を指定します<br>
+このメソッドは、指定した Point 配列の先頭から昇順に線を描画していきます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		Application.Run(win);
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Point[] pt = {
+			new Point(10 , 10) , new Point(200 , 10) ,
+			new Point(200 , 100) , new Point(10 , 100) ,
+			new Point(10 , 10)
+		};
+
+		g.DrawLines(myPen , pt);
+	}
+}</pre>
+<img src="img/00.002.jpg" class="img"><br>
+<br>
+このプログラムでは、DrawLines() に5つの Point 構造体を渡しています<br>
+これらは、始点とそれに続く4つの線の座標の位置情報を意味する配列です<br>
+複雑なポリゴン処理を行う場合、このような方法で線を引くと便利でしょう<br>
+<br>
+DrawLines() は、単純に連続した線と考えられましたが<br>
+ポリゴンを描画したい場合は <strong>Graphics.DrawPolygon()</strong> メソッドが便利です<br>
+このメソッドは、DrawLines() に似ていますが、全ての線を描画した後<br>
+始点に向けて線を引くことで、自動的に図形を閉じてくれる能力があります<br>
+<br><b>
+public void DrawPolygon(Pen pen , Point[] points);<br>
+public void DrawPolygon(Pen pen , PointF[] points);<br>
+<br></b>
+pen には、線を引く時のペンを表す Pen オブジェクトを<br>
+points には、ポリゴンの各頂点の位置を表す Point または PointF 構造体を指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		Application.Run(win);
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Point[] pt = {
+			new Point(110 , 10) , new Point(210 , 100) ,
+			new Point(10 , 100)
+		};
+
+		g.DrawPolygon(myPen , pt);
+	}
+}</pre>
+<img src="img/00.003.jpg" class="img"><br>
+<br>
+このプログラムは DrawPolygon() メソッドを用いて三角形を描画しています<br>
+DrawLine() の論理的な意味は、線の視点とそれに続く終点の位置の配列でしたが<br>
+DrawPolygon() の配列は、ポリゴンの頂点の座標を表しています<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win1.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win3.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

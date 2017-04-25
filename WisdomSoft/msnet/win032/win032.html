@@ -1,0 +1,73 @@
+<html>
+ <head>
+ <title>メニューイベント</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>メニューイベント</h1>
+<hr>
+ <h2>メニュー項目のイベント処理</h2>
+前回まで、メニューの表示に関する技術を紹介してきましたが<br>
+もちろん、メニューは表示するだけでは何の役にも立ちません<br>
+メニューをユーザーが選択した時のイベントを処理して、初めて機能が発揮されます<br>
+<br>
+MenuItem クラスのイベント設計も、当然 Control クラスと同じ形です<br>
+On***() というプロテクトメソッドが呼び出され、その後対応したイベントハンドラが実行されます<br>
+通常、MenuItem を継承してイベントを実装するという方法は考えられないので<br>
+この場では、イベントメンバによるイベント実装方法のみを解説します<br>
+<br>
+ユーザーがメニューを選択すれば <strong>MenuItem.Click</strong> イベントが<br>
+ポップアップが表示される時は <strong>MenuItem.Popup</strong> イベントが<br>
+カーソルがメニュー項目にセットされた時は <strong>MenuItem.Select</strong> が呼び出されます<br>
+
+<br><b>
+public event EventHandler Click;<br>
+public event EventHandler Popup;<br>
+public event EventHandler Select;<br>
+<br></b>
+
+これらのイベントは、メニュー項目ごとに設定することができるため<br>
+それぞれに専用のイベントハンドラを割り当ててもかまいませんし<br>
+あるいは、イベント発生元のオブジェクトを割り出して、処理を分岐させるのもよいでしょう<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public void MenuClick(object obj , System.EventArgs e) {
+		MenuItem mi = (MenuItem)obj;
+		mi.Checked = !mi.Checked;
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		MenuItem[] mi = {
+			new MenuItem("Rena") , new MenuItem("Yuki") ,
+			new MenuItem("Mimi")
+		};
+
+		for (int i = 0 ; i &#60; mi.Length ; i++) 
+			mi[i].Click += new System.EventHandler(MenuClick);
+
+		mm.MenuItems.Add("Kitty on your lap" , mi);
+			
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.075.jpg" class="img"><br>
+<br>
+このプログラムは、メニュー項目を選択するとチェックを付けたり、外したりします<br>
+この動作は、MenuClick イベントハンドラの mi.Checked = !mi.Checked という文で実現しています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win31.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win33.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

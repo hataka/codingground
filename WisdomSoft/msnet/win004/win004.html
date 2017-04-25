@@ -1,0 +1,227 @@
+<html>
+ <head>
+ <title>図形を描画</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>図形を描画</h1>
+<hr>
+ <h2>長方形を描画する</h2>
+大抵の図形は、これまで説明した線を描画するメソッドで表現できますが<br>
+より一般的な長方形や円弧は、一つのメソッドで描画できるべきでしょう<br>
+今回は、一般的によく用いられる図形を描画するメソッドを中心に紹介します<br>
+<br>
+長方形を描画するには <strong>Graphics.DrawRectangle()</strong> を使います<br>
+このメソッドでは、長方形の左上部分を基準とした座標と、幅と高さを指定します<br>
+<pre><b>public void DrawRectangle(Pen pen , Rectangle rect);
+
+public void DrawRectangle(
+	Pen pen,
+	int x , int y , int width , int height
+);
+public void DrawRectangle(
+	Pen pen ,
+	float x , float y , float width , float height
+);</b></pre>
+pen には、図形を描画するためのペンをあらわす Pen オブジェクトを指定します<br>
+rect は、描画する長方形の座標と大きさを表す Rectangle 構造体を指定します<br>
+x と y には、長方形の左上角となる座標を<br>
+width と height には、長方形の座標から相対的な幅と高さを指定します<br>
+<br>
+長方形の幅と高さとは、座標ではないことに注意してください<br>
+これらは、長方形の左上角から相対的に数えたピクセル数になります<br>
+<br>
+長方形は <strong>System.Drawing.Rectangle</strong> 構造体で表すこともできます<br>
+この構造体は、単純に Point 構造体と Size 構造体を一つにしたものと考えられます<br>
+実際に、このコンストラクタではそれらの構造体を利用することができます<br>
+<br><b>
+public Rectangle(Point location , Size size);<br>
+public Rectangle(int x , int y , int width , int height);<br>
+<br></b>
+このコンストラクタによって、長方形の座標と幅をあらわす Rectangle のインスタンスを生成し<br>
+あとは、この情報を元に長方形を描画するというような処理を行えます<br>
+この構造体は、描画以外でも長方形をあらわす必要がある時に用いることがあります<br>
+<br>
+長方形を示す情報にアクセスするには <strong>Rectangle.X</strong> と <strong>Rectangle.Y</strong><br>
+<strong>Rectangle.Width</strong>、<strong>Rectangle.Height</strong> プロパティを用います<br>
+<br><b>
+public int X {get; set;}<br>
+public int Y {get; set;}<br>
+public int Width {get; set;}<br>
+public int Height {get; set;}<br>
+<br></b>
+X は X 座標、Y は Y 座標、Width は幅、Height は高さを表しています<br>
+ただし、読み込み専用として <strong>Rectangle.Left</strong>、<strong>Rectangle.Top</strong><br>
+<strong>Rectangle.Right</strong>、<strong>Rectangle.Bottom</strong> プロパティもあります<br>
+<br><b>
+public int Left {get;}<br>
+public int Top {get;}<br>
+public int Right {get;}<br>
+public int Bottom {get;}<br>
+<br></b>
+Left は矩形の左上 X 座標、Top は左上 Y 座標<br>
+Right は右下の X 座標、Bottom は右下の Y 座標を表しています<br>
+Width や Height プロパティは、左上角からの幅と高さという情報でしたが<br>
+Right と Bottom プロパティは座標で表されているということに注意してください<br>
+<br>
+さらに、<strong>Rectangle.Location</strong> と <strong>Rectangle.Size</strong> という<br>
+Point と Size 構造体として情報にアクセスするためのプロパティも存在します<br>
+<br><b>
+public Point Location {get; set;}<br>
+public Size Size {get; set;}<br>
+<br></b>
+Location プロパティは、矩形の左上角の座標を表す Point 構造体<br>
+Size プロパティは、幅と高さを表す Size 構造体を示しています<br>
+これらのプロパティを用いて、その場に適した形で矩形の情報にアクセスできます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Rectangle rect = new Rectangle(10 , 10 , 200 , 100);
+
+		g.DrawRectangle(myPen , rect);
+		g.DrawRectangle(myPen , 20 , 20 , 200 , 100);
+	}
+}</pre>
+<img src="img/00.006.jpg" class="img"><br>
+<br>
+このプログラムは、Rectangle 構造体を用いた方法と<br>
+数値型の情報で矩形の領域を表す2通りの方法で長方形を描画しています<br>
+<br>
+複数の長方形を同時に描画する場合<br>
+Rectangle の配列を使う <strong>Graphics.DrawRectangles()</strong> を使えます<br>
+<br><b>
+public void DrawRectangles(Pen pen , Rectangle[] rects);<br>
+public void DrawRectangles(Pen pen , RectangleF[] rects);<br>
+<br></b>
+rects には、描画する矩形の情報を格納した構造体の配列を指定します<br>
+RectangleF とは <strong>System.Drawing.RectangleF</strong> 構造体のことで<br>
+PointF 構造体などの用に、各情報を int 型ではなく float 型を用いて表現しています<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Rectangle[] rect = {
+			new Rectangle(10 , 10 , 200 , 100) ,
+			new Rectangle(20 , 20 , 200 , 100) ,
+			new Rectangle(30 , 30 , 200 , 100)
+		};
+
+		g.DrawRectangles(myPen , rect);
+	}
+}</pre>
+<img src="img/00.007.jpg" class="img"><br>
+<br>
+このプログラムは、3つの Rectangle 構造体の配列から長方形を描画しています<br>
+同一のペンで、複数の長方形を描く場合はこのようにしてプログラムします<br>
+
+<br><hr>
+<h2>円を描画する</h2>
+円弧を描画する場合 <strong>Graphics.DrawEllipse()</strong> メソッドを使います<br>
+これは、指定した長方形に外接した円を描画します<br>
+<br><b>
+public void DrawEllipse(Pen pen , Rectangle rect);<br>
+public void DrawEllipse(Pen pen , RectangleF rect);<br>
+public void DrawEllipse(Pen pen , int x , int y , int width , int height);<br>
+public void DrawEllipse(Pen pen , float x , float y , float width , float height);<br>
+<br></b>
+
+pen には、円弧の輪郭を描画するペンの Pen オブジェクトを指定します<br>
+rect には、円の外接する長方形をあらわす Rectangle または RectangleF を<br>
+x と y は、長方形の左上角を示す X 座標と Y 座標を<br>
+width には長方形の幅、height には高さをそれぞれ指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		
+		g.DrawEllipse(myPen , 10 , 10 , 200 , 200);
+	}
+}</pre>
+<img src="img/00.008.jpg" class="img"><br>
+<br>
+このプログラムは、(10 , 10) から (200 , 200) ピクセルの大きさの長方形に対し<br>
+これに外接する円弧を描画しています<br>
+<br>
+円弧は完全に閉じた円でしたが、そうでない円を描画したい場合もあるでしょう<br>
+つまり、ある角度から、指定した角度までの円です<br>
+これには <strong>Graphics.DrawArc()</strong> メソッドを使います<br>
+<pre><b>public void DrawArc(
+	Pen pen , Rectangle rect ,
+	float startAngle , float sweepAngle
+);
+public void DrawArc(
+	Pen pen , RectangleF rect ,
+	float startAngle , float sweepAngle
+);
+public void DrawArc(
+	Pen pen ,
+	int x , int y , int width , int height ,
+	int startAngle , int sweepAngle
+);
+public void DrawArc(
+	Pen pen ,
+	float x , float y , float width , float height ,
+	float startAngle , float sweepAngle
+);</pre></b>
+pen は円の輪郭を描画するペンの Pen オブジェクトを指定します<br>
+rect には、描画する円が外接する長方形をあらわす構造体を<br>
+x と y　は、長方形の左上角を表す座標、width と height は幅と高さを指定します<br>
+ここまでは、DrawEllipse() メソッドと考え方は同じです<br>
+<br>
+startAngle は円の描画を開始する角度を指定します<br>
+sweepAngle は startAngle から時計回りで終端角度を指定します<br>
+つまり、startAngle に 0、sweepAngle に 180 と指定したと考えれば<br>
+円は 0 度から時計回りに 180 度までが描画されます<br>
+<br>
+DrawArc() メソッドは、円の輪郭を単純に描画するだけですが<br>
+円を閉じた図形として描画したい場合は <strong>Graphics.DrawPie()</strong> を使います<br>
+パックマンのような形の円を描画したい場合にこれを使うことができます<br>
+このメソッドのパラメータは DrawArc() メソッドと同じなので省略します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		
+		g.DrawArc(myPen , 10 , 10 , 200 , 200 , 0 , -270);
+		g.DrawPie(myPen , 210 , 10 , 200 , 200 , 0 , -270);
+	}
+}</pre>
+<img src="img/00.009.jpg" class="img"><br>
+<br>
+このプログラムは、DrawArc() と DrawPie() の2つのメソッドを使って<br>
+同じ大きさ、同じ角度のパラメータでその違いを比較するための描画しています<br>
+Arc は円を閉じませんが、Pie は円を閉じるというところに違いがあります<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win3.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win5.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

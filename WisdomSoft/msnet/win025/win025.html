@@ -1,0 +1,46 @@
+<html>
+ <head>
+ <title>透明なウィンドウ</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>透明なウィンドウ</h1>
+<hr>
+ <h2>透明なウィンドウ</h2>
+不透明な政治、不透明な企業献金、不透明な機密費と、不透明にいいことはありません（？）<br>
+そこで、最近では透明な政治が求められ、ゴミ袋も透明です<br>
+ならば、ウィンドウも透明のほうがよいのかもしれません（違う？）<br>
+<br>
+なんと、.NET では背景が透けて見える透明なウィンドウを簡単に作ることができます<br>
+透明度の設定は <strong>Form.Opacity</strong> プロパティを設定します<br>
+<br><b>
+public double Opacity {get; set;}<br>
+<br></b>
+このプロパティには 0% 〜 100%、すなわち 0.00 〜 1.00 までの透明度を指定します<br>
+1 に近ければ近いほど不透明で、0 に近いほど透明になります<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		Opacity = 0.5f;
+	}
+}</pre>
+<img src="img/00.057.jpg" class="img"><br>
+<br>
+このプログラムは、透明度50％のウィンドウを作成しています<br>
+図を見ればわかるように、ウィンドウの背景が透けて見えます<br>
+<br>
+ただし、この機能はレイヤード ウィンドウを表示できないプラットフォームでは無効です<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win24.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win26.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

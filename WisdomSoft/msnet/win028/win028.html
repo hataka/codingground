@@ -1,0 +1,299 @@
+<html>
+ <head>
+ <title>カーソル</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>カーソル</h1>
+<hr>
+ <h2>カーソルの制御</h2>
+カーソルは、マウスやタブレットなどのポインティングデバイスで操作する<br>
+GUI システムの要といえるユーザーインタフェイスのひとつです<br>
+このカーソルもまた、アイコン同様に特殊なビットマップのひとつと考えることができます<br>
+<br>
+.NET では、カーソルは <strong>System.Windows.Forms.Cursor</strong> クラスであらわされます<br>
+このクラスは、カーソルオブジェクトだけではなく、静的にシステムにも関与します<br>
+最初に、Cursor クラスが持つ静的メンバについて詳しく見てみましょう<br>
+<br>
+カーソルの制御は、主に OS が行っています<br>
+そのため、ユーザーが動かしているマウスカーソル自体の情報に直接アクセスすることはできませんが<br>
+Cursor クラスの静的メンバは、システムに近いカーソルの制御を行ってくれます<br>
+<br>
+<strong>Corsor.Clip</strong> プロパティは、カーソルの動作範囲をクリップします<br>
+例えば、ゲームのような特殊なアプリケーションの場合<br>
+ゲームのプレイ中はマウスカーソルをウィンドウの外に移動できると不便な時があります<br>
+このような場合 Clip プロパティを設定することでカーソルの動きを制限できます<br>
+<pre><b>[Serializable]
+public static Rectangle Clip {get; set;}</b></pre>
+
+ただし、この設定が有効なのは、アプリケーションにフォーカスがある時だけです<br>
+それ以外の状態ではマウスキャプチャができないため、設定が開放されます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseUp(MouseEventArgs e) {
+		Cursor.Clip = Bounds;
+	}
+}</pre>
+
+このプログラムを実行して、ウィンドウのクライアント領域をクリックすると<br>
+マウスカーソルがウィンドウの外に出れなくなるというものです<br>
+しかし、フォーカスを別のプログラムに当てれば設定は解除されます<br>
+<br>
+また、Cursor クラスはマウスカーソルの表示/非標示を制御する機能も提供しています<br>
+カーソルを消すには <strong>Cursor.Hide()</strong> メソッドを<br>
+消したカーソルを再び表示するには <strong>Cursor.Show()</strong> メソッドを使います<br>
+<pre><b>[Serializable]
+public static void Hide();
+
+[Serializable]
+public static void Show();</b></pre>
+
+これらのメソッドの呼び出しは均等化しなければなりません<br>
+Hide() メソッドを呼び出した場合は、その後に Show() メソッドを呼び出してください<br>
+この理由は、Windows が内部でカウンタを用いてカーソルの表示を管理しているからです<br>
+
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseEnter(System.EventArgs e) {
+		Cursor.Hide();
+	}
+	override protected void OnMouseLeave(System.EventArgs e) {
+		Cursor.Show();
+	}
+}</pre>
+このプログラムのウィンドウのクライアント領域にカーソルを移動させると<br>
+クライアント領域に入った瞬間、唐突とカーソルが消えてしまいます<br>
+逆に、クライアント領域から外に出れば、再び表示されます<br>
+<br>
+カーソルの位置は <strong>Cursor.Position</strong> プロパティで表されています<br>
+このプロパティから、カーソルの位置を取得、または設定することができます<br>
+
+<pre><b>[Serializable]
+public static Point Position {get; set;}</b></pre>
+
+このプロパティは、カーソルの位置を示す Point 型です<br>
+Position プロパティを設定すれば、プログラムから自由にカーソルの位置を変更できます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseDown(MouseEventArgs e) {
+		int x = Location.X + (Width / 2);
+		int y = Location.Y + (Height - ClientRectangle.Height) / 2 ;
+		Cursor.Position = new Point(x , y);
+	}
+}</pre>
+
+このプログラムのウィンドウのクライアント領域をクリックすると<br>
+マウスカーソルがウィンドウのタイトルバーの中央に移動します<br>
+タイトルバーの中央は、ウィンドウの位置やサイズを計算して割り出しています<br>
+
+<br><hr>
+<h2>カーソルの変更</h2>
+現在、ディスプレイに表示されているユーザーが動かしているカーソル<br>
+すなわちカレントカーソルは <strong>Cursor.Current</strong> プロパティで表されています<br>
+
+<pre><b>[Serializable]
+public static Cursor Current {get; set;}</b></pre>
+
+このプロパティから、現在のカーソルの Cursor オブジェクトを取得したり<br>
+あるいは、Cursor オブジェクトを渡すことによって、カーソルを変更できます<br>
+<br>
+Windows システムが使う一般的なカーソルイメージは<br>
+<strong>System.Windows.Forms.Cursors</strong> クラスにまとめられています<br>
+<br><b>
+public sealed class Cursors<br>
+<br></b>
+このクラスは、一般的な Cursor オブジェクトのコレクションです<br>
+次のような、静的な読み込み専用公開プロパティを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>AppStarting	<td>アプリケーションの開始時に表示されるカーソルを取得します
+<tr><td>Arrow		<td>矢印カーソルを取得します
+<tr><td>Cross		<td>十字カーソルを取得します
+<tr><td>Default		<td>既定のカーソルを取得します。通常は矢印カーソルです
+<tr><td>Hand		<td>Web リンクの上にマウスを移動すると表示されるハンド カーソルを取得します
+<tr><td>Help		<td>矢印と疑問符が組み合わされたヘルプ カーソルを取得します
+<tr><td>HSplit		<td>マウスを水平方向の分割バーの上に置くと表示されるカーソルを取得します
+<tr><td>IBeam		<td>マウスをクリックしたときにテキスト カーソルの位置を示す<br>I ビーム カーソルを取得します
+<tr><td>No		<td>現在の操作が無効な領域であることを示すカーソルを取得します
+<tr><td>NoMove2D	<td>マウスを動かさずに<br>ウィンドウを水平および垂直の両方向にスクロールできるとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>NoMoveHoriz	<td>マウスを動かさずに<br>水平方向へのスクロールができるとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>NoMoveVert	<td>マウスを動かさずに<br>ウィンドウを垂直方向にスクロールできるとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanEast		<td>マウスを動かしながら<br>ウィンドウを水平方向に右スクロールできるとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanNE		<td>マウスを動かしながら<br>ウィンドウを水平方向および垂直方向に右上へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanNorth	<td>マウスを動かしながら<br>ウィンドウを垂直方向に上へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanNW		<td>マウスを動かしながら<br>ウィンドウを水平方向および垂直方向に左上へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanSE		<td>マウスを動かしながら<br>ウィンドウを水平方向および垂直方向に右下へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanSouth	<td>マウスを動かしながら<br>ウィンドウを垂直方向に下へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanSW		<td>マウスを動かしながら<br>ウィンドウを水平方向および垂直方向に左下へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>PanWest		<td>マウスを動かしながら<br>ウィンドウを水平方向に左へスクロールするとき<br>このホイール操作を表すカーソルを取得します
+<tr><td>SizeAll		<td>十字型の方向を指す矢印が結合して構成されている<br>4 方向のサイズ変更用カーソルを取得します
+<tr><td>SizeNESW	<td>2 方向の対角線 (右斜めと左斜め) で構成されている<br>サイズ変更用カーソルを取得します
+<tr><td>SizeNS		<td>垂直の 2 方向 (上と下) で構成されているサイズ変更用カーソルを取得します
+<tr><td>SizeNWSE	<td>2 方向の対角線 (左斜めと右斜め) で構成されている<br>サイズ変更用カーソルを取得します
+<tr><td>SizeWE		<td>水平の 2 方向 (左と右) で構成されているサイズ変更用カーソルを取得します
+<tr><td>UpArrow		<td>通常はカーソル位置の識別に使用する上向きの矢印カーソルを取得します
+<tr><td>VSplit		<td>マウスを垂直方向の分割バーの上に置くと表示されるカーソルを取得します
+<tr><td>WaitCursor	<td>待機カーソルを取得します。通常は砂時計の形です
+</table>
+<br>
+これらのメンバは、全てが静的な読み取り専用プロパティとして定義されています<br>
+
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseDown(MouseEventArgs e) {
+		Cursor.Current = Cursors.WaitCursor;
+	}
+	override protected void OnMouseUp(MouseEventArgs e) {
+		Cursor.Current = Cursors.Default;
+	}
+}</pre>
+<img src="img/00.062.jpg" class="img"><br>
+<br>
+このプログラムのウィンドウのクライアント領域でマウスボタンを押すと<br>
+カーソルが砂時計に変化し、ボタンを離すと元に戻ります<br>
+<br>
+また、カーソルは Cursor() コンストラクタを用いて<br>
+独自に作成した <strong>*.cur ファイルを使用</strong> することもできます<br>
+Cursor クラスのコンストラクタは次のものが定義されています<br>
+<pre><b>[Serializable]
+public Cursor(IntPtr handle);
+
+[Serializable]
+public Cursor(Stream stream);
+
+[Serializable]
+public Cursor(string fileName);
+
+[Serializable]
+public Cursor(Type type , string resource);</b></pre>
+
+handle には作成するカーソルの Windows ハンドルを指定します<br>
+stream には読み込みもとのデータストリームを、fileName にはファイル名を指定します<br>
+type にはリソースタイプを、resource にはリソース名を指定します<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseDown(MouseEventArgs e) {
+		Cursor.Current = new Cursor("test.cur");
+	}
+	override protected void OnMouseUp(MouseEventArgs e) {
+		Cursor.Current = Cursors.Default;
+	}
+}</pre>
+<img src="img/00.063.jpg" class="img"><br>
+<br>
+図を見てわかるように、このプログラムは独自のカーソルを表示します<br>
+あの、猫の手のようなマークが、今回使った test.cur というカーソルです<br>
+<br>
+
+因みに、Control クラスにはカーソルを設定する <strong>Control.Cursor</strong> プロパティがあり<br>
+これを設定すれば、カーソルがコントロールの上にあるとき<br>
+このプロパティが指す Cursor オブジェクトを表示するように動作させることができます<br>
+<br><b>
+public virtual Cursor Cursor {get; set;}<br>
+<br></b>
+見てわかるように、このプロパティはあくまで仮想メンバです<br>
+このカーソルは利用者の要求であり、どのように利用するかはコントロール設計者に委ねられます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		Cursor = Cursors.WaitCursor;
+	}
+}</pre>
+
+このプログラムは特にイベント処理を施していませんが<br>
+カーソルがウィンドウのクライアント領域に移動すると、カーソルが砂時計に変わります<br>
+
+
+<br><hr>
+<h2>カーソルの描画</h2>
+さらに、.NET ではカーソルを描画する手段も提供しています<br>
+ただし、アイコンの時とは異なりカーソルの描画は普段とは逆の手順を踏みます<br>
+<br>
+通常は、オブジェクトを Graphics クラスの Draw***() に渡していましたが<br>
+残念ながら Graphics.DrawCursor() というメソッドは存在しません<br>
+カーソルの描画は、逆に <strong>Cursor.Draw()</strong> メソッドを使って描画します<br>
+<pre><b>[Serializable]
+public void Draw(Graphics g , Rectangle targetRect);</b></pre>
+
+g には描画対象であるデバイスコンテキストを表す Graphics オブジェクトを<br>
+targetRect にはカーソルを描画する範囲を示す長方形を指定します<br>
+ただし、このメソッドは常にカーソルのデフォルトサイズで描画します<br>
+カーソルを拡大縮小して描画したい場合は <strong>Cursor.DrawStretched()</strong> を使います<br>
+<pre><b>[Serializable]
+public void DrawStretched(Graphics g , Rectangle targetRect);</b></pre>
+
+パラメータの意味は Cursor.Draw() メソッドと同じですが<br>
+このメソッドの場合は、指定した長方形のサイズにカーソルをスケーリングします<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnResize(System.EventArgs e) {
+		Invalidate();
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Cursors.Hand.DrawStretched(g , ClientRectangle);
+	}
+}</pre>
+<img src="img/00.064.jpg" class="img"><br>
+<br>
+このプログラムは、Cursors.Hand カーソルをクライアント領域に描画しています<br>
+ちなみに、カーソルのサイズを取得したければ <strong>Cursor.Size</strong> プロパティで得られます<br>
+
+<pre><b>[Serializable]
+public Size Size {get;}</b></pre>
+
+描画処理などで、カーソルの正確なサイズが知りたければ使うとよいでしょう<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win27.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win29.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

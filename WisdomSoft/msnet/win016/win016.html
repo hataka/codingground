@@ -1,0 +1,101 @@
+<html>
+ <head>
+ <title>テクスチャブラシ</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>テクスチャブラシ</h1>
+<hr>
+ <h2>イメージで塗りつぶす</h2>
+以前紹介したブラシの他に、複雑な模様を面に描画したい時に<br>
+Image オブジェクトをブラシとして使うことができる、テクスチャブラシと言うものがあります<br>
+テクスチャブラシは、<strong>System.Drawing.TextureBrush</strong> クラスで表されます<br>
+<pre><b>Object
+   MarshalByRefObject
+      Brush
+         TextureBrush
+
+public sealed class TextureBrush : Brush</b></pre>
+
+このクラスを利用することによって、面に特定のテクスチャを描画できます<br>
+コンストラクタは以下のものが定義されています<br>
+<pre><b>public TextureBrush(Image bitmap);
+public TextureBrush(Image image , Rectangle dstRect);
+public TextureBrush(Image image , RectangleF dstRect);
+public TextureBrush(Image image , WrapMode wrapMode);
+
+public TextureBrush(
+	Image image , Rectangle dstRect ,
+	ImageAttributes imageAttr
+);
+public TextureBrush(
+	Image image , RectangleF dstRect ,
+	ImageAttributes imageAttr
+);
+public TextureBrush(
+	Image image ,
+	WrapMode wrapMode , Rectangle dstRect
+);
+public TextureBrush(
+	Image image ,
+	WrapMode wrapMode , RectangleF dstRect
+);</b></pre>
+
+bitmap はテクスチャに使うイメージを表す Image オブジェクトを指定します<br>
+dstRect はイメージうち、テクスチャに用いる長方形を指定します<br>
+これを指定すれば、イメージから指定した部分だけがブラシに適応されます<br>
+<br>
+imageAttr はガンマなどの属性をあらわす ImageAttributes オブジェクトを<br>
+wrapMode は、ブラシで塗りつぶす面がイメージよりも大きい時<br>
+どのようなパターンで塗りつぶすかを指定します<br>
+wrapMode は <strong>System.Drawing.Drawing2D.WrapMode</strong>列挙型です<br>
+<br><b>
+public enum WrapMode<br>
+<br></b>
+この列挙型には、次のような意味のメンバが定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Clamp	<td>対象境界にイメージを固定する
+<tr><td>Tile	<td>イメージを繰り返し貼りつける
+<tr><td>TileFlipX	<td>水平に反転したイメージと、通常のイメージを繰り返し貼りつける
+<tr><td>TileFlipXY	<td>水平、垂直に反転したイメージと、通常のイメージを繰り返し貼りつける
+<tr><td>TileFlipY	<td>垂直に反転したイメージと、通常のイメージを繰り返し貼りつける
+</table>
+<br>
+WrapMode 列挙型は、<strong>TextureBrush.WrapMode</strong> プロパティでも設定できます<br>
+<br><b>
+public WrapMode WrapMode {get; set;}<br>
+<br></b>
+必要に応じて、イメージの貼り方を変更してください<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+				
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Image img = new Bitmap("test.jpg");
+		Rectangle rect = new Rectangle(100 , 100 , 100 , 50);
+		Brush myBrush = new TextureBrush(img , WrapMode.TileFlipXY , rect);
+		g.FillRectangle(myBrush , 0 , 0 , 400 , 200);
+	}
+}</pre>
+<img src="img/00.044.jpg" class="img"><br>
+<br>
+この部分では、イメージの特定の長方形のみをブラシに用いています<br>
+さらに、WrapMode.TileFlipXY でイメージの長方形より大きな範囲を塗りつぶす場合<br>
+横には水平に反転したイメージ、縦には垂直に反転したイメージを繰り返し使います<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win15.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win17.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

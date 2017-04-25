@@ -1,0 +1,163 @@
+<html>
+ <head>
+ <title>コンボボックス</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>コンボボックス</h1>
+<hr>
+ <h2>編集とリスト</h2>
+コンボボックスは、テキストボックスとリストボックスを合わせたようなコントロールで<br>
+編集やリストの展開及び選択というような機能をまとめて提供します<br>
+コンボボックスの作成には <strong>System.Windows.Forms.ComboBox</strong> クラスを用います<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ListControl
+               System.Windows.Forms.ComboBox
+
+public class ComboBox : ListControl</b></pre>
+
+コンストラクタはデフォルトコンストラクタしか定義されていません<br>
+コンボボックスも、リストに表示する項目を管理するための内部クラスを持ちます<br>
+これにアクセスするには <strong>ComboBox.Items</strong> プロパティを用います<br>
+<br><b>
+public ComboBox.ObjectCollection Items {get;}<br>
+<br></b>
+ComboBox.ObjectCollection クラスは次のように定義されています<br>
+
+<pre><b>public class ComboBox.ObjectCollection :
+	IList , ICollection , IEnumerable</b></pre>
+
+このクラスの基本的なメソッドは ListBox.ObjectCollection と同じです<br>
+項目の追加は <strong>ComboBox.ObjectCollection.Add()</strong> メソッド<br>
+または <strong>ComboBox.ObjectCollection.AddRange()</strong> メソッドを用います<br>
+<br><b>
+public int Add(object item);<br>
+public void AddRange(object[] items);<br>
+<br></b>
+item には追加する項目のオブジェクトを<br>
+items には追加する項目の配列を指定します<br>
+Add() メソッドはコレクション内の項目の 0 から始まるインデックスを返します<br>
+<br>
+項目数を得る <strong>ComboBox.ObjectCollection.Count</strong> プロパティや<br>
+項目を示すオブジェクトの <strong>ComboBox.ObjectCollection.Item</strong> インデクサもあります<br>
+<br><b>
+public int Count {get;}<br>
+public virtual object this[int index] {get; set;}<br>
+<br></b>
+また、項目を削除するには <strong>ComboBox.ObjectCollection.Remove()</strong><br>
+インデックスを指定して削除するには <strong>ComboBox.ObjectCollection.RemoveAt()</strong><br>
+全て削除するには <strong>ComboBox.ObjectCollection.Clear()</strong> メソッドを使います<br>
+<br><b>
+public void Remove(object value);<br>
+public void RemoveAt(int index);<br>
+public void Clear();<br>
+<br></b>
+value には削除する項目を示すオブジェクトを<br>
+index には削除するインデックスを指定します<br>
+<br>
+これらは、基本的にリストボックスの項目操作とほとんど同じです<br>
+そのため、リストボックスを理解していれば項目の制御は簡単でしょう<br>
+<pre class="prg">using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		ComboBox comboBox1 = new ComboBox();
+		comboBox1.Size = new Size(200 , 20);
+		comboBox1.Items.AddRange(new object[] {
+			"Kitty on your lap" , "The forever that you wish"
+		});
+		Controls.Add(comboBox1);
+	}
+}</pre>
+<img src="img/00.099.jpg" class="img"><br>
+<br>
+このプログラムを実行すると、上の図のようなコンボボックスが表示されます<br>
+テキストボックスの右端にあるボタンを押すと、リストが表示されます<br>
+<br>
+デフォルトで、テキストボックスの文字列は編集可能となっています<br>
+しかし、多くの場合、コンボボックスはスペースを有効利用したリストとして利用します<br>
+この場合、テキストボックスの編集はむしろ不都合になってしまうでしょう<br>
+<br>
+そこで、コンボボックスの基本的なスタイルを変更することで、基本的な挙動を設定できます<br>
+これは <strong>ComboBox.DropDownStyle</strong> プロパティを用います<br>
+<br><b>
+public ComboBoxStyle DropDownStyle {get; set;}<br>
+<br></b>
+<strong>System.Windows.Forms.ComboBoxStyle</strong> 列挙型は次のように定義されています<br>
+<br><b>
+public enum ComboBoxStyle<br>
+<br></b>
+この列挙型には、次のような意味を持つメンバが定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>DropDown	<td>テキスト部分は編集できます<br>リスト部分を表示するには、矢印ボタンをクリックします
+<tr><td>DropDownList	<td>ユーザーはテキスト部分を直接編集できません<br>リスト部分を表示するには、矢印ボタンをクリックします
+<tr><td>Simple		<td>テキスト部分は編集できます<br>リスト部分は常に表示されます
+</table>
+<br>
+<pre class="prg">using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		ComboBox comboBox1 = new ComboBox();
+		comboBox1.DropDownStyle = ComboBoxStyle.Simple;
+		comboBox1.Size = new Size(200 , 100);
+		comboBox1.Items.AddRange(new object[] {
+			"Kitty on your lap" , "The forever that you wish"
+		});
+		Controls.Add(comboBox1);
+	}
+}</pre>
+<img src="img/00.100.jpg" class="img"><br>
+<br>
+このプログラムは、上の図のような単純なコンボボックスを表示します<br>
+これは、純粋にテキストボックスとリストボックスだと思ってよいでしょう<br>
+<br>
+ドロップダウン部分が表示されているかどうかを調べたり、制御するには<br>
+<strong>ComboBox.DroppedDown</strong> プロパティを用います<br>
+このプロパティを使えば、プログラムからドロップダウンを展開することもできます<br>
+<br><b>
+public bool DroppedDown {get; set;}<br>
+<br></b>
+コンボボックスのリストから、現在何が選択されているのかを取得したり設定するには<br>
+インデックスを用いて <strong>ComboBox.SelectedIndex</strong> プロパティで行うか<br>
+オブジェクトを用いて <strong>ComboBox.SelectedItem</strong> プロパティで行います<br>
+<br><b>
+public override int SelectedIndex {get; set;}<br>
+public object SelectedItem {get; set;}<br>
+<br></b>
+これらのプロパティを受ける、もっとも最良のタイミングは<br>
+ユーザーがリストで別の項目を選択するか、ドロップダウンリストを閉じた時でしょう<br>
+SelectedIndex プロパティの値が変わると <strong>ComboBox.SelectedIndexChanged</strong> イベントが<br>
+変更内容がコミットされると <strong>ComboBox.SelectionChangeCommitted</strong> イベントが発生します<br>
+<br><b>
+public event EventHandler SelectedIndexChanged;<br>
+public event EventHandler SelectionChangeCommitted;<br>
+<br></b>
+SelectionChangeCommitted などは、選択内容が変更されると発生するため<br>
+これを用いて変更のタイミングにあわせて、何らかのアクションをおこすことができます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win43.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win45.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

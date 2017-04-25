@@ -1,0 +1,66 @@
+<html>
+ <head>
+ <title>ラジオボタン</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ラジオボタン</h1>
+<hr>
+ <h2>排他的なボタン</h2>
+チェックボックスのように、事の真偽を示すコントロールは便利ですが<br>
+場合によって、それが排他的に行われる必要があるケースに遭遇します<br>
+つまり、複数の選択の中から1つのみを選択してほしい設定をユーザーにさせるときなどです<br>
+<br>
+このような場合はラジオボタンを使うのが適当だと考えられます<br>
+ラジオボタンは <strong>System.Windows.Forms.RadioButton</strong> クラスで表されます<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ButtonBase
+               System.Windows.Forms.RadioButton
+
+public class RadioButton : ButtonBase</b></pre>
+
+やはり、このクラスもデフォルトコンストラクタしか定義されていません<br>
+ラジオボタンは、チェックの管理のほかにグループの管理を行います<br>
+この点において、チェックボックスとラジオボタンは大きく違います<br>
+<br>
+グループとは、同一のコンテナに含まれるラジオボタンの単位で考えられます<br>
+すなわち、親が同一のラジオボタンは同一のグループにあると言えます<br>
+グループ内のあるラジオボタンがチェックされると、他のボタンは全て解除されます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		RadioButton[] bt = new RadioButton[3];
+		string[] txt = {"Rena" , "Yuki" , "Mimi"};
+		for(int i = 0 ; i &#60; bt.Length ; i++) {
+			bt[i] = new RadioButton();
+			bt[i].Bounds = new Rectangle(0 , 30 * i , 200 , 30);
+			bt[i].Text = txt[i];
+			Controls.Add(bt[i]);
+		}
+	}
+}</pre>
+<img src="img/00.084.jpg" class="img"><br>
+<br>
+このプログラムは、クライアント領域に3つのラジオボタンを配置します<br>
+これらのラジオボタンは同一のグループであると認識されるため<br>
+特定のボタンをチェックすると、他のボタンのチェックは自動的にはずされます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win37.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win39.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

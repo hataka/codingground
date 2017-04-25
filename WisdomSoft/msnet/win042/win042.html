@@ -1,0 +1,236 @@
+<html>
+ <head>
+ <title>リッチテキスト</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>リッチテキスト</h1>
+<hr>
+ <h2>書式付テキスト情報</h2>
+テキストボックスは、純粋なテキストデータを取り扱うのに最も適したコントロールです。<br>
+しかし、テキストの中に色やフォントなどの書式を扱う情報が必要な場合は<br>
+テキストボックスコントロールでは、この要求に応えることができません<br>
+<br>
+テキストボックスも Control クラスを継承しているので ForeColor や<br>
+Font プロパティなどの設定を変えることで、色やフォントを変更することができます<br>
+ですがそれは、テキストボックス全体の概観を変更するに過ぎません<br>
+<br>
+そこで、テキストの一部の色やフォントを変更したいという場合は<br>
+<strong>System.Windows.Forms.RichTextBox</strong> クラスを用います<br>
+このクラスはリッチテキストをボックスをカプセル化しています<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.TextBoxBase
+               System.Windows.Forms.RichTextBox
+
+public class RichTextBox : TextBoxBase</b></pre>
+
+このクラスのコンストラクタも、他のコントロール関連クラスと同様に<br>
+コンストラクタはデフォルトコンストラクタしか定義されていません<br>
+<br>
+リッチテキストボックスは、Microsoft が書式付の文書を表現できるように<br>
+1986 年に考案した仕様の RTF と呼ばれる形式のドキュメントを扱えます<br>
+このフォーマットを採用すれば、より表現豊かな文書を作成することができます<br>
+<br>
+特定の場所の色を変更するには <strong>RichTextBox.SelectionColor</strong> プロパティを<br>
+フォントを変更するには <strong>RichTextBox.SelectionFont</strong> プロパティを使います<br>
+<br><b>
+public Color SelectionColor {get; set;}<br>
+public Font SelectionFont {get; set;}<br>
+<br></b>
+これらのプロパティを設定すると、現在の選択範囲の色やフォントを変更します<br>
+get アクセッサから情報を取得する場合は、選択範囲の色やフォントを取得しますが<br>
+選択範囲が複数のフォントや色を含んでいる場合は取得することができません<br>
+その場合、フォントは null を、色は Color.Empty を返します<br>
+<pre class="prg">using System;
+using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	MenuItem[] menuItem;
+	RichTextBox textBox1 = new RichTextBox();
+
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		menuItem = new MenuItem[] {
+			new MenuItem("色を変える" , new EventHandler(menuItemClick)) ,
+			new MenuItem("フォントを変える" , new EventHandler(menuItemClick)) ,
+		};
+		textBox1.Dock = DockStyle.Fill;
+		textBox1.ContextMenu = new ContextMenu(menuItem);
+		Controls.Add(textBox1);
+	}
+
+	private void menuItemClick(object sender , EventArgs e) {
+		if(sender == menuItem[0])
+			textBox1.SelectionColor = Color.Red;
+		else if(sender == menuItem[1])
+			textBox1.SelectionFont = new Font("MS Serif" , 20);
+	}
+}</pre>
+<img src="img/00.096.jpg" class="img"><br>
+<br>
+図を見てわかるように、リッチテキストの中には複数のフォントや色を含ませることができ<br>
+より複雑なドキュメントの作成や編集に適しているでしょう<br>
+
+<br><hr>
+<h2>RTF 形式の入出力</h2>
+リッチテキストボックスを用いて書式付のテキストを扱えるようになりましたが<br>
+誰もが、これをディスクに保存する方法を知りたいと思うことでしょう<br>
+<br>
+方法のひとつとしては、リッチテキストを解析して XHTML に変換することです<br>
+.NET では XML 名前空間が定義されており、高度なレベルでマークアップを制御できます<br>
+ですが、そんな面倒なことをせずに RTF 形式で保存する方法がもっともスマートです<br>
+(ただし、そのようなローカルな仕様のファイル形式をユーザーが望むかどうかは別です)<br>
+<br>
+リッチテキストボックスに入力されている情報を RTF として保存する方法は<br>
+実は RichTextBox クラスがメソッドとしてすでに実装しています<br>
+RTF の保存には <strong>RichTextBox.SaveFile()</strong> メソッドを用います<br>
+<br><b>
+public void SaveFile(string path);<br>
+public void SaveFile(Stream data , RichTextBoxStreamType fileType);<br>
+public void SaveFile(string path , RichTextBoxStreamType fileType);<br>
+<br></b>
+path には保存するファイル名を、data にはストリームを指定します<br>
+Stream に対して保存すれば、ディスク以外の保存領域（主記憶）などに保存できます<br>
+fileType は、リッチテキストの入出力ストリーム方を指定します<br>
+<br>
+RichTextBoxStreamType は次のように定義されています<br>
+<br><b>
+[Serializable]<br>
+public enum RichTextBoxStreamType<br>
+<br></b>
+この列挙型のメンバは次のような意味を持っています<br>
+例えば、この列挙型を用いて文字コードを Unicode または ASCII などを指定できます<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>意味
+<tr><td>PlainText	<td>OLE (Object Linking and Embedding) オブジェクトの代わりに<br>空白が含まれているプレーン テキスト ストリーム
+<tr><td>RichNoOleObjs	<td>OLE オブジェクトの代わりの空白を持つリッチ テキスト形式 (RTF: Rich Text Format) のストリーム<br>この値は、 RichTextBox コントロールの SaveFile メソッドを使用する場合に限り有効です
+<tr><td>RichText	<td>リッチ テキスト形式 (RTF) ストリーム
+<tr><td>TextTextOleObjs	<td>OLE オブジェクトのテキスト表現を持つプレーン テキスト ストリーム<br>この値は、 RichTextBox コントロールの SaveFile メソッドを使用する場合に限り有効です
+<tr><td>UnicodePlainText<td>OLE オブジェクトの代わりに空白が含まれているテキスト ストリーム<br>テキストは Unicode でエンコードされています
+</table>
+<br>
+SaveFile() メソッドを用いてディスクにリッチテキストを保存すれば<br>
+Microsoft Word やワードパットなどで開くことができます<br>
+<pre class="prg">using System;
+using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	MenuItem[] menuItem;
+	RichTextBox textBox1 = new RichTextBox();
+
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		menuItem = new MenuItem[] {
+			new MenuItem("色を変える" , new EventHandler(menuItemClick)) ,
+			new MenuItem("フォントを変える" , new EventHandler(menuItemClick)) ,
+			new MenuItem("保存" , new EventHandler(menuItemClick)) ,
+		};
+		textBox1.Dock = DockStyle.Fill;
+		textBox1.ContextMenu = new ContextMenu(menuItem);
+		Controls.Add(textBox1);
+	}
+
+	private void menuItemClick(object sender , EventArgs e) {
+		if(sender == menuItem[0])
+			textBox1.SelectionColor = Color.Red;
+		else if(sender == menuItem[1])
+			textBox1.SelectionFont = new Font("MS Serif" , 20);
+		else if (sender == menuItem[2])
+			textBox1.SaveFile("test.rtf" , RichTextBoxStreamType.RichNoOleObjs);
+	}
+}</pre>
+これは、先ほどのプログラムに保存メニューを設けた拡張版です<br>
+保存を選択すると、プログラムを起動したフォルダに test.rtf ファイルが作成されます<br>
+<br>
+逆に RTF 形式のデータをリッチテキストボックスに入力するには<br>
+同様に <strong>RichTextBox.LoadFile()</strong> メソッドを用いて読み込むことができます<br>
+<br><b>
+public void LoadFile(string path);<br>
+public void LoadFile(Stream data , RichTextBoxStreamType fileType);<br>
+public void LoadFile(string path , RichTextBoxStreamType fileType);<br>
+<br></b>
+パラメータの意味は SaveFile() メソッドと同じです<br>
+<pre class="prg">using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	RichTextBox textBox1 = new RichTextBox();
+
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		textBox1.Dock = DockStyle.Fill;
+		textBox1.LoadFile("test.rtf");
+		Controls.Add(textBox1);
+	}
+}</pre>
+このプログラムは、カレントフォルダ内の test.rtf ファイルを読み込みます<br>
+先ほどのプログラムで出力したファイルを、このプログラムで確認することができるでしょう<br>
+<br>
+因みに、RTF 形式で保存される書式情報はバイナリではなくテキストデータです<br>
+RTF の情報も含めた完全なテキスト情報がほしければ <strong>RichTextBox.Rtf</strong> プロパティを使います<br>
+<br><b>
+public string Rtf {get; set;}<br>
+<br></b>
+このプロパティを用いれば、RTF テキストを取得したり<br>
+あるいはプログラムから直接 RTF テキストを入力することができるようになります<br>
+<pre class="prg">using System;
+using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	TextBox textBox1 = new TextBox();
+	RichTextBox textBox2 = new RichTextBox();
+
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		textBox1.Dock = DockStyle.Top;
+		textBox1.Multiline = textBox2.Multiline = true;
+		textBox1.TextChanged += new EventHandler(textBox1_TextChanged);
+		textBox2.Dock = DockStyle.Bottom;
+		textBox2.ReadOnly = true;
+		Controls.AddRange(new Control[] {textBox1 , textBox2});
+	}
+	private void textBox1_TextChanged(object sender , EventArgs e) {
+		try {textBox2.Rtf = textBox1.Text;}
+		catch(Exception) {}
+	}
+	override protected void OnLayout(LayoutEventArgs e) {
+		textBox1.Height = textBox2.Height = ClientSize.Height / 2;
+		base.OnLayout(e);
+	}
+}</pre>
+<img src="img/00.097.jpg" class="img"><br>
+<br>
+このプログラムは、リッチテキスト形式の生書きを学習するのに適したプログラムです<br>
+上の通常のテキストボックスにリッチテキストを入力すると、下部にプレビューされます<br>
+RTF 形式の詳細はこの場では説明しませんし、できません<br>
+逆に、リッチテキストをリアルタイムでテキストボックスに表示させれば<br>
+ある程度、リッチテキスト形式の仕様を理解することができるでしょう<br>
+本格的に学習したいのであれば、Microsoft の文献を参照してください<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win41.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win43.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

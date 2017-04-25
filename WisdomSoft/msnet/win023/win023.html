@@ -1,0 +1,100 @@
+<html>
+ <head>
+ <title>スクロール処理</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>スクロール処理</h1>
+<hr>
+ <h2>ウィンドウスクロールバー</h2>
+ウィンドウの範囲を超えたドキュメントを表示したいという場合<br>
+通常は、ウィンドウの右と下部に垂直と水平のスクロールバーを付加します<br>
+<br>
+実は、このスクロール処理というのは想像以上に複雑になっています<br>
+ユーザーがスクロールバーに対する入力を行うと、このイベントを処理し<br>
+スクロールバーの移動範囲を計算して、ドキュメントの描画する位置を決定します<br>
+<br>
+しかし、.NET ではこれらの処理の大部分がカプセル化されています<br>
+Form クラスは <strong>System.Windows.Forms.ScrollableControl</strong> を継承しています<br>
+このクラスは、コントロールがスクロール可能になる基本機能を持っています<br>
+<pre><b>Object
+   MarshalByRefObject
+      Component
+         Control
+            ScrollableControl
+
+public class ScrollableControl : Control</b></pre>
+
+Form クラスのように、このクラスを継承しているコントロールは<br>
+このクラスの持つ特定のプロパティを設定することで、スクロールバーを付加できます<br>
+公開コンストラクタは、引数無しのデフォルトコンストラクタのみが定義されています<br>
+<br>
+スクロールを可能にするには、まずはそれを許可する必要があります<br>
+<strong>ScrollableControl.AutoScroll</strong> プロパティを用いてこれを設定できます<br>
+<br><b>
+public virtual bool AutoScroll {get; set;}<br>
+<br></b>
+このプロパティが true であればスクロールを許可し<br>
+そうでなければ false を指定します。このプロパティはデフォルトで false です<br>
+<br>
+次に、スクロールの最小範囲を指定しなければなりません<br>
+これは <strong>ScrollableControl.AutoScrollMinSize</strong> プロパティを使います<br>
+<br><b>
+public Size AutoScrollMinSize {get; set;}<br>
+<br></b>
+このプロパティには、スクロール範囲となる最小の幅と高さを Size オブジェクトで指定します<br>
+コントロールがこれ以下のサイズになると、自動的にスクロールバーが表示されます<br>
+<br>
+たったこれだけの作業でウィンドウにスクロールバーを付けることができます<br>
+ただし、スクロールバーが動かされた時の再描画の位置が問題です<br>
+スクロールバーが動かされた分、表示するドキュメントも移動する必要があります<br>
+<br>
+スクロール後に正しく描画するには、移動した原点を取得する必要があります<br>
+<strong>ScrollableControl.AutoScrollPosition</strong> プロパティは<br>
+原点の位置を示す Point オブジェクト表します<br>
+<br><b>
+public Point AutoScrollPosition {get; set;}<br>
+<br></b>
+これはどういうことかというと、例えば垂直するロールバーを下に移動させると<br>
+原点は上に、すなわちマイナス方向に移動するということになります<br>
+そして、コントロールは現在描画されているドキュメントを上に移動しさせ<br>
+コントロールのクライアント領域下部を無効化して新しく再描画します<br>
+<br>
+このとき、OnPaint() メソッドは座標を上手く処理し、適切な対応をしなければなりません<br>
+バーを動かしたのに、再描画領域が同じ図を描画した場合は奇妙な結果に終わります<br>
+AutoScrollPasition が返した原点の位置を上手に使う必要があります<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	Image img;
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.img = new Bitmap(args[0]);
+
+		win.AutoScroll = true;
+		win.AutoScrollMinSize = new Size(win.img.Width , win.img.Height);
+		Application.Run(win);
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Point pt = AutoScrollPosition;
+		e.Graphics.DrawImage(img , pt.X , pt.Y);
+		Text = "X = " + pt.X + " : Y = " + pt.Y;
+	}
+}</pre>
+<img src="img/00.055.jpg" class="img"><br>
+<br>
+このプログラムは、コマンドライン引数で指定した静止画を表示するというものですが<br>
+ウィンドウがイメージのサイズより小さくなると、スクロールバーを表示します<br>
+また、タイトルバーに AutoScrollPosition の値も描画します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win22.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win24.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

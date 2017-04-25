@@ -1,0 +1,90 @@
+<html>
+ <head>
+ <title>移動イベント</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>移動イベント</h1>
+<hr>
+ <h2>移動とサイズ変更に対応する</h2>
+コントロールを、特にメインウィンドウをユーザーが移動させたりサイズを変更した場合<br>
+それに応じて何らかの対応をしなければならないというケースがしばしばあります<br>
+ウィンドウを移動すると <strong>Control.OnMove()</strong> メソッドが呼び出されます<br>
+<br><b>
+protected virtual void OnMove(EventArgs e);<br>
+<br></b>
+移動イベントなので、コントロールの位置を示す情報を引数に渡してもよい気がしますが<br>
+コントロールの座標はプロパティから直接得られるため<br>
+このメソッドは独自のイベント引数クラスは持たず、EventArgs を受けます<br>
+<br>
+移動イベントをイベントメンバで処理したい場合は <strong>Control.Move</strong> を使います<br>
+<br><b>
+public event EventHandler Move;<br>
+<br></b>
+これらの機能を使うことによって、ウィンドウの移動を感知することができます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawString(Location.ToString() , Font , Brushes.Black , 0 , 0);
+	}
+
+	override protected void OnMove(System.EventArgs e) {
+		Invalidate();
+	}
+}</pre>
+<img src="img/00.058.jpg" class="img"><br>
+<br>
+
+このプログラムは、ウィンドウがユーザーによって移動させられると<br>
+OnMove() メソッドが呼び出され、クライアント領域を再描画します<br>
+この機能によって、ウィンドウのクライアント領域は<br>
+常にリアルタイムでウィンドウの左上隅のスクリーン座標を描画します<br>
+<br>
+同様に、コントロールのサイズ変更に対応するには<br>
+<strong>Control.OnResize()</strong> メソッドをオーバーライドします<br>
+<br><b>
+protected virtual void OnResize(EventArgs e);<br>
+<br></b>
+e には、EventArgs オブジェクトが渡されます<br>
+イベントメンバでこのイベントを処理するには <strong>Control.Resize</strong> を使います<br>
+<br><b>
+public event EventHandler Resize;<br>
+<br></b>
+以前、サイズ変更時に再描画も行うウィンドウの実現方法としてスタイルを使いましたが<br>
+スタイルを設定しなくても、直接イベントを拡張して実現することができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawString(Size.ToString() , Font , Brushes.Black , 0 , 0);
+	}
+
+	override protected void OnResize(System.EventArgs e) {
+		Invalidate();
+	}
+}</pre>
+このプログラムは、「スタイル」の章のプログラムを改良したものです<br>
+動作結果はまったく同じですが、イベントを直接オーバーライドして再描画しています<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win25.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win27.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

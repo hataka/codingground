@@ -1,0 +1,208 @@
+<html>
+ <head>
+ <title>アイコン</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>アイコン</h1>
+<hr>
+ <h2>アイコンの描画</h2>
+アイコンとは <strong>*.ico</strong> 拡張子であらわされる小さなビットマップのことです<br>
+主に、アプリケーションアイコンなど、GUI の部品に用いられ<br>
+16 色の 32 × 32 ピクセルのアイコンが多く用いられています<br>
+<br>
+ウィンドウの左上にあるアイコンや、最小化したときのアイコンももちろんこれです<br>
+.NET では、アイコンを <strong>System.Drawing.Icon</strong> クラスで表現します<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.Drawing.Icon
+
+[Serializable]
+[ComVisible(false)]
+public sealed class Icon : MarshalByRefObject,
+	ISerializable, ICloneable, IDisposable</b></pre>
+
+このクラスは、アイコンの情報や基本的な操作をパッケージ化しています<br>
+基本的には、Bitmap クラスのようにファイル名を指定するだけで *.ico ファイルを読み込めます<br>
+このクラスのコンストラクタは、次のものが定義されています<br>
+<pre><b>[Serializable]
+[ComVisible(false)]
+public Icon(Stream stream);
+
+
+[Serializable]
+[ComVisible(false)]
+public Icon(string fileName);
+
+[Serializable]
+[ComVisible(false)]
+public Icon(Icon original , Size size);
+
+[Serializable]
+[ComVisible(false)]
+public Icon(Type type , string resource);
+
+[Serializable]
+[ComVisible(false)]
+public Icon(Icon original , int width , int height);
+
+[Serializable]
+[ComVisible(false)]
+public Icon(Stream stream , int width , int height);</b></pre>
+
+
+stream には、アイコンの読み込み元を示すデータストリームを指定します<br>
+fileName は、Icon オブジェクトの読み込み元となるファイル名を指定します<br>
+originarl は新たに作成する Icon オブジェクトの元になる Icon オブジェクトを指定します<br>
+<br>
+size は新しいアイコンのサイズを示す Size オブジェクトを<br>
+width には横幅、height には高さを指定します<br>
+<br>
+type はリソースを検索するアセンブリを指定する Type オブジェクトを<br>
+resource には読み込むリソース名を指定します<br>
+<br>
+Icon オブジェクトは、<strong>Graphics.DrawIcon()</strong> メソッドを使うことで描画できます<br>
+または、スケーリングせずに描画する場合は<br>
+<strong>Graphics.DrawIconUnstretched()</strong> メソッドを使うこともできます<br>
+
+<pre><b>[ComVisible(false)]
+public void DrawIcon(Icon icon , Rectangle targetRect);
+
+[ComVisible(false)]
+public void DrawIcon(Icon icon , int x , int y);
+
+[ComVisible(false)]
+public void DrawIconUnstretched(Icon icon , Rectangle targetRect);</b></pre>
+
+icon には描画する Icon オブジェクトを、targetRect には描画する長方形を指定します<br>
+x には描画するアイコンの左上の位置を示す X 座標、y には Y 座標を指定します<br>
+DrawIconUnstretched() メソッドの場合は、常にもとのサイズが保持されます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	static Icon ico;
+	public static void Main(string[] args) {
+		ico = new Icon(args[0]);
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle rect = new Rectangle(0 , 0 , 100 , 100);
+		g.DrawIcon(ico , rect);
+
+		rect.X = 100;
+		g.DrawIconUnstretched(ico , rect);
+	}
+}</pre>
+<img src="img/00.059.jpg" class="img"><br>
+<br>
+このプログラムは、コマンドラインで指定したアイコンファイルを読み込み<br>
+Graphics.DrawIcon() メソッドを使って 100 × 100 にスケーリングして描画し<br>
+さらに、Graphics.DrawIconUnstretched() メソッドでデフォルトサイズでも描画します<br>
+<br>
+Icon クラスには、アイコンのサイズを取得するためのプロパティが公開されています<br>
+横幅は <strong>Icon.Width</strong> 高さは <strong>Icon.Height</strong> で取得できます<br>
+また、これらを Size オブジェクトとして <strong>Icon.Size</strong> で得ることもできます<br>
+<pre><b>[Serializable]
+[ComVisible(false)]
+public int Width {get;}
+
+[Serializable]
+[ComVisible(false)]
+public int Height {get;}
+
+[Serializable]
+[ComVisible(false)]
+public Size Size {get;}</b></pre>
+
+これらのプロパティを使えば、アイコンのサイズを取得することができます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	static Icon ico;
+	public static void Main(string[] args) {
+		ico = new Icon(args[0]);
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle rect = new Rectangle(0 , 0 , ico.Width , ico.Height);
+		g.DrawIcon(ico , rect);
+	}
+}</pre>
+
+このプログラムは、単純にコマンドラインから指定したアイコンを描画します<br>
+このとき、描画範囲を長方形で指定していますが<br>
+アイコンのサイズをプロパティで取得しているため、正しいサイズで描画されます<br>
+
+<br><hr>
+<h2>ビットマップへの変換</h2>
+Icon クラスは、アイコンをビットマップイメージに変換するメソッドを提供しています<br>
+<strong>Icon.ToBitmap()</strong> メソッドを使えば、Icon オブジェクトのイメージを<br>
+そのまま Bitmap オブジェクトに変換して、複雑な処理をさせることができます<br>
+
+<pre><b>[Serializable]
+[ComVisible(false)]
+public Bitmap ToBitmap();</b></pre>
+
+Bitmap オブジェクトに変換すれば、GDI+ のさまざまな恩恵を受けられます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Icon ico = new Icon(args[0]);
+		WinMain win = new WinMain();
+		win.BackgroundImage = ico.ToBitmap();
+		Application.Run(win);
+	}
+}</pre>
+<img src="img/00.060.jpg" class="img"><br>
+<br>
+
+このプログラムは、コマンドラインで指定したアイコンを Bitmap に変換し<br>
+コントロールの背景イメージとして設定しています<br>
+
+<br><hr>
+<h2>ウィンドウアイコン</h2>
+Windows の一般的なアプリケーションのフレームウィンドウには<br>
+左上にアイコンが表示され、タスクバーにも同じアイコンが表示されます<br>
+これを設定するには <strong>Form.Icon</strong> プロパティにアイコンを設定します<br>
+<br><b>
+public Icon Icon {get; set;}<br>
+<br></b>
+このプロパティは、ウィンドウのアイコンを取得したり、設定したりすることができます<br>
+これに先ほどの Icon オブジェクトを設定することで、ウィンドウのアイコンを変更できます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		win.Icon = new Icon(args[0]);
+		Application.Run(win);
+	}
+}</pre>
+<img src="img/00.061.jpg" class="img"><br>
+<br>
+このプログラムは、コマンドラインで指定したアイコンファイルをウィンドウに設定します<br>
+図を見てわかるように、いつもとはタイトルバーのアイコンが違っていますね<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win26.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win28.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

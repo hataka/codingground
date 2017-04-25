@@ -1,0 +1,76 @@
+<html>
+ <head>
+ <title>再描画</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>再描画</h1>
+<hr>
+ <h2>描画イベントを発生させる</h2>
+OnPaint() イベントは、クライアント領域に無効リージョンが作られると発生します<br>
+ウィンドウが他のウィンドウに隠れたり、最小化されたりすると<br>
+その部分は画面から消えるため、情報を失います<br>
+<br>
+そして、またウィンドウが表示されると隠された部分は無効な状態になっているため<br>
+無効リージョンを再び描画する必要があるので、OnPaint() が呼び出されるのです<br>
+因みに、Windows の仕様でマウスカーソルに隠れる部分はメモリに保存されます<br>
+つまり、マウスカーソルに隠された部分は無効になることはありません<br>
+<br>
+しかし、それ以外にも明示的に再描画してほしいという場合があるでしょう<br>
+例えばイベントによって情報が変化し、クライアント領域を再描画するなどです<br>
+再描画には <strong>Control.Invalidate()</strong> メソッドを使います<br>
+<br><b>
+public void Invalidate();<br>
+public void Invalidate(bool invalidateChildren);<br>
+public void Invalidate(Rectangle rc);<br>
+public void Invalidate(Region region);<br>
+public void Invalidate(Rectangle rc , bool invalidateChildren);<br>
+public void Invalidate(Region region , bool invalidateChildren);<br>
+<br></b>
+このメソッドは、強制的に向こうリージョンを作りだして再描画します<br>
+invalidateChildern は true ならば子コントロールも無効化することを意味します<br>
+false を指定すれば、子コントロールは無効化されません<br>
+<br>
+rc は無効化するリージョンを示す長方形を region はリージョンを指定します<br>
+再描画しなければいけない範囲がわかっているのであれば、指定するべきです<br>
+特に高速な描画を求める場合、無効領域は少ない方が速く動作します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	int x = 0 , y = 0;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawString("X = " + x + " : Y = " + y , Font , Brushes.Black , 0 , 0);
+	}
+
+	override protected void OnMouseMove(MouseEventArgs e) {
+		x = e.X ; y = e.Y;
+		Invalidate();
+	}
+}</pre>
+<img src="img/00.053.jpg" class="img"><br>
+<br>
+このプログラムは、マウスがクライアント領域上を移動すると<br>
+インスタンスメンバ変数の x と y を現在のマウスカーソルの座標に更新し<br>
+Invalidate() メソッドを呼び出して無効リージョンを作り、OnPaint() を呼び出します<br>
+<br>
+また、コントロールと子コントロールを無効化して再描画する<br>
+<strong>Control.Refresh()</strong> メソッドも定義されています<br>
+<br><b>
+public virtual void Refresh();<br>
+<br></b>
+子コントロールの情報を最新のものに更新する時には<br>
+このメソッドを使うなどして、子コントロールを再描画する必要があります<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win20.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win22.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

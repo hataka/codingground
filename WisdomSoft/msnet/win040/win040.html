@@ -1,0 +1,373 @@
+<html>
+ <head>
+ <title>リストボックス</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>リストボックス</h1>
+<hr>
+ <h2>項目の列挙</h2>
+ファイルや、何らかの項目を列挙するにはリストボックスを使うと便利です<br>
+リストボックスは <strong>System.Windows.Forms.ListBox</strong> で表されます<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ListControl
+               System.Windows.Forms.ListBox
+
+public class ListBox : ListControl</b></pre>
+
+このクラスのコンストラクタは、デフォルトコンストラクタしか定義されていません<br>
+ListControl は、リストボックスのような項目列挙コントロールの基本クラスとなるものですが<br>
+内部設計上の問題で、公開されているメンバに注目するものはほとんどありません<br>
+<br>
+ListBox は、追加される浮動の項目を管理するために、内部に<br>
+<strong>System.Windows.Forms.ListBox.ObjectCollection</strong> クラスを持ちます<br>
+<pre><b>public class ListBox.ObjectCollection :
+	IList , ICollection , IEnumerable</b></pre>
+
+このクラスは、これまでのコレクション用の内部クラス同様に<br>
+追加や削除、インデックスの管理などを行ってくれます<br>
+この内部クラスにアクセスするには <strong>ListBox.Items</strong> プロパティを使います<br>
+<br><b>
+public ListBox.ObjectCollection Items {get;}<br>
+<br></b>
+リストボックスでは、ここから ObjectCollection にアクセスして<br>
+何らかのオブジェクトをリストボックスに追加し、管理させることができます<br>
+リストボックスは、Object.ToString() メソッドが返す文字列をコントロールに表示します<br>
+<br>
+オブジェクトの追加は <strong>ObjectCollection.Add()</strong> メソッド<br>
+または <strong>ObjectCollection.AddRange()</strong> メソッドで行います<br>
+
+<br><b>
+public int Add(object item);<br>
+<br>
+public void AddRange(object[] items);<br>
+public void AddRange(ListBox.ObjectCollection value);<br>
+<br></b>
+
+item には、追加するオブジェクトを、items には追加するオブジェクトの配列を指定します<br>
+value は、追加するオブジェクトを格納している ObjectCollection を指定します<br>
+複数の項目を一度に追加するには AddRange() メソッドを使うと便利です<br>
+<br>
+項目には <strong>ObjectCollection.Item</strong> インデクサからアクセスすることができます<br>
+項目の総数は <strong>ObjectCollection.Count</strong> プロパティから取得できます<br>
+
+<br><b>
+public virtual object this[int index] {get; set;}<br>
+public int Count {get;}<br>
+<br></b>
+
+コレクションが保有する項目を消すには <strong>ObjectCollection.Remove()</strong><br>
+または <strong>ObjectCollection.RemoveAt()</strong> メソッドを使います<br>
+項目の全てを削除したい場合は <strong>ObjectCollection.Clear</strong> を使います<br>
+<br><b>
+public void Remove(object value);<br>
+public void RemoveAt(int index);<br>
+public virtual void Clear();<br>
+<br></b>
+
+value には削除したい項目のオブジェクトを、index はインデックスを指定します<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		string[] kitty = {"Rena" , "Yuki" , "Mimi"};
+		ListBox lb = new ListBox();
+		lb.Size = new Size(200 , 80);
+		lb.Items.AddRange(kitty);
+
+		Controls.Add(lb);
+	}
+}</pre>
+<img src="img/00.086.jpg" class="img"><br>
+<br>
+このプログラムは、リストボックスを作成し、これに文字列オブジェクトを追加しています<br>
+その結果、図のようにリストボックスは項目を表示します<br>
+<br>
+デフォルトでは、常に1つの項目しか選択できないように設定されていますが<br>
+<strong>ListBox.SelectionMode</strong> プロパティを使って複数選択可能にすることもできます<br>
+<br><b>
+public virtual SelectionMode SelectionMode {get; set;}<br>
+<br></b>
+このプロパティには、セレクトモードを示す SelectionMode 列挙型メンバを指定します<br>
+この型は <strong>System.Windows.Forms.SelectionMode</strong> 列挙型です<br>
+<pre><b>[Serializable]
+[ComVisible(true)]
+public enum SelectionMode</b></pre>
+
+この列挙型は、次のような意味を持つメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>MultiExtended	<td>複数の項目を選択できます<br>また、Shift キー、Ctrl キー、および方向キーを使用して項目を選択できます
+<tr><td>MultiSimple	<td>複数の項目を選択できます
+<tr><td>None		<td>選択できる項目はありません
+<tr><td>One		<td>1 つの項目だけ選択できます
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		string[] kitty = {"Rena" , "Yuki" , "Mimi"};
+		ListBox lb = new ListBox();
+		lb.Size = new Size(200 , 80);
+		lb.Items.AddRange(kitty);
+		lb.SelectionMode = SelectionMode.MultiExtended;
+
+		Controls.Add(lb);
+	}
+}</pre>
+<img src="img/00.087.jpg" class="img"><br>
+<br>
+このプログラムは、SelectionMode プロパティを使って複数選択可能なリストボックスを作成します<br>
+Shift キーや Ctrl キーを使って、図のように複数の項目を選択することができます<br>
+<br>
+現在選択されている項目を得るには <strong>ListBox.SelectedItem</strong> プロパティ<br>
+または <strong>ListBox.SelectedItems</strong> プロパティを使います<br>
+<br><b>
+public object SelectedItem {get; set;}<br>
+public ListBox.SelectedObjectCollection SelectedItems {get;}<br>
+<br></b>
+
+SelectedItems プロパティは、複数選択可能リストボックスでのみ使用します<br>
+この場合は、項目ではなく選択されている項目のコレクションを返します<br>
+SelectedItem プロパティは、項目が選択されていない場合は null を示します<br>
+<br>
+<strong>System.Windows.Forms.ListBox.SelectedObjectCollection</strong> クラスは<br>
+選択されているオブジェクトのコレクションを管理するクラスです<br>
+<pre><b>public class ListBox.SelectedObjectCollection :
+	IList , ICollection , IEnumerable</b></pre>
+選択されている項目数は <strong>SelectedObjectCollection.Count</strong> プロパティから<br>
+選択されている項目は <strong>SelectedObjectCollection.Item</strong> インデクサから得られます<br>
+<br><b>
+public int Count {get;}<br>
+public object this[int index] {get; set;}<br>
+<br></b>
+選択されている項目は、インデックスで取得することも可能です<br>
+この場合は <strong>ListBox.SelectedIndex</strong> プロパティ<br>
+または <strong>ListBox.SelectedIndices</strong> プロパティを使います<br>
+<br><b>
+public override int SelectedIndex {get; set;}<br>
+public ListBox.SelectedIndexCollection SelectedIndices {get;}<br>
+<br></b>
+
+SelectedIndex は選択されている項目のインデックスを返します<br>
+項目が選択されていない場合は -1 を示します<br>
+SelectedIndices プロパティは、選択されている項目の<br>
+インデックスを格納しているコレクションを返します<br>
+<br>
+<strong>System.Windows.Forms.ListBox.SelectedIndexCollection</strong> クラスは<br>
+選択されている項目のインデックスのコレクションを管理するクラスです<br>
+<pre><b>public class ListBox.SelectedIndexCollection :
+	IList , ICollection , IEnumerable</b></pre>
+選択されている項目数は <strong>SelectedIndexCollection.Count</strong> プロパティから<br>
+選択されている項目は <strong>SelectedIndexCollection.Item</strong> インデクサから得られます<br>
+<br><b>
+public int Count {get;}<br>
+public int this[int index] {get; set;}<br>
+<br></b>
+仕組みは、他のコレクション管理クラスと同じなので理解しやすいでしょう<br>
+これらを使えば、複数選択可能リストから正確に選択されている項目を得られます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	Image img;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain(args));
+	}
+
+	public WinMain(string[] file) {
+		Image[] img = new Image[file.Length];
+		for(int i = 0 ; i &#60; file.Length ; i++) img[i] = new Bitmap(file[i]);
+
+		ListBox lb = new ListBox();
+		lb.Size = new Size(200 , 80);
+		lb.Items.AddRange(img);
+		lb.Click += new System.EventHandler(_Select);
+		Controls.Add(lb);
+	}
+
+	public void _Select(object sender , System.EventArgs e) {
+		ListBox lb = (ListBox)sender;
+		img = (Image)lb.SelectedItem;
+		Invalidate();
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		if (img != null) e.Graphics.DrawImage(img , 0 , 80 , 200 , 200);
+	}
+}</pre>
+<img src="img/00.088.jpg" class="img"><br>
+<br>
+このプログラムは、まずコマンドライン引数から静止画のファイル名を入力します<br>
+入力する静止画の数は任意なので、複数個入力してください<br>
+すると、ファイル名を元に Image オブジェクトの配列を作成し、これをリストに列挙します<br>
+<br>
+リストをクリックするとイベントが発生し、現在選択されているオブジェクトを抽出します<br>
+そして、選択されているイメージオブジェクトをクライアント領域に描画しているのです<br>
+
+<br><hr>
+<h2>チェックリスト</h2>
+リストボックスの項目にチェックボックスのような機能をつけたいと思うかもしれません<br>
+例えば、ダウンロード支援ソフトのインターフェイスを考えて見ましょう<br>
+HTML ファイルを読み込み、ダウンロードが可能な URI を列挙します<br>
+このうちダウンロードするべきファイルをユーザーに選択してもらうとすれば<br>
+複数選択可能リストボックスより、チェックボックス型リストボックスのほうが便利です<br>
+<br>
+<strong>System.Windows.Forms.CheckedListBox</strong> はリストボックスを拡張し<br>
+項目に文字列だけではなく、チェックボックスを表示できるようにしたクラスです<br>
+これを使えば、リストボックスの項目をチェックする機能を利用することができます<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ListControl
+               System.Windows.Forms.ListBox
+                  System.Windows.Forms.CheckedListBox
+
+public class CheckedListBox : ListBox</b></pre>
+
+このクラスのコンストラクタは、デフォルトコンストラクタしか定義されていません<br>
+<br>
+チェックリストの項目を管理するのは、ListBox.ObjectCollection を継承した<br>
+<strong>System.Windows.Forms.CheckedListBox.ObjectCollection</strong> です<br>
+<pre><b>System.Object
+   System.Windows.Forms.ListBox.ObjectCollection
+      System.Windows.Forms.CheckedListBox.ObjectCollection
+
+public class CheckedListBox.ObjectCollection : ListBox.ObjectCollection</b></pre>
+
+基本的に、機能は ListBox.ObjectCollection と変わりません<br>
+やはり、Items プロパティを使ってこれにアクセスします<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		string[] kitty = {"Rena" , "Yuki" , "Mimi"};
+		CheckedListBox lb = new CheckedListBox();
+		lb.Size = new Size(200 , 80);
+		lb.Items.AddRange(kitty);
+
+		Controls.Add(lb);
+	}
+}</pre>
+<img src="img/00.090.jpg" class="img"><br>
+<br>
+リストボックスのプログラムを改良して、チェックリストを追加するように変更しました<br>
+図のように、項目にチェックボックスがついたリストを表示します<br>
+<br>
+デフォルトでは、チェックボックスにチェックを入れたりはずしたりするには<br>
+一度項目を選択して、その後再びクリックしなければなりません<br>
+すぐにチェックしたい場合は <strong>CheckedListBox.CheckOnClick</strong> を設定します<br>
+<br><b>
+public bool CheckOnClick {get; set;}<br>
+<br></b>
+このプロパティはデフォルトで false ですが<br>
+true を指定すれば、項目の選択と同時にチェックされます<br>
+<br>
+チェックされている項目を知るには <strong>CheckedListBox.CheckedIndices</strong> を<br>
+項目を得るには <strong>CheckedListBox.CheckedItems</strong> プロパティを使います<br>
+<br><b>
+public CheckedListBox.CheckedIndexCollection CheckedIndices {get;}<br>
+public CheckedListBox.CheckedItemCollection CheckedItems {get;}<br>
+<br></b>
+
+CheckedIndices は、チェック済みの項目のインデックスをコレクションしている<br>
+<strong>System.Windows.Forms.CheckedListBox.CheckedIndexCollection</strong> を返します<br>
+
+<pre><b>public class CheckedListBox.CheckedIndexCollection :
+	IList , ICollection , IEnumerable</b></pre>
+
+このクラスのコンストラクタは隠蔽されているので、インスタンスは作れません<br>
+インデックスを得るために、このクラスはインデクサとプロパティを提供しています<br>
+チェック項目の数は <strong>CheckedIndexCollection.Count</strong> プロパティで<br>
+インデックスを得るには <strong>CheckedIndexCollection.Item</strong> インデクサを使います<br>
+<br><b>
+public int Count {get;}<br>
+public int this[int index] {get;}<br>
+<br></b>
+同様に CheckedItemCollection プロパティは、チェック済み項目のコレクション<br>
+<strong>System.Windows.Forms.CheckedListBox.CheckedItemCollection</strong> を返します<br>
+
+<pre><b>public class CheckedListBox.CheckedItemCollection :
+	IList , ICollection , IEnumerable</b></pre>
+
+このクラスもまた、コンストラクタを呼び出すことはできません<br>
+チェック項目の数は <strong>CheckedItemCollection.Count</strong>プロパティで<br>
+チェック項目は <strong>CheckedItemCollection.Item</strong> インデクサで得られます<br>
+<br><b>
+public int Count {get;}<br>
+public object this[int index] {get; set;}<br>
+<br></b>
+これらの機能を使えば、正しくチェック済みの項目を取得し<br>
+適切な処理を施すことができるようになるでしょう<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	CheckedListBox.CheckedItemCollection cll;
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		string[] kitty = {"Rena" , "Yuki" , "Mimi"};
+		CheckedListBox lb = new CheckedListBox();
+		lb.Size = new Size(200 , 80);
+		lb.Items.AddRange(kitty);
+		lb.CheckOnClick = true;
+		lb.Click += new System.EventHandler(OnClick);
+
+		Controls.Add(lb);
+	}
+
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		if (cll == null) return;
+
+		for(int i = 0 ; i &#60; cll.Count ; i++)
+			g.DrawString("Checked = " + cll[i] ,
+				Font , Brushes.Black , 200 , Font.Height * i);
+	}
+
+	public void OnClick(object sender , System.EventArgs e) {
+		cll = ((CheckedListBox)sender).CheckedItems;
+		Invalidate();		
+	}
+}</pre>
+<img src="img/00.091.jpg" class="img"><br>
+<br>
+このプログラムは、チェック済み項目をリストの横に表示します<br>
+クリックイベントが発生すると、まずコレクションをフィールドに保存して再描画します<br>
+OnPaint() メソッドでは、このコレクションから項目の情報を得て表示しています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win39.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win41.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

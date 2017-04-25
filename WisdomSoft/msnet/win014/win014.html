@@ -1,0 +1,56 @@
+<html>
+ <head>
+ <title>イメージの情報</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>イメージの情報</h1>
+<hr>
+ <h2>イメージサイズを得る</h2>
+何らかの形で画像ファイルを伸縮したり、制御する場合<br>
+オリジナルのイメージの幅と高さというのは極めて重要な情報になります<br>
+<br>
+Image 抽象クラスは、これらの情報を得るためのプロパティが宣言されています<br>
+イメージの幅を得るには <strong>Width</strong>、高さを得るには <strong>Height</strong> プロパティを<br>
+同様に <strong>Size</strong> や <strong>PhysicalDimension</strong> プロパティからも取得できます<br>
+<br><b>
+public int Width {get;}<br>
+public int Height {get;}<br>
+public Size Size {get;}<br>
+public SizeF PhysicalDimension {get;}<br>
+<br></b>
+Width と Height プロパティは、幅と高さを表す数値を<br>
+Size と PhysicalDimension は幅と高さを表す構造体オブジェクトを返します<br>
+この情報を元に、イメージの正しい幅と高さをえることができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Image img = new Bitmap("test.jpg");
+		Point[] pt = {
+			new Point(img.Width , 0) , new Point(0 , 0) ,
+			new Point(img.Width , img.Height)
+		};
+		g.DrawImage(img , pt);
+	}
+}</pre>
+<img src="img/00.042.jpg" class="img"><br>
+<br>
+このプログラムは、平行四辺形の座標を指定する Point の配列で<br>
+左上角と右上角の座標を反転させることによって、画像を水平に反転しています<br>
+このとき、正しい本来のサイズで反転するために Image クラスのプロパティを使っています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win13.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win15.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

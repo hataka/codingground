@@ -1,0 +1,177 @@
+<html>
+ <head>
+ <title>曲線</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>曲線</h1>
+<hr>
+ <h2>ベジェ曲線</h2>
+自由な図をプログラムで表現するには<strong>曲線</strong>を扱う必要がありますが<br>
+.NET では、プログラムから自由に曲線を表現できる機能を用意しています<br>
+<br>
+CGクリエイターやグラフィックシステムプログラマであれば<br>
+ある程度<strong>ベジェ曲線</strong>についてはご存知でしょう<br>
+しかし、グラフィカル操作になれないプログラマは馴染みがないかもしれません<br>
+<br>
+Windows は OS レベルでベジェ曲線をサポートしています<br>
+これは、CG で用いられる曲線手法の一つでいくつかの座標から曲線を表現します<br>
+（たとえば、4つの点から描画するベジェ曲線は「3次ベジェ曲線」と呼ぶ）<br>
+このようなパラメータから表現する曲線を<strong>パラメトリック曲線</strong>と呼ぶこともあります<br>
+<br>
+ベジェ曲線の数式を考えたのは <strong>Pierre Bezier</strong> 氏という人物で<br>
+他のプラットフォームなどでベジェをサポートする場合、数式を調べるのも面白いかもしれません<br>
+高度なグラフィックプログラマを目指すなら、数式も知っておいて損はありません<br>
+<br>
+ベジェ曲線を描くには <strong>Graphics.DrawBezier()</strong> を用います<br>
+このメソッドは、4つの頂点から曲線を描きます<br>
+<pre><b>public void DrawBezier(
+	Pen pen ,
+	Point pt1 , Point pt2 , Point pt3 , Point pt4
+);
+public void DrawBezier(
+	Pen pen,
+	PointF pt1 , PointF pt2 , PointF pt3 , PointF pt4
+);
+public void DrawBezier(
+	Pen pen ,
+	float x1 , float y1 , float x2 , float y2 ,
+	float x3 , float y3 , float x4 , float y4
+);</pre></b>
+pen には、曲線を描くペンを表す Pen オブジェクトを指定します<br>
+pt1 〜 pt4 には、それぞれ曲線を描くための4つの頂点を指定します<br>
+x1、y1 〜 x4、y4 の場合も同様に、float 型でそれぞれ頂点の座標を指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		Application.Run(win);
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Point[] pt = {
+			new Point(10 , 10) , new Point(110 , 100) ,
+			new Point(210 , 100) , new Point(310 , 10)
+		};
+
+		g.DrawBezier(myPen , pt[0] , pt[1] , pt[2] , pt[3]);
+		g.DrawLines(myPen , pt);
+	}
+}</pre>
+<img src="img/00.004.jpg" class="img"><br>
+<br>
+このプログラムは、4つの頂点を利用してベジェ曲線を描画しています<br>
+頂点がわかりやすいように、その後 DrawLines() を使って頂点を結んでいます<br>
+<br>
+さらに複雑な曲線をプログラムから描く場合、ベジェ曲線を連続で繋げることができます<br>
+これを行うには <strong>Graphics.DrawBeziers()</strong> メソッドを使います<br>
+<br><b>
+public void DrawBeziers(Pen pen , Point[] points);<br>
+public void DrawBeziers(Pen pen , PointF[] points);<br>
+<br></b>
+points には、複数の連続した3次ベジェ曲線の頂点を表す<br>
+Point または PointF 構造体の配列を指定します<br>
+同時に複数の3次ベジェ曲線を描く場合、このメソッドを使うと便利です<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		Application.Run(win);
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Point[] pt = {
+			new Point(10 , 10) , new Point(110 , 100) ,
+			new Point(210 , 100) , new Point(310 , 10) ,
+			new Point(150 , 50) , new Point(310 , 100) ,
+			new Point(400 , 10)
+		};
+
+		g.DrawBeziers(myPen , pt);
+	}
+}</pre>
+<img src="img/00.005.jpg" class="img"><br>
+<br>
+図を見てわかるように、このプログラムは2つのベジェ曲線を描いています<br>
+この機能を使えば、人間にはなかなか描けない綺麗な曲線を描画できるでしょう<br>
+
+<br><hr>
+<h2>スプライン曲線</h2>
+.NET はさらに、スプライン曲線をサポートしています<br>
+スプライン曲線もまた、頂点の情報を元に曲線を描画するパラメトリック曲線の一つです<br>
+この曲線は、カーブの曲がる度合いを設定できるなどの柔軟性があります<br>
+<br>
+スプライン曲線を描くには <strong>Graphics.DrawCurve()</strong> メソッドを使います<br>
+<pre><b>public void DrawCurve(Pen pen , Point[] points);
+public void DrawCurve(Pen pen , PointF[] points);
+public void DrawCurve(Pen pen , Point[] points , float tension);
+public void DrawCurve(Pen pen , PointF[] points , float tension);
+
+public void DrawCurve(
+	Pen pen , PointF[] points ,
+	int offset , int numberOfSegments
+);
+public void DrawCurve(
+	Pen pen , Point[] points ,
+	int offset , int numberOfSegments , float tension
+);
+public void DrawCurve(
+	Pen pen , PointF[] points ,
+	int offset , int numberOfSegments , float tension
+);</b></pre>
+
+pen には曲線を描くペンを表す Pen オブジェクトを指定します<br>
+points には、曲線を定義する各頂点を示す構造体の配列を指定します<br>
+配列 points は、最低でも4つ以上の頂点を含んでいなければなりません<br>
+<br>
+tension には、カーブの強さを表す float 型の数値を指定します<br>
+この値が 0 である時、線は直線であると考えることができます<br>
+このパラメータが指定されていない場合、メソッドは滑らかな曲線を描きます<br>
+<br>
+offset には、points から最初に使用する配列のオフセットを指定します<br>
+numberOfSegments は offset から数えて、使用する要素の数を指定します<br>
+例えば、offset が 2 で、numberOfSegments が 4 ならば<br>
+頂点を表す配列 points の、points[2] 〜 points[5] 要素を用いて描画されます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0) , 1);
+		Point[] pt = {
+			new Point(10 , 10) , new Point(110 , 100) ,
+			new Point(210 , 100) , new Point(310 , 10) ,
+			new Point(150 , 50) , new Point(310 , 100) ,
+			new Point(400 , 10)
+		};
+
+		g.DrawCurve(myPen , pt , 0 , 3 , 0.5f);
+
+		myPen = new Pen(Color.FromArgb(0xFF , 0 , 0) , 1);
+		g.DrawCurve(myPen , pt , 3 , 3 , 1.0f);
+	}
+}</pre>
+<img src="img/00.010.jpg" class="img"><br>
+<br>
+このプログラムでは、わかりやすいように2回に分けて DrawCurve() を呼び出しています<br>
+最初の DrawCurve() は黒いペンで、2回目は赤いペンで描画しています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win2.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win4.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

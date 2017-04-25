@@ -1,0 +1,106 @@
+<html>
+ <head>
+ <title>リージョン</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>リージョン</h1>
+<hr>
+ <h2>ラスタオペレーション</h2>
+ピクセルの描画は、描画される前に<strong>ある二つの値が比較</strong>されます<br>
+それは、<strong>描画される色</strong>（ソース）と<strong>画面の色</strong>（ディスティネーション）です<br>
+<br>
+簡単に考えて、白を0黒を1として比較するとします<br>
+描画しようとしている色と画面の色を比較して、その結果で描画命令を実行するとすれば<br>
+ピクセルレベルの操作を全体的に、しかも簡易に行うことができるのです<br>
+<br>
+このようなピクセルレベルのビットの操作を<strong>ラスタオペレーション</strong>（ROP）と呼ばれ<br>
+2つのピクセルを操作することを<strong>バイナリラスタオペレーション</strong>(ROP2)と呼びます<br>
+2つのピクセルとは、描画する色と画面の色の二つです<br>
+<br>
+さて、このラスタオペレーションで一体何ができるのでしょうか<br>
+例えば、画面の色が白の時は黒を出力し、画面の色が黒の時は白を出力するというような<br>
+排他的な論理演算による操作などは、このラスタオペレーションで行うことができます<br>
+<br>
+この操作を実現するのが <strong>System.Drawing.Region</strong> クラスです<br>
+このクラスは、リージョン（範囲）情報を保持し<br>
+さらに、他のリージョンやパス、長方形などと論理演算して ROP を実現します<br>
+<pre><b>Object
+   MarshalByRefObject
+      Region
+
+public sealed class Region : MarshalByRefObject, IDisposable</b></pre>
+
+コンストラクタは、以下のものが定義されています<br>
+<br><b>
+public Region();<br>
+public Region(GraphicsPath path);<br>
+public Region(Rectangle rect);<br>
+public Region(RectangleF rect);<br>
+public Region(RegionData rgnData);<br>
+<br></b>
+path には、リージョンとなるパスを表す GraphicsPath オブジェクトを<br>
+rect には、長方形を示す構造体オブジェクトを指定します<br>
+rgnData は、リージョンのデータを示す RegionData オブジェクトを指定します<br>
+<br>
+リージョンは、指定したパスや長方形などで初期化され、インスタンスが作られます<br>
+後は、このリージョンに対して指定した矩形と論理演算を行えます<br>
+<br>
+単純に、指定された領域と現在の領域を組み合わせるには <strong>Region.Union()</strong> を<br>
+重なる部分を反転させるには <strong>Region.Xor()</strong> メソッドを使います<br>
+<br><b>
+public void Union(GraphicsPath path);<br>
+public void Union(Rectangle rect);<br>
+public void Union(RectangleF rect);<br>
+public void Union(Region region);<br>
+<br>
+public void Xor(GraphicsPath path);<br>
+public void Xor(Rectangle rect);<br>
+public void Xor(RectangleF rect);<br>
+public void Xor(Region region);<br>
+<br></b>
+path には、現在のリージョンと比較するパスを表す GraphicsPath オブジェクトを<br>
+rect には、長方形をあらわす構造体オブジェクトを<br>
+region には、リージョンを表す Region オブジェクトを指定することができます<br>
+<br>
+Region オブジェクトは <strong>Graphics.FillRegion()</strong> メソッドで描画できます<br>
+<br><b>
+public void FillRegion(Brush brush , Region region);<br>
+<br></b>
+brush には塗りつぶしに用いる論理ブラシを<br>
+region には描画する Region オブジェクトを指定します<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Region rg = new Region(new Rectangle(10 , 10 , 200 , 100));
+		rg.Xor(new Rectangle(100 , 50 , 200 , 100));
+		g.FillRegion(Brushes.Black , rg);
+	}
+}</pre>
+<img src="img/00.037.jpg" class="img"><br>
+<br>
+このプログラムは、指定した長方形で Region インスタンスを作成し<br>
+さらに、Xor() メソッドで、指定した長方形を排他的に追加しています<br>
+その結果、Region は交わった部分を除外して更新されます<br>
+<br>
+この他にも、指定した領域のうち現在の領域から<br>
+交わらない部分だけで更新する <strong>Region.Complement()</strong> メソッドや<br>
+逆に、現在の領域のうち指定した領域に交わらない部分だけで更新する<br>
+<strong>Region.Exclude()</strong> メソッドなども存在します<br>
+これらのパラメータは Union() や Xor() メソッドと同じなので、説明は省略します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win11.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win13.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

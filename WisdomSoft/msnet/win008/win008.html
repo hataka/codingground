@@ -1,0 +1,102 @@
+<html>
+ <head>
+ <title>Pens と Brushes</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>Pens と Brushes</h1>
+<hr>
+ <h2>定義済みオブジェクト</h2>
+通常、ペンやブラシはコンストラクタを用いてインスタンスを作成しますが<br>
+これ以外にも、.NET で定義されている定義済みのペンなどが存在します<br>
+<br>
+定義済みのペンは <strong>System.Drawing.Pens</strong> クラスで表され<br>
+このクラスは静的な Pen 型の読み取り専用プロパティを提供してます<br>
+<br><b>
+public sealed class Pens<br>
+<br></b>
+このクラスには、多くの静的な定義済みペンを表すプロパティが存在します<br>
+数が多いので、宣言ではなくプロパティ名だけを以下に列挙します<br>
+<br>
+<table border="1">
+<tr><th colspan="4">メンバ
+<tr><td>AliceBlue		<td>AntiqueWhite	<td>Aqua		<td>Aquamarine
+<tr><td>Azure		<td>Beige	<td>Bisque	<td>Black
+<tr><td>BlanchedAlmond	<td>Blue		<td>BlueViolet	<td>Brown
+<tr><td>BurlyWood		<td>CadetBlue	<td>Chartreuse	<td>Chocolate
+<tr><td>Coral		<td>CornflowerBlue<td>Cornsilk	<td>Crimson
+<tr><td>Cyan		<td>DarkBlue	<td>DarkCyan	<td>DarkGoldenrod
+<tr><td>DarkGray		<td>DarkGreen	<td>DarkKhaki	<td>DarkMagenta
+<tr><td>DarkOliveGreen	<td>DarkOrange	<td>DarkOrchid	<td>DarkRed
+<tr><td>DarkSalmon	<td>DarkSeaGreen	<td>DarkSlateBlue	<td>DarkSlateGray
+<tr><td>DarkTurquoise	<td>DarkViolet	<td>DeepPink	<td>DeepSkyBlue
+<tr><td>DimGray		<td>DodgerBlue	<td>Firebrick	<td>FloralWhite
+<tr><td>ForestGreen	<td>Fuchsia	<td>Gainsboro	<td>GhostWhite
+<tr><td>Gold		<td>Goldenrod	<td>Gray		<td>Green
+<tr><td>GreenYellow	<td>Honeydew	<td>HotPink	<td>IndianRed
+<tr><td>Indigo		<td>Ivory		<td>Khaki		<td>Lavender
+<tr><td>LavenderBlush	<td>LawnGreen	<td>LemonChiffon	<td>LightBlue
+<tr><td>LightCoral		<td>LightCyan	<td>LightGoldenrodYellow	<td>LightGray
+<tr><td>LightGreen	<td>LightPink	<td>LightSalmon	<td>LightSeaGreen
+<tr><td>LightSkyBlue	<td>LightSlateGray	<td>LightSteelBlue	<td>LightYellow
+<tr><td>Lime		<td>LimeGreen	<td>Linen	<td>Magenta
+<tr><td>Maroon		<td>MediumAquamarine<td>MediumBlue<td>MediumOrchid
+<tr><td>MediumPurple	<td>MediumSeaGreen<td>MediumSlateBlue<td>MediumSpringGreen
+<tr><td>MediumTurquoise	<td>MediumVioletRed<td>MidnightBlue	<td>MintCream
+<tr><td>MistyRose		<td>Moccasin	<td>NavajoWhite	<td>Navy
+<tr><td>OldLace		<td>Olive		<td>OliveDrab	<td>Orange
+<tr><td>OrangeRed		<td>Orchid	<td>PaleGoldenrod	<td>PaleGreen
+<tr><td>PaleTurquoise	<td>PaleVioletRed	<td>PapayaWhip	<td>PeachPuff
+<tr><td>Peru		<td>Pink		<td>Plum		<td>PowderBlue
+<tr><td>Purple		<td>Red		<td>RosyBrown	<td>RoyalBlue
+<tr><td>SaddleBrown	<td>Salmon	<td>SandyBrown	<td>SeaGreen
+<tr><td>SeaShell		<td>Sienna	<td>Silver	<td>SkyBlue
+<tr><td>SlateBlue		<td>SlateGray	<td>Snow		<td>SpringGreen
+<tr><td>SteelBlue		<td>Tan		<td>Teal		<td>Thistle
+<tr><td>Tomato		<td>Transparent	<td>Turquoise	<td>Violet
+<tr><td>Wheat		<td>White	<td>WhiteSmoke	<td>Yellow
+<tr><td>YellowGreen
+</table>
+<br>
+同様に、ブラシも <strong>System.Drawing.Brushes</strong> クラスで定義されています<br>
+このクラスも、定義済みのブラシを静的プロパティで提供しています<br>
+<br><b>
+public sealed class Brushes<br>
+<br></b>
+このクラスが提供する静的プロパティの名前は Pens と同じです<br>
+実は、Pens や Brushes クラスが提供するこれらのプロパティは<br>
+単純に <strong>Color 構造体の定義済みカラー</strong>を表しています<br>
+<br>
+実は Color 構造体は、インスタンスを作成する以外にも<br>
+Pens クラスのプロパティと同一名で、定義済みの色を静的プロパティで提供しています<br>
+これら Pens、Brushes クラス、そして Color 構造体の静的プロパティを使えば<br>
+よく使うと思われる色のペンやブラシ、カラーを簡単に取得することができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle rect = new Rectangle(10 , 10 , 200 , 100);
+		g.FillRectangle(Brushes.Red , rect);
+		g.DrawRectangle(Pens.Black , rect);
+	}
+}</pre>
+<img src="img/00.025.jpg" class="img"><br>
+<br>
+これは、定義済みのブラシとペンを用いて描画しているプログラムです<br>
+赤や黒など、単純な色のオブジェクトはすでに定義済みなので、このように使うことができます<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win7.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win9.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

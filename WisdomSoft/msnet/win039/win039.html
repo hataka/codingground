@@ -1,0 +1,78 @@
+<html>
+ <head>
+ <title>グループボックス</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>グループボックス</h1>
+<hr>
+ <h2>コントロールのグループ</h2>
+ラジオボタンのように、グループを認識するようなコントロールや<br>
+特定の論理的な意味を持つコントロールグループを管理する必要がある場合<br>
+それらを全てメインウィンドウに追加して管理するという方法は<br>
+オブジェクト指向という崇高な理念の理想からは大きく外れたものとしかいえません<br>
+<br>
+このような処理を求められる場合、グループを制御する専用のコントロールを作ることが望まれます<br>
+専用のコントロールは、もちろん自分で Control クラスを拡張してもよいのですが<br>
+.NET では <strong>System.Windows.Forms.GroupBox</strong> を使ってグループ化できます<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.GroupBox
+
+public class GroupBox : Control</b></pre>
+
+このクラスのコンストラクタは、デフォルトコンストラクタしか定義されていません<br>
+基本的に、このクラスは Control をグループ管理専用に拡張したというだけです<br>
+何らかの処理を行うための機能などは追加されていません<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		string[] kitty = {"Rena" , "Yuki" , "Mimi"};
+		string[] taruto = {"Taruto" , "Charlotte" , "Chitose"};
+
+		GroupBox[] gb = {new GroupBox() , new GroupBox()};
+		gb[0].Bounds = new Rectangle(10 , 10 , 200 , 130);
+		gb[1].Bounds = new Rectangle(220 , 10 , 200 , 130);
+		gb[0].Text = "Kitty on your lap";
+		gb[1].Text = "Magical nyan nyan TARUTO";
+
+		PutButton(gb[0] , kitty);
+		PutButton(gb[1] , taruto);
+
+		foreach(GroupBox ctrl in gb) Controls.Add(ctrl);
+	}
+	public void PutButton(Control ctrl , string[] text) {
+		RadioButton[] bt = new RadioButton[text.Length];
+		for(int i = 0 ; i &#60; bt.Length ; i++) {
+			bt[i] = new RadioButton();
+			bt[i].Bounds = new Rectangle(20 , 20 + (30 * i) , 150 , 30);
+			bt[i].Text = text[i];
+			ctrl.Controls.Add(bt[i]);
+		}
+	}
+}</pre>
+<img src="img/00.085.jpg" class="img"><br>
+<br>
+図の四角い枠組みがグループボックスコントロールです<br>
+このプログラムでは、論理的に意味の異なるラジオボタンの配列を<br>
+それぞれ、異なるグループとして管理するためにグループボックスを作成して追加しています<br>
+ラジオボタンは、メインウィンドウではなくグループボックスに追加されているのです<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win38.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win40.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<html>
+ <head>
+ <title>メニュー</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>メニュー</h1>
+<hr>
+ <h2>メニューバーの作成</h2>
+メニューバーは、ユーザーとの対話に必要不可欠な機能の一つです<br>
+アプリケーションは、どの機能を実行させるかをユーザーに選択させる最良の手段として<br>
+ウィンドウの上部にメニューバーをつけて対話することができるのです<br>
+<br>
+Win32 API でプログラムからメニューを作成すると、ものすごく面倒でした<br>
+メニューを作成するために、構造体を設定して関数でメニューオブジェクトを作りました<br>
+しかし .NET はオブジェクト指向なので、より美しい構造にまとめられています<br>
+<br>
+まず、全てのメニューは <strong>System.Windows.Forms.Menu</strong> を基底とします<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Menu
+
+public abstract class Menu : Component</b></pre>
+
+見てのとおり、このクラスは抽象クラスです<br>
+メニューバーやメミュー項目は、すべてこのクラスを継承しているのです<br>
+最も重要なのは、このクラスの <strong>Menu.MenuItems</strong> プロパティです<br>
+<br><b>
+public Menu.MenuItemCollection MenuItems {get;}<br>
+<br></b>
+このプロパティが返す MenuItemCollection 型は Menu クラスの内部クラスです<br>
+<strong>System.Windows.Forms.Menu.MenuItemCollection</strong> クラスは次のようになっています<br>
+
+<pre><b>public class Menu.MenuItemCollection :
+	IList , ICollection , IEnumerable</b></pre>
+
+このクラスは、メニュー項目を管理する非常に重要な役割を持っています<br>
+Menu クラスを継承するクラスは、MenuItems プロパティからこのクラスにアクセスすることができます<br>
+このクラスの細かい機能については、すぐ後で詳しく説明します<br>
+<br>
+では、実際にインスタンスを作ってメニューバーを作成するにはどうすればよいでしょうか<br>
+メニューバーは <strong>System.Windows.Forms.MainMenu</strong> で表されます<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Menu
+            System.Windows.Forms.MainMenu
+
+public class MainMenu : Menu</b></pre>
+
+このクラスのコンストラクタは、次のように定義されています<br>
+<br><b>
+public MainMenu();<br>
+public MainMenu(MenuItem[] items);<br>
+<br></b>
+items には、新しく作成されたメニューに追加する項目を指定します<br>
+MenuItem 型については、すぐ後で詳しく説明します<br>
+<br>
+インスタンスを生成できれば、これで MenuItemCollection にアクセスできます<br>
+作成したメニューに新しく項目を追加するには MenuItems プロパティから<br>
+<strong>MenuItemCollection.Add()</strong> メソッドにアクセスして追加します<br>
+
+<pre><b>public virtual int Add(MenuItem item);
+public virtual MenuItem Add(string caption);
+public virtual int Add(int index , MenuItem item);
+public virtual MenuItem Add(string caption , EventHandler onClick);
+public virtual MenuItem Add(string caption , MenuItem[] items);</b></pre>
+
+item には追加する項目を示す MenuItem を<br>
+caption には、メニュー項目として追加する文字列を指定します<br>
+index は新しく追加するメニュー項目の位置を示すインデックス番号を指定します<br>
+これを指定しなければ、新しい項目はメニューの末尾に追加されます<br>
+<br>
+onClick はメニューをユーザーが選択した時に発生するイベントを指定します<br>
+items は、このメニュー項目に含まれる新しい MenuItem オブジェクトの配列を指定します<br>
+<br>
+戻り値が int 型のメソッドは、項目が追加されたインデックスを返します<br>
+MenuItem を返すメソッドは、コレクションに追加されているメニュー項目を返します<br>
+<br>
+とりあえず、今は文字列を使ってメニュー項目を追加してみましょう<br>
+作成した MainMenu オブジェクトをウィンドウに設定するには<br>
+<strong>Form.Menu</strong> プロパティを使って取得したり設定することができます<br>
+<br><b>
+public MainMenu Menu {get; set;}<br>
+<br></b>
+では、まず簡単なメニューバーを作ってみましょう<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		mm.MenuItems.Add("Rena(&R)");
+		mm.MenuItems.Add("Yuki(&Y)");
+		mm.MenuItems.Add("Mimi(&M)");
+
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.069.jpg" class="img"><br>
+<br>
+このプログラムを実行すると、3つの項目があるメニューバー付きのウィンドウが表示されます<br>
+因みに、メニューは Alt キー + 文字キーで操作 することができます<br>
+これは、デフォルトで Alt キー + アイテムの先頭文字 でアイテムが選択されます<br>
+しかし、メニューアイテムの名前に & を指定 すると直後の文字に下線がつき<br>
+Alt キーとその直後の文字（下線付き文字） でアイテムを選択できるようになります<br>
+<br>
+メニュー項目は、文字列で指定するほかに<br>
+<strong>System.Windows.Forms.MenuItem</strong> クラスを用いて表現することができます<br>
+こちらを使ったほうが、オブジェクト指向プログラミングとして美しい形でしょう<br>
+このクラスはメニュー項目とイベント、ショートカットなどがカプセルかされているからです<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Menu
+            System.Windows.Forms.MenuItem
+
+public class MenuItem : Menu</b></pre>
+
+このクラスのコンストラクタは次のように定義されています<br>
+
+<pre><b>public MenuItem();
+public MenuItem(string text);
+public MenuItem(string text , EventHandler onClick);
+public MenuItem(string text , MenuItem[] items);
+
+public MenuItem(
+	string text , EventHandler onClick , Shortcut shortcut
+);
+public MenuItem(
+	MenuMerge mergeType , int mergeOrder ,
+	Shortcut shortcut , string text ,
+	EventHandler onClick , EventHandler onPopup ,
+	EventHandler onSelect , MenuItem[] items
+);</b></pre>
+
+text には、メニュー項目の文字列を指定します<br>
+onClick は、メニュー選択時に発生するイベントを指定します<br>
+items は、このメニュー項目のサブメニューを示すオブジェクトの配列を指定します<br>
+<br>
+shortcut には、メニュー項目で使用できるショートカットキーを指定します<br>
+mergeType は別のメニューの項目にマージされたときの MenuItem の動作を、<br>
+margeOrder はそのメニュー項目がマージ後のメニューで占める位置を相対的に示す値を指定します<br>
+onPopup は Popup イベント、onSelect は Select イベントを処理するハンドラを指定します<br>
+これらのイベントについて、詳細は後期します<br>
+<br>
+メニュー項目には、ショートカットキーを割り当てることができます<br>
+これは <strong>System.Windows.Forms.Shortcut</strong> 列挙型で指定できます<br>
+<pre><b>[Serializable]
+[ComVisible(true)]
+public enum Shortcut</b></pre>
+
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>ショートカット条件<th>メンバ<th>ショートカット条件
+<tr><td>Alt0	<td>Alt + 0	<td>Alt1	<td>Alt + 1
+<tr><td>Alt2	<td>Alt + 2	<td>Alt3	<td>Alt + 3
+<tr><td>Alt4	<td>Alt + 4	<td>Alt5	<td>Alt + 5
+<tr><td>Alt6	<td>Alt + 6	<td>Alt7	<td>Alt + 7
+<tr><td>Alt8	<td>Alt + 8	<td>Alt9	<td>Alt + 9
+<tr><td>AltBksp	<td>Alt + BackSpace	<td>AltF1	<td>Alt + F1
+<tr><td>AltF10	<td>Alt + F10	<td>AltF11	<td>Alt + F11
+<tr><td>AltF12	<td>Alt + F12	<td>AltF2	<td>Alt + F2 
+<tr><td>AltF3 <td>Alt + F3 	<td>AltF4 <td>Alt + F4 
+<tr><td>AltF5 <td>Alt + F5 	<td>AltF6 <td>Alt + F6 
+<tr><td>AltF7 <td>Alt + F7 	<td>AltF8 <td>Alt + F8 
+<tr><td>AltF9 <td>Alt + F9 	<td>Ctrl0 <td>Ctrl + 0 
+<tr><td>Ctrl1 <td>Ctrl + 1 	<td>Ctrl2 <td>Ctrl + 2 
+<tr><td>Ctrl3 <td>Ctrl + 3 	<td>Ctrl4 <td>Ctrl + 4 
+<tr><td>Ctrl5 <td>Ctrl + 5 	<td>Ctrl6 <td>Ctrl + 6 
+<tr><td>Ctrl7 <td>Ctrl + 7 	<td>Ctrl8 <td>Ctrl + 8 
+<tr><td>Ctrl9 <td>Ctrl + 9 	<td>CtrlA <td>Ctrl + A 
+<tr><td>CtrlB <td>Ctrl + B 	<td>CtrlC <td>Ctrl + C 
+<tr><td>CtrlD <td>Ctrl + D 	<td>CtrlDel <td>Ctrl + Delete 
+<tr><td>CtrlE <td>Ctrl + E 	<td>CtrlF <td>Ctrl + F 
+<tr><td>CtrlF1 <td>Ctrl + F1 	<td>CtrlF10 <td>Ctrl + F10 
+<tr><td>CtrlF11 <td>Ctrl + F11 	<td>CtrlF12 <td>Ctrl + F12 
+<tr><td>CtrlF2 <td>Ctrl + F2 	<td>CtrlF3 <td>Ctrl + F3 
+<tr><td>CtrlF4 <td>Ctrl + F4 	<td>CtrlF5 <td>Ctrl + F5 
+<tr><td>CtrlF6 <td>Ctrl + F6 	<td>CtrlF7 <td>Ctrl + F7 
+<tr><td>CtrlF8 <td>Ctrl + F8 	<td>CtrlF9 <td>Ctrl + F9 
+<tr><td>CtrlG <td>Ctrl + G 	<td>CtrlH <td>Ctrl + H 
+<tr><td>CtrlI <td>Ctrl + I 	<td>CtrlIns <td>Ctrl + Insert 
+<tr><td>CtrlJ <td>Ctrl + J 	<td>CtrlK <td>Ctrl + K 
+<tr><td>CtrlL <td>Ctrl + L 	<td>CtrlM <td>Ctrl + M 
+<tr><td>CtrlN <td>Ctrl + N 	<td>CtrlO <td>Ctrl + O 
+<tr><td>CtrlP <td>Ctrl + P 	<td>CtrlQ <td>Ctrl + Q 
+<tr><td>CtrlR <td>Ctrl + R 	<td>CtrlS <td>Ctrl + S 
+<tr><td>CtrlShift0 <td>Ctrl + Shift + 0 	<td>CtrlShift1 <td>Ctrl + Shift + 1 
+<tr><td>CtrlShift2 <td>Ctrl + Shift + 2 	<td>CtrlShift3 <td>Ctrl + Shift + 3 
+<tr><td>CtrlShift4 <td>Ctrl + Shift + 4 	<td>CtrlShift5 <td>Ctrl + Shift + 5 
+<tr><td>CtrlShift6 <td>Ctrl + Shift + 6 	<td>CtrlShift7 <td>Ctrl + Shift + 7 
+<tr><td>CtrlShift8 <td>Ctrl + Shift + 8 	<td>CtrlShift9 <td>Ctrl + Shift + 9 
+<tr><td>CtrlShiftA <td>Ctrl + Shift + A 	<td>CtrlShiftB <td>Ctrl + Shift + B 
+<tr><td>CtrlShiftC <td>Ctrl + Shift + C 	<td>CtrlShiftD <td>Ctrl + Shift + D 
+<tr><td>CtrlShiftE <td>Ctrl + Shift + E 	<td>CtrlShiftF <td>Ctrl + Shift + F 
+<tr><td>CtrlShiftF1 <td>Ctrl + Shift + F1 	<td>CtrlShiftF10 <td>Ctrl + Shift + F10 
+<tr><td>CtrlShiftF11 <td>Ctrl + Shift + F11 	<td>CtrlShiftF12 <td>Ctrl + Shift + F12 
+<tr><td>CtrlShiftF2 <td>Ctrl + Shift + F2 	<td>CtrlShiftF3 <td>Ctrl + Shift + F3 
+<tr><td>CtrlShiftF4 <td>Ctrl + Shift + F4 	<td>CtrlShiftF5 <td>Ctrl + Shift + F5 
+<tr><td>CtrlShiftF6 <td>Ctrl + Shift + F6 	<td>CtrlShiftF7 <td>Ctrl + Shift + F7 
+<tr><td>CtrlShiftF8 <td>Ctrl + Shift + F8 	<td>CtrlShiftF9 <td>Ctrl + Shift + F9 
+<tr><td>CtrlShiftG <td>Ctrl + Shift + G 	<td>CtrlShiftH <td>Ctrl + Shift + H 
+<tr><td>CtrlShiftI <td>Ctrl + Shift + I 	<td>CtrlShiftJ <td>Ctrl + Shift + J 
+<tr><td>CtrlShiftK <td>Ctrl + Shift + K 	<td>CtrlShiftL <td>Ctrl + Shift + L 
+<tr><td>CtrlShiftM <td>Ctrl + Shift + M 	<td>CtrlShiftN <td>Ctrl + Shift + N 
+<tr><td>CtrlShiftO <td>Ctrl + Shift + O 	<td>CtrlShiftP <td>Ctrl + Shift + P 
+<tr><td>CtrlShiftQ <td>Ctrl + Shift + Q 	<td>CtrlShiftR <td>Ctrl + Shift + R 
+<tr><td>CtrlShiftS <td>Ctrl + Shift + S 	<td>CtrlShiftT <td>Ctrl + Shift + T 
+<tr><td>CtrlShiftU <td>Ctrl + Shift + U 	<td>CtrlShiftV <td>Ctrl + Shift + V 
+<tr><td>CtrlShiftW <td>Ctrl + Shift + W 	<td>CtrlShiftX <td>Ctrl + Shift + X 
+<tr><td>CtrlShiftY <td>Ctrl + Shift + Y 	<td>CtrlShiftZ <td>Ctrl + Shift + Z 
+<tr><td>CtrlT <td>Ctrl + T 	<td>CtrlU <td>Ctrl + U 
+<tr><td>CtrlV <td>Ctrl + V 	<td>CtrlW <td>Ctrl + W 
+<tr><td>CtrlX <td>Ctrl + X 	<td>CtrlY <td>Ctrl + Y 
+<tr><td>CtrlZ <td>Ctrl + Z 	<td>Del <td>Delete 
+<tr><td>F1 <td>F1 	<td>F10 <td>F10 
+<tr><td>F11 <td>F11 	<td>F12 <td>F12 
+<tr><td>F2 <td>F2 	<td>F3 <td>F3 
+<tr><td>F4 <td>F4 	<td>F5 <td>F5 
+<tr><td>F6 <td>F6 	<td>F7 <td>F7 
+<tr><td>F8 <td>F8 	<td>F9 <td>F9 
+<tr><td>Ins <td>Insert 	<td>None	<td>ショートカット キーなし
+<tr><td>ShiftDel <td>Shift + Delete 	<td>ShiftF1 <td>Shift + F1 
+<tr><td>ShiftF10 <td>Shift + F10 	<td>ShiftF11 <td>Shift + F11 
+<tr><td>ShiftF12 <td>Shift + F12 	<td>ShiftF2 <td>Shift + F2 
+<tr><td>ShiftF3 <td>Shift + F3 		<td>ShiftF4 <td>Shift + F4 
+<tr><td>ShiftF5 <td>Shift + F5 		<td>ShiftF6 <td>Shift + F6 
+<tr><td>ShiftF7 <td>Shift + F7 		<td>ShiftF8 <td>Shift + F8 
+<tr><td>ShiftF9 <td>Shift + F9 		<td>ShiftIns <td>Shift + Insert 
+</table>
+<br>
+メニュー項目にショートカットを割り当てる場合に、これらの列挙型メンバを指定します<br>
+頻繁に使われると想定されるメニュー項目には、ショートカットを割り当ててください<br>
+特に、熟練の利用者はマウスではなくキーボードを中心に入力する傾向があります<br>
+<br>
+メニュー項目が別のメニューの項目に組み合わされた時の<br>
+この MenuItem の動作を指定するには<br>
+<strong>System.Windows.Forms.MenuMerge</strong> を使います<br>
+
+<pre><b>[Serializable]
+public enum MenuMerge</b></pre>
+
+この列挙型メンバは、次のように定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Add		<td>MenuItem は、マージ後のメニュー内にある<br>既存の MenuItem オブジェクトのコレクションに追加されます
+<tr><td>MergeItems	<td>この MenuItem のすべてのサブメニュー項目は<br>マージ後のメニューで同じ位置にある<br>既存の MenuItem オブジェクトのサブメニュー項目にマージされます
+<tr><td>Remove		<td>MenuItem は、マージ後のメニューには含まれません
+<tr><td>Replace		<td>MenuItem は、マージ後のメニューで<br>同じ位置にある既存の MenuItem と置換されます
+</table>
+<br>
+ショートカットキーは <strong>MenuItem.Shortcut</strong> プロパティで<br>
+マージタイプについては <strong>MenuItem.MergeType</strong> プロパティで<br>
+マージ後の位置は <strong>MenuItem.MeregeOrder</strong> プロパティでも設定できます<br>
+<br><b>
+public Shortcut Shortcut {get; set;}<br>
+public MenuMerge MergeType {get; set;}<br>
+public int MergeOrder {get; set;}<br>
+<br></b>
+同様に、メニューの文字列も <strong>MenuItem.Text</strong> プロパティを使って<br>
+取得したり、新しく設定することができます<br>
+<br><b>
+public string Text {get; set;}<br>
+<br></b>
+これらのプロパティを使えば、柔軟にメニュー項目の設定を変更できます<br>
+さっそく、MenuItem クラスを使ったメニューを作ってみましょう<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		MenuItem rena = new MenuItem("Rena");
+		MenuItem yuki = new MenuItem("Yuki");
+		MenuItem mimi = new MenuItem("Mimi");
+
+		mm.MenuItems.Add(rena);
+		mm.MenuItems.Add(yuki);
+		mm.MenuItems.Add(mimi);
+
+		Menu = mm;
+	}
+}</pre>
+
+このプログラムを実行すると、先ほどのように<br>
+メニューバーがついているウィンドウが表示されます<br>
+基本的には同じですが、MenuItem を使っているというところで違います<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win29.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win31.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

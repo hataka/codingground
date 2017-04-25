@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<root title="$(CurProjectName)" icon="" expand="true">
+  <folder title="Menu" expand="false">
+    <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
+    <record title="XmlTreeMenu" action="menu" path="$(BaseDir)\SettingData\XmlTreeMenu.xml" />
+    <record title="FlashProject" action="menu" path="$(BaseDir)\SettingData\\FlashProject.xml" />
+<!--
+    <record title="VC++2008 Sample" action="menu" path="F:\VCSharp\MDI\FlashDevelop\FlashDevelop\Bin\Debug\MDIFormData\VCPP2008_menu.xml" />
+-->
+  </folder>
+  <folder title="LocalSite">
+    <record title="PukiWki" path="http://localhost/pukiwiki/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="FrameWork" path="http://localhost/FrameWork/FrameWork.html" />
+    <record title="Local Frame" action="browse" path="F:\WisdomSoft\framework\system\msnet\frame.html" />
+    <record title="Local Frame in Chrome" action="winexe" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" args="F:\WisdomSoft\framework\system\msnet\frame.html" />
+<!-- 
+    <record title="Google" action="winexe" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" args="http://www.google.co.jp" />
+    <record title="C# links" path="http://localhost/VCSharp/links/dir_traverse_htmllink.php" />
+    <record title="pdf" action="webbrowser" path="F:\svgGraphics\hirano-lab\00svg-full09.pdf" />
+-->  
+  </folder>
+  <folder title="WebSite">
+    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+    <record title="yahoo" path="http://www.yahoo.co.jp/" />
+    <record title="WisdomSoft" path="http://wisdom.sakura.ne.jp/" />
+  </folder>
+  <folder title="ビルド" expand="false">
+    <record title="build.bat" action="RunProcess" command="cmd.exe" args=" /k $(CurProjectDir)\build.bat" />
+    <!--
+    <record title="VC# 2008 rebuild(cmd)" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="./k &quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe&quot; main.csproj /rebuild" />
+    <record title="resgen" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="./k &quot;C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\resgen.exe&quot; main.resx main.resources" />
+    -->
+    <record title="VC# 2010  Express 起動" action="RunProcess" command="$(CurProjectDir)\main.sln" />
+  </folder>
+  <folder title="実行" expand="false">
+    <record title="Console Output" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="/k $(CurProjectDir)\main.exe" />
+    <record title="Windows Output" action="RunProcess" command="$(CurProjectDir)\main.exe" />
+    <record title="RunApp.wsf" action="RunProcess" command="C:\WINDOWS\system32\wscript.exe" args="//nologo $(CurProjectDir)\RunApp.wsf" />
+    <record title="RunScript" action="RunProcess" command="F:\Programs\csscript\csws.exe" args="$(CurProjectDir)\main.cs" />
+<!--
+    <record title="RunWsScript.wsf" action="RunProcess" command="C:\WINDOWS\system32\Wscript.exe" args="//nologo F:\cpp\Neko\form\form_06\drawstring02\RunWsScript.wsf" />
+-->
+  </folder>
+  <folder title="Source" expand="true">
+    <record title="main.cs" action="Open" path="$(CurProjectDir)\main.cs" />
+  </folder>
+</root>

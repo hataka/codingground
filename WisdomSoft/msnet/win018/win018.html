@@ -1,0 +1,197 @@
+<html>
+ <head>
+ <title>ウィンドウの情報</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ウィンドウの情報</h1>
+<hr>
+ <h2>コントロールのサイズ</h2>
+.NET アプリケーションのウィンドウは、主に Form クラスを継承したオブジェクトでしょう<br>
+しかし、この過程には様々なクラスが継承されているので、とても複雑です<br>
+<br>
+.NET のウィンドウの制御を知るには、全てのコントロールの<br>
+基底となる <strong>System.Windows.Forms.Control</strong> クラスを知る必要があります<br>
+このクラスは、インターフェイスなどを実装した Component クラスを継承していています<br>
+<pre><b>Object
+   MarshalByRefObject
+      Component
+         Control
+
+public class Control : Component, ISynchronizeInvoke, IWin32Window</b></pre>
+
+このクラスは全てのウィンドウ、コントロールの基本となるクラスです<br>
+基底クラスの Component は、System.Windows.Forms 名前空間の全ての要素が持つ<br>
+簡単なインターフェイスなどを実装しただけの、ルートとなるクラスです<br>
+この Component クラスについては、今は特に説明することはありません<br>
+<br>
+全てのコントロールは Control クラスを継承しているため<br>
+サイズや位置、有効や向こうなどの基本情報や制御は、このクラスのメンバで行えます<br>
+例えば、コントロールの長方形は <strong>Control.Left</strong>、<strong>Control.Top</strong>、<br>
+<strong>Control.Right</strong>、<strong>Control.Bottom</strong> プロパティなどで制御できます<br>
+<br><b>
+public int Left {get; set;}<br>
+public int Top {get; set;}<br>
+public int Right {get; set;}<br>
+public int Bottom {get; set;}<br>
+<br></b>
+Left はコントロールの左上隅の X 座標、Top は Y 座標<br>
+Right はコントロールの右下隅の X 座標、Bottom は Y 座標を指定します<br>
+子コントロールであれば、座標は親ウィンドウのクライアント座標となりますが<br>
+メインウィンドウの時のみ、スクリーン座標系で計算されます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+	
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+
+		g.DrawString("Left = " + Left ,
+			new Font("MS Serif" , 14) , Brushes.Black , 0 , 0);
+		g.DrawString("Top = " + Top ,
+			new Font("MS Serif" , 14) , Brushes.Black , 0 , 15);
+		g.DrawString("Right = " + Right ,
+			new Font("MS Serif" , 14) , Brushes.Black , 0 , 30);
+		g.DrawString("Bottom = " + Bottom ,
+			new Font("MS Serif" , 14) , Brushes.Black , 0 , 45);
+		
+	}
+}</pre>
+<img src="img/00.047.jpg" class="img"><br>
+<br>
+このプログラムは、ウィンドウの左上の座標と右下の座標を表示するものです<br>
+ただし、ウィンドウを移動させても、移動に対する再描画イベントを設定していないので<br>
+ウィンドウを最小化するなどして、無効矩形を作らなければ OnPaint() が呼び出されません<br>
+<br>
+同様に、コントロールの長方形を <strong>Control.Bounds</strong> プロパティからも得られます<br>
+この場合は、単純な数値ではなく Rectangle 型として入出力できるので便利です<br>
+<br><b>
+public Rectangle Bounds {get; set;}<br>
+<br></b>
+また、コントロールの座標ではなく単純な幅と高さをで制御したいのであれば<br>
+<strong>Control.Width</strong> と <strong>Control.Height</strong> プロパティがあります<br>
+<br><b>
+public int Width {get; set;}<br>
+public int Height {get; set;}<br>
+<br></b>
+Width はコントロールの幅を、Height はコントロールの高さを表しています<br>
+これらの値を変更することによって、コントロールのサイズを変更することができます<br>
+<br>
+これまでの値はウィンドウ全体の幅や高さ、座標でしたが<br>
+メインウィンドウのようなものの場合、クライアント領域のサイズを知りたい場合もあるでしょう<br>
+作業領域のサイズは <strong>Control.ClientRectangle</strong> プロパティで取得できます<br>
+<br><b>
+public Rectangle ClientRectangle {get;}<br>
+<br></b>
+このプロパティを使えば、クライアント領域のサイズを取得することができるため<br>
+ウィンドウサイズに相対的な描画処理を記述することなどができるようになるでしょう<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+	
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.FillRectangle(Brushes.Red , ClientRectangle);
+	}
+}</pre>
+このプログラムは、単純にクライアント領域全体を<br>
+FillRectangle() メソッドを用いて赤色で塗りつぶすというものです<br>
+
+<br><hr>
+<h2>デフォルト値</h2>
+Control クラスは、静的なプロパティで<br>
+コントロールが定義するデフォルトの値をいくつか提供しています<br>
+<br>
+デフォルトの背景色は <strong>Control.DefaultBackColor</strong> プロパティで<br>
+フォントは <strong>Control.DefaultFont</strong> プロパティ、<br>
+前景色は <strong>Control.DefaultForeColor</strong> プロパティで得られます<br>
+<br><b>
+public static Color DefaultBackColor {get;}<br>
+public static Color DefaultFont {get;}<br>
+public static Color DefaultForeColor {get;}<br>
+<br></b>
+描画処理などを行う時に、デフォルトの値を使用したい場合は<br>
+このプロパティから取得することによって、論理的にデフォルトであることを保証できます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+	
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Brush brush = new SolidBrush(DefaultForeColor);
+		g.DrawString("Kitty on your lap" , DefaultFont , brush , 0 , 0);
+	}
+}</pre>
+このプログラムは、デフォルトの前景色とフォントを使って<br>
+ウィンドウのクライアント領域に文字列を描画するというものです<br>
+
+<br><hr>
+<h2>コントロールの状態</h2>
+複雑なプログラムになると、コントロールの状態も重要な情報になります<br>
+後ほど説明する「マルチスレッド」と実現すると、プログラムは並列に実行されるため<br>
+必要なコントロールが作られる前に、別のコードが実行されるという問題も出てきます<br>
+<br>
+こういった事態を防ぐには、コントロールの状態をチェックする必要が出てくるでしょう<br>
+コントロールが作られているかどうかは <strong>Control.Created</strong> プロパティを使います<br>
+また、<strong>Control.Disposing</strong> プロパティを使えば、破棄されているかを調べられます<br>
+<br><b>
+public bool Created {get;}<br>
+public bool Disposing {get;}<br>
+<br></b>
+Created は、コントロールが作成されていれば true を、そうでなければ false を返します<br>
+Disposing は、コントロールが破棄されるプロセスの中にあれば true<br>
+そうでなければ false が返ります<br>
+<br>
+この他にも、コントロールの有効/無効を示す <strong>Control.Enabled</strong> や<br>
+入力フォーカスの有無をしめす <strong>Control.Focused</strong> プロパティもあります<br>
+有効/無効というのは、例えばチェックボックスコントロールなどで重要になります<br>
+<br><b>
+public bool Enabled {get; set;}<br>
+public bool Focused {get; set;}<br>
+<br></b>
+Enabled はコントロールが有効であれば true、そうでなければ false を<br>
+Focused は入力フォーカスを保有していれば true、そうでなければ false を返します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+	
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Font ft = new Font("MS Serif" , 12);
+
+		g.DrawString("Created = " + Created , ft , Brushes.Black , 0 , 0);
+		g.DrawString("Disposing = " + Disposing , ft , Brushes.Black , 0 , 15);
+		g.DrawString("Enabled = " + Enabled , ft , Brushes.Black , 0 , 30);
+		g.DrawString("Focused = " + Focused , ft , Brushes.Black , 0 , 45);
+	}
+}</pre>
+<img src="img/00.048.jpg" class="img"><br>
+<br>
+このプログラムは、各プロパティの状態をウィンドウに表示します<br>
+イベントに対応していないので、リアルタイムの表示ではありませんが<br>
+ウィンドウを隠すなどして再描画すれば、最新の情報を取得することができます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win17.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win19.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

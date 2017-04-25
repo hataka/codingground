@@ -1,0 +1,242 @@
+<html>
+ <head>
+ <title>塗りつぶす</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>塗りつぶす</h1>
+<hr>
+ <h2>閉じた図形</h2>
+前回、基本的な論理ブラシについて解説しました<br>
+ブラシが理解できれば、閉じた図形を自由に塗りつぶすことができます<br>
+前回は長方形を塗りつぶす FillRectangle() を使ったので、今回はこれ以外の<br>
+まだ説明していない、塗りつぶし用の Graphics クラスのメソッドを紹介します<br>
+<br>
+円弧を塗りつぶすには <strong>Graphics.FillEllipse()</strong> メソッドを使います<br>
+やはり、ペンの代わりにブラシを使うこと以外は DrawEllipse() と同じです<br>
+<br><b>
+public void FillEllipse(Brush brush , Rectangle rect);<br>
+public void FillEllipse(Brush brush , RectangleF rect);<br>
+public void FillEllipse(Brush brush , int x , int y , int width , int height);<br>
+public void FillEllipse(Brush brush , float x , float y , float width , float height);<br>
+<br></b>
+brush には塗りつぶしに用いるブラシの Brush オブジェクトを指定します<br>
+rect は円弧が外接する長方形の情報を格納した構造体を指定します<br>
+x と y には長方形の左上角を示す座標、width と height は幅と高さを指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.FillEllipse(
+			new SolidBrush(Color.FromArgb(0xAA , 0xAA , 0xFF)) ,
+			10 , 10 , 200 , 100
+		);
+	}
+}</pre>
+<img src="img/00.015.jpg" class="img"><br>
+<br>
+欠けた円、すなわち特定の角度のみを描画する DrawPie() の塗りつぶし<br>
+<strong>Graphics.FillPie()</strong> メソッドを用いて行うことができます<br>
+<pre><b>
+public void FillPie(
+	Brush brush , Rectangle rect ,
+	float startAngle , float sweepAngle
+);
+public void FillPie(
+	Brush brush ,
+	int x , int y , int width , int height ,
+	int startAngle , int sweepAngle
+);
+public void FillPie(
+	Brush brush ,
+	float x , float y , float width , float height ,
+	float startAngle , float sweepAngle
+);</b></pre>
+
+brush には塗りつぶしに使うの Brush オブジェクトを指定します<br>
+rect には、円が外接する長方形の大きさを格納する構造体を指定します<br>
+<br>
+x と y には、長方形の左上角を表す座標を、width と height には幅と高さを指定します<br>
+startAngle には描画の開始角度を、sweepAngle には終了角度を指定します<br>
+角度は、時計回りに計測されます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.FillPie(
+			new SolidBrush(Color.FromArgb(0xFF , 0 , 0)) ,
+			10 , 10 , 200 , 100 , -90 , 250
+		);
+	}
+}</pre>
+<img src="img/00.016.jpg" class="img"><br>
+<br>
+これも DrawPie() メソッドとほとんど同じなので説明不要でしょう<br>
+また、長方形の塗りつぶしには複数の長方形を同時に塗りつぶすことができる<br>
+<strong>Graphics.FillRectangles()</strong> というメソッドも用意されています<br>
+<br><b>
+public void FillRectangles(Brush brush , Rectangle[] rects);<br>
+public void FillRectangles(Brush brush , RectangleF[] rects);<br>
+<br></b>
+brush には塗りつぶす時の Brush オブジェクトを<br>
+rects には塗りつぶす長方形の情報を持った配列へのポインタを指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Rectangle[] rect = {
+			new Rectangle(10 , 10 , 200 , 100) ,
+			new Rectangle(20 , 20 , 200 , 100)
+		};
+		g.FillRectangles(new SolidBrush(Color.FromArgb(0xFF , 0 , 0)) , rect);
+	}
+}</pre>
+<img src="img/00.017.jpg" class="img"><br>
+<br>
+このプログラムは、二つの長方形を同時に描画しています<br>
+頻繁に使うことはないと思いますが、場合によっては便利なメソッドです<br>
+<br>
+複数の頂点の配列から構成されるポリゴンの面を塗りつぶすには<br>
+<strong>Graphcs.FillPolygon()</strong> メソッドを利用します<br>
+<br><b>
+public void FillPolygon(Brush brush , Point[] points);<br>
+public void FillPolygon(Brush brush , PointF[] points);<br>
+public void FillPolygon(Brush brush , Point[] points , FillMode fillMode);<br>
+public void FillPolygon(Brush brush , PointF[] points , FillMode fillMode);<br>
+<br></b>
+brush には、用いるブラシの Brush オブジェクトを指定します<br>
+points は頂点の座標が格納された構造体の配列を<br>
+FillMode には塗りつぶしモードを指定します<br>
+<br>
+最後の引数は <strong>System.Drawing.Drawing2D.FillMode</strong> 列挙型です<br>
+この列挙型は、多角形モードのメンバを次のように定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Alternate	<td>これは多角形の内部で隣接しない部分を塗りつぶす<br>他の境界線と交差している内面は塗りつぶされない<br>デフォルトです
+<tr><td>Winding	<td>交差する線の方向が逆の場合は塗りつぶされない
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Point[] pt = {
+			new Point(10 , 50) , new Point(150 , 50) ,
+			new Point(150 , 150) , new Point(50 , 150) ,
+			new Point(50 , 10) , new Point(200 , 10) ,
+			new Point(200 , 125) , new Point(10 , 125)
+		};
+		g.FillPolygon(new SolidBrush(Color.FromArgb(0xFF , 0 , 0)) , pt);
+
+		for (int i = 0 ; i &#60; pt.Length ; i++) pt[i].X += 200;
+		g.FillPolygon(
+			new SolidBrush(Color.FromArgb(0xFF , 0 , 0)) ,
+			pt , FillMode.Winding
+		);
+	}
+}</pre>
+<img src="img/00.018.jpg" class="img"><br>
+<br>
+このプログラムは、ポリゴンの塗りつぶしと<br>
+塗りつぶしモードの違いについて理解できるように作ったサンプルです<br>
+最初の FillPolygon() は左の図形はデフォルトの Alternate を<br>
+右側の図形は明示的に Winding を指定しています<br>
+<br>
+また、以前紹介したスプライン曲線にも閉じた図形が存在します<br>
+これには <strong>Graphics.FillClosedCurve()</strong> メソッドを使用します<br>
+<pre><b>public void FillClosedCurve(Brush brush , Point[] points);
+public void FillClosedCurve(Brush brush , PointF[] points);
+
+public void FillClosedCurve(
+	Brush brush , Point[] points ,
+	FillMode fillmode
+);
+public void FillClosedCurve(
+	Brush brush , PointF[] points ,
+	FillMode fillmode
+);
+public void FillClosedCurve(
+	Brush brush , Point[] points,
+	FillMode fillmode , float tension
+);
+public void FillClosedCurve(
+	Brush brush , PointF[] points ,
+	FillMode fillmode , float tension
+);</b></pre>
+brush には塗りつぶしに用いる Brush オブジェクトを<br>
+points には、曲線を定義する各頂点を示す構造体の配列を指定します<br>
+配列 points は、最低でも4つ以上の頂点を含んでいなければなりません<br>
+fillmode には塗りつぶしモードを、tension には、カーブの強さを指定します<br>
+<br>
+塗りつぶしモードの解説がまだだったため、説明していませんでしたが<br>
+同様に、<strong>Graphics.DrawClosedCurve()</strong> メソッドを用いることによって<br>
+閉じたスプライン曲線の輪郭を描くことが可能です<br>
+<pre><b>public void DrawClosedCurve(Pen pen , Point[] points);
+public void DrawClosedCurve(Pen pen , PointF[] points);
+
+public void DrawClosedCurve(
+	Pen pen , Point[] points ,
+	float tension , FillMode fillmode
+);
+public void DrawClosedCurve(
+	Pen pen , PointF[] points ,
+	float tension , FillMode fillmode
+);</pre></b>
+pen には輪郭の描画に用いる Pen オブジェクトを<br>
+points には曲線を定義する各頂点を示す構造体の配列を指定します<br>
+tension にはカーブの強さ、fillmode には塗りつぶしモードを指定します<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Point[] pt = {
+			new Point(10 , 60) , new Point(110 , 10) ,
+			new Point(210 , 60) , new Point(110 , 110)
+		};
+		Brush myBrush = new SolidBrush(Color.FromArgb(0xFF , 0 , 0));
+		Pen myPen = new Pen(Color.FromArgb(0 , 0 , 0));
+
+		g.FillClosedCurve(myBrush , pt);
+		g.DrawClosedCurve(myPen , pt);
+	}
+}</pre>
+<img src="img/00.019.jpg" class="img"><br>
+<br>
+このプログラムは、スプライト曲線の輪郭を描画し内部を塗りつぶしています<br>
+DrawCurve() メソッドと違うのは、最後の頂点の後、線が閉じられるということです<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win5.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win7.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

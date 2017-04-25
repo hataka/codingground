@@ -1,0 +1,281 @@
+<html>
+ <head>
+ <title>子コントロール</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>子コントロール</h1>
+<hr>
+ <h2>コントロールを追加する</h2>
+ウィンドウシステムの最大の魅力は、コントロールの中に別のコントロールを挿入し<br>
+それぞれのコントロールに専門的な処理や役割を与えることができることです<br>
+<br>
+.NET では Control クラスに子コントロールをコレクションする管理機能があり<br>
+すなわち、これを継承する全てのクラスにその機能があると考えることができます<br>
+<br>
+子コントロールは、独自に Control クラスを拡張したクラスでもかまいませんし<br>
+.NET クラスライブラリが用意する汎用的で高度なコントロール群でもよいでしょう<br>
+もちろん、ボタンや入力ボックスなどの基本的なコントロールが用意されています<br>
+<br>
+子コントロールの管理は<br>
+<strong>System.Windows.Forms.Control.ControlCollection</strong> が行います<br>
+このクラスは、Control クラスの内部で定義される内部クラスです<br>
+Menu クラスにおける MenuItemCollection クラスと同じような存在です<br>
+
+<pre><b>public class Control.ControlCollection :
+	IList , ICollection , IEnumerable , ICloneable</b></pre>
+
+このクラスは、インデクサで子コントロールのコレクションを管理したり<br>
+コントロールの追加や削除などを包括的に行ってくれます<br>
+このクラスのコンストラクタは次のように定義されています<br>
+<br><b>
+public Control.ControlCollection(Control owner);<br>
+<br></b>
+owner には、このクラスを所有している Control クラスを指定します<br>
+しかし、通常外部からこのクラスのインスタンスを作成するようなことはありません<br>
+ControlCollection にアクセスするには <strong>Control.Controls</strong> プロパティを使います<br>
+<br><b>
+public Control.ControlCollection Controls {get;}<br>
+<br></b>
+このプロパティは、コントロールが所有する ControlCollection オブジェクトを返します<br>
+<br>
+コントロールを追加するには <strong>ControlCollection.Add()</strong> メソッド<br>
+または <strong>ControlCollection.AddRange()</strong> メソッドを用います<br>
+<br><b>
+public virtual void Add(Control value);<br>
+public virtual void AddRange(Control[] controls);<br>
+<br></b>
+value には追加する子コントロールを<br>
+controls には、追加する子コントロールの配列を指定します<br>
+複数のコントロールを同時に追加するには AddRange() を使うと便利でしょう<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		Control ctrl = new Control();
+		ctrl.Bounds = new Rectangle(0 , 0 , 100 , 50);
+		ctrl.BackColor = Color.Red;
+		Controls.Add(ctrl);
+	}
+}</pre>
+<img src="img/00.077.jpg" class="img"><br>
+<br>
+このプログラムを実行すると、図のようなウィンドウが表示されます<br>
+しかし、あの赤い長方形は FillRectangle() などで塗りつぶしているわけではありません<br>
+Control クラスのインスタンスを生成し、背景色を赤にし、<br>
+横 100 ピクセル、縦 50 ピクセルでフォームに追加したのです<br>
+<br>
+ControlCollection は、さらに追加されたコントロールのコレクションを高度に管理します<br>
+現在コントロールが保有する子コントロールの数やインデックス番号<br>
+指定の子コントロールの削除なども包括的に行ってくれるので、レイアウトが極めて簡単です<br>
+<br>
+コントロールを削除するには <strong>ControlCollection.Remove()</strong> メソッド<br>
+または <strong>ControlCollection.RemoveAt()</strong> メソッドを使います<br>
+前者はコントロールオブジェクトで、後者はインデックス番号でコントロールを指定します<br>
+<br><b>
+public virtual void Remove(Control value);<br>
+public void RemoveAt(int index);<br>
+<br></b>
+value には、削除対象のコントロールを<br>
+index には、追加された順番で 0 から数えられるインデックス番号を指定します<br>
+もし RemoveAt() メソッドで 2 を指定すれば、3番目の位置にあるコントロールを示します<br>
+コントロールが削除されれば、それ以降のコントロールのインデックス番号が詰められます<br>
+<br>
+<strong>ControlCollection.Count</strong> プロパティを用いれば<br>
+コントロールに追加されている子コントロールの数を知ることができます<br>
+インデックスを指定する時に、番号の最大値を知る時などに役に立つでしょう<br>
+<br><b>
+public int Count {get;}<br>
+<br></b>
+このプロパティが返す値 - 1 が、指定可能なインデックスの最大値と考えられます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	override protected void OnMouseUp(MouseEventArgs e) {
+		if (e.Button == MouseButtons.Left) {
+			Control ctrl = new Control();
+			ctrl.Bounds = new Rectangle(e.X , e.Y , 100 , 50);
+			ctrl.BackColor = Color.Red;
+			Controls.Add(ctrl);
+		}
+		else {
+			if (Controls.Count != 0) Controls.RemoveAt(0);
+		}
+	}
+}</pre>
+<img src="img/00.078.jpg" class="img"><br>
+<br>
+このプログラムは、ウィンドウのクライアント領域を左クリックするとコントロールが追加され<br>
+右クリックすると、古いコントロールの順番にクライアント領域から削除していきます<br>
+また、Count プロパティを使って、子コントロールの数を監視しています<br>
+因みに <strong>ControlCollection.Clear()</strong> メソッドで全てを削除することもできます<br>
+<br><b>
+public virtual void Clear();<br>
+<br></b>
+このメソッドは ControlCollection に登録されている全てのコントロールを解除します<br>
+
+
+<br><hr>
+<h2>アンカー</h2>
+多くの場合、フォームのサイズは実行時にユーザーが変更することができます<br>
+そして、サイズが変更されれば子コントロールの位置も変更する必要があります<br>
+<br>
+手段のひとつとしては、OnResize() や OnLayout() メソッドをオーバーライドし<br>
+子コントロールの位置は、常に親に対して相対的に決定されるように仕組みます<br>
+しかし、.NET では、これらの座標の計算を自動化してくれる手段を提供しています<br>
+<br>
+まず、コントロールにはアンカーと呼ばれるプロパティがあります<br>
+アンカーは、親のサイズ変更に対してどの位置を対象に<strong>固定するか</strong>を決めます<br>
+これは、コンテナの長方形の特定の部分と子を関連付けるために用います<br>
+<br>
+アンカーは <strong>Control.Anchor</strong> プロパティで設定することができます<br>
+<br><b>
+public virtual AnchorStyles Anchor {get; set;}<br>
+<br></b>
+このプロパティ型の AnchorStyles は次のような列挙型です<br>
+FlagsAttribute 属性が指定されているので、ビット演算が可能です<br>
+<br><b>
+[Flags]<br>
+[Serializable]<br>
+public enum AnchorStyles<br>
+<br></b>
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>意味
+<tr><td>Bottom	<td>コントロールがそのコンテナの下端に固定されています
+<tr><td>Left	<td>コントロールがそのコンテナの左端に固定されています
+<tr><td>None	<td>コントロールがそのコンテナの端に固定されていません
+<tr><td>Right	<td>コントロールがそのコンテナの右端に固定されています
+<tr><td>Top	<td>コントロールがそのコンテナの上端に固定されています
+</table>
+<br>
+デフォルトで、コントロールはコンテナのサイズに対して静的です<br>
+これは、デフォルトで AnchorStyles.Left | AnchorStyles.Top が設定されているためです<br>
+そのため、コンテナのサイズが変更してもコンテナから見て絶対座標が変化しません<br>
+なぜならば、コントロールが常にコンテナの左上に対して固定されているからです<br>
+この場合、コントロールの位置が変化するのはコンテナの左上が移動した場合だけです<br>
+<br>
+これとは逆に、コンテナの右下のコントロールを固定すれば<br>
+例えば、ダイアログボックスの OK ボタンなどを作成する時に便利でしょう<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		ClientSize = new Size(400 , 300);
+
+		Control ctrl = new Control();
+		ctrl.BackColor = Color.Red;
+		ctrl.Bounds = new Rectangle(190 , 250 , 200 , 40);
+		ctrl.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+		Controls.Add(ctrl);
+	}
+}</pre>
+このプログラムは、追加したコントロールが常にフォームの右下に固定されています<br>
+そのため、サイズを変更しても、常にフォームの右下に対して<br>
+縦横 10 ピクセルのマージンをとった位置にコントロールが固定されます<br>
+<br>
+では、ここでアンカーのちょっとした Tips を紹介したいと思います<br>
+次のようなプログラムは、どのように動作するか考えてください<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		ClientSize = new Size(400 , 300);
+
+		Control ctrl = new Control();
+		ctrl.BackColor = Color.Red;
+		ctrl.Bounds = new Rectangle(100 , 75 , 200 , 150);
+		ctrl.Anchor = 	AnchorStyles.Top | AnchorStyles.Bottom |
+				AnchorStyles.Left | AnchorStyles.Right;
+		Controls.Add(ctrl);
+	}
+}</pre>
+このプログラムは、子コントロールがコンテナの全ての辺に固定されています<br>
+フォームのサイズを変更すると、はたして子コントロールはどのようになるでしょうか？<br>
+
+<br><hr>
+<h2>ドッキング</h2>
+例えば、ステータスバーやメニューバー、ツールバーのようなコントロールを想像して下さい<br>
+常にコンテナの端に配置されるようなこのようなコントロールを設計する場合<br>
+コントロールの座標の計算は、ドッキングに委託するべきです<br>
+<br>
+ドッキングはコンテナの辺に関連付ける点でアンカーと性質が似ていますが<br>
+アンカーが関連付けた辺に対して固定させるものなのに対し<br>
+ドッキングは<strong>関連付けた辺と隣接する２辺に接触</strong>させます<br>
+この機能は、ステータスバーのようなコントロールに最適です<br>
+<br>
+ドッキングの設定は <strong>Control.Dock</strong> プロパティで行います<br>
+<br><b>
+public virtual DockStyle Dock {get; set;}<br>
+<br></b>
+DockStyle 列挙型は、基本的に AnchorStyles に似ていますがビット演算は行えません<br>
+そのため、アンカーのように複数の辺に関連付けることはできません<br>
+<br><b>
+[Serializable]<br>
+public enum DockStyle<br>
+<br></b>
+この列挙型のメンバは次のようなものが定義されています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>意味
+<tr><td>Bottom	<td>格納されるコントロールの下端は、格納する側のコントロールの下端にドッキングされます
+<tr><td>Fill	<td>格納されるコントロールの四辺は<br>格納する側のコントロールの四辺にドッキングされ、適切なサイズに調節されます
+<tr><td>Left	<td>格納されるコントロールの左端は、格納する側のコントロールの左端にドッキングされます
+<tr><td>None	<td>コントロールはドッキングされていません
+<tr><td>Right	<td>格納されるコントロールの右端は、格納する側のコントロールの右端にドッキングされます
+<tr><td>Top	<td>格納されるコントロールの上端は、格納する側のコントロールの上端にドッキングされます
+</table>
+<br>
+デフォルトで、コントロールのドッキングは DockStyle.None です<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		ClientSize = new Size(400 , 300);
+
+		Control ctrl = new Control();
+		ctrl.BackColor = Color.Red;
+		ctrl.Height = 30;
+		ctrl.Dock = DockStyle.Bottom;
+		Controls.Add(ctrl);
+	}
+}</pre>
+ドッキングを設定した場合、関連付けられた辺と隣接する２辺に接触する位置とサイズは<br>
+Bounds プロパティなどで絶対座標を指定しても無視されます<br>
+このプログラムは、子コントロールが常にフォームの下部にドッキングされています<br>
+いかに、ステータスバーやツールバーのようなコントロールに適しているかを確認できるでしょう<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win33.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win35.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

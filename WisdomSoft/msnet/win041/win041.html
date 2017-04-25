@@ -1,0 +1,274 @@
+<html>
+ <head>
+ <title>テキストボックス</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>テキストボックス</h1>
+<hr>
+ <h2>文字入力のサポート</h2>
+GUI アプリケーションがユーザーに文字列の入力を求める場合<br>
+テキスト入力、及び表示専用のテキストボックス・コントロールを用います<br>
+<br>
+.NET では、まず <strong>System.Windows.Forms.TextBoxBase</strong> 抽象クラスがあります<br>
+このクラスは、テキスト入力コントロールが提供するべき基本的な機能を提供しています<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.TextBoxBase
+
+public abstract class TextBoxBase : Control</b></pre>
+
+このクラスを継承した <strong>System.Windows.Forms.TextBox</strong> を使えば<br>
+ユーザーに文字を入力させたり、あるいは文字を表示させるコントロールとして使うことができます<br>
+TextBox クラスの重要な機能のほとんどは TextBoxBase クラスで提供されているメンバです<br>
+
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.TextBoxBase
+               System.Windows.Forms.TextBox
+
+public class TextBox : TextBoxBase</b></pre>
+
+このクラスのコンストラクタは、デフォルトコンストラクタのみです<br>
+コントロールに表示される文字列は、Contorl.Text プロパティです<br>
+Text プロパティを使うことで、テキストの取得や設定ができます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		TextBox txt = new TextBox();
+		txt.Size = new Size(200 , 20);
+		txt.KeyUp+= new KeyEventHandler(_KeyUp);
+
+		Controls.Add(txt);
+	}
+
+	public void _KeyUp(object sender , KeyEventArgs e) {
+		Text = ((Control)sender).Text;
+	}
+}</pre>
+<img src="img/00.092.jpg" class="img"><br>
+<br>
+このプログラムは、1行テキストボックスを表示します<br>
+テキストボックスに文字列を入力すると、イベントによってタイトルバーと同期します<br>
+ちなみに、このコントロールはデフォルトで標準のポップアップメニューをサポートしています<br>
+<br>
+テキストボックスは、デフォルトでは1行入力の状態です<br>
+複数行入力可能なマルチラインテキストボックスを表示したい場合は<br>
+<strong>TextBoxBase.Multiline</strong> プロパティを設定する必要があります<br>
+<br><b>
+public virtual bool Multiline {get; set;}<br>
+<br></b>
+コントロールが複数行テキスト ボックス コントロールである場合は true<br>
+それ以外の場合は false を指定します<br>
+<br>
+このとき、コントロールの幅以上に文字列が入力された時に<br>
+自動的に改行するかどうかを <strong>TextBoxBase.WordWrap</strong> プロパティで選択できます<br>
+<br><b>
+public bool WordWrap {get; set;}<br>
+<br></b>
+折り返される場合は true、そうでなければ false を示します<br>
+デフォルトでは treu と定義されているので、自動的に改行されます<br>
+折り返しがない場合や、一定行以上の入力があるとテキストボックスのサイズを超える場合があります<br>
+これに備えて <strong>TextBox.ScrollBars</strong> プロパティでスクロールバーを指定できます<br>
+<br><b>
+public ScrollBars ScrollBars {get; set;}<br>
+<br></b>
+このプロパティは、スクロールバーの状態を示す<br>
+<strong>System.Windows.Forms.ScrollBars</strong> 列挙型を用います<br>
+<pre><b>[Serializable]
+public enum ScrollBars</b></pre>
+
+この列挙型は、次のような意味を持つメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Both		<td>水平スクロール バーと垂直スクロール バーの両方が表示されます
+<tr><td>Horizontal	<td>水平スクロール バーだけが表示されます
+<tr><td>None		<td>スクロール バーは表示されません
+<tr><td>Vertical	<td>垂直スクロール バーだけが表示されます
+</table>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		TextBox txt = new TextBox();
+		txt.Multiline = true;
+		txt.Size = new Size(200 , 100);
+		txt.WordWrap = false;
+		txt.ScrollBars = ScrollBars.Both;
+
+		Controls.Add(txt);
+	}
+}</pre>
+<img src="img/00.093.jpg" class="img"><br>
+<br>
+このプログラムは、図のようなマルチラインテキストボックスを表示します<br>
+スクロールバーを表示することによって、テキストボックスの幅や高さ以上の入力があっても<br>
+ユーザーはスクロールバーを利用してテキストを自由に編集したり参照できるでしょう<br>
+<br>
+テキストボックスに入力できる最大文字数を指定したい場合は<br>
+<strong>TextBoxBase.MaxLength</strong> プロパティを使います<br>
+<br><b>
+public virtual int MaxLength {get; set;}<br>
+<br></b>
+このプロパティは、入力可能な最大文字数を指定します<br>
+ただし 0 の場合は、使用可能なメモリを使い果たすまで入力できることを示します<br>
+<br>
+テキストボックスは、特定の範囲の文字列を選択することができますが<br>
+選択されてる文字列は <strong>TextBoxBase.SelectedText</strong> プロパティで<br>
+文字数は <strong>TextBoxBase.SelectionLength</strong> プロパティで<br>
+選択開始位置は <strong>TextBoxBase.SelectionStart</strong> プロパティで得られます<br>
+<br><b>
+public virtual string SelectedText {get; set;}<br>
+public virtual int SelectionLength {get; set;}<br>
+public int SelectionStart {get; set;}<br>
+<br></b>
+独自に、テキストボックス内の文字列を編集する能力をつける場合に必要となるでしょう<br>
+または、選択範囲をプログラムから制御する時にも使うことができます<br>
+<br>
+単純にテキストを表示するコントロールとしてテキストボックスを使いたい場合<br>
+<strong>TextBoxBase.ReadOnly</strong> プロパティを設定することで、編集を不能にします<br>
+<br><b>
+public bool ReadOnly {get; set;}<br>
+<br></b>
+テキストが読み取り専用の場合は true 。それ以外の場合は false を指定します<br>
+デフォルトは false になっています<br>
+テキストの位置を <strong>TextBox.TextAlign</strong> プロパティで設定することもできます<br>
+<br><b>
+public HorizontalAlignment TextAlign {get; set;}<br>
+<br></b>
+このプロパティは <strong>System.Windows.Forms.HorizontalAlignment</strong> 列挙型です<br>
+<pre><b>[Serializable]
+[ComVisible(true)]
+public enum HorizontalAlignment</b></pre>
+この列挙型は、次のような意味を持つメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Center	<td>コントロール要素の中央に配置されます
+<tr><td>Left	<td>コントロール要素の左側に配置されます
+<tr><td>Right	<td>コントロール要素の右側に配置されます
+</table>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		TextBox txt = new TextBox();
+		txt.Size = new Size(200 , 20);
+		txt.ReadOnly = true;
+		txt.TextAlign = HorizontalAlignment.Center;
+		txt.Text = "Kitty on your lap";
+
+		Controls.Add(txt);
+	}
+}</pre>
+<img src="img/00.094.jpg" class="img"><br>
+<br>
+このプログラムは、読み取り専用のテキストボックスを表示します<br>
+このテキストボックスのテキストの配置位置は、中央に設定されているため<br>
+図のように、コントロールの中央に文字列が配置されます<br>
+
+<br><hr>
+<h2>編集</h2>
+Windows 標準の「メモ帳」アプリケーションのような<br>
+テキストデータの編集を目的としたソフトウェアを作る場合は<br>
+入力以外にも、コピーや貼り付けといったクリップボードを介した編集処理が必要です<br>
+<br>
+クリップボードについては後ほど詳しく解説しますが<br>
+そのような処理を記述する場合、ひとつの方法としては SelectedText プロパティで<br>
+選択中のテキストを得て、これをクリップボードに転送する手段があります<br>
+もちろん、これがもっとも正当な方法ですが、実は TextBoxBase クラスが<br>
+すでにコピーや、削除、ペーストというような基本機能をすでに実装しています<br>
+<br>
+選択中のテキストをクリップボードに送るには <strong>TextBoxBase.Copy()</strong> メソッド<br>
+コピーと同時に選択中のテキストを消すには <strong>TextBoxBase.Cut()</strong>、<br>
+クリップボードのテキストを貼り付けるには <strong>TextBoxBase.Paste()</strong>、<br>
+テキストボックスのテキストを削除するには <strong>TextBoxBase.Clear()</strong> を使います<br>
+<br><b>
+public void Copy();<br>
+public void Cut();<br>
+public void Paste();<br>
+public void Clear();<br>
+<br></b>
+因みに、 TextBox クラスにおいて Clear() は Text = "" と実装上同じです<br>
+直前の操作に状態を戻すには <strong>TextBoxBase.Undo()</strong> メソッドを<br>
+アンドゥ可能かどうかを調べるには <strong>TextBoxBase.CanUndo</strong> プロパティを使います<br>
+<br><b>
+public void Undo();<br>
+public bool CanUndo {get;}<br>
+<br></b>
+CanUndo は、アンドゥ可能であれば true を返します<br>
+ただし、CanUndo が false でも、Undo() を呼び出して例外が発生することはありません<br>
+これらのメソッドを用いれば、単純なテキストエディタを作成することができます<br>
+<pre class="prg">using System;
+using System.Drawing;
+using System.Windows.Forms;
+ 
+public class WinMain : Form {
+	MenuItem[] menuItem;
+	TextBox textBox1 = new TextBox();
+
+	public static void Main() {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		menuItem = new MenuItem[] {
+			new MenuItem("切り取り(&T)" , new EventHandler(menuItemClick)) ,
+			new MenuItem("コピー(&C)" , new EventHandler(menuItemClick)) ,
+			new MenuItem("貼り付け(&P)" , new EventHandler(menuItemClick)) ,
+			new MenuItem("削除(&L)" , new EventHandler(menuItemClick)) ,
+			new MenuItem("-") ,
+			new MenuItem("元に戻す(&U)" , new EventHandler(menuItemClick)) ,
+		};
+		textBox1.Dock = DockStyle.Fill;
+		textBox1.Multiline = true;
+		textBox1.ContextMenu = new ContextMenu(menuItem);
+		Controls.Add(textBox1);
+	}
+
+	private void menuItemClick(object sender , EventArgs e) {
+		if(sender == menuItem[0]) textBox1.Cut();
+		else if(sender == menuItem[1]) textBox1.Copy();
+		else if(sender == menuItem[2]) textBox1.Paste();
+		else if(sender == menuItem[3]) textBox1.Clear();
+
+		else if(sender == menuItem[5]) textBox1.Undo();
+	}
+}</pre>
+<img src="img/00.095.jpg" class="img"><br>
+<br>
+このプログラムは、極めて単純なテキストエディタです<br>
+後はこれに保存や読み込み、検索などの機能をつければメモ帳になるでしょう<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win40.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win42.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

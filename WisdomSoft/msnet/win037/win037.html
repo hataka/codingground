@@ -1,0 +1,144 @@
+<html>
+ <head>
+ <title>チェックボックス</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>チェックボックス</h1>
+<hr>
+ <h2>真偽の GUI 表現</h2>
+アプリケーションの設定を行うためにユーザーに選択を促す時などは<br>
+選択済みか非選択状態かなどがよりわかりやすいコントロールを使う必要があります<br>
+Button は何らかの機能を発動させるのにはきわめて優秀なコントロールですが<br>
+真偽の設定をユーザーに問いかけるには、概観上あまり適切ではありません<br>
+<br>
+真偽の状態、すなわちアプリケーションが設定している BOOL 型のデータを<br>
+より直感的にユーザーに見せるのがチェックボックスです<br>
+これも、ボタンのひとつで <strong> System.Windows.Forms.CheckBox</strong> で表されます<br>
+<pre><b>System.Object
+   System.MarshalByRefObject
+      System.ComponentModel.Component
+         System.Windows.Forms.Control
+            System.Windows.Forms.ButtonBase
+               System.Windows.Forms.CheckBox
+
+public class CheckBox : ButtonBase</b></pre>
+
+このクラスのコンストラクタは、デフォルトコンストラクタしかありません<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		CheckBox bt = new CheckBox();
+		bt.Size = new Size(200 , 30);
+		bt.Text = "Kitty on your lap";
+		Controls.Add(bt);
+	}
+}</pre>
+<img src="img/00.083.jpg" class="img"><br>
+<br>
+このプログラムは、単純なチェックボックスコントロールを表示します<br>
+.NET のチェックボックスは、デフォルトで基本的な動作を有効にしているため<br>
+ボタンをクリックすれば、図のようにチェックマークがつきます<br>
+デフォルトの動作は <strong>CheckBox.AutoCheck</strong> プロパティで解除できます<br>
+<br><b>
+public bool AutoCheck {get; set;}<br>
+<br></b>
+このプロパティを false に設定すれば、クリックしても何も起こらなくなります<br>
+この場合は、イベントを使って自分で制御する必要があるでしょう<br>
+<br>
+チェックボックスのチェック状態は <strong>CheckBox.Checked</strong> プロパティで表されます<br>
+<br><b>
+public bool Checked {get; set;}<br>
+<br></b>
+このプロパティを使って、チェックボックスのチェック状態を制御したり<br>
+あるいは、チェックボックスのチェック状態を知ることができます<br>
+
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		CheckBox bt = new CheckBox();
+		bt.Size = new Size(200 , 30);
+		bt.Text = "Kitty on your lap";
+		Controls.Add(bt);
+	}
+	override protected void OnMouseUp(MouseEventArgs e) {
+		CheckBox bt = (CheckBox)Controls[0];
+		MessageBox.Show("チェック状態は" + bt.Checked + "です");
+	}
+}</pre>
+このプログラムは、ウィンドウのクライアント領域をクリックすると<br>
+チェックボックスの状態を知らせるメッセージボックスを表示します<br>
+<br>
+チェックボックスが、選択をしているかしていないかを示すだけならば2つの状態で事足りますが<br>
+「真である」「非選択」「偽である」の3状態を示さなければならないこともあるでしょう<br>
+つまり<strong>曖昧な状態</strong>というもうひとつの状態が必要なケースです<br>
+<br>
+チェックボックスには <strong>CheckBox.ThreeState</strong> プロパティを設定することで<br>
+従来の ON/OFF に加え、曖昧な状態を追加することができます<br>
+<br><b>
+public bool ThreeState {get; set;}<br>
+<br></b>
+このプロパティを true にすれば、3状態チェックボックスになります<br>
+曖昧な状態を含むチェックの制御は bool 型で行うことはできません<br>
+そこで、3状態チェックボックスは <strong>CheckBox.CheckState</strong> プロパティで制御します<br>
+<br><b>
+public CheckState CheckState {get; set;}<br>
+<br></b>
+このプロパティは、<strong>System.Windows.Forms.CheckState</strong> 列挙型です<br>
+CheckState 列挙型は、3状態チェックボックスの状態を示すメンバを持ちます<br>
+<pre><b>[Serializable]
+public enum CheckState</b></pre>
+
+この列挙型は、次のようなメンバを定義しています<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>Checked		<td>コントロールがチェックされています
+<tr><td>Indeterminate	<td>コントロールが不確定状態になっています<br>不確定状態のコントロールは、通常、網かけ表示されます
+<tr><td>Unchecked	<td>コントロールがチェックされていません
+</table>
+<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		CheckBox bt = new CheckBox();
+		bt.Size = new Size(200 , 30);
+		bt.Text = "Kitty on your lap";
+		bt.ThreeState = true;
+		Controls.Add(bt);
+	}
+}</pre>
+<img src="img/00.089.jpg" class="img"><br>
+<br>
+このプログラムは、曖昧な状態を含む3状態チェックボックスを表示します<br>
+図を見てわかるように、曖昧な状態はチェックの表示がほかの2状態とは異なります<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win36.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win38.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

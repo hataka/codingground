@@ -1,0 +1,264 @@
+<html>
+ <head>
+ <title>メニュー項目</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>メニュー項目</h1>
+<hr>
+ <h2>メニュー項目を追加する</h2>
+メニューバーのメニュー項目を選択すると、通常はポップアップが表示されます<br>
+このポップアップは、さらにその子メニュー項目が陳列されています<br>
+<br>
+ポップアップを表示するには、メニュー項目に子メニュー項目を追加します<br>
+この方法はいくつか存在するので、簡単な方法から説明していきましょう<br>
+まず、もっとも単純なのは Menu.MenuItemCollection クラスの Add() メソッドで<br>
+メニュー項目のキャプションと、MenuItem の配列を指定する方法です<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		MenuItem[] mi = {
+			new MenuItem("Rena(&R)") ,
+			new MenuItem("Yuki(&Y)") ,
+			new MenuItem("Mimi(&M)")
+		};
+		mm.MenuItems.Add("Kitty on your lap(&K)" , mi);
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.070.jpg" class="img"><br>
+<br>
+このプログラムは、まずメニューバーにひとつのメニュー項目を追加しています<br>
+そして、同時にポップアップとなる MenuItem の配列を指定しています<br>
+これは MenuItem() コンストラクタでも似たようなことができます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		MenuItem[] mi = {
+			new MenuItem("Rena(&R)") ,
+			new MenuItem("Yuki(&Y)") ,
+			new MenuItem("Mimi(&M)")
+		};
+		mm.MenuItems.Add(new MenuItem("Kitty(&K)" , mi));
+		Menu = mm;
+	}
+}</pre>
+上のプログラムを少しだけ改良したものです<br>
+Add() メソッドに、子メニューを含む MenuItem を渡しています<br>
+<br>
+ただし、これらの方法はきわめて静的な追加方法といえます<br>
+より動的に行うには、MenuItem の MenuItemCollection に追加する方法が考えられます<br>
+MenuItem も Menu を継承しているので、これに MenuItem を追加できても不思議ではありません<br>
+メニューの中にある MenuItem は <strong>MenuItemCollection.Item</strong> で得られます<br>
+<br><b>
+public virtual MenuItem this[int index] {get;}<br>
+<br></b>
+メニューは、追加順にインデックスで管理されるためインデクサが制御の専門です<br>
+C# を使えば、予想通りメニュー項目へのアクセスはインデクサをもって行えます<br>
+しかし、メニュー項目の総数よりも大きい数字を指定しまえば例外が発生してしまいます<br>
+これを防ぐには <strong>MenuItemCollection.Count</strong> プロパティを使うとよいでしょう<br>
+<br><b>
+public int Count {get;}<br>
+<br></b>
+このプロパティは、MenuItem オブジェクトの総数を返します<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		mm.MenuItems.Add("Kitty on your lap(&K)");
+
+		MenuItem mi = mm.MenuItems[0];
+		mi.MenuItems.Add("Rena(&R)");
+		mi.MenuItems.Add("Yuki(&Y)");
+		mi.MenuItems.Add("Mimi(&M)");
+
+		Menu = mm;
+	}
+}</pre>
+この方法は、比較的動的なメニューの作成手法です<br>
+文字列からメニュー項目を作り、その後インデクサを使って MenuItem にアクセスしています<br>
+<br>
+MenuItem に追加した MenuItem もまた、MenuItemCollection を持っています<br>
+つまり、メニュー項目の子メニュー項目にも、メニュー項目を追加できることを意味しています<br>
+このように、メニュー項目に段階的に子ポップアップを含ませることができます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		mm.MenuItems.Add("Kitties(&K)");
+
+		MenuItem mi = mm.MenuItems[0];
+		MenuItem[] kitty = {
+			new MenuItem("Rena") , new MenuItem("Yuki") ,
+			new MenuItem("Mimi")
+		};
+		MenuItem[] maiden = {
+			new MenuItem("Sakura") , new MenuItem("Forte") ,
+			new MenuItem("Silva") , new MenuItem("Kaguya")
+		};
+
+		mi.MenuItems.Add("Kitty on your lap(&K)" , kitty);
+		mi.MenuItems.Add("Maiden☆Breeder(&M)" , maiden);
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.071.jpg" class="img"><br>
+<br>
+図を見てわかるように、メニューポップアップが入れ子になっていますね<br>
+子メニュー項目をもつポップアップは、図のようにさらに展開されていきます<br>
+ブラウザのブックマークのような機能をメニューに実装する時や<br>
+ディレクトリ構造をメニューを用いて表現する場合などには、この機能が使われるでしょう<br>
+<br>
+あまり見かけられませんが、必要に応じて複数行/複数列のメニューを作れます<br>
+メニューを改行する場合 <strong>MenuItem.BarBreak</strong> を使います<br>
+<br><b>
+public bool BarBreak {get; set;}<br>
+<br></b>
+このプロパティを true にすると、項目は改行されることを意味します<br>
+メニューバーにこの項目を追加すると新しい行に<br>
+ポップアップにこの項目を追加すると、新しい列にメニュー項目が追加されます<br>
+
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		mm.MenuItems.Add("Kitty on your lap");
+		mm.MenuItems.Add("Maiden☆Breeder");
+
+		MenuItem mi = new MenuItem("Tokyo mew mew");
+		mi.BarBreak = true;
+		mm.MenuItems.Add(mi);
+			
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.072.jpg" class="img"><br>
+<br>
+このプログラムは、メニュー項目 "Tokyo mew mew" をメニューバーに追加する前に<br>
+BarBreak プロパティを true にすることによって改行しています<br>
+<br>
+また、きわめて似た機能を持っている <strong>MenuItem.Break</strong> プロパティもあります<br>
+Break プロパティと BarBreak プロパティの機能は基本的に同じです<br>
+<br><b>
+public bool Break {get; set;}<br>
+<br></b>
+メニュー項目で新しい列を追加した時、Break はその間に仕切りを作りませんが<br>
+BarBreak は項目の左側に仕切りを作るという点で、これらのプロパティは異なっています<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		MenuItem[] mi = {
+			new MenuItem("Rena") , new MenuItem("Yuki") ,
+			new MenuItem("Mimi")
+		};
+		mi[1].Break = true;
+		mi[2].BarBreak = true;
+
+		mm.MenuItems.Add("Kitty on your lap" , mi);
+			
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.073.jpg" class="img"><br>
+<br>
+図を見ると、Rena と Yuki の間には何もありませんが<br>
+Yuki と Mimi の間には、縦線で仕切りが作られています<br>
+これが、BarBreak と Break プロパティの違いで、これ以外に大きな違いはありません<br>
+
+<br><hr>
+<h2>メニュー項目の装飾</h2>
+メニュー項目は、単純に選択するだけではなく<br>
+チェックボタンとしての役割を果たしたり、状況に応じて選択できなくする必要があります<br>
+これらの機能も、MenuItem クラスはプロパティとして提供しています<br>
+<br>
+メニューにチェックを入れるには <strong>MenuItem.Checked</strong> プロパティを<br>
+メニューの有効/無効の選択には <strong>MenuItem.Enabled</strong> プロパティを<br>
+表示/非表示には <strong>MenuItem.Visible</strong> プロパティを使って制御します<br>
+<br><b>
+public bool Checked {get; set;}<br>
+public bool Enabled {get; set;}<br>
+public bool Visible {get; set;}<br>
+<br></b>
+これらのプロパティは、bool 値で機能の有効/無効を選択することができます<br>
+次章で説明するイベントと組み合わせれば、様々な使い方ができるようになるでしょう<br>
+また、<strong>MenuItem.RadioCheck</strong> プロパティを使えば<br>
+チェックマークの代わりにオプションボタンを表示することができます<br>
+<br><b>
+public bool RadioCheck {get; set;}<br>
+<br></b>
+オプションボタンを表示するなら true を、そうでなければ false を指定します<br>
+<pre class="prg">using System.Windows.Forms;
+
+class WinMain : Form {
+	public static void Main(string[] args) {
+		Application.Run(new WinMain());
+	}
+
+	public WinMain() {
+		MainMenu mm = new MainMenu();
+		MenuItem[] mi = {
+			new MenuItem("Rena") , new MenuItem("Yuki") ,
+			new MenuItem("Mimi")
+		};
+		mi[0].Checked = true;
+		mi[1].Enabled = false;
+
+		mi[2].RadioCheck = true;
+		mi[2].Checked = true;
+
+		mm.MenuItems.Add("Kitty on your lap" , mi);
+			
+		Menu = mm;
+	}
+}</pre>
+<img src="img/00.074.jpg" class="img"><br>
+<br>
+図のメニューポップアップは、上からチェック、無効、オプションボタンチェックの項目です<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win30.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win32.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

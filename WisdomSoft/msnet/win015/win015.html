@@ -1,0 +1,138 @@
+<html>
+ <head>
+ <title>イメージの制御</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css">
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>イメージの制御</h1>
+<hr>
+ <h2>ピクセルを操作する</h2>
+Bitmap クラスは、ビットマップが持つピクセルの情報に簡単にアクセスできるように<br>
+座標を指定することで、ピクセルのカラーを取得/設定するための手段を提供しています<br>
+これを用いれば、イメージに何らかのフィルタ処理を施したりすることができます<br>
+<br>
+ピクセルのカラー情報を得るには <strong>Bitmap.GetPixel()</strong> メソッドを使います<br>
+<br><b>
+public Color GetPixel(int x , int y);<br>
+<br></b>
+x には X 座標を、y には Y 座標を表す数値を指定します<br>
+これによって、指定した座標のピクセルの色を表す Color オブジェクトを返します<br>
+ピクセルの色を設定するには <strong>Bitmap.SetPixel()</strong> メソッドを用います<br>
+<br><b>
+public void SetPixel(int x , int y , Color color);<br>
+<br></b>
+x と y には、ピクセルを設定する X 座標と Y 座標を指定します<br>
+color は指定した座標の新しい色を表す Color オブジェクトです<br>
+<br>
+これによって、既存のイメージに様々な処理をピクセル単位で行ったり<br>
+あるいはイメージのサイズだけを指定した空のイメージを作成して<br>
+これにピクセル単位で色を設定することで、新しいイメージを作ることができます<br>
+<br>
+まだ説明していませんでしたが、Color クラスから色の数値表現を得るには<br>
+<strong>Color.ToArgb()</strong> メソッドを使います<br>
+また、アルファ値と各色の要素の値を個別に分割したい場合は<br>
+<strong>A</strong>、<strong>R</strong>、<strong>G</strong>、<strong>B</strong> プロパティを使えば、それぞれの要素の値だけを得ることができます<br>
+<br><b>
+public int ToArgb();<br>
+public byte A {get;}<br>
+public byte R {get;}<br>
+public byte G {get;}<br>
+public byte B {get;}<br>
+<br></b>
+これらから、色の数値情報を取得することができます<br>
+この機能を使えば、GetPixel() メソッドで得た Color オブジェクトの数値表現を得<br>
+それに適当な演算処理を加えて再び Color オブジェクトにして<br>
+そして、SetPixel() メソッドを使って新しい色を設定するという処理ができます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	Bitmap img;
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+	public WinMain() {
+		img = new Bitmap("test.jpg");
+		for (int i = 0 ; i &#60; img.Height ; i++) {
+			for (int j = 0 ; j &#60; img.Width ; j++) {
+				int px = ~(img.GetPixel(j , i)).ToArgb();
+				img.SetPixel(j , i , Color.FromArgb(px));
+			}
+		}
+	}
+				
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		g.DrawImage(img , 0 , 0);
+	}
+}</pre>
+<img src="img/00.043.jpg" class="img"><br>
+<br>
+このプログラムは、コンストラクタで test.jpg ファイルを読み取り<br>
+このイメージの左上角から右下角までの全ピクセルをループで処理してしまいます<br>
+GetPixel() メソッドで Color オブジェクトを得て、それを ToArgb() メソッドで数値化します<br>
+さらに、数値を ~ 論理演算子で否定し、色を反転させます<br>
+<br>
+最後に、同じピクセル部分に反転した色を設定しています<br>
+この処理を繰り返し行い、全てのピクセルを反転してからウィンドウを表示します<br>
+結果、上の図のようにオリジナルのイメージの色を反転させたものが表示されるのです<br>
+
+<br><hr>
+<h2>ダブルバッファリング</h2>
+ビットマップをメモリ上に配置できるようになれば、ある程度自由に静止画を扱えますが<br>
+上記のような１ピクセル単位での制御は極めて緻密な作業であるといえます<br>
+<br>
+出力先がディスプレイでもプリンタでもプロッタでも<br>
+同一の操作を行って同じ図形を出力できるべきであるというのが GDI の思想です<br>
+抽象化することで、ハードウェアごとに描画プログラムを書きなおす必要をなくすのです<br>
+<br>
+メモリ上に展開されているビットマップにも、この考え方は当てはまります<br>
+.NET で具体的に考えれば、ビットマップに対する図形の描画にも<br>
+Graphics クラスの機能を使えるべきだと、GDI をよく知るプログラマなら誰もが思うでしょう<br>
+<br>
+予想通り、<strong>Graphics.FromImage()</strong> という静的メソッドが用意されています<br>
+このメソッドは、Image オブジェクトの DC をパックした Graphics オブジェクトを返します<br>
+<br><b>
+public static Graphics FromImage(Image image);<br>
+<br></b>
+image には Graphics オブジェクトの描画対象となる Image オブジェクトを指定します<br>
+メソッドは、image のデバイスコンテキストを表す Graphics オブジェクトを返します<br>
+<br>
+この機能を用いれば、複雑な描画処理をウィンドウに行うのではなく<br>
+メモリ上のビットマップに行うことで、その描画過程をユーザーから隠蔽できます<br>
+とくに、画面クリア時に発生するちらつきの防止などでこの手法が使われます<br>
+このようなバッファを使った処理を<strong>ダブルバッファリング</strong>と呼びます<br>
+<pre class="prg">using System.Windows.Forms;
+using System.Drawing;
+
+class WinMain : Form {
+	public static void Main(string[] args) {		
+		Application.Run(new WinMain());
+	}
+				
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Image img = new Bitmap(400 , 200);
+		Graphics buf = Graphics.FromImage(img);
+
+		for (int i = 0 ; i &#60; 400 ; i += 10)
+			buf.DrawLine(Pens.Black , i , 0 , i , 200);
+
+		g.DrawImage(img , 0 , 0);
+	}
+}</pre>
+<img src="img/00.045.jpg" class="img"><br>
+<br>
+DrawLine() メソッドで連続した縦線を引いているのは img オブジェクトです<br>
+この時点では、まだウィンドウのクライアント領域に描画されていないことに注意してください<br>
+イメージに対する描画が全て終わった後に、DrawImage() を使って<br>
+作成した img オブジェクトをウィンドウのクライアント領域に描画しています<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='msnet_win14.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="msnet_win16.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

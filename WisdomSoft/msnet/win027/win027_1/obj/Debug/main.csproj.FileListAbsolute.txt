@@ -1,0 +1,4 @@
+F:\codingground\WisdomSoft\msnet\win027\win027_1\bin\Debug\main.exe
+F:\codingground\WisdomSoft\msnet\win027\win027_1\bin\Debug\main.pdb
+F:\codingground\WisdomSoft\msnet\win027\win027_1\obj\Debug\main.exe
+F:\codingground\WisdomSoft\msnet\win027\win027_1\obj\Debug\main.pdb
