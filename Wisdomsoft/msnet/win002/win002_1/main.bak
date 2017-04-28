@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
+
   <!-- Executed before build -->
   <preBuildCommand>cmd.exe,/k build.bat</preBuildCommand>
   <!-- <preBuildCommand /> -->

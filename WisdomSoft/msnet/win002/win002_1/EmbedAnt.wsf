@@ -1,316 +1,372 @@
-<package>
-<job id="run">
-<script language="JScript" src ="F:\WSH\wsf\common_lib.js" />
-<script language="VBScript">
-    Option Explicit
-	Dim shell
-	Set shell = CreateObject("WScript.Shell")
-	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
-	Dim AppName
-	
-	AppName = "main"
-	
-	if FileExists(AppName & ".exe") then
-		shell.Exec(AppName & ".exe")
-	elseif FileExists("Debug\" & AppName & ".exe") then
-		shell.Exec("Debug\" & AppName & ".exe")
-	elseif FileExists("bin\Release\" & AppName & ".exe") then
-		shell.Exec("bin\Release\" & AppName & ".exe")
-	end if
+ï»¿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<package title="EmbedAnt">
 
+<buildfile id="antfile"><![CDATA[
+<?xml version="1.0"  encoding="UTF-8"?>
+<project name="msnet" default="build" basedir="%%CurDir%%">
+    <property environment="env" />
+    <property name="name" value="win001_1"/>
+    <property name="target" value="main"/>
+    <property name="exe" value="${target}.exe"/>
+    <property name="source" value="${target}.cs"/>
+    <property name="compiler" value="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\VCSExpress.exe" />
+    <property name="csproj" value="${target}.csproj" />
+    <property name="doxygen" value="C:/Program Files/doxygen/bin/doxygen.exe" />
+    <property name="doxyfile" value="F:/WisdomSoft/framework/system/msnet/Doxyfile" />
+    <property name="script" value="F:/Programs/csscript/csws.exe" />
+  
+  <target name="build">
+    <exec executable="cmd" spawn="false">
+      <arg value="/k" />
+      <arg value="${compiler}"/>
+      <arg value="${basedir}/${csproj}" />
+      <arg value="/rebuild" />
+    </exec>
+    <copy file="${basedir}/bin/Release/${exe}" todir="${basedir}" failonerror="false" />
+    <copy file="${basedir}/bin/Debug/${exe}" todir="${basedir}" failonerror="false" />
+  </target>
 
-	Function FolderExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FolderExists = objFileSys.FolderExists(strFilePath)
-	End Function
+  <target name="run" depends="build">
+    <exec executable="${basedir}/${exe}" />
+  </target>
 
-	Function FileExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FileExists = objFileSys.FileExists(strFilePath)
-	End Function
-</script>
-</job>
+  <target name="runscript">
+    <exec executable="${script}" >
+      <arg value="${basedir}/${source}" />
+    </exec>
+  </target>
 
-<job id="RunScript">
-<script language="VBScript">
-    Option Explicit
-	Dim shell
-	
-	Set shell = CreateObject("WScript.Shell")
-	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+  <target name="clean">
+    <delete dir="bin" />
+    <delete dir="obj" />
+    <delete>
+      <fileset dir="." includes="*.user"/>
+      <fileset dir="." includes="*.suo"/>
+    </delete>
+  </target>
+  <target name="clear">
+    <delete dir="bin" />
+    <delete dir="obj" />
+    <delete dir="doxygen" />
+    <delete>
+      <fileset dir="." includes="*.user"/>
+      <fileset dir="." includes="*.suo"/>
+      <fileset dir="." includes="*.exe"/>
+      <fileset dir="." includes="*.class"/>
+      <fileset dir="." includes="*.swf"/>
+    </delete>
+  </target>
 
-	if FileExists("main.cs") then
-		shell.Run "F:\Programs\csscript\csws.exe main.cs",1
-	end if
+  <target name="doxygen">
+    <exec executable="cmd.exe" >
+      <arg value="/k" />
+      <arg value="${doxygen}" />
+      <arg value="${doxyfile}" />
+    </exec>
+  </target>
 
-	Function FolderExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FolderExists = objFileSys.FolderExists(strFilePath)
-	End Function
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage">
+    <echo message="" />
+    <echo message="" />
+    <echo message="${name} Build file" />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message=" available targets are:" />
+    <echo message="" />
+    <echo message="   build     - compiles the source code (default)" />
+    <echo message="   run       - execute the exsample" />
+    <echo message="   runscript - run script of the exsample" />
+    <!--
+    <echo message="   package   - generates the ${name}.jar file" />
+    -->
+    <echo message="   doxygen   - generates the doxygen documentation" />
+    <echo message="   clean     - cleans up the directory" />
+    <echo message="   clear     - delete all build files" />
+    <echo message="" />
+    <echo message=" See the comments inside the build.xml file for more details." />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message="" />
+  </target>
 
-	Function FileExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FileExists = objFileSys.FileExists(strFilePath)
-	End Function
-</script>
-</job>
+</project>
+	]]></buildfile>
 
-<job id="RunWsScript">
-<script language="VBScript">
-    Option Explicit
-	Dim shell
-	
-	Set shell = CreateObject("WScript.Shell")
-	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+<srcfile id="csfile" ><![CDATA[
+// -*- mode: java -*-  Time-stamp: <2017-01-06 12:14:33 kahata>
+/*================================================================
+ * title: 
+ * file: 
+ * path; msnet/win002/win002_1/main.cs
+ * url:  msnet/win002/win002_1/main.cs
+ * created: Time-stamp: <2017-01-06 12:14:33 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: http://wisdom.sakura.ne.jp/
+ * link: http://wisdom.sakura.ne.jp/system/msnet/msnet_win2.html
+ * description: 
+ *
+ *================================================================*/
+using System.Windows.Forms;
+using System.Drawing;
 
-	if FileExists("main.cs") then
-		shell.Run "F:\Programs\csscript\csws.exe main.cs",1
-	end if
-
-	Function FolderExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FolderExists = objFileSys.FolderExists(strFilePath)
-	End Function
-
-	Function FileExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FileExists = objFileSys.FileExists(strFilePath)
-	End Function
-</script>
-</job>
-
-<job id="Sakura_MultiOpen">
-<script language="JScript" src="F:\FrameWork\scripts\common_lib.js"></script>
-<script language="JScript">
-	var strScriptFolder;
-	//ƒXƒNƒŠƒvƒg–¼‚ğŠÜ‚Ü‚È‚¢ƒtƒ‹ƒpƒX‚ğ•ÒW‚·‚é
-	strScriptFolder = String(WScript.ScriptFullName).replace(WScript.ScriptName,"");
-	//ƒXƒNƒŠƒvƒg–¼‚ğŠÜ‚Şƒtƒ‹ƒpƒX
-	//WScript.echo("ƒXƒNƒŠƒvƒg–¼‚ğŠÜ‚Ş@@@" + WScript.ScriptFullName);
-	//ƒXƒNƒŠƒvƒg–¼‚ğŠÜ‚Ü‚È‚¢ƒtƒ‹ƒpƒX
-	//WScript.echo("ƒXƒNƒŠƒvƒg–¼‚ğŠÜ‚Ü‚È‚¢@" + strScriptFolder);
-	//WScript.echo(fileext(WScript.ScriptFullName)); //OK
-
-	var objApl;
-	var objFolder;
-	var objFolderItems;
-	var objItem;
-	var i;
-	var strOpenFileName ='';
-	
-	//‡@ƒVƒFƒ‹ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·
-	objApl = new ActiveXObject("Shell.Application");
-	//‡A’T‚è‚ğ“ü‚ê‚½‚¢ƒtƒHƒ‹ƒ_‚ÌƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·
-	objFolder = objApl.NameSpace(strScriptFolder);
-	//‡BƒtƒHƒ‹ƒ_ƒIƒuƒWƒFƒNƒg‚©‚çA“ü‚Á‚Ä‚¢‚éƒtƒ@ƒCƒ‹‚âƒtƒHƒ‹ƒ_‚Ì‘Sî•ñ‚ğæ“¾‚µ‚Ü‚·
-	objFolderItems = objFolder.Items();
-	//WScript.echo(objFolderItems.Count);
-
-	//‡C‰½ŒÂ“ü‚Á‚Ä‚¢‚½‚©‚ÍACount‚ÅQÆ
-	for(i=0;i<objFolderItems.Count;i++) {
-		//‡Dƒtƒ@ƒCƒ‹‚âƒtƒHƒ‹ƒ_‚Ìî•ñ‚ğ‚PƒRæ‚èo‚µ‚Ü‚·
-		objItem = objFolderItems.Item(i);
-		//‡Eæ‚èo‚µ‚½•¨‚ªƒtƒ@ƒCƒ‹‚©ƒtƒHƒ‹ƒ_‚©‚ğ”»’è
-		if (objItem.IsFolder==false && in_array(fileext(objItem.Name), ['cpp', 'h', 'pro','rc','c','cs','java'])) {
-       //‡Fæ‚èo‚µ‚½•¨‚ªƒtƒHƒ‹ƒ_‚Ìê‡‚ÌƒƒbƒZ[ƒW
-//			WScript.echo(objItem.Name);
-			strOpenFileName += ' ' + strScriptFolder+objItem.Name;
-		}
+class WinMain : Form {
+	public static void Main(string[] args) {
+		WinMain win = new WinMain();
+		Application.Run(win);
 	}
-	//WScript.echo(strOpenFileName);
+	override protected void OnPaint(PaintEventArgs e) {
+		Graphics g = e.Graphics;
+		Pen myPen = new Pen(Color.FromArgb(0xFF , 0 , 0) , 10.0f);
+		g.DrawLine(myPen , 0 , 0 , 200 , 100);
+	}
+}
+]]></srcfile>	
 	
-	var vbHide = 0             //ƒEƒBƒ“ƒhƒE‚ğ”ñ•\¦
-	var vbNormalFocus = 1      //’Êí‚ÌƒEƒBƒ“ƒhƒEA‚©‚ÂÅ‘O–Ê‚ÌƒEƒBƒ“ƒhƒE
-	var vbMinimizedFocus = 2   //Å¬‰»A‚©‚ÂÅ‘O–Ê‚ÌƒEƒBƒ“ƒhƒE
-	var vbMaximizedFocus = 3   //Å‘å‰»A‚©‚ÂÅ‘O–Ê‚ÌƒEƒBƒ“ƒhƒE
-	var vbNormalNoFocus = 4    //’Êí‚ÌƒEƒBƒ“ƒhƒEA‚½‚¾‚µAÅ‘O–Ê‚É‚Í‚È‚ç‚È‚¢
-	var vbMinimizedNoFocus = 6 //Å¬‰»A‚½‚¾‚µAÅ‘O–Ê‚É‚Í‚È‚ç‚È‚¢
-
-	var objWShell = new ActiveXObject("WScript.Shell")
-	objWShell.Run("C:\\TiuDevTools\\sakura\\multifile\\multifile.exe" + strOpenFileName,vbNormalFocus, false)
-	//WScript.Echo("AVIPreview.exe‚ğÀs‚µ‚Ü‚µ‚½I")
-	objWShell = null
-</script>
+<job id="run" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /c ant run  -buildfile "+ tempfile, 0, false);
+	]]></script>
 </job>
 
-<job id="clean">
-<script language="JScript" src ="F:\WSH\wsf\common_lib.js" />
-<script language="VBScript">
-	Option Explicit
-	Dim shell
-	Dim currentDir
-	Dim compiler
-
-	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
-
-	Set shell = CreateObject("WScript.Shell")
-
-	shell.CurrentDirectory = currentDir
-    shell.Run "cmd.exe /c rm -rf bin obj *.exe *.suo *.pdb ",0
-</script>
+<job id="build" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /c ant build  -buildfile "+ tempfile, 0, false);
+	]]></script>
 </job>
 
-<job id="clear">
-<script language="JScript" src ="F:\WSH\wsf\common_lib.js" />
-<script language="VBScript">
-	Option Explicit
-	Dim shell
-	Dim currentDir
-	Dim compiler
 
-	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
-
-	Set shell = CreateObject("WScript.Shell")
-
-	shell.CurrentDirectory = currentDir
-    shell.Run "cmd.exe /c rm -rf bin obj *.exe *.suo *.pdb *.class *.swf",0
-</script>
+<job id="clean" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /c ant clean  -buildfile "+ tempfile, 0, false);
+	]]></script>
 </job>
 
-<job id="build">
-<script language="JScript" src ="F:\WSH\wsf\common_lib.js" />
-<!-- <script language="JScript" src="F:\FrameWork\scripts\common_lib.js"></script> -->
-<script language="VBScript">
-    Option Explicit
-	Dim shell
-	Dim AppName
-	Dim compiler
-	Dim compilerXp
-	Dim compiler81
-	Dim currentDir
-	Dim objExecCmd
-	Dim objFSO          ' FileSystemObject
-	Dim strCopyFile     ' ƒRƒs[‘ÎÛƒtƒ@ƒCƒ‹
-	Dim strCopyFolder   ' ƒRƒs[æƒtƒHƒ‹ƒ_–¼
 
-	AppName = "main"
-	
-	compilerXp = "C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
-	'compiler81 = "C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
-	compiler81 = "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\VCSExpress.exe"
-
-	if FileExists(compilerXp) then
-		compiler = compilerXp
-	end if
-	if FileExists(compiler81) then
-		compiler = compiler81
-	end if
-	
-	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
-	strCopyFile = currentDir & "bin" & "\Release\" & AppName & ".exe"
-	
-	
-	strCopyFolder = currentDir
-
-	Set shell = CreateObject("WScript.Shell")
-	Set objFSO = WScript.CreateObject("Scripting.FileSystemObject")
-
-	shell.CurrentDirectory = currentDir
-
-	if FileExists("build.xml") then
-		CreateObject("WScript.Shell").Run "cmd.exe /k, ant",1
-	elseif FileExists("build.bat") then
-		CreateObject("WScript.Shell").Run "cmd.exe /k, build.bat",1
-	elseif FileExists(AppName & ".csproj") then
-    	Set objExecCmd = shell.Exec(compiler & " " & AppName & ".csproj /rebuild ")
-         Do While objExecCmd.Status = 0
-            ' ‚P•b‘Ò‚Á‚Ä‚İ‚é
-            WScript.Sleep(1000)
-        Loop
-	end if
-
-	if FileExists(currentDir & "bin" & "\Release\" & AppName & ".exe") then
-		strCopyFile = currentDir & "bin" & "\Release\" & AppName & ".exe"
-   	elseif FileExists(currentDir & "bin" & "\Debug\" & AppName & ".exe") Then
- 		strCopyFile = currentDir & "bin" & "\Debug\" & AppName & ".exe"
-	end if
-
-   ' ƒtƒ@ƒCƒ‹ƒRƒs[
-	'if FileExists(strCopyFile) then
-     objFSO.CopyFile strCopyFile, strCopyFolder, True
-	'end if
-
-   ' ƒtƒ@ƒCƒ‹íœ
-    'objFSO.DeleteFolder currentDir & "bin", True
-   	'objFSO.DeleteFolder currentDir & "obj", True
-
-	Set objFSO = Nothing
-
-	Function FolderExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FolderExists = objFileSys.FolderExists(strFilePath)
-	End Function
-
-	Function FileExists(strFilePath)
-		Dim objFileSys
-		Set objFileSys = CreateObject("Scripting.FileSystemObject")
-		FileExists = objFileSys.FileExists(strFilePath)
-	End Function
-
-Function GetOSVersion()
-
-	' XP ‚È‚ç‚Î 5.1 ‚Æ•Ô‚è‚Ü‚·
-
-	Dim strComputer
-	Dim Wmi 
-	Dim colTarget 
-	Dim strWork 
-	Dim objRow
-	Dim aData
-
-	strComputer = "."
-	Set Wmi = GetObject("winmgmts:" _
-	    & "{impersonationLevel=impersonate}!\\" & strComputer & "\root\cimv2")
-	
-	Set colTarget = Wmi.ExecQuery( "select Version from Win32_OperatingSystem" )
-	For Each objRow in colTarget
-		strWork = objRow.Version
-	Next
-
-	aData = Split( strWork, "." )
-	strWork = aData(0) & "." & aData(1)
-
-	GetOSVersion = CDbl( strWork )
-
-End Function	
-</script>
+<job id="clear" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /c ant clear  -buildfile "+ tempfile, 0, false);
+	]]></script>
 </job>
+
+<job id="runscript" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /c ant runscript  -buildfile "+ tempfile, 0, false);
+	]]></script>
+</job>
+
+<job id="doxygen" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /c ant doxygen -buildfile "+ tempfile, 0, false);
+	]]></script>
+</job>
+
+<job id="usage" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var shell = new ActiveXObject("WScript.Shell");
+ 		var tempfile = fso.GetSpecialFolder(2) + "\\" + "build.xml";
+		// http://qiita.com/tnakagawa/items/4b501c21abcd39f30fbe
+		var str = getInnerTextById(WScript.ScriptFullName, "antfile");
+		str = str.replace(/%%CurDir%%/g,fso.getParentFolderName(WScript.ScriptFullName));
+		str = str.replace(/\\/g,"/");
+		createTempFile(str,"build.xml");
+		shell.Run("cmd.exe /k ant usage -buildfile "+ tempfile, 1, false);
+	]]></script>
+</job>
+
+
+<job id="file-ReadAll" >
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+			var shell = new ActiveXObject("WScript.Shell");
+		//shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+		//  http://3rd.geocities.jp/kaito_extra/Source/TextCtrl.html
+		//  ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œ
+		//  
+		//  ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«å†…ã®å…¨ã¦ã®æ–‡å­—ãƒ‡ãƒ¼ã‚¿ã‚’ä¸€åº¦ã«èª­ã¿è¾¼ã‚€ã€‚
+		//  
+		//  ã‚ªãƒ¼ãƒ—ãƒ³ãƒ¢ãƒ¼ãƒ‰
+		var FORREADING      = 1;    // èª­ã¿å–ã‚Šå°‚ç”¨
+		var FORWRITING      = 2;    // æ›¸ãè¾¼ã¿å°‚ç”¨
+		var FORAPPENDING    = 8;    // è¿½åŠ æ›¸ãè¾¼ã¿
+		//  é–‹ããƒ•ã‚¡ã‚¤ãƒ«ã®å½¢å¼
+		var TRISTATE_TRUE       = -1;   // Unicode
+		var TRISTATE_FALSE      =  0;   // ASCII
+		var TRISTATE_USEDEFAULT = -2;   // ã‚·ã‚¹ãƒ†ãƒ ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
+		//  ãƒ•ã‚¡ã‚¤ãƒ«é–¢é€£ã®æ“ä½œã‚’æä¾›ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
+		var fs = new ActiveXObject( "Scripting.FileSystemObject" );
+		//  ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿å–ã‚Šå°‚ç”¨ã§é–‹ã
+		var file = fs.OpenTextFile( WScript.ScriptFullName, FORREADING, true, TRISTATE_FALSE );
+		//  ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å…¨ã¦ã®æ–‡å­—ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+		var str = file.ReadAll();
+		WScript.Echo( str );
+		//  ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+		file.Close();
+		//  ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è§£æ”¾
+		fs = null;
+	]]></script>
+</job>
+
+
+
+
+ <job id="Form1">
+	<resource id="code"><![CDATA[
+	]]></resource>
+	
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>	
+	<script language="JScript">
+		var executable = "C:\\HDD_F\\Programs\\cs-script\\csws.exe";
+		var filename = "Main.cs"
+		var code =getResource("code");
+		//WScript.Echo(getResource("code"));
+		var csfile = createTempFile(code, filename);
+		//WScript.Echo(csfile);
+		var shell = new ActiveXObject("WScript.Shell");
+		shell.Run(executable + "  "+ csfile, 1, false);
+	</script>
+</job>
+
+<job id="DownloadExec">
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var executable = "csws.exe";
+		var csfile  = "Main.cs"
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+	// ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«åã®ä½œæˆ
+	//	å®šæ•°						å€¤	å†…å®¹
+	//WindowsFolder		0		Windows ãƒ•ã‚©ãƒ«ãƒ€
+	//SystemFolder		1		System ãƒ•ã‚©ãƒ«ãƒ€
+	//TemporaryFolder	2		ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã®æ ¼ç´ã«ä½¿ç”¨ã•ã‚Œã‚‹ Temp ãƒ•ã‚©ãƒ«ãƒ€
+		var tDir = fso.GetSpecialFolder(2);
+ 		var tempfile = tDir + "\\" + csfile;
+		var shell = new ActiveXObject("WScript.Shell");
+		var url ="https://raw.githubusercontent.com/hataka/Hello-World/master/neko/form/"
+			+ "form_002/formprop03/formprop03.cs";
+		downloadFile(url, tempfile)
+		shell.Exec(executable + "  "+ tempfile);
+	]]></script>
+</job>
+
+<job id="BubbleChartExample.swf" 
+	command="openDocument" args="Main.wsf">
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>
+	<script language="JScript"><![CDATA[
+		var executable = "explorer.exe";
+		var csfile  = "Main.swf"
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+	// ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«åã®ä½œæˆ
+	//	å®šæ•°						å€¤	å†…å®¹
+	//WindowsFolder		0		Windows ãƒ•ã‚©ãƒ«ãƒ€
+	//SystemFolder		1		System ãƒ•ã‚©ãƒ«ãƒ€
+	//TemporaryFolder	2		ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã®æ ¼ç´ã«ä½¿ç”¨ã•ã‚Œã‚‹ Temp ãƒ•ã‚©ãƒ«ãƒ€
+		var tDir = fso.GetSpecialFolder(2);
+ 		var tempfile = tDir + "\\" + csfile;
+		var shell = new ActiveXObject("WScript.Shell");
+		var url ="https://raw.githubusercontent.com/hataka/hataka.github.io/master/"
+			+ "BubbleChartExample/BubbleChartExample.swf";
+		downloadFile(url, tempfile)
+		shell.Exec(executable + "  "+ tempfile);
+	]]></script>
+</job>
+<XmlTreeMenu>
+  <folder title="Menu" expand="false">
+    <record title="ãƒ„ãƒªãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒ¼ã‚’é–‹ã" action="menu" command="OpenTreeDataDialog" />
+    <record title="XmlTreeMenu" action="menu" path="$(BaseDir)\SettingData\XmlTreeMenu.xml" />
+    <record title="FlashProject" action="menu" path="$(BaseDir)\SettingData\\FlashProject.xml" />
+  </folder>
+  <folder title="LocalSite">
+    <record title="FrameWork" path="http://localhost/f/FrameWork/FrameWork.html" />
+    <record title="Local Frame" action="browse" path="F:\WisdomSoft\framework\system\msnet\frame.html" />
+    <record title="Local Frame in Chrome" action="winexe" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" args="F:\WisdomSoft\framework\system\msnet\frame.html" />
+  </folder>
+  <folder title="WebSite">
+    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+    <record title="yahoo" path="http://www.yahoo.co.jp/" />
+    <record title="WisdomSoft" path="http://wisdom.sakura.ne.jp/" />
+  </folder>
+  <folder title="ãƒ“ãƒ«ãƒ‰" expand="false">
+    <record title="build.bat" action="RunProcess" command="cmd.exe" args=" /k $(CurProjectDir)\build.bat" />
+    <!--
+    <record title="VC# 2008 rebuild(cmd)" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="./k &quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe&quot; main.csproj /rebuild" />
+    <record title="resgen" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="./k &quot;C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\resgen.exe&quot; main.resx main.resources" />
+    -->
+    <record title="VC# 2010  Express èµ·å‹•" action="RunProcess" command="$(CurProjectDir)\main.sln" />
+  </folder>
+  <folder title="å®Ÿè¡Œ" expand="false">
+    <record title="Console Output" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="/k $(CurProjectDir)\main.exe" />
+    <record title="Windows Output" action="RunProcess" command="$(CurProjectDir)\main.exe" />
+    <record title="RunApp.wsf" action="RunProcess" command="C:\WINDOWS\system32\wscript.exe" args="//nologo $(CurProjectDir)\RunApp.wsf" />
+    <record title="RunScript" action="RunProcess" command="F:\Programs\csscript\csws.exe" args="$(CurProjectDir)\main.cs" />
 <!--
-<job id="clean">
-<script language="VBScript">
-	CreateObject("WScript.Shell").Run "cmd.exe /k rm -rf bin obj *.user *.suo",1
-</script>
-</job>
-
-<job id="clear">
-<script language="VBScript">
-	CreateObject("WScript.Shell").Run "cmd.exe /k rm -rf bin obj *.user *.suo *.exe *.class",1
-</script>
-</job>
+    <record title="RunWsScript.wsf" action="RunProcess" command="C:\WINDOWS\system32\Wscript.exe" args="//nologo F:\cpp\Neko\form\form_06\drawstring02\RunWsScript.wsf" />
 -->
-
-<job id="usage">
-<script language="VBScript">
-	Wscript.Echo 	"job:" &  vbCrLf & _
-	"  run:              (default)" &  vbCrLf & _
-	"  RunScript:        cs-Script ‚Å main.cs ‚ğÀs" &  vbCrLf & _
-	"  RunWsScript:      “¯ã" &  vbCrLf & _
-	"  Sakura_MultiOpen: ƒTƒNƒ‰ƒGƒfƒBƒ^‚Åƒ\[ƒXƒtƒ@ƒCƒ‹(*.cpp,*.h,*.pro,*.rc,*.c,*.cs,*.java ‚ğŠJ‚­(‘½d‹N“®)" &  vbCrLf & _
-	"  clean:            cmd.exe /c rm -rf bin obj *.exe *.suo *.pdb" &  vbCrLf & _
-	"  clear:            cmd.exe /c rm -rf bin obj *.exe *.suo *.pdb *.exe *.class *.swf" &  vbCrLf & _
-	"  build:            build.xml, build.bat, (compiler) main.csproj /rebuild ‚Ì‡‚Éƒrƒ‹ƒh‚·‚é" &  vbCrLf & _
-	"  run: (default)" &  vbCrLf & _
-	vbCrLf
-
-</script>
-</job>
-
+  </folder>
+  <folder title="Source" expand="true">
+    <record title="main.cs" action="Open" path="F:\codingground\WisdomSoft\msnet\win002\win002_1\main.cs" />
+  </folder>
+</XmlTreeMenu>
 
 </package>
+
