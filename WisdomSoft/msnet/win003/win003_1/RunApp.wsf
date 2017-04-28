@@ -10,13 +10,13 @@
 	
 	AppName = "main"
 	
-	if FileExists(AppName & ".exe") then
-		shell.Exec(AppName & ".exe")
-	elseif FileExists("Debug\" & AppName & ".exe") then
-		shell.Exec("Debug\" & AppName & ".exe")
-	elseif FileExists("bin\Release\" & AppName & ".exe") then
-		shell.Exec("bin\Release\" & AppName & ".exe")
-	end if
+	'if FileExists(AppName & ".exe") then
+		shell.Exec("main.exe")
+	'elseif FileExists("Debug\" & AppName & ".exe") then
+	'	shell.Exec("Debug\" & AppName & ".exe")
+	'elseif FileExists("bin\Release\" & AppName & ".exe") then
+	'	shell.Exec("bin\Release\" & AppName & ".exe")
+	'end if
 
 
 	Function FolderExists(strFilePath)
