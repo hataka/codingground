@@ -14,4 +14,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    applicationVariants.all { variant ->
+      if (variant.buildType.name.equals("debug")) {
+        variant.outputs.each { output ->
+          if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+            def list = defaultConfig.applicationId.split("\\.")
+            def appname = list[list.length - 1]
+            output.outputFile = new File(output.outputFile.parent, "${appname}.apk")
+          }
+        }
+      }
+    }
 }
