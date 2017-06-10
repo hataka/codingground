@@ -25,10 +25,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class Sample011 extends Activity {
-    /** Called when the activity is first created. */
+	public final static String GIT_SITE   = "https://github.com/hataka/codingground/tree/master/android/YaSample/";
+	public final static String RAW_SITE   = "https://raw.githubusercontent.com/hataka/codingground/master/android/YaSample/";
+	public final static String LOCAL_SITE = "http://192.168.1.53/f/android/YASample/";
+	public static String className;
+
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        className = this.getClass().getSimpleName();
+        
         setContentView(R.layout.main);
         TextView tv = (TextView) findViewById(R.id.textView1);
         tv.setText("ひろくん、こんにちは");
@@ -36,8 +43,8 @@ public class Sample011 extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// メニューを追加
-		menu.add(Menu.NONE, 0, Menu.NONE, "Sample011,javaをブラウザで表示");
-		menu.add(Menu.NONE, 1, Menu.NONE, "main.xmlをブラウザで表示");
+		menu.add(Menu.NONE, 0, Menu.NONE, className+".java");
+		menu.add(Menu.NONE, 1, Menu.NONE, "Git Site");
 		return super.onCreateOptionsMenu(menu);
 	}
 	// メニューが選択されたときに実行される
@@ -50,16 +57,18 @@ public class Sample011 extends Activity {
 			case 0:
 		    	// 指定したURLをWebviewに読み込む
 				//uri = Uri.parse("http://192.168.１.53/f/android/YASample/Sample011/src/ya/Sample011/Sample011.java");
-				uri = Uri.parse("https://raw.githubusercontent.com/hataka/codingground/master/android/YaSample/Sample011/app/src/main/java/ya/Sample011/Sample011.java");
-				i = new Intent(Intent.ACTION_VIEW,uri);
+				//uri = Uri.parse("https://raw.githubusercontent.com/hataka/codingground/master/android/YaSample/Sample011/app/src/main/java/ya/Sample011/Sample011.java");
+				uri = Uri.parse(RAW_SITE + className+"/app/src/main/java/ya/"+ className+"/"+ className+".java");
+			i = new Intent(Intent.ACTION_VIEW,uri);
 			startActivity(i);
 				Toast.makeText(this,
 						"Menu0", Toast.LENGTH_SHORT).show();
 				break;
 			case 1:
-		    	// 指定したURLをWebviewに読み込む
+		    // 指定したURLをWebviewに読み込む
 				//uri = Uri.parse("http://192.168.1.53/f/android/YASample/Sample011/res/layout/main.xml");
-				uri = Uri.parse("https://raw.githubusercontent.com/hataka/codingground/master/android/YaSample/Sample011/app/src/main/res/layout/main.xml");
+				//uri = Uri.parse("https://raw.githubusercontent.com/hataka/codingground/master/android/YaSample/Sample011/app/src/main/res/layout/main.xml");
+				uri = Uri.parse(GIT_SITE+ className);
 				i = new Intent(Intent.ACTION_VIEW,uri);
 				startActivity(i);
 				Toast.makeText(this,
