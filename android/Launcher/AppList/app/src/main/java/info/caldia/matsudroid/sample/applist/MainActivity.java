@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	
 	private static final int ONCREATE = 1;
 	private static final int ONITEMCLICK = 2;
-		
+	/*	
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -41,20 +41,21 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			}
 		};
 	};
+	*/
 	private ListView mAppListView;
 	private List<ResolveInfo> mAppList;
 	
     /** Called when the activity is first created. */
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
         ListView listView = (ListView) findViewById(R.id.include_AppList);
         mAppListView = listView;
         listView.setOnItemClickListener(this);
-        
-        mHandler.sendEmptyMessage(ONCREATE);
+        //mHandler.sendEmptyMessage(ONCREATE);
+        getAppList();
     }
     
     /**
@@ -92,8 +93,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
      */
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		Message msg = mHandler.obtainMessage(ONITEMCLICK, position, 0);
-		mHandler.sendMessage(msg);
+		//Message msg = mHandler.obtainMessage(ONITEMCLICK, position, 0);
+		//mHandler.sendMessage(msg);
+		startActivitySafe(position);
 	}
 	
 	/**
