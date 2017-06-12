@@ -46,6 +46,9 @@ public class SslibActivity extends Activity {
 	String[] mStrings;
 	ArrayAdapter<String> adapter;	
 
+	private String curFile="Sslib211.java";
+	private final String GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Sslib";
+	
 	@Override
  	public void onCreate(Bundle savedInstanceState) {
 		savedInstanceState1 = savedInstanceState;
@@ -276,74 +279,75 @@ public class SslibActivity extends Activity {
 		menuindex = item.getItemId();		
 		// 選択されたIDを確認
 		switch (item.getItemId()) {
-		case R.id.menu_sslib211:tv1.setText(new Sslib211().output());break;
-		case R.id.menu_sslib212:tv1.setText(new Sslib212().output());break;
-		case R.id.menu_sslib213:tv1.setText(new Sslib213().output());break;
-		case R.id.menu_sslib214:tv1.setText(new Sslib214().output());break;
-		case R.id.menu_sslib215:tv1.setText(new Sslib215().output());break;
+		case R.id.menu_sslib211:curFile="Sslib211.java";tv1.setText(new Sslib211().output());break;
+		case R.id.menu_sslib212:curFile="Sslib212.java";tv1.setText(new Sslib212().output());break;
+		case R.id.menu_sslib213:curFile="Sslib213.java";tv1.setText(new Sslib213().output());break;
+		case R.id.menu_sslib214:curFile="Sslib214.java";tv1.setText(new Sslib214().output());break;
+		case R.id.menu_sslib215:curFile="Sslib215.java";tv1.setText(new Sslib215().output());break;
 			
-		case R.id.menu_sslib221:tv1.setText(new Sslib221().output());break;
-		case R.id.menu_sslib222:tv1.setText(new Sslib222().output());break;
-		case R.id.menu_sslib223:tv1.setText(new Sslib223().output());break;
-		case R.id.menu_sslib224:tv1.setText(new Sslib224().output());break;
-		case R.id.menu_sslib225:tv1.setText(new Sslib225().output());break;
-		case R.id.menu_sslib226:tv1.setText(new Sslib226().output());break;
-		case R.id.menu_sslib227:tv1.setText(new Sslib227().output());break;
-		case R.id.menu_sslib228:tv1.setText(new Sslib228().output());break;
-		case R.id.menu_sslib229:tv1.setText(new Sslib229().output());break;
-		case R.id.menu_sslib22a:tv1.setText(new Sslib22a().output());break;		
+		case R.id.menu_sslib221:curFile="Sslib221.java";tv1.setText(new Sslib221().output());break;
+		case R.id.menu_sslib222:curFile="Sslib222.java";tv1.setText(new Sslib222().output());break;
+		case R.id.menu_sslib223:curFile="Sslib223.java";tv1.setText(new Sslib223().output());break;
+		case R.id.menu_sslib224:curFile="Sslib224.java";tv1.setText(new Sslib224().output());break;
+		case R.id.menu_sslib225:curFile="Sslib225.java";tv1.setText(new Sslib225().output());break;
+		case R.id.menu_sslib226:curFile="Sslib226.java";tv1.setText(new Sslib226().output());break;
+		case R.id.menu_sslib227:curFile="Sslib227.java";tv1.setText(new Sslib227().output());break;
+		case R.id.menu_sslib228:curFile="Sslib228.java";tv1.setText(new Sslib228().output());break;
+		case R.id.menu_sslib229:curFile="Sslib229.java";tv1.setText(new Sslib229().output());break;
+		case R.id.menu_sslib22a:curFile="Sslib22a.java";tv1.setText(new Sslib22a().output());break;		
 		
-		case R.id.menu_sslib231:tv1.setText(new Sslib231().output());break;
-		case R.id.menu_sslib232:tv1.setText(new Sslib232().output());break;
-		case R.id.menu_sslib233:tv1.setText(new Sslib233().output());break;
-		case R.id.menu_sslib234:tv1.setText(new Sslib234().output());break;
-		case R.id.menu_sslib235:tv1.setText(new Sslib235().output());break;
-		case R.id.menu_sslib236:tv1.setText(new Sslib236().output());break;
-		case R.id.menu_sslib237:tv1.setText(new Sslib237().output());break;
-		case R.id.menu_sslib238:tv1.setText(new Sslib238().output());break;
-		case R.id.menu_sslib239:tv1.setText(new Sslib239().output());break;
+		case R.id.menu_sslib231:curFile="Sslib231.java";tv1.setText(new Sslib231().output());break;
+		case R.id.menu_sslib232:curFile="Sslib232.java";tv1.setText(new Sslib232().output());break;
+		case R.id.menu_sslib233:curFile="Sslib233.java";tv1.setText(new Sslib233().output());break;
+		case R.id.menu_sslib234:curFile="Sslib234.java";tv1.setText(new Sslib234().output());break;
+		case R.id.menu_sslib235:curFile="Sslib235.java";tv1.setText(new Sslib235().output());break;
+		case R.id.menu_sslib236:curFile="Sslib236.java";tv1.setText(new Sslib236().output());break;
+		case R.id.menu_sslib237:curFile="Sslib237.java";tv1.setText(new Sslib237().output());break;
+		case R.id.menu_sslib238:curFile="Sslib238.java";tv1.setText(new Sslib238().output());break;
+		case R.id.menu_sslib239:curFile="Sslib239.java";tv1.setText(new Sslib239().output());break;
 
-		case R.id.menu_sslib241:tv1.setText(new Sslib241().output());break;
-		case R.id.menu_sslib242:tv1.setText(new Sslib242().output());break;
-		case R.id.menu_sslib243:tv1.setText(new Sslib243().output());break;
-		case R.id.menu_sslib244:tv1.setText(new Sslib244().output());break;
-		case R.id.menu_sslib245:tv1.setText(new Sslib245().output());break;
+		case R.id.menu_sslib241:curFile="Sslib241.java";tv1.setText(new Sslib241().output());break;
+		case R.id.menu_sslib242:curFile="Sslib242.java";tv1.setText(new Sslib242().output());break;
+		case R.id.menu_sslib243:curFile="Sslib243.java";tv1.setText(new Sslib243().output());break;
+		case R.id.menu_sslib244:curFile="Sslib244.java";tv1.setText(new Sslib244().output());break;
+		case R.id.menu_sslib245:curFile="Sslib245.java";tv1.setText(new Sslib245().output());break;
 
-		case R.id.menu_sslib251:tv1.setText(new Sslib251().output());break;
-		case R.id.menu_sslib252:tv1.setText(new Sslib252().output());break;
-		case R.id.menu_sslib253:tv1.setText(new Sslib253().output());break;
-		case R.id.menu_sslib254:tv1.setText(new Sslib254().output());break;
-		case R.id.menu_sslib255:tv1.setText(new Sslib255().output());break;
+		case R.id.menu_sslib251:curFile="Sslib251.java";tv1.setText(new Sslib251().output());break;
+		case R.id.menu_sslib252:curFile="Sslib252.java";tv1.setText(new Sslib252().output());break;
+		case R.id.menu_sslib253:curFile="Sslib253.java";tv1.setText(new Sslib253().output());break;
+		case R.id.menu_sslib254:curFile="Sslib254.java";tv1.setText(new Sslib254().output());break;
+		case R.id.menu_sslib255:curFile="Sslib255.java";tv1.setText(new Sslib255().output());break;
 
-		case R.id.menu_sslib261:tv1.setText(new Sslib261().output());break;
-		case R.id.menu_sslib262:tv1.setText(new Sslib262().output());break;
-		case R.id.menu_sslib263:tv1.setText(new Sslib263().output());break;
-		case R.id.menu_sslib264:tv1.setText(new Sslib264().output());break;
+		case R.id.menu_sslib261:curFile="Sslib261.java";tv1.setText(new Sslib261().output());break;
+		case R.id.menu_sslib262:curFile="Sslib262.java";tv1.setText(new Sslib262().output());break;
+		case R.id.menu_sslib263:curFile="Sslib263.java";tv1.setText(new Sslib263().output());break;
+		case R.id.menu_sslib264:curFile="Sslib264.java";tv1.setText(new Sslib264().output());break;
 		
-		case R.id.menu_sslib271:tv1.setText(new Sslib271().output());break;
-		case R.id.menu_sslib272:tv1.setText(new Sslib272().output());break;
-		case R.id.menu_sslib273:tv1.setText(new Sslib273().output());break;
-		case R.id.menu_sslib274:tv1.setText(new Sslib274().output());break;
-		case R.id.menu_sslib275:tv1.setText(new Sslib275().output());break;
+		case R.id.menu_sslib271:curFile="Sslib271.java";tv1.setText(new Sslib271().output());break;
+		case R.id.menu_sslib272:curFile="Sslib271.java";tv1.setText(new Sslib272().output());break;
+		case R.id.menu_sslib273:curFile="Sslib273.java";tv1.setText(new Sslib273().output());break;
+		case R.id.menu_sslib274:curFile="Sslib274.java";tv1.setText(new Sslib274().output());break;
+		case R.id.menu_sslib275:curFile="Sslib275.java";tv1.setText(new Sslib275().output());break;
 
-		case R.id.menu_sslib281:tv1.setText(new Sslib281().output());break;
+		case R.id.menu_sslib281:curFile="Sslib281.java";tv1.setText(new Sslib281().output());break;
 
-		case R.id.menu_sslib291:tv1.setText(new Sslib291().output());break;
-		case R.id.menu_sslib292:tv1.setText(new Sslib292().output());break;
-		case R.id.menu_sslib293:tv1.setText(new Sslib293().output());break;
+		case R.id.menu_sslib291:curFile="Sslib291.java";tv1.setText(new Sslib291().output());break;
+		case R.id.menu_sslib292:curFile="Sslib292.java";tv1.setText(new Sslib292().output());break;
+		case R.id.menu_sslib293:curFile="Sslib293.java";tv1.setText(new Sslib293().output());break;
 
-		case R.id.menu_sslib2a1:tv1.setText(new Sslib2a1().output());break;
-		case R.id.menu_sslib2a2:tv1.setText(new Sslib2a2().output());break;
-		case R.id.menu_sslib2a3:tv1.setText(new Sslib2a3().output());break;
+		case R.id.menu_sslib2a1:curFile="Sslib2a1.java";tv1.setText(new Sslib2a1().output());break;
+		case R.id.menu_sslib2a2:curFile="Sslib2a2.java";tv1.setText(new Sslib2a2().output());break;
+		case R.id.menu_sslib2a3:curFile="Sslib2a3.java";tv1.setText(new Sslib2a3().output());break;
 
 		case R.id.menu_browse:
 		    	// 指定したURLをWebviewに読み込む
 				//Uri uri = Uri.parse("http://android.roof-balcony.com/");
-				Uri uri = Uri.parse("http://192.168.1.53/f/android/Sslib/Sslib211/src/kahata/Sslib211/Sslib211.java");
+				//Uri uri = Uri.parse("http://192.168.1.53/f/android/Sslib/Sslib211/src/kahata/Sslib211/Sslib211.java");
+				Uri uri = Uri.parse(getRawSite(curFile));
 				Intent i = new Intent(Intent.ACTION_VIEW,uri);
 				startActivity(i);
 				Toast.makeText(this,
-						"Menu0", Toast.LENGTH_SHORT).show();
+						curFile, Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.menu_output:
 				try {
@@ -416,4 +420,23 @@ public class SslibActivity extends Activity {
 		}
 		return true;
 	}
+	/*
+	https://github.com/hataka/codingground
+	https://github.com/hataka/codingground/tree/master/android/Sslib
+	https://github.com/hataka/codingground/blob          /master/android/Sslib/app/src/main/java/kahata/Sslib/Sslib225.java
+	https://raw.githubusercontent.com/hataka/codingground/master/android/Sslib/app/src/main/java/kahata/Sslib/Sslib225.java
+	*/
+	public String getSrcSite(String fileName) {
+		String site = GIT_SITE+"/app/src/main/java/kahata/Sslib/" + fileName; 
+		site = site.replace("/tree/", "/blob/");
+		return site;
+	}
+
+	public String getRawSite(String fileName) {
+		String site = getSrcSite(fileName);
+		site = site.replace("https://github.com/hataka/codingground/blob", "https://raw.githubusercontent.com/hataka/codingground");
+		return site;
+	}
+
+
 }
