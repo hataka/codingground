@@ -48,9 +48,9 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 	public static String mypkgname;// = new GudonLauncherActivity().getPackageName();
 	public static String myclasspath;// = new GudonLauncherActivity().getClass().getName();
 	public static String myclassname;// = new GudonLauncherActivity().getClass().getSimpleName();
-	
 	public final static String WORKSPACE_LOCATION = "http://192.168.1.53/f/android/Moonlight_aska/";
-	public final static String GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	public final static String LOCAL_GIT =   "http://192.168.1.53/f/GitHub/hataka/codingground/android/Moonlight_aska/";
+	public final static String GIT_SITE  = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
 	public final static Boolean LOCAL_HOST = false;
 
 	Bundle savedInstanceStateOrg;
@@ -530,6 +530,8 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	//GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	//                 http://localhsot/f/GitHub/hataka/codingground/android/Moonlight_aska/AlertDialog01/app/src/main/java/com/moonlight_aska/android/alertdialog01/AlertDialog01.java
+	//            https://github.com/hataka/codingground/blob/master/android/Moonlight_aska/AlertDialog01/app/src/main/java/com/moonlight_aska/android/alertdialog01/AlertDialog01.java
 	public String getActivityGitUrl(String pkgName, String className)
 	{
 		String url = "";
