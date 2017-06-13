@@ -50,7 +50,9 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 	public static String myclassname;// = new GudonLauncherActivity().getClass().getSimpleName();
 	
 	public final static String WORKSPACE_LOCATION = "http://192.168.1.53/f/android/Moonlight_aska/";
-	
+	public final static String GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	public final static Boolean LOCAL_HOST = false;
+
 	Bundle savedInstanceStateOrg;
 	
 	private static final int ONCREATE = 1;
@@ -347,20 +349,20 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 								switch(item)
 								{
 								case 0:
-									url = makeAndroidManifestLocalpath(info.activityInfo.packageName,
-											info.activityInfo.name);
+									if(LOCAL_HOST == true)url = makeAndroidManifestLocalpath(info.activityInfo.packageName,info.activityInfo.name);
+									else url = getAndroidManifestGitUrl(info.activityInfo.packageName,info.activityInfo.name);
 									break;
 								case 1:
-									url = makeActivityLocalpath(info.activityInfo.packageName,
-											info.activityInfo.name);
+									if(LOCAL_HOST == true)url = makeActivityLocalpath(info.activityInfo.packageName,info.activityInfo.name);
+									else url = getActivityGitUrl(info.activityInfo.packageName,info.activityInfo.name);
 									break;
 								case 2:
-									url = makeLayoutMainLocalpath(info.activityInfo.packageName,
-											info.activityInfo.name);
+									if(LOCAL_HOST == true)url = makeLayoutMainLocalpath(info.activityInfo.packageName,info.activityInfo.name);
+									else url = getLayoutMainGitUrl(info.activityInfo.packageName,info.activityInfo.name);
 									break;
 								case 3:
-									url = makeProjectFolderLocalpath(info.activityInfo.packageName,
-											info.activityInfo.name);
+									if(LOCAL_HOST == true) url = makeProjectFolderLocalpath(info.activityInfo.packageName,info.activityInfo.name);
+									else url = getProjectFolderGitUrl(info.activityInfo.packageName,info.activityInfo.name);
 									break;
 								}
 								Uri uri = Uri.parse(url);
@@ -526,12 +528,38 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 		return url;
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////
+	//GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	public String getActivityGitUrl(String pkgName, String className)
+	{
+		String url = "";
+		String projectName = className
+		.replace(info.activityInfo.packageName + ".","").replace("Activity","");
+		url = GIT_SITE + projectName + "/app/src/main/java/"
+			+ className.replace(".", "/") + ".java";
+		url = url.replace("/tree/","/blob/");
+		return url;
+	}
+	
 	public String makeLayoutMainLocalpath(String pkgName, String className)
 	{
 		String url = "";
 		String projectName = className
 			.replace(info.activityInfo.packageName + ".","").replace("Activity","");
 		url = WORKSPACE_LOCATION + projectName + "/res/layout/main.xml";		
+		return url;
+	}
+	//////////////////////////////////////////////////////////////////////////////////////
+	//GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	//https://github.com/hataka/codingground/blob/master/android/Moonlight_aska/AlertDialog01/app/src/main/res/layout/main.xml
+	public String getLayoutMainGitUrl(String pkgName, String className)
+	{
+		String url = "";
+		String projectName = className
+			.replace(info.activityInfo.packageName + ".","").replace("Activity","");
+		// url = WORKSPACE_LOCATION + projectName + "/res/layout/main.xml";
+		url = GIT_SITE + projectName + "/app/src/main/res/layout/main.xml";
+		
 		return url;
 	}
 
@@ -543,6 +571,22 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 		url = WORKSPACE_LOCATION + projectName + "/AndroidManifest.xml";		
 		return url;
 	}
+	//////////////////////////////////////////////////////////////////////////////////////
+	//GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	//https://github.com/hataka/codingground/blob/master/android/Moonlight_aska/AlertDialog01/app/src/main/AndroidManifest.xml
+	public String getAndroidManifestGitUrl(String pkgName, String className)
+	{
+		String url = "";
+		String projectName = className
+			.replace(info.activityInfo.packageName + ".","").replace("Activity","");
+		//url = WORKSPACE_LOCATION + projectName + "/AndroidManifest.xml";		
+		url = GIT_SITE + projectName + "/app/src/main/AndroidManifest.xml";
+		return url;
+	}
+	
+	
+	
+	
 	
 	public String makeProjectFolderLocalpath(String pkgName, String className)
 	{
@@ -552,7 +596,21 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 		url = WORKSPACE_LOCATION + projectName + "/";		
 		return url;
 	}
-
+	//////////////////////////////////////////////////////////////////////////////////////
+	//GIT_SITE = "https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/";
+	// https://github.com/hataka/codingground/tree/master/android/Moonlight_aska/AlertDialog01
+	public String getProjectFolderGitUrl(String pkgName, String className)
+	{
+		String url = "";
+		String projectName = className
+			.replace(info.activityInfo.packageName + ".","").replace("Activity","");
+		//url = WORKSPACE_LOCATION + projectName + "/";		
+		url = GIT_SITE + projectName;
+		return url;
+	}
+	
+	
+	
 	/*	// http://iwatanlab.blogspot.com/2011/03/android.html
 	Method getPackageSizeInfo = 
 		pm.getClass().getMethod("getPackageSizeInfo", 
@@ -592,7 +650,6 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 		return filesize;
 	}
 
-	
 	public String getPackageInfo(ResolveInfo info)
 	{
 		String message ="";
@@ -629,6 +686,23 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 		
 	}
 	
+	/*
+	public String getSrcSite(String fileName) {
+		String site = GIT_SITE+"/app/src/main/java/kahata/Sslib/" + fileName; 
+		site = site.replace("/tree/", "/blob/");
+		return site;
+	}
+
+	public String getRawSite(String fileName) {
+		String site = getSrcSite(fileName);
+		site = site.replace("https://github.com/hataka/codingground/blob",
+			"https://raw.githubusercontent.com/hataka/codingground");
+		return site;
+	}
+	*/
+
+
+///////////////////////////////////////////////////////////////////////////	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -737,7 +811,6 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 	}	
 
 	// メニューが選択されたときに実行される
-	
 	@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 		menuindex = item.getItemId();
@@ -766,7 +839,7 @@ public class MoonlightAasukaLauncherActivity extends Activity implements OnItemC
 			startActivity(intent);
 			return true;
 		case R.id.menu_pukiwiki2012:
-			uri = Uri.parse("http://192.168.24.92/pukiwiki2012/?Android%E9%96%8B%E7%99%BA%2FMoonlight_%E6%98%8E%E6%97%A5%E9%A6%99");
+			uri = Uri.parse("http://192.168.1.53/f/pukiwiki2012/?Android%E9%96%8B%E7%99%BA%2FMoonlight_%E6%98%8E%E6%97%A5%E9%A6%99");
 			intent = new Intent(Intent.ACTION_VIEW,uri);
 			startActivity(intent);
 			return true;
