@@ -48,7 +48,7 @@ class MyView extends View {
 		paint.setAntiAlias(true);
 		// 楕円を描く
 		paint.setStyle(Paint.Style.STROKE);
-		RectF rect = new RectF(30, 30, 150, 100);
+		RectF rect = new RectF(30, 30, 1500, 1000);
 		canvas.drawOval(rect, paint); 
 		// 楕円の内部を塗りつぶす
 		paint.setStyle(Paint.Style.FILL);
