@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root title="YaSample TreeMenu" icon="" expand="true">
+<root title="TimePickerDialog TreeMenu" icon="" expand="true">
 <!--
 <settings>
  	<documentroot>C:\eclipse461\xampp\htdocs</documentroot>
@@ -8,9 +8,9 @@
 -->
 <toolbar>
 	<dropdownbutton name="ExecDropdownButton3" label="現在開いているファイルを外部プログラムで起動します" image="486">
-		<menu label="サクラエディタ" click="RunProcess" tag="C:\TiuDevTools\sakura\sakura.exe;$(Quote)$(CurFile)$(Quote)" imagelist="147" />
-		<menu label="PS Pad" click="RunProcess" tag="F:\Programs\PSPad editor\PSPad.exe;$(Quote)$(CurFile)$(Quote)" imagelist="148" />
-		<menu label="XML Editor" click="RunProcess" tag="F:\Programs\XMLEDITOR.NET\xml.exe;$(Quote)$(CurFile)$(Quote)" imagelist="98" />
+		<menu label="サクラエディタ" click="RunProcess" tag="C:\TiuDevTools\sakura\sakura.exe;"$(CurFile)"" imagelist="147" />
+		<menu label="PS Pad" click="RunProcess" tag="F:\Programs\PSPad editor\PSPad.exe;"$(CurFile)"" imagelist="148" />
+		<menu label="XML Editor" click="RunProcess" tag="F:\Programs\XMLEDITOR.NET\xml.exe;"$(CurFile)"" imagelist="98" />
 		<menu label="RichText Editor" click="PluginCommand" tag="XMLTreeMenu.CreateCustomDocument;RichTextEditor|$(CurFile)" imagelist="151" />
 		<menu label="Azuki Editor" click="PluginCommand" tag="XMLTreeMenu.CreateCustomDocument;AzukiEditor|$(CurFile)" imagelist="150" />
 		<separator />
