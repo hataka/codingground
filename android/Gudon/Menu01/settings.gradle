@@ -1,1 +1,3 @@
+gradle.ext.applicationId = "gudon.sample.Menu01";
+
 include ':app'

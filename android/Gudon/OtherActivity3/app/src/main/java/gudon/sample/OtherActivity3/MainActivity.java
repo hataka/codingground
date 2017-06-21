@@ -1,4 +1,4 @@
-package gudon.sample.ToOtherActivity3;
+package gudon.sample.OtherActivity3;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,8 +24,8 @@ public class MainActivity extends Activity {
 		Person person = (Person) intent.getSerializableExtra("Person Object");
 
 		TextView tv = new TextView(this);
-		tv.setText(String.format("iValue=%d\nstrValue=%s\nperson=%s", iValue,
-				strValue.toString(), person.toString()));
+		//tv.setText(String.format("iValue=%d\nstrValue=%s\nperson=%s", iValue,
+		//		strValue.toString(), person.toString()));
 		layout.addView(tv);
 
 		Button button = new Button(this);

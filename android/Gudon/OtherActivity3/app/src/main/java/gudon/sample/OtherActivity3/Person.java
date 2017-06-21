@@ -1,4 +1,4 @@
-package gudon.sample.ToOtherActivity3;
+package gudon.sample.OtherActivity3;
 
 import java.io.Serializable;
 
