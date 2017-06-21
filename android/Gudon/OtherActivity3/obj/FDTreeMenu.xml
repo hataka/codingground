@@ -1,30 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root title="Gudon TreeMenu" icon="" expand="true">
-<!--
-<settings>
- 	<documentroot>C:\eclipse461\xampp\htdocs</documentroot>
- 	<serverroot>http://localhost:8081</serverroot>
-</settings>
--->
-<toolbar>
-	<dropdownbutton name="ExecDropdownButton3" label="現在開いているファイルを外部プログラムで起動します" image="486">
-		<menu label="サクラエディタ" click="RunProcess" tag="C:\TiuDevTools\sakura\sakura.exe;$(Quote)$(CurFile)$(Quote)" imagelist="147" />
-		<menu label="PS Pad" click="RunProcess" tag="F:\Programs\PSPad editor\PSPad.exe;$(Quote)$(CurFile)$(Quote)" imagelist="148" />
-		<menu label="XML Editor" click="RunProcess" tag="F:\Programs\XMLEDITOR.NET\xml.exe;$(Quote)$(CurFile)$(Quote)" imagelist="98" />
-		<menu label="RichText Editor" click="PluginCommand" tag="XMLTreeMenu.CreateCustomDocument;RichTextEditor|$(CurFile)" imagelist="151" />
-		<menu label="Azuki Editor" click="PluginCommand" tag="XMLTreeMenu.CreateCustomDocument;AzukiEditor|$(CurFile)" imagelist="150" />
-		<separator />
-		<menu label="エクスプローラ" click="PluginCommand" tag="FileExplorer.Explore;$(CurDir)" imagelist="152" />
-		<menu label="コマンド・プロンプト" click="PluginCommand" tag="FileExplorer.PromptHere;$(CurDir)" imagelist="153" />
-		<menu label="現在のファイルをBrowserで開く(&amp;W)" click="PluginCommand" tag="XMLTreeMenu.BrowseEx;$(CurFile)" image="480" />
-	</dropdownbutton>
-</toolbar>
-<!--
-<launch>
-	<record title="PukiWki2016" action="Browse" path="http://kahata.travel.coocan.jp/pukiwiki2016/index.php" icon="F:\icons\pukiwiki.ico" />
-  <record title="snippets" action="Browse" path="https://www.eclipse.org/swt/snippets/" icon="F:\icons\pukiwiki.ico" />
-</launch>
--->
+<root title="OtherActivity3 TreeMenu" icon="" expand="true">
  <folder title="Menu">
     <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
     <record title="Flashdevelop XmlTreeMenu" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\XmlTreeMenu.xml" />
