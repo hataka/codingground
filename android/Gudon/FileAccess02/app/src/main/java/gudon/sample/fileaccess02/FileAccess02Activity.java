@@ -39,7 +39,20 @@ public class FileAccess02Activity extends Activity {
 				try {
 					AssetManager assets = getResources().getAssets();
 					InputStream inputStream = assets.open(FILE_PATH);
-
+					/*
+	    		Context context = getApplicationContext();
+       		CharSequence text = String.format("ファイルアクセスデレクトリは「%s」です。", assets.getPath());
+       		int duration = Toast.LENGTH_SHORT;
+       		Toast toast = Toast.makeText(context, text, duration);
+       		toast.show();
+					*/
+					Toast.makeText(getApplicationContext(),
+						String.format("ファイルアクセスデレクトリは「%s」です。", assets.toString()),
+						Toast.LENGTH_SHORT).show();
+					
+					/** assets内のファイルをログ表示.*/
+					displayAssets("");
+					
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(inputStream));
 					String line;
@@ -61,6 +74,7 @@ public class FileAccess02Activity extends Activity {
 
 		Button fileListButton = new Button(this);
 		fileListButton.setText("assetsデレクトリのファイルリストを表示");
+		
 		fileListButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -84,6 +98,27 @@ public class FileAccess02Activity extends Activity {
 		});
 		layout.addView(fileListButton);
 	}
+
+	/** 
+	 * assets内の任意のフォルダ内のファイルをログ表示.
+	 * http://android-blog.smartphone-app.net/archives/154
+	 * @param dir
+	 * (String) フォルダ名 
+	 */ 
+    private void displayAssets(String dir){
+        AssetManager assetMgr = getResources().getAssets(); 
+        try {  
+            String files[] = assetMgr.list(dir);  
+            for(int i = 0; i < files.length; i++) {    
+                //Log.d("assets file", files[i]);
+            	Toast.makeText(getApplicationContext(),
+								files[i],Toast.LENGTH_LONG).show();
+            }  
+        } catch (IOException e) {  
+        }  
+    }
+
+
 }
 
 /*
