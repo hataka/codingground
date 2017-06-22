@@ -1,7 +1,7 @@
 $(ProjectDir)\$(ProjectName).fdp
 $(ProjectDir)\obj\FDTreeMenu.xml
-$(ProjectDir)\obj\gradleTasksData.xml
 $(ProjectDir)\obj\FDTreeMenuData.txt
+$(ProjectDir)\obj\gradleTasksData.xml
 $(ProjectDir)\obj\LaunchAVD.wsf
 //
 //F:\GitHub\hataka\codingground\android\Gudon\Dialog01\Dialog01.fdp

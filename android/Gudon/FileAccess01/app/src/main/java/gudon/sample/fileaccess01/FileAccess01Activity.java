@@ -28,9 +28,12 @@ public class FileAccess01Activity extends Activity {
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		setContentView(layout);
- 
-		// ファイルアクセスデレクトリの表示
+ 		// ファイルアクセスデレクトリの表示
+		//String filesDirectoryPath = context.getFilesDir().getPath();
+		//=> /data/data/[package name]/files
 		File fileDir = getFilesDir();
+    // /data/user/0/gudon.sample.fileaccess01/files
+    // /data/user/0/[package name]/files
 		TextView tvFileDir = new TextView(this);
 		tvFileDir.setText(String.format("ファイルアクセスデレクトリは「%s」です。",
 				fileDir.getPath()));
