@@ -46,12 +46,12 @@ public class FileAccess02Activity extends Activity {
        		Toast toast = Toast.makeText(context, text, duration);
        		toast.show();
 					*/
-					Toast.makeText(getApplicationContext(),
-						String.format("ファイルアクセスデレクトリは「%s」です。", assets.toString()),
-						Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getApplicationContext(),
+					//	String.format("ファイルアクセスデレクトリは「%s」です。", assets.toString()),
+					//	Toast.LENGTH_SHORT).show();
 					
 					/** assets内のファイルをログ表示.*/
-					displayAssets("");
+					//displayAssets("");
 					
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(inputStream));

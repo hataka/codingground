@@ -103,11 +103,143 @@ Available Android Virtual Devices:
   ]]></script>
 </job>
 
+<job id="cleanAll">
+  <script language="javascript"><![CDATA[
+		var fso = new ActiveXObject( "Scripting.FileSystemObject" );
+   	var scriptPath = fso.GetFile(WScript.ScriptFullName);
+    var scriptFolder = scriptPath.ParentFolder; 
+    var projectFile = fso.GetFile(WScript.Arguments(0));
+    var projectRoot = projectFile.ParentFolder; 
+		//WScript.Echo(projectRoot);
+		var shell = new ActiveXObject( "WScript.Shell" );
+		//カレントディレクトリを変更
+		shell.CurrentDirectory = projectRoot;
+		//WScript.Echo(sh.CurrentDirectory );
+		
+		//http://3rd.geocities.jp/kaito_extra/Source/FileFolderCtrl.html
+    //  相対パスで指定したフォルダを削除する。
+    //  ファイル関連の操作を提供するオブジェクトを取得
+    try {
+      // テストする文
+      fso.CopyFile("app/build/outputs/apk/*.apk", ".",true );
+    }
+    catch (e) {
+     //logMyErrors(e) // 例外オブジェクトをエラー処理部分に渡す
+      WScript.Echo("copy apk file to rootFolder exception  " + e)
+    }
+    //  本ファイルと同階層にある「EX」フォルダを削除
+    if( fso.FolderExists( ".gradle")) fso.DeleteFolder( ".gradle" );
+    if( fso.FolderExists( "gradle")) fso.DeleteFolder( "gradle" );
+    if( fso.FolderExists( ".idea")) fso.DeleteFolder( ".idea" );
+    if( fso.FolderExists( "build"))fso.DeleteFolder( "build" );
+		if(fso.FileExists("import-summary.txt")) fso.DeleteFile("import-summary.txt");
+		if(fso.FileExists("gradlew")) fso.DeleteFile("gradlew");
+		if(fso.FileExists("gradlew.bat")) fso.DeleteFile("gradlew.bat");
+		//fso.DeleteFile("*.iml");    
+		
+		if( fso.FolderExists( "app/build"))fso.DeleteFolder( "app/build" );
+    if( fso.FolderExists( "app/.idea"))fso.DeleteFolder( "app/.idea" );
+    //  「C:/TEST」の階層の「Info.txt」ファイルを削除
+		if(fso.FileExists("app/app.iml"))fso.DeleteFile("app/app.iml");
+		//  オブジェクトを解放
+    fso = null;
+		shell = null;
+    WScript.Echo( "cleanAll 正常終了" );  
+  ]]></script>
+</job>
+
+<job id="test">
+  <script language="JScript" src ="F:\WSH\wsf\common_lib.js" />
+  <script language="javascript"><![CDATA[
+  //  https://msdn.microsoft.com/ja-jp/library/cc428142.aspx
+  //  ファイル＆フォルダ操作
+  //  カレントディレクトリの設定と取得。
+		var strScriptFolder, fso, f, s,l, projectRoot, projectName;
+		//スクリプト名を含まないフルパスを編集する
+		//strScriptFolder = String(WScript.ScriptFullName).replace(WScript.ScriptName,"");    //  ファイル＆フォルダ操作
+
+		
+    var objArgs = WScript.Arguments;
+		for (i = 0; i < objArgs.length; i++){
+			WScript.Echo("arguments["+ i + "]: " + objArgs(i));
+		}
+		
+		l = WScript.ScriptFullName.split("\\");
+   	fso = new ActiveXObject("Scripting.FileSystemObject");
+   	f = fso.GetFile(WScript.ScriptFullName);
+		strScriptFolder =  f.ParentFolder;
+   	f = fso.GetFolder(strScriptFolder);
+		projectRoot = f.ParentFolder;
+		projectName = l[l.length-3];
+		//packageName = l[l.length-3];
+		WScript.Echo("strScriptFolder = " + strScriptFolder);
+		WScript.Echo("projectRoot = " + projectRoot);
+		WScript.Echo("projectName = " + projectName);
+
+/*
+		//  Folderオブジェクトを取得
+		var folder = fso.GetFolder(projectRoot);
+		//  EnumeratorオブジェクトにFolderオブジェクトに
+		//  含まれている全てのFileオブジェクトを格納
+		var em = new Enumerator( folder.Files );
+		//  格納したFileオブジェクトのファイル名を全て表示
+		for( em.moveFirst(); !em.atEnd(); em.moveNext() )
+    	WScript.Echo( em.item().Name );
+*/
+		//var files = enumFiles(projectRoot);
+		//for(i= 0; i<files.length;i++)WScript.Echo(files[i] );
+//  Shell関連の操作を提供するオブジェクトを取得
+
+	//var sh = new ActiveXObject( "WScript.Shell" );
+	//  現在のカレントディレクトリを表示
+	//WScript.Echo(sh.CurrentDirectory );
+	//  オブジェクトを解放
+	//sh = null;
+  
+  //https://kujirahand.com/blog/index.php?JScript%E3%81%A7%E5%86%8D%E5%B8%B0%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E4%B8%80%E8%A6%A7%E3%81%AE%E5%8F%96%E5%BE%97
+// 指定パス以下のファイル全部を配列形式で取得する
+function enumFiles(target) {
+  var fso = new ActiveXObject("Scripting.FileSystemObject");
+  if (fso.FileExists(target)) {
+    return [target];
+  }
+  if (!fso.FolderExists(target)) return [];
+  var result = [];
+  // 指定パスのファイル一覧を得る
+  var dir = fso.GetFolder(target);
+  // ファイルを一つずつ処理する
+  var e = new Enumerator(dir.Files);
+  for ( ; !e.atEnd(); e.moveNext()) {
+    var file = e.item();
+    result.push(file.Path);
+  }
+  // 再帰的にディレクトリを処理する
+  e = new Enumerator(dir.SubFolders);
+  for ( ; !e.atEnd(); e.moveNext()) {
+    var r = enumFiles(e.item());
+    result = result.concat(r);
+  }
+  return result;
+}  
+  //http://okazu.air-nifty.com/blog/2011/01/wsh---dirnameba.html
+  //https://msdn.microsoft.com/ja-jp/library/cc428010.aspx
+function ShowBaseName(filespec)
+{
+   var fso, s = "";
+   fso = new ActiveXObject("Scripting.FileSystemObject");
+   s += fso.GetBaseName(filespec);
+   return(s);
+}
+
+
+  ]]></script>
+</job>
+
 
 <job id="run">
 <script language="VBScript">
     Option Explicit
-	Dim shell
+		Dim shell
 	
 	Set shell = CreateObject("WScript.Shell")
 	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
@@ -127,6 +259,7 @@ Available Android Virtual Devices:
 		Set objFileSys = CreateObject("Scripting.FileSystemObject")
 		FileExists = objFileSys.FileExists(strFilePath)
 	End Function
+
 </script>
 </job>
 </package>

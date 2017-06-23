@@ -8,7 +8,8 @@ F:\GitHub\hataka\codingground\android\obj\gradleTasksData.xml
 F:\GitHub\hataka\codingground\android\obj\LaunchAVD.wsf
 
 http://www.google.co.jp
-https://stackoverflow.com/questions/2130932/how-to-create-directory-automatically-on-sd-card
+F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop.14..sln
+	//https://stackoverflow.com/questions/2130932/how-to-create-directory-automatically-on-sd-card
 //
 //F:\GitHub\hataka\codingground\android\Gudon\Dialog01\Dialog01.fdp
 //F:\GitHub\hataka\codingground\android\Gudon\Dialog01\obj\FDTreeMenu.xml

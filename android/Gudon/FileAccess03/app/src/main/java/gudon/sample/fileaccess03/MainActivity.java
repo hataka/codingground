@@ -45,10 +45,10 @@ import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class FileAccess03Activity extends Activity {
+public class MainActivity extends Activity {
 
-    private final int FP = ViewGroup.LayoutParams.FILL_PARENT;
-    //private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+	private final int FP = ViewGroup.LayoutParams.FILL_PARENT;
+	//private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,16 +56,16 @@ public class FileAccess03Activity extends Activity {
 
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
-        setContentView(layout, new LinearLayout.LayoutParams(FP, FP));
+		setContentView(layout, new LinearLayout.LayoutParams(FP, FP));
 
-        HorizontalScrollView hsv = new HorizontalScrollView(this);
+		HorizontalScrollView hsv = new HorizontalScrollView(this);
 		ScrollView sv = new ScrollView(this);
 		sv.addView(hsv);
 		
 		final TextView tv = new TextView(this);
 		tv.setBackgroundColor(Color.WHITE);
 		tv.setTextSize(16.0f);
-	    tv.setTypeface(Typeface.MONOSPACE);
+		tv.setTypeface(Typeface.MONOSPACE);
 		tv.setTextColor(Color.BLACK);
 
 		hsv.addView(tv);
@@ -173,7 +173,9 @@ public class FileAccess03Activity extends Activity {
 		// 選択されたIDを確認
 		switch (item.getItemId()) {
 			case 0:
-				url = "http://192.168.24.92/android/Gudon/FileAccess03/src/gudon/sample/fileaccess03/FileAccess03Activity.java";
+				//url = "http://192.168.1.53/android/Gudon/FileAccess03/src/gudon/sample/fileaccess03/FileAccess03Activity.java";
+				//url = "http://192.168.1.53/f/GitHub/hataka/codingground/android/Gudon/FileAccess03/app/src/main/java/gudon/sample/fileaccess03/MainActivity.java";
+				url = "https://github.com/hataka/codingground/blob/master/android/Gudon/FileAccess03/app/src/main/java/gudon/sample/fileaccess03/MainActivity.java";
 				toasttitle = "FileAccess03Activity";
 				break;
 			default:
