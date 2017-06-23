@@ -27,7 +27,7 @@ allprojects {
 // subprojects
 subprojects {
 
-	gradle.ext.srcPath = 'src/main/java/' +gradle.ext.applicationId.replace(".","/") +'/' + "Dialog01Activity.java";
+	gradle.ext.srcPath = 'src/main/java/' +gradle.ext.applicationId.replace(".","/") +'/' + "MainActivity.java";
 	
 	// rootDirÇ…build.xmlÇ™Ç†ÇÈÇ∆ÉGÉâÅ[(ó·äOî≠ê∂)
 	try{
@@ -49,10 +49,10 @@ subprojects {
 	
 	if (!project.tasks.findByName('open_src_in_fd')){ 
 		task open_src_in_fd {
-			// F:\GitHub\hataka\codingground\android\Gudon\Dialog01\app\src\main\java\gudon\sample\dialog01\Dialog01Activity.java
+			// F:\GitHub\hataka\codingground\android\Gudon\Dialog01\app\src\main\java\gudon\sample\dialog01\MainActivity.java
 			//                                                                        gudon.sample.dialog01
 			//def srcFile = 'app/src/main/java/ya/' +project.name +'/' + project.name + '.java';
-			//def srcFile = 'app/src/main/java/' +gradle.ext.applicationId.replace(".","/") +'/' + "Dialog01Activity.java";
+			//def srcFile = 'app/src/main/java/' +gradle.ext.applicationId.replace(".","/") +'/' + "MainActivity.java";
 			doLast {
 				//println(gradle.ext.applicationId);
 				//println(srcFile);
@@ -68,7 +68,7 @@ subprojects {
 	if (!project.tasks.findByName('viewSrc')){ 
 		task viewSrc {
 			doLast {
-			def srcPath = 'src/main/java/' +gradle.ext.applicationId.replace(".","/") +'/' + "Dialog01Activity.java";
+			def srcPath = 'src/main/java/' +gradle.ext.applicationId.replace(".","/") +'/' + "MainActivity.java";
 				//def java = project.name+".java";
 				ant.loadfile(srcFile: srcPath, property: "encodedfile",encoding: "utf-8")
 				println(ant.properties['encodedfile']);

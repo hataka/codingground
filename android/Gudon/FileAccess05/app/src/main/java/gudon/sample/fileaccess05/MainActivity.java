@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FileAccess05Activity extends Activity {
+public class MainActivity extends Activity {
 	static private final String FILE_NAME = "xxx.txt";
 
 	@Override
