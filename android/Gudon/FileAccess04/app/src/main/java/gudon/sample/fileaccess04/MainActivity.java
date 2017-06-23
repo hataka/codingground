@@ -31,23 +31,33 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		
+		//setContentView(R.layout.main);
+		ListView lv = new ListView(this);
+    setContentView(lv);
+
 		musicFiles = new ArrayList<File>();
 		
 		File file = Environment.getExternalStorageDirectory();//SDカードにアクセス
-		
 		searchMusicFiles(file);
 		
-		ArrayAdapter<String> adapter 
-			= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		 List<String> mStrings = new ArrayList<String>();
+     mStrings.add("aaa");
+     mStrings.add("abc");
+     mStrings.add("bbb");
+     mStrings.add("ccc");
+		//for(File f : musicFiles){
+		//	mStrings.add(f.getName());
+		//}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, mStrings);
+		lv.setAdapter(adapter);
+		//ArrayAdapter<String> adapter 
+		//	= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 		
-		for(File f : musicFiles){
-			adapter.add(f.getName());
-		}
-		
-		ListView listView = (ListView) findViewById(R.id.listview);
-		listView.setAdapter(adapter);
+
+		//ListView listView = (ListView) findViewById(R.id.listview);
+		//ListView listView = new ListView(this);// findViewById(R.id.listview);
+		//listView.setAdapter(adapter);
 	}
 	
 	//再帰的にディレクトリ内を調べるメソッド

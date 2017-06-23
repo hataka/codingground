@@ -9,6 +9,4 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
 
-    <LextView android:id="@+id/listview" android:text="music"/>
-
 </LinearLayout>
