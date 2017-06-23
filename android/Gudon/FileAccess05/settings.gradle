@@ -9,7 +9,8 @@
  * Programmed By: kahata
  * To compile:
  * To run: 
- * link: 
+ * link: http://ichitcltk.hustle.ne.jp/gudon2/index.php?pageType=file&id=Android044_FileAccess
+ * link: http://www.javadrive.jp/android/edittext/index11.html
  * description: FileAccess05 アプリケーション配下外のデレクトリのファイルへのアクセス-SDカード
  *================================================================*/
 gradle.ext.applicationId = "gudon.sample.fileaccess05";

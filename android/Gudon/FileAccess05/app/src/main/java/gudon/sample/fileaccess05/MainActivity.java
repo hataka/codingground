@@ -29,9 +29,13 @@ public class MainActivity extends Activity {
 		setContentView(layout);
 
 		// SDカードのデレクトリを調べる。
+		  	
+		//String SDFile = android.os.Environment.getExternalStorageDirectory().getPath()
+		// + "/iPentec.SDCardFileAccess/memo.txt";
 		String sdCardPath = Environment.getExternalStorageDirectory().getPath();
 		final String filePath = sdCardPath + "/" + FILE_NAME;
 		TextView tvFileDir = new TextView(this);
+		// /storage/emulated/0
 		tvFileDir.setText(String.format("SDカードのデレクトリは「%s」です。", sdCardPath));
 		layout.addView(tvFileDir);
 

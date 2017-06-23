@@ -1,12 +1,10 @@
 package gudon.sample.fileaccess06;
-
-
 //package gudon.sample.file_access6;
 
 //import gudon.sample.fileaccess08.DoSuCommand;
-
+import android.os.Bundle;
+import android.os.Environment;
 import java.io.File;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FileAccess06Activity extends Activity {
+public class MainActivity extends Activity {
 	private TextView tvPath;
 	private File upDir;
 
@@ -40,7 +38,9 @@ public class FileAccess06Activity extends Activity {
 				R.layout.list_row);
 		ListView lv = (ListView) findViewById(R.id.list);
 		lv.setAdapter(adapter);
-		reflushAdapter(adapter, new File("/"));
+		String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+		//reflushAdapter(adapter, new File("/"));
+		reflushAdapter(adapter, new File(sdCardPath));
 
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -52,7 +52,7 @@ public class FileAccess06Activity extends Activity {
 				if (file.isDirectory()) {
 					reflushAdapter(adapter, file);
 				} else {
-					Intent intent = new Intent(FileAccess06Activity.this,
+					Intent intent = new Intent(MainActivity.this,
 							SubActivity.class);
 					intent.putExtra("filePath", file.getPath());
 					startActivity(intent);
