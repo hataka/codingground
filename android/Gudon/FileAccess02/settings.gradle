@@ -9,7 +9,7 @@
  * Programmed By: kahata
  * To compile:
  * To run: 
- * link: http://ichitcltk.hustle.ne.jp/gudon2/index.php?pageType=file&id=Android011_Dialog1
+ * link: http://chocolattips.hatenablog.com/entry/2017/01/22/000000
  * description: FileAccess02 「assets」デレクトリのファイルへのアクセス
  *================================================================*/
 gradle.ext.applicationId = "gudon.sample.fileaccess02";

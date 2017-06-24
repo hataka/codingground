@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FileAccess02Activity extends Activity {
+public class MainActivity extends Activity {
 	static private final String FILE_PATH = "FileAccess02Activity.java";
 
 	@Override

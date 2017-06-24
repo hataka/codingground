@@ -59,7 +59,6 @@ Androidではcontext.openFileInput(fileName)を使うこともできますが、
 
 FileOutputStream fs = new FileOutputStream(absolutePath);
  *================================================================*/
-
 gradle.ext.applicationId = "gudon.sample.fileaccess01";
 
 include ':app'

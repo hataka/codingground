@@ -30,8 +30,8 @@
 <folder title="Menu">
     <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
     <record title="Flashdevelop XmlTreeMenu" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\XmlTreeMenu.xml" />
-    <record title="Projoectメニュー" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\FlashProject.xml" />
-<!--
+	<record title="Projoectメニュー" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\FlashProject.xml" />
+	<!--
     <record title="ビルド実行環境" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\FDTreeMenu_work.xml" />
 -->  
     <record title="elcipse MainMenu" action="menu" path="F:\eclipse3.5.1EE\SettingData\XmlTreeMenu.xml" />
@@ -40,7 +40,12 @@
     <record title="VC++2008 Sample" action="menu" path="F:\VCSharp\MDI\FlashDevelop\FlashDevelop\Bin\Debug\MDIFormData\VCPP2008_menu.xml" />
 -->
   </folder>
-  <folder title="Links">
+
+  <folder title="Android Projects">
+		<record title="Gudon" path="F:\GitHub\hataka\codingground\android\Gudon\Gudon.fdp" />
+	</folder>
+
+	<folder title="Links">
   <folder title="WebSite">
     <record title="PukiWki2016" path="http://kahata.travel.coocan.jp/pukiwiki2016/index.php" icon="F:\icons\pukiwiki.ico" />
     <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
@@ -118,5 +123,30 @@
   <folder title="Source" expand="true">
     <record title="$(CurProjectName).cs" path="$(CurProjectDir)\$(CurProjectName).cs" />
   </folder>
+
+<!--
+<job id="job_test" title="job_test">
+ jobですよ	
+</job> 
+
+<target id="target_test" title="target_test">
+ taskですよ	
+</target> 
+-->
+<fdscript language="csscript" title="fdscript test 「about」起動"><![CDATA[
+	// FDScript.cs
+	// TODO: Time-stamp: <2011-05-26 14:16:30 kahata>
+	// TODO 組み込み必要
+	////css_import CommonLib\CommonLib.cs;
+	using FlashDevelop;
+
+	public class FDScript
+	{
+		public static void Execute()
+		{
+			Globals.MainForm.About(null, null);
+		}
+	}
+]]></fdscript>
 
 </root>
