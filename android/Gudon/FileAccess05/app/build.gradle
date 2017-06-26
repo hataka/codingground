@@ -11,7 +11,8 @@ android {
         minSdkVersion 13
         targetSdkVersion 13
     }
-    //Android Studioでプロジェクト名のapkを生成する
+/*    
+	//Android Studioでプロジェクト名のapkを生成する
     //http://shekeenlab.hatenablog.com/entry/2015/04/28/004252
     applicationVariants.all { variant ->
         if (variant.buildType.name.equals("debug")) {
@@ -38,4 +39,5 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+*/
 }

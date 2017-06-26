@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FileAccess08Activity extends Activity {
+public class MainActivity extends Activity {
 	static private final String DIR_NAME = "my_files";
 	static private final String FILE_NAME = "xxx.txt";
 

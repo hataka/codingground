@@ -45,7 +45,7 @@ import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class FileAccess09Activity extends Activity {
+public class MainActivity extends Activity {
 
     private final int FP = ViewGroup.LayoutParams.FILL_PARENT;
     //private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -99,7 +99,7 @@ public class FileAccess09Activity extends Activity {
 					//Toast.makeText(getApplicationContext(),
 					//		"ファイルの読込みに失敗しました。\n" + e.getMessage(),
 					//		Toast.LENGTH_LONG).show();
-					showDialog(FileAccess09Activity.this,"エラー","ファイルの読込みに失敗しました。\n" + e.getMessage());
+					showDialog(MainActivity.this,"エラー","ファイルの読込みに失敗しました。\n" + e.getMessage());
 				}
 			}			
 		});
@@ -169,7 +169,7 @@ public class FileAccess09Activity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// メニューを追加
-		menu.add(Menu.NONE, 0, Menu.NONE, "FileAccess09Activity.java");
+		menu.add(Menu.NONE, 0, Menu.NONE, "MainActivity.java");
 		return super.onCreateOptionsMenu(menu);
 	}
 	// メニューが選択されたときに実行される
@@ -180,7 +180,9 @@ public class FileAccess09Activity extends Activity {
 		// 選択されたIDを確認
 		switch (item.getItemId()) {
 			case 0:
-				url = "http://192.168.24.92/android/Gudon/FileAccess09/src/gudon/sample/fileaccess09/FileAccess09Activity.java";
+				//url = "http://192.168.1.53/f/android/Gudon/FileAccess09/src/gudon/sample/fileaccess09/MainActivity.java";
+				//url = "http://192.168.1.53/f/GitHub/hataka/codingground/android/Gudon/FileAccess09/app/src/main/java/gudon/sample/fileaccess09/MainActivity.java";
+				url = "https://github.com/hataka/codingground/blob/master/android/Gudon/FileAccess09/app/src/main/java/gudon/sample/fileaccess09/MainActivity.java";
 				toasttitle = "FileAccess03Activity";
 				break;
 			default:

@@ -108,13 +108,13 @@ Available Android Virtual Devices:
 		var fso = new ActiveXObject( "Scripting.FileSystemObject" );
    	var scriptPath = fso.GetFile(WScript.ScriptFullName);
     var scriptFolder = scriptPath.ParentFolder; 
-    var projectFile = fso.GetFile(WScript.Arguments(0));
+    var projectFile = fso.GetFile(WScript.Arguments.Named("projectPath"));
     var projectRoot = projectFile.ParentFolder; 
 		//WScript.Echo(projectRoot);
 		var shell = new ActiveXObject( "WScript.Shell" );
 		//カレントディレクトリを変更
 		shell.CurrentDirectory = projectRoot;
-		//WScript.Echo(sh.CurrentDirectory );
+		WScript.Echo("CurrentDirectory = " + shell.CurrentDirectory );
 		
 		//http://3rd.geocities.jp/kaito_extra/Source/FileFolderCtrl.html
     //  相対パスで指定したフォルダを削除する。
@@ -154,7 +154,8 @@ Available Android Virtual Devices:
 		var shell = new ActiveXObject( "WScript.Shell" );
 		shell.Run("cscript.exe "+ WScript.ScriptFullName
 			+ " //job:andjob"
-			+ " /projectPath:" + WScript.Arguments(0)
+			//+ " /projectPath:" + WScript.Arguments(0)
+			+ " /projectPath:" + WScript.Arguments.Named("projectPath")
 			+ " /task:open_src_in_sakura",0);
 	/*
 		var shell = new ActiveXObject( "WScript.Shell" );
@@ -180,7 +181,8 @@ Available Android Virtual Devices:
 		var shell = new ActiveXObject( "WScript.Shell" );
 		shell.Run("cscript.exe "+ WScript.ScriptFullName
 			+ " //job:andjob"
-			+ " /projectPath:" + WScript.Arguments(0)
+			//+ " /projectPath:" + WScript.Arguments(0)
+			+ " /projectPath:" + WScript.Arguments.Named("projectPath")
 			+ " /task:open_src_in_fd",0);
   ]]></script>
 </job>
@@ -227,7 +229,6 @@ Available Android Virtual Devices:
   //  ファイル＆フォルダ操作
   //  カレントディレクトリの設定と取得。
    	var fso = new ActiveXObject("Scripting.FileSystemObject");
-
 		var strScriptFolder, f, s,l, projectRoot, projectName;
 		//スクリプト名を含まないフルパスを編集する
 		//strScriptFolder = String(WScript.ScriptFullName).replace(WScript.ScriptName,"");    //  ファイル＆フォルダ操作
