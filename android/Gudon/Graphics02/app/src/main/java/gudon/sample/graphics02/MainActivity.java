@@ -11,7 +11,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
-public class Graphics02 extends Activity {
+public class MainActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

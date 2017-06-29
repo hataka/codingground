@@ -9,6 +9,5 @@
  * link: http://www.javadrive.jp/android/edittext/index11.html
  * description: FileAccess10 filesデレクトリのファイルを別画面に表示する
  *================================================================*/
-
 gradle.ext.applicationId = "gudon.sample.fileaccess10";
 include ':app'
