@@ -38,25 +38,7 @@
   <!-- =================================================================== -->
   <!-- Help on usage                                                       -->
   <!-- =================================================================== -->
-  <target name="usage">
-    <echo message="" />
-    <echo message="" />
-    <echo message="${Name} Build file" />
-    <echo message="-------------------------------------------------------------" />
-    <echo message="" />
-    <echo message=" available targets are:" />
-    <echo message="" />
-    <echo message="   compile  - compiles the source code (default)" />
-    <echo message="   run      - execute the exsample" />
-    <echo message="   package  - generates the ${name}.jar file" />
-    <echo message="   javadoc  - generates the API documentation" />
-    <echo message="   clean    - cleans up the directory" />
-    <echo message="" />
-    <echo message=" See the comments inside the build.xml file for more details." />
-    <echo message="-------------------------------------------------------------" />
-    <echo message="" />
-    <echo message="" />
-  </target>
+  
 
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->

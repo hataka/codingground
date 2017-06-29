@@ -3,9 +3,6 @@ package gudon.sample.fileaccess06;
 自分のアプリをroot権限でコマンドを実行する方法
 http://relog.xii.jp/archives/2011/02/root.html
 */
-
-
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

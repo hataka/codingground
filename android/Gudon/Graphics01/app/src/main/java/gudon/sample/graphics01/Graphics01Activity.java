@@ -32,7 +32,7 @@ class CustomView extends View {
 
 		Paint paint = new Paint();
 		paint.setColor(Color.GREEN);
-		canvas.drawRect(0, 0, 50, 50, paint);
+		canvas.drawRect(100, 100, 2500, 1200, paint);
 
 		// この間にグラフィック描画のコードを記述する。
 	}

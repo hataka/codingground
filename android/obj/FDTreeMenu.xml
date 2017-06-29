@@ -88,19 +88,20 @@
 
   </folder>
 -->
-  <folder title="ExecuteScript" expand="false">
+  <!--
+	<folder title="ExecuteScript" expand="false">
     <record title="RunScript" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
     <record title="Build" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:build" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
     <record title="RunWsScript" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:RunWsScript" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
-<!--
+
     <record title="Sakura_MultiOpen" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:Sakura_MultiOpen" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
--->
+
     <record title="clean" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:clean" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
     <record title="doxygen" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:doxygen" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
     <record title="make_ppr" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:make_ppr" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
 
   </folder>
-
+-->
 <!--
   <folder title="RunAppメニュー" expand="false">
     <record title="build" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="/k cscript //nologo //job:build &quot;$(CurProjectDir)\RunApp.wsf&quot;" />
@@ -119,11 +120,11 @@
   
   </folder>
 -->
-
+<!--
   <folder title="Source" expand="true">
     <record title="$(CurProjectName).cs" path="$(CurProjectDir)\$(CurProjectName).cs" />
   </folder>
-
+-->
 <!--
 <job id="job_test" title="job_test">
  jobですよ	
@@ -133,7 +134,9 @@
  taskですよ	
 </target> 
 -->
-<fdscript language="csscript" title="fdscript test 「about」起動"><![CDATA[
+<folder title="埋め込みスクリプト">
+<record title="fdscript test 「about」起動" action="script" command="fdscript" 
+					path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\CsMacro\FDScript.cs"><![CDATA[
 	// FDScript.cs
 	// TODO: Time-stamp: <2011-05-26 14:16:30 kahata>
 	// TODO 組み込み必要
@@ -147,6 +150,246 @@
 			Globals.MainForm.About(null, null);
 		}
 	}
-]]></fdscript>
+]]></record>
 
+<record action="script" command="fdscript" title="show MessageBox" icon="F:\icons\csharp.ico"><![CDATA[
+	// FDScript.cs
+	////css_import CommonLib\CommonLib.cs;
+	using System.Windows.Forms;
+	public class FDScript
+	{
+		public static void Execute()
+		{
+			MessageBox.Show("こんにちわ");
+		}
+	}
+]]></record>
+	
+<record action="script" command="php" title="sslib213.php"
+					tooltip ="2.1.3 複素数　対数、指数、ベキ乗（ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）"
+					><![CDATA[
+<?php
+/*===========================================================================
+ * プログラム名: sslib213.php
+ * 作成日: Sun Feb 10 15:18:42 2002
+ * $Id: sslib213.php,v 1.1 2008/03/26 13:42:58 kazuhiko Exp $
+ * Programmed By: 畑和彦
+ * To compile:
+ * To run: {@link http://localhost/php1/sslib/sslib213_good.php
+ * To folder: {@link http://localhost/php1/sslib_class/sslib_class.lnk}
+ * 説明: 
+ *=============================================================================
+ * ★ 科学技術計算サブルーチンライブラリー  
+ * p.18 2.1.3 複素数　対数、指数、ベキ乗（ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）
+ * create    Sun Feb 10 15:18:42 2002
+ *=============================================================================*/
+ 
+//-----------------------
+	header('Content-Type: text/html;charset=Shift_JIS');
+ 	print("<pre><font size=5>");  
+  $a = array( 2.0, 2.0);
+  $b = array( 1.0, 1.0);
+  $z = array( 0.0, 0.0);
+
+    printf ("\n%60s\n","★ 科学技術計算サブルーチンライブラリー（PHP）");
+    printf("       2.1.3 複素数　対数、指数、ベキ乗 （ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）\n\n");
+//   $p = new sslib();
+  $z = clog($a);
+  $format = '        log(%5.2f + %5.2f*i) = ( %12.6e ) + ( %12.6e )*i'."\n";
+  printf($format, $a[0],$a[1],$z[0],$z[1]);
+
+  $z = cexp($a);
+  $format = '        exp(%5.2f + %5.2f*i) = ( %12.6e ) + ( %12.6e )*i'."\n";
+  printf($format, $a[0],$a[1],$z[0],$z[1]);
+
+  $z = cpwr($a, $b);
+  $format = '  (%5.2f+%5.2f*i)^(%5.2f+%5.2f*i) = ( %12.6e ) + ( %12.6e )*i'."\n";
+  printf($format, $a[0],$a[1],$b[0],$b[1],$z[0],$z[1]);
+
+  print("</font></pre>");  
+
+/**
+ * cmul  複素数の積を求め結果を配列 [re,im]で返す
+ *
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の積を配列[re,im]で返す
+ * @uses Sslib212()
+ */
+  function cmul($a, $b){
+    $z = array();
+
+  $z[1] = $a[0]*$b[1] + $b[0]*$a[1];
+  $z[0] = $a[0]*$b[0] - $a[1]*$b[1];
+  return $z;
+  }
+
+/**
+ * cdiv  複素数の商を求め結果を配列 $z[re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の商を配列[re,im]で返す
+ * @uses Sslib212()
+ */
+  function cdiv($a, $b){
+    $z =array();
+  
+    if (cabs($b) == 0.0){
+      $z[0] = 999.0;
+      $z[1] = 999.0;
+      return $z;
+    }
+    $z[1] = ($b[0]*$a[1]-$a[0]*$b[1])/($b[0]*$b[0]+$b[1]*$b[1]);
+    $z[0] = ($a[0]*$b[0]+$a[1]*$b[1])/($b[0]*$b[0]+$b[1]*$b[1]);
+    return $z;
+  }
+
+/**
+ * cadd  複素数の和を求め結果を配列 [re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の和を配列[re,im]で返す
+ * @see csub()
+ */
+  function cadd($a, $b){
+    $z = array();
+
+    $z[0] = $a[0] + $b[0];
+    $z[1] = $a[1] + $b[1];
+    return $z;
+  }
+
+/**
+ * csub  複素数の差を求め結果を配列 [re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の差を配列[re,im]で返す
+ * @see sslib211::sslib211()
+ */
+  function csub($a, $b){
+    $z[0] = $a[0] - $b[0];
+    $z[1] = $a[1] - $b[1];
+    return $z;
+  }
+
+/**
+ * cabs  複素数の絶対値を返す
+ * {@source }
+ * @access public
+ * @param array
+ * @return double 複素数の絶対値をdoubleで返す
+ * @uses Sslib215()
+ */
+  function cabs($a){
+    return sqrt($a[0]*$a[0]+$a[1]*$a[1]);
+  }
+
+/**
+ * cexp  複素数の指数を求め結果を配列 $z[re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @return array 複素数の商を配列[re,im]で返す
+ * @uses Sslib213()
+ */
+function cexp($a) {
+  $z = array();
+  $w = 0;
+  
+  $w = exp($a[0]);
+  $z[0] = $w * cos($a[1]);
+  $z[1] = $w * sin($a[1]);
+  return $z;
+}
+
+/**
+ * cexp  複素数の対数を求め結果を配列 $z[re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @return array 複素数の対数を配列[re,im]で返す
+ * @uses Sslib213()
+ */
+function clog( $a ) {
+  $z = array();
+  $w = 0;
+  
+  $w = cabs($a);
+  if ($w == 0){
+    $z[0] = 999.0;
+    $z[0] = 999.0;
+    return $z;
+  }
+  if ($a[0] != 0){
+    $z[1] = atan($a[1]/$a[0]);
+  }
+  else if ($a[1]==0){
+    $z[1] = 0;
+  }
+  else {
+    $z[1] = ($a[1]<0?-1:1)*1.5907963;
+  }
+  $z[0] = log($w);
+  return $z;
+}
+
+/**
+ * cexp  複素数のベキ乗を求め結果を配列 $z[re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数のベキ乗を配列[re,im]で返す
+ * @uses Sslib213()
+ */
+function cpwr($a, $b) {
+  $z =array();
+  $w = 0;
+  
+  $w = clog($a);
+  if ($w[0] == 999.0 && $w[0]==999.0){
+    $z[0] = 999.0;
+    $z[1] = 999.0;
+    return  $z;
+  }
+  $w = cmul($w, $b);
+  $z = cexp($w);
+  return $z;
+}
+
+
+//ＰＨＰの終わり
+?>
+]]></record>
+
+</folder>
+<folder title="Loadfile">
+	<record title ="EmbedScript.wsf" action="Loadfile" path="F:\WSH\EmbedWsf\EmbedScript.wsf" option="root" />
+	<record title="EmbedAnt.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedAnt.wsf" option="root" />
+	<record title="Embedphp.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Embedphp.wsf" />
+	<record title ="hello-csscript.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\hello-csscript.wsf" />
+	<record title="Msxml2.DOMDocument.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Msxml2.DOMDocument.wsf" />
+	<record title="RunWsScript.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\RunWsScript.wsf" />
+	<record title="SwtSnippet1.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\SwtSnippet1.wsf" />
+	<record title="TemplateEmbedScript1.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\TemplateEmbedScript1.wsf" />
+
+	<record title="CreateXmlDom.js" action="LoadFile" path="F:\WSH\EmbedWsf\CreateXmlDom.js" />
+	<record title="ParseXmlDom.js" action="LoadFile" path="F:\WSH\EmbedWsf\ParseXmlDom.js" />
+	<record title="php_lib.js" action="LoadFile" path="F:\WSH\EmbedWsf\php_lib.js" />
+
+	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedWsf.fdp" />
+	
+	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\SettingData\XmlTreeMenu.xml" />
+	
+</folder>
+
+	
 </root>

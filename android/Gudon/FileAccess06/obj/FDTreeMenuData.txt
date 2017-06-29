@@ -9,6 +9,9 @@ F:\GitHub\hataka\codingground\android\obj\LaunchAVD.wsf
 F:\GitHub\hataka\codingground\android\obj\build.xml
 //F:\GitHub\hataka\codingground\android\obj\build_base.xml
 
+F:\codingground\java\Nashorn\FDTreeMenu.xml
+F:\codingground\java\Nashorn\Nashorn.fdp
+F:\codingground\java\Nashorn\Nashorn.wsf
 
 F:\WSH\wsf\common_lib.js
 
