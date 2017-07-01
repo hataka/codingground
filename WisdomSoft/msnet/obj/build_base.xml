@@ -1,0 +1,94 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<project name="msnet" default="build" basedir=".">
+    <property environment="env" />
+    <property name="name" value="win001_1"/>
+    <property name="target" value="main"/>
+    <property name="exe" value="${target}.exe"/>
+    <property name="source" value="${target}.cs"/>
+    <property name="compiler" value="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\VCSExpress.exe" />
+    <property name="csproj" value="${target}.csproj" />
+    <property name="doxygen" value="C:/Program Files/doxygen/bin/doxygen.exe" />
+    <property name="doxyfile" value="F:/WisdomSoft/framework/system/msnet/Doxyfile" />
+    <property name="script" value="F:/Programs/csscript/csws.exe" />
+  
+  <target name="build">
+    <exec executable="cmd" spawn="false">
+      <arg value="/k" />
+      <arg value="${compiler}"/>
+      <arg value="${basedir}/${csproj}" />
+      <arg value="/rebuild" />
+    </exec>
+    <copy file="${basedir}/bin/Release/${exe}" todir="${basedir}" failonerror="false" />
+    <copy file="${basedir}/bin/Debug/${exe}" todir="${basedir}" failonerror="false" />
+  </target>
+
+  <target name="run">
+    <exec executable="${basedir}/${exe}" />
+  </target>
+
+  <target name="runscript">
+    <exec executable="${script}" >
+      <arg value="${basedir}/${source}" />
+    </exec>
+  </target>
+
+
+  <target name="clean">
+  <!-- http://www.ne.jp/asahi/hishidama/home/tech/ant/tag/delete.html -->
+    <delete dir="bin" />
+    <delete dir="obj/Debug" />
+    <delete>
+      <fileset dir="." includes="*.user"/>
+      <fileset dir="." includes="*.suo"/>
+    </delete>
+  </target>
+
+  <target name="clear">
+    <delete dir="bin" />
+    <delete dir="obj/Debug" />
+    <delete dir="doxygen" />
+    <delete>
+      <fileset dir="." includes="*.user"/>
+      <fileset dir="." includes="*.suo"/>
+      <fileset dir="." includes="*.exe"/>
+      <fileset dir="." includes="*.class"/>
+      <fileset dir="." includes="*.swf"/>
+    </delete>
+  </target>
+
+  <target name="doxygen">
+    <exec executable="cmd.exe" >
+      <arg value="/k" />
+      <arg value="${doxygen}" />
+      <arg value="${doxyfile}" />
+    </exec>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage">
+    <echo message="" />
+    <echo message="" />
+    <echo message="${name} Build file" />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message=" available targets are:" />
+    <echo message="" />
+    <echo message="   build     - compiles the source code (default)" />
+    <echo message="   run       - execute the exsample" />
+    <echo message="   runscript - run script of the exsample" />
+    <!--
+    <echo message="   package   - generates the ${name}.jar file" />
+    <echo message="   doxygen   - generates the doxygen documentation" />
+    -->
+    <echo message="   clean     - cleans up the directory" />
+    <echo message="   clear     - delete all build files" />
+    <echo message="" />
+    <echo message=" See the comments inside the build.xml file for more details." />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message="" />
+  </target>
+
+</project>

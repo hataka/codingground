@@ -1,6 +1,8 @@
-<package>
+<?xml version="1.0"  encoding="UTF-8"?>
+<package title="win001_1">
+
 <job id="build">
-<script language="VBScript">
+<script language="VBScript"><![CDATA[
     Option Explicit
 	Dim shell
 	Dim AppName
@@ -10,8 +12,8 @@
 	Dim currentDir
 	Dim objExecCmd
 	Dim objFSO          ' FileSystemObject
-	Dim strCopyFile     ' ƒRƒs[‘ÎÛƒtƒ@ƒCƒ‹
-	Dim strCopyFolder   ' ƒRƒs[æƒtƒHƒ‹ƒ_–¼
+	Dim strCopyFile     ' ã‚³ãƒ”ãƒ¼å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«
+	Dim strCopyFolder   ' ã‚³ãƒ”ãƒ¼å…ˆãƒ•ã‚©ãƒ«ãƒ€å
 
 	AppName = "main"
 	
@@ -44,7 +46,7 @@
 	elseif FileExists(AppName & ".csproj") then
     	Set objExecCmd = shell.Exec(compiler & " " & AppName & ".csproj /rebuild ")
          Do While objExecCmd.Status = 0
-            ' ‚P•b‘Ò‚Á‚Ä‚Ý‚é
+            ' ï¼‘ç§’å¾…ã£ã¦ã¿ã‚‹
             WScript.Sleep(1000)
         Loop
 	end if
@@ -55,12 +57,12 @@
  		strCopyFile = currentDir & "bin" & "\Debug\" & AppName & ".exe"
 	end if
 
-   ' ƒtƒ@ƒCƒ‹ƒRƒs[
+   ' ãƒ•ã‚¡ã‚¤ãƒ«ã‚³ãƒ”ãƒ¼
 	'if FileExists(strCopyFile) then
      objFSO.CopyFile strCopyFile, strCopyFolder, True
 	'end if
 
-   ' ƒtƒ@ƒCƒ‹íœ
+   ' ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤
     'objFSO.DeleteFolder currentDir & "bin", True
    	'objFSO.DeleteFolder currentDir & "obj", True
 
@@ -80,7 +82,7 @@
 
 Function GetOSVersion()
 
-	' XP ‚È‚ç‚Î 5.1 ‚Æ•Ô‚è‚Ü‚·
+	' XP ãªã‚‰ã° 5.1 ã¨è¿”ã‚Šã¾ã™
 
 	Dim strComputer
 	Dim Wmi 
@@ -104,23 +106,23 @@ Function GetOSVersion()
 	GetOSVersion = CDbl( strWork )
 
 End Function	
-</script>
+]]></script>
 </job>
 
 <job id="clean">
-<script language="VBScript">
+<script language="VBScript"><![CDATA[
 	CreateObject("WScript.Shell").Run "cmd.exe /k rm -rf bin obj *.user *.suo doxy_log.txt",1
-</script>
+]]></script>
 </job>
 
 <job id="clear">
-<script language="VBScript">
+<script language="VBScript"><![CDATA[
 	CreateObject("WScript.Shell").Run "cmd.exe /k rm -rf bin obj doxygen *.user *.suo *.exe *.class doxy_log.txt",1
-</script>
+]]></script>
 </job>
 
 <job id="doxygen">
-<script language="VBScript">
+<script language="VBScript"><![CDATA[
     Option Explicit
 	Dim doxygen
 	Dim doxyfile
@@ -128,7 +130,7 @@ End Function
 	doxygen = chr(34) & "C:\Program Files\doxygen\bin\doxygen.exe" & chr(34)
 	doxyfile = "F:/WisdomSoft/framework/system/msnet/Doxyfile"
 	CreateObject("WScript.Shell").Run "cmd.exe /k " & doxygen & " " & doxyfile,1
-</script>
+]]></script>
 </job>
-
 </package>
+

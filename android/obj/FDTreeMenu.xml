@@ -152,7 +152,7 @@
 	}
 ]]></record>
 
-<record action="script" command="fdscript" title="show MessageBox" icon="F:\icons\csharp.ico"><![CDATA[
+<record title="show MessageBox" action="script" command="fdscript" icon="F:\icons\csharp.ico"><![CDATA[
 	// FDScript.cs
 	////css_import CommonLib\CommonLib.cs;
 	using System.Windows.Forms;
@@ -165,7 +165,118 @@
 	}
 ]]></record>
 	
-<record action="script" command="php" title="sslib213.php"
+<record title="sslib211.php(埋め込み)" action="script" command="php" option="browse"
+				path="F:\php1\sslib\sslib211.php" />
+	
+<!--<record title="sslib212" action="script" command="php" option="Browse" path="temp" -->
+<!-- <record title="sslib212" action="script" command="php" option="browse" path="temp" -->
+<!-- <record title="sslib212" action="script" command="php" option="browse" path="localhost" -->
+<record title="sslib212.php(browse)" action="script" command="php" option="browse"
+				tooptip = "埋め込みphpコードを sslib212 をブラウザで起動します"
+				icon="imagelist:90"><![CDATA[
+	<?php
+	header('Content-Type: text/html;charset=UTF-8');
+ 	$a = array( 2.0, 2.0);
+  $b = array( 1.0, 1.0);
+  $z = array( 0.0, 0.0);
+  print('<pre style="font-size:32px;">');
+	printf('                 ★ 科学技術計算サブルーチンライブラリー（PHP）'."\n");
+  printf('                2.1.2 複素数　加減算 （ＣＭＵＬ、ＣＤＩＶ）'."\n\n");
+  
+	$z = cmul($a, $b);
+  $format = '    ( %5.2f + %5.2f*i ) * ( %5.2f + %5.2f*i ) = ( %5.2f + %5.2f*i )'."\n";
+  printf( $format, $a[0], $a[1], $b[0], $b[1] , $z[0], $z[1]);
+  
+	$z = cdiv($a, $b);
+  $format = '    ( %5.2f + %5.2f*i ) / ( %5.2f + %5.2f*i ) = ( %5.2f + %5.2f*i )'."\n";
+  printf( $format, $a[0], $a[1], $b[0], $b[1] , $z[0], $z[1]);
+	print('</pre>');
+
+/**
+ * cmul  複素数の積を求め結果を配列 [re,im]で返す
+ *
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の積を配列[re,im]で返す
+ * @uses Sslib212()
+ */
+  function cmul($a, $b){
+    $z = array();
+  $z[1] = $a[0]*$b[1] + $b[0]*$a[1];
+  $z[0] = $a[0]*$b[0] - $a[1]*$b[1];
+  return $z;
+  }
+/**
+ * cdiv  複素数の商を求め結果を配列 $z[re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の商を配列[re,im]で返す
+ * @uses Sslib212()
+ */
+  function cdiv($a, $b){
+    $z =array();
+  
+    if (cabs($b) == 0.0){
+      $z[0] = 999.0;
+      $z[1] = 999.0;
+      return $z;
+    }
+    $z[1] = ($b[0]*$a[1]-$a[0]*$b[1])/($b[0]*$b[0]+$b[1]*$b[1]);
+    $z[0] = ($a[0]*$b[0]+$a[1]*$b[1])/($b[0]*$b[0]+$b[1]*$b[1]);
+    return $z;
+  }
+/**
+ * cadd  複素数の和を求め結果を配列 [re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の和を配列[re,im]で返す
+ * @see csub()
+ */
+  function cadd($a, $b){
+    $z = array();
+    $z[0] = $a[0] + $b[0];
+    $z[1] = $a[1] + $b[1];
+    return $z;
+  }
+/**
+ * csub  複素数の差を求め結果を配列 [re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の差を配列[re,im]で返す
+ * @see sslib211::sslib211()
+ */
+  function csub($a, $b){
+    $z[0] = $a[0] - $b[0];
+    $z[1] = $a[1] - $b[1];
+    return $z;
+  }
+/**
+ * cabs  複素数の絶対値を返す
+ * {@source }
+ * @access public
+ * @param array
+ * @return double 複素数の絶対値をdoubleで返す
+ * @uses Sslib215()
+ */
+  function cabs($a){
+    return sqrt($a[0]*$a[0]+$a[1]*$a[1]);
+  }
+//ＰＨＰの終わり
+?>	
+
+]]></record>
+	
+<!-- <record title="sslib213.php" action="script" command="php" option="browse" -->
+<!-- <record title="sslib213.php" action="script" command="php" option="browse" path="tempfile" -->
+<record title="sslib213.php(localhost)" action="script" command="php" option="browse" path="localhost"
 					tooltip ="2.1.3 複素数　対数、指数、ベキ乗（ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）"
 					><![CDATA[
 <?php
@@ -177,27 +288,25 @@
  * To compile:
  * To run: {@link http://localhost/php1/sslib/sslib213_good.php
  * To folder: {@link http://localhost/php1/sslib_class/sslib_class.lnk}
- * 説明: 
+ * 説明: ラインコメント // は \n を削除しているので悪さする 削除するか ブロックコメントにすること
  *=============================================================================
  * ★ 科学技術計算サブルーチンライブラリー  
  * p.18 2.1.3 複素数　対数、指数、ベキ乗（ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）
  * create    Sun Feb 10 15:18:42 2002
  *=============================================================================*/
- 
-//-----------------------
-	header('Content-Type: text/html;charset=Shift_JIS');
- 	print("<pre><font size=5>");  
+header('Content-Type: text/html;charset=utf-8');
+print("<pre><font size=5>");  
+
   $a = array( 2.0, 2.0);
   $b = array( 1.0, 1.0);
   $z = array( 0.0, 0.0);
-
-    printf ("\n%60s\n","★ 科学技術計算サブルーチンライブラリー（PHP）");
-    printf("       2.1.3 複素数　対数、指数、ベキ乗 （ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）\n\n");
-//   $p = new sslib();
+// ラインコメント試験
+  printf ("\n%60s\n","★ 科学技術計算サブルーチンライブラリー（PHP）");
+  printf("       2.1.3 複素数　対数、指数、ベキ乗 （ＣＬＯＧ、ＣＥＸＰ、ＣＰＷＲ）\n\n");
   $z = clog($a);
-  $format = '        log(%5.2f + %5.2f*i) = ( %12.6e ) + ( %12.6e )*i'."\n";
-  printf($format, $a[0],$a[1],$z[0],$z[1]);
 
+	$format = '        log(%5.2f + %5.2f*i) = ( %12.6e ) + ( %12.6e )*i'."\n";
+  printf($format, $a[0],$a[1],$z[0],$z[1]);
   $z = cexp($a);
   $format = '        exp(%5.2f + %5.2f*i) = ( %12.6e ) + ( %12.6e )*i'."\n";
   printf($format, $a[0],$a[1],$z[0],$z[1]);
@@ -321,7 +430,6 @@ function cexp($a) {
 function clog( $a ) {
   $z = array();
   $w = 0;
-  
   $w = cabs($a);
   if ($w == 0){
     $z[0] = 999.0;
@@ -364,14 +472,32 @@ function cpwr($a, $b) {
   $z = cexp($w);
   return $z;
 }
-
-
 //ＰＨＰの終わり
 ?>
 ]]></record>
 
+<record title="sslib255.php(chrome)" action="script" command="php"  option="chrome"
+	path="F:\php1\sslib\sslib255_utf.php" icon="imagelist:90"/>
+
+<record title="CDATA 読み込みテスト" action="script" command="php" option="Browse"><![CDATA[
+		<?php
+			$msg = "こんにちわ CDATA 読み込み";
+			echo($msg); 
+			//echo(mb_convert_encoding($msg,"utf-8","auto"));
+		?>
+	]]></record>
 </folder>
+
 <folder title="Loadfile">
+	<folder title="ant build.xml">
+		<record title ="Nashorn" action="Loadfile" path="F:\codingground\java\Nashorn\build.xml" />
+	</folder>
+
+	<folder title="gradle build.gradle">
+		<record title ="android" action="Loadfile" path="F:\GitHub\hataka\codingground\android\obj\build.gradle" />
+	</folder>
+
+	<folder title="wsh">
 	<record title ="EmbedScript.wsf" action="Loadfile" path="F:\WSH\EmbedWsf\EmbedScript.wsf" option="root" />
 	<record title="EmbedAnt.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedAnt.wsf" option="root" />
 	<record title="Embedphp.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Embedphp.wsf" />
@@ -384,12 +510,47 @@ function cpwr($a, $b) {
 	<record title="CreateXmlDom.js" action="LoadFile" path="F:\WSH\EmbedWsf\CreateXmlDom.js" />
 	<record title="ParseXmlDom.js" action="LoadFile" path="F:\WSH\EmbedWsf\ParseXmlDom.js" />
 	<record title="php_lib.js" action="LoadFile" path="F:\WSH\EmbedWsf\php_lib.js" />
-
+	</folder>
+	
+	<folder title="fdp">
 	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedWsf.fdp" />
-	
+	</folder>
+	<folder title="FDTreemenu">
 	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\SettingData\XmlTreeMenu.xml" />
-	
-</folder>
+	</folder>
 
+</folder>
+<folder title="KingFM wax">
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.1_in_F,_K.37.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070116/MOZART-Piano_Concerto_No.2_in_B-flat,_K.39.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070111/MOZART-Piano_Concerto_No.3_in_D,_K.40.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.4_in_G,_K.41.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.5_in_D,_K.175.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070119/MOZART-Piano_Concerto_No.6_in_B-flat,_K.238.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.7_in_F,_K.242_Lodron.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.8_in_C,_K.246_Lutzow.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.9_in_E-flat,_K.271_Jeunehomme.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/060825/MOZART-Piano_Concerto_No.10_in_E-flat_K.365.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.11_in_F,_K.413.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.12_in_A,_K.414.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/060804/MOZART-Piano_Concerto_No.13_in_C_K.415_387b.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.14_in_E-flat,_K.449.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070114/MOZART-Piano_Concerto_No.15_in_B-flat,_K.450.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.16_in_D,_K.451.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.17_in_G,_K.453.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061226/MOZART-Piano_Concerto_No.18_in_B-flat,_K.456.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.19_in_F,_K.459.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070111/MOZART-Piano_Concerto_No.20_in_D_minor,_K.466.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070117/MOZART-Piano_Concerto_No.21_in_C,_K.467.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061212/MOZART-Piano_Concerto_No.22_in_E-flat,_K.482.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061124/MOZART-Piano_Concerto_No.23_in_A_K.488.wax1" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070125/MOZART-Piano_Concerto_No.24_in_C_minor,_K.491.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061120/MOZART-Piano_Concerto_No.25_in_C_K.503.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.26_in_D,_K.537_Coronation.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.27_in_B-flat,_K.595.wax" />
+
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Flute_Concerto_No.1_in_G,_K.313.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Flute_Concerto_No.2_in_D,_K.314.wax" />
+</folder>
 	
 </root>

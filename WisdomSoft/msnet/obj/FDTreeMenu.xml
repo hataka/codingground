@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<root title="$(CurProjectName) TreeMenu" icon="" expand="true">
+  
+<!--
+<settings>
+ 	<documentroot>C:\eclipse461\xampp\htdocs</documentroot>
+ 	<serverroot>http://localhost:8081</serverroot>
+</settings>
+-->
+<toolbar>
+	<dropdownbutton name="ExecDropdownButton3" label="現在開いているファイルを外部プログラムで起動します" image="486">
+		<menu label="サクラエディタ" click="RunProcess" tag="C:\TiuDevTools\sakura\sakura.exe;$(Quote)$(CurFile)$(Quote)" imagelist="147" />
+		<menu label="PS Pad" click="RunProcess" tag="F:\Programs\PSPad editor\PSPad.exe;$(Quote)$(CurFile)$(Quote)" imagelist="148" />
+		<menu label="XML Editor" click="RunProcess" tag="F:\Programs\XMLEDITOR.NET\xml.exe;$(Quote)$(CurFile)$(Quote)" imagelist="98" />
+		<menu label="RichText Editor" click="PluginCommand" tag="XMLTreeMenu.CreateCustomDocument;RichTextEditor|$(CurFile)" imagelist="151" />
+		<menu label="Azuki Editor" click="PluginCommand" tag="XMLTreeMenu.CreateCustomDocument;AzukiEditor|$(CurFile)" imagelist="150" />
+		<separator />
+		<menu label="エクスプローラ" click="PluginCommand" tag="FileExplorer.Explore;$(CurDir)" imagelist="152" />
+		<menu label="コマンド・プロンプト" click="PluginCommand" tag="FileExplorer.PromptHere;$(CurDir)" imagelist="153" />
+		<menu label="現在のファイルをBrowserで開く(&amp;W)" click="PluginCommand" tag="XMLTreeMenu.BrowseEx;$(CurFile)" image="480" />
+	</dropdownbutton>
+</toolbar>
+<!--
+<launch>
+	<record title="PukiWki2016" action="Browse" path="http://kahata.travel.coocan.jp/pukiwiki2016/index.php" icon="F:\icons\pukiwiki.ico" />
+  <record title="snippets" action="Browse" path="https://www.eclipse.org/swt/snippets/" icon="F:\icons\pukiwiki.ico" />
+</launch>
+-->
+  
+  <folder title="Menu" expand="false">
+    <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
+    <record title="XmlTreeMenu" action="menu" path="$(BaseDir)\SettingData\XmlTreeMenu.xml" />
+    <record title="FlashProject" action="menu" path="$(BaseDir)\SettingData\\FlashProject.xml" />
+<!--
+    <record title="VC++2008 Sample" action="menu" path="F:\VCSharp\MDI\FlashDevelop\FlashDevelop\Bin\Debug\MDIFormData\VCPP2008_menu.xml" />
+-->
+  </folder>
+  <folder title="LocalSite">
+    <record title="PukiWki" path="http://localhost/pukiwiki/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="FrameWork" path="http://localhost/FrameWork/FrameWork.html" />
+    <record title="Local Frame" action="browse" path="F:\WisdomSoft\framework\system\msnet\frame.html" />
+    <record title="Local Frame in Chrome" action="winexe" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" args="F:\WisdomSoft\framework\system\msnet\frame.html" />
+<!-- 
+    <record title="Google" action="winexe" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" args="http://www.google.co.jp" />
+    <record title="C# links" path="http://localhost/VCSharp/links/dir_traverse_htmllink.php" />
+    <record title="pdf" action="webbrowser" path="F:\svgGraphics\hirano-lab\00svg-full09.pdf" />
+-->  
+  </folder>
+  <folder title="WebSite">
+    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+    <record title="yahoo" path="http://www.yahoo.co.jp/" />
+    <record title="WisdomSoft" path="http://wisdom.sakura.ne.jp/" />
+  </folder>
+  <folder title="ビルド" expand="false">
+    <record title="build.bat" action="RunProcess" command="cmd.exe" args=" /k $(CurProjectDir)\build.bat" />
+    <!--
+    <record title="VC# 2008 rebuild(cmd)" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="./k &quot;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe&quot; main.csproj /rebuild" />
+    <record title="resgen" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="./k &quot;C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\resgen.exe&quot; main.resx main.resources" />
+    -->
+    <record title="VC# 2010  Express 起動" action="RunProcess" command="$(CurProjectDir)\main.sln" />
+  </folder>
+  <folder title="実行" expand="false">
+    <record title="Console Output" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="/k $(CurProjectDir)\main.exe" />
+    <record title="Windows Output" action="RunProcess" command="$(CurProjectDir)\main.exe" />
+    <record title="RunApp.wsf" action="RunProcess" command="C:\WINDOWS\system32\wscript.exe" args="//nologo $(CurProjectDir)\RunApp.wsf" />
+    <record title="RunScript" action="RunProcess" command="F:\Programs\csscript\csws.exe" args="$(CurProjectDir)\main.cs" />
+<!--
+    <record title="RunWsScript.wsf" action="RunProcess" command="C:\WINDOWS\system32\Wscript.exe" args="//nologo F:\cpp\Neko\form\form_06\drawstring02\RunWsScript.wsf" />
+-->
+  </folder>
+  <folder title="Source" expand="true">
+    <record title="main.cs" action="Open" path="$(CurProjectDir)\main.cs" />
+  </folder>
+
+
+<folder title="php-script">
+	
+	
+<!--<record title="sslib212" action="script" command="php" option="Browse" path="temp" -->
+<!-- <record title="sslib212" action="script" command="php" option="browse" path="temp" -->
+<!-- <record title="sslib212" action="script" command="php" option="browse" path="localhost" -->
+	
+<record title="sslib211" action="script" command="php" option="console" path="F:\php1\sslib\sslib211.php" />
+	
+<record title="sslib212" action="script" command="php" option="browse"
+				tooptip = "埋め込みphpコードを sslib212 をブラウザで起動します"
+				icon="imagelist:90"><![CDATA[
+	<?php
+	header('Content-Type: text/html;charset=UTF-8');
+ 	$a = array( 2.0, 2.0);
+  $b = array( 1.0, 1.0);
+  $z = array( 0.0, 0.0);
+  print('<pre style="font-size:32px;">');
+	printf('                 ★ 科学技術計算サブルーチンライブラリー（PHP）'."\n");
+  printf('                2.1.2 複素数　加減算 （ＣＭＵＬ、ＣＤＩＶ）'."\n\n");
+  
+	$z = cmul($a, $b);
+  $format = '    ( %5.2f + %5.2f*i ) * ( %5.2f + %5.2f*i ) = ( %5.2f + %5.2f*i )'."\n";
+  printf( $format, $a[0], $a[1], $b[0], $b[1] , $z[0], $z[1]);
+  
+	$z = cdiv($a, $b);
+  $format = '    ( %5.2f + %5.2f*i ) / ( %5.2f + %5.2f*i ) = ( %5.2f + %5.2f*i )'."\n";
+  printf( $format, $a[0], $a[1], $b[0], $b[1] , $z[0], $z[1]);
+	print('</pre>');
+
+/**
+ * cmul  複素数の積を求め結果を配列 [re,im]で返す
+ *
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の積を配列[re,im]で返す
+ * @uses Sslib212()
+ */
+  function cmul($a, $b){
+    $z = array();
+  $z[1] = $a[0]*$b[1] + $b[0]*$a[1];
+  $z[0] = $a[0]*$b[0] - $a[1]*$b[1];
+  return $z;
+  }
+/**
+ * cdiv  複素数の商を求め結果を配列 $z[re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の商を配列[re,im]で返す
+ * @uses Sslib212()
+ */
+  function cdiv($a, $b){
+    $z =array();
+  
+    if (cabs($b) == 0.0){
+      $z[0] = 999.0;
+      $z[1] = 999.0;
+      return $z;
+    }
+    $z[1] = ($b[0]*$a[1]-$a[0]*$b[1])/($b[0]*$b[0]+$b[1]*$b[1]);
+    $z[0] = ($a[0]*$b[0]+$a[1]*$b[1])/($b[0]*$b[0]+$b[1]*$b[1]);
+    return $z;
+  }
+/**
+ * cadd  複素数の和を求め結果を配列 [re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の和を配列[re,im]で返す
+ * @see csub()
+ */
+  function cadd($a, $b){
+    $z = array();
+    $z[0] = $a[0] + $b[0];
+    $z[1] = $a[1] + $b[1];
+    return $z;
+  }
+/**
+ * csub  複素数の差を求め結果を配列 [re,im]で返す
+ * {@source }
+ * @access public
+ * @param array [re,im]
+ * @param array [re,im]
+ * @return array 複素数の差を配列[re,im]で返す
+ * @see sslib211::sslib211()
+ */
+  function csub($a, $b){
+    $z[0] = $a[0] - $b[0];
+    $z[1] = $a[1] - $b[1];
+    return $z;
+  }
+/**
+ * cabs  複素数の絶対値を返す
+ * {@source }
+ * @access public
+ * @param array
+ * @return double 複素数の絶対値をdoubleで返す
+ * @uses Sslib215()
+ */
+  function cabs($a){
+    return sqrt($a[0]*$a[0]+$a[1]*$a[1]);
+  }
+//ＰＨＰの終わり
+?>	
+
+]]></record>
+				
+
+<record title="sslib255.php(chrome)" action="script" command="php"  option="chrome"
+	path="F:\php1\sslib\sslib255_utf.php" icon="imagelist:90"/>
+
+<record title="CDATA 読み込みテスト" action="script" command="php" option="Browse"><![CDATA[
+		<?php
+			$msg = "こんにちわ CDATA 読み込み";
+			echo($msg); 
+			//echo(mb_convert_encoding($msg,"utf-8","auto"));
+		?>
+	]]></record>
+</folder>
+
+
+<folder title="script-test">
+	<record title="cs-script" action="script" command="cs"><![CDATA[
+// -*- mode: cs -*-  Time-stamp: <2017-03-23 9:05:16 kahata>
+/*================================================================
+ * title: Chapter 1　オブジェクト指向プログラミングの基礎
+ * file: Program.cs
+ * path: F:\VCSharp\CSharpPhraseBook\CSharpPhraseBook\Chapter01\Section01\Program.cs
+ * created: Time-stamp: <2017-03-23 9:05:16 kahata>
+ * link: 
+ * description: Chapter 1　オブジェクト指向プログラミングの基礎
+ * 1.1　クラス
+ * 1.1.1　クラスを定義する
+ * 1.1.2 クラスのインスタンスを生成する
+ * 1.1.3　オブジェクトを利用する
+ * 1.1.4　インスタンスは複数作れる
+ *================================================================*/
+
+//////css_import Product.cs;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Section01 {
+	class Program {
+		static void Main(string[] args) {
+			Product karinto = new Product(123, "かりんとう", 180);
+			Product daifuku = new Product(235, "大福もち", 160);
+			int karintoTax = karinto.GetTax();
+			int daifukuTax = daifuku.GetTax();
+			Console.WriteLine("{0} {1} {2}", karinto.Name, karinto.Price, karintoTax);
+			Console.WriteLine("{0} {1} {2}", daifuku.Name, daifuku.Price, daifukuTax);
+		}
+	}
+
+	// List 1-1
+	public class Product {
+		public int Code { get; private set; }
+		public string Name { get; private set; }
+		public int Price { get; private set; }
+
+		// コンストラクタ
+		public Product(int code, string name, int price) {
+			this.Code = code;
+			this.Name = name;
+			this.Price = price;
+		}
+
+		// 消費税額を求める
+		public int GetTax() {
+			return (int)(Price * 0.08);
+		}
+
+		// 税込価格を求める
+		public int GetPriceIncludingTax() {
+			return Price + GetTax();
+		}
+	}
+}
+	]]></record>
+</folder>	
+<folder title="埋め込み FDScript">
+<record title="about起動" action="script" command="fdscript" icon="imagelist:90"><![CDATA[
+	// FDScript.cs
+	// TODO: Time-stamp: <2011-05-26 14:16:30 kahata>
+	// TODO 組み込み必要
+	////css_import CommonLib\CommonLib.cs;
+	using FlashDevelop;
+	public class FDScript
+	{
+		public static void Execute()
+		{
+			Globals.MainForm.About(null, null);
+		}
+	}
+]]></record>
+
+<record title="MessageBox 起動" action="script" command="fdscript" icon="F:\icons\csharp.ico"><![CDATA[
+	// FDScript.cs
+	////css_import CommonLib\CommonLib.cs;
+	using System.Windows.Forms;
+	public class FDScript
+	{
+		public static void Execute()
+		{
+			MessageBox.Show("こんにちわ");
+		}
+	}
+]]></record>
+
+</folder>
+
+
+<folder title="Loadfile">
+	<folder title="ant build.xml">
+		<record title ="Nashorn" action="Loadfile" path="F:\codingground\java\Nashorn\build.xml" />
+	</folder>
+
+	<folder title="gradle build.gradle">
+		<record title ="android" action="Loadfile" path="F:\GitHub\hataka\codingground\android\obj\build.gradle" />
+	</folder>
+
+	<folder title="wsh">
+	<record title ="EmbedScript.wsf" action="Loadfile" path="F:\WSH\EmbedWsf\EmbedScript.wsf" option="root" />
+	<record title="EmbedAnt.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedAnt.wsf" option="root" />
+	<record title="Embedphp.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Embedphp.wsf" />
+	<record title ="hello-csscript.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\hello-csscript.wsf" />
+	<record title="Msxml2.DOMDocument.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Msxml2.DOMDocument.wsf" />
+	<record title="RunWsScript.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\RunWsScript.wsf" />
+	<record title="SwtSnippet1.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\SwtSnippet1.wsf" />
+	<record title="TemplateEmbedScript1.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\TemplateEmbedScript1.wsf" />
+
+	<record title="CreateXmlDom.js" action="LoadFile" path="F:\WSH\EmbedWsf\CreateXmlDom.js" />
+	<record title="ParseXmlDom.js" action="LoadFile" path="F:\WSH\EmbedWsf\ParseXmlDom.js" />
+	<record title="php_lib.js" action="LoadFile" path="F:\WSH\EmbedWsf\php_lib.js" />
+	</folder>
+	
+	<folder title="fdp">
+	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedWsf.fdp" />
+	</folder>
+	<folder title="FDTreemenu">
+	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\SettingData\XmlTreeMenu.xml" />
+	</folder>
+
+</folder>
+<folder title="KingFM wax">
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.1_in_F,_K.37.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070116/MOZART-Piano_Concerto_No.2_in_B-flat,_K.39.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070111/MOZART-Piano_Concerto_No.3_in_D,_K.40.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.4_in_G,_K.41.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.5_in_D,_K.175.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070119/MOZART-Piano_Concerto_No.6_in_B-flat,_K.238.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.7_in_F,_K.242_Lodron.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.8_in_C,_K.246_Lutzow.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.9_in_E-flat,_K.271_Jeunehomme.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/060825/MOZART-Piano_Concerto_No.10_in_E-flat_K.365.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.11_in_F,_K.413.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.12_in_A,_K.414.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/060804/MOZART-Piano_Concerto_No.13_in_C_K.415_387b.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.14_in_E-flat,_K.449.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070114/MOZART-Piano_Concerto_No.15_in_B-flat,_K.450.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.16_in_D,_K.451.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.17_in_G,_K.453.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061226/MOZART-Piano_Concerto_No.18_in_B-flat,_K.456.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.19_in_F,_K.459.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070111/MOZART-Piano_Concerto_No.20_in_D_minor,_K.466.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070117/MOZART-Piano_Concerto_No.21_in_C,_K.467.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061212/MOZART-Piano_Concerto_No.22_in_E-flat,_K.482.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061124/MOZART-Piano_Concerto_No.23_in_A_K.488.wax1" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070125/MOZART-Piano_Concerto_No.24_in_C_minor,_K.491.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/061120/MOZART-Piano_Concerto_No.25_in_C_K.503.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.26_in_D,_K.537_Coronation.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.27_in_B-flat,_K.595.wax" />
+
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070110/MOZART-Flute_Concerto_No.1_in_G,_K.313.wax" />
+	<record title="Mozart" action="LoadFile" path="F:/My Music/KingFM/070109/MOZART-Flute_Concerto_No.2_in_D,_K.314.wax" />
+</folder>
+
+
+
+
+</root>
