@@ -58,7 +58,7 @@
     </exec>
 -->
     <delete dir="bin/Debug" />
-    <delete dir="obj" />
+    <delete dir="obj/Debug" />
     <delete dir="doxygen" />
     <delete>
       <fileset dir="." includes="*.user"/>

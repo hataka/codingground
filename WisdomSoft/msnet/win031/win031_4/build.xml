@@ -169,7 +169,7 @@ target の if 属性で分岐。
  --> 
   <!-- http://www.ne.jp/asahi/hishidama/home/tech/ant/tag/delete.html -->
     <delete dir="bin" />
-    <delete dir="obj" />
+    <delete dir="obj/Debug" />
     <delete>
       <fileset dir="." includes="*.user"/>
       <fileset dir="." includes="*.suo"/>
@@ -182,7 +182,7 @@ target の if 属性で分岐。
     </exec>
 -->
     <delete dir="bin" />
-    <delete dir="obj" />
+    <delete dir="obj/Debug" />
     <delete dir="doxygen" />
     <delete>
       <fileset dir="." includes="*.user"/>
