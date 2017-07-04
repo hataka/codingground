@@ -5,7 +5,8 @@ android {
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        applicationId "gudon.sample.layout04"
+        applicationId "${gradle.ext.applicationId}"
+        //applicationId "gudon.sample.layout04"
         minSdkVersion 13
         targetSdkVersion 13
     }

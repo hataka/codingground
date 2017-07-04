@@ -1,9 +1,10 @@
 $(ProjectDir)\$(ProjectName).fdp
-F:\codingground\WisdomSoft\msnet\obj\FDTreeMenu.xml
-F:\codingground\WisdomSoft\msnet\obj\FDTreeMenuData.txt
-F:\codingground\WisdomSoft\msnet\obj\build.xml
-F:\codingground\WisdomSoft\msnet\obj\build.wsf
-F:\codingground\WisdomSoft\msnet\obj\RunApp.wsf
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\FDTreeMenu.xml
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\msnet.xml
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\FDTreeMenuData.txt
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\build.xml
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\build.wsf
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\RunApp.wsf
 
 //$(ProjectDir)\FDTreeMenu.xml
 //$(ProjectDir)\build.xml

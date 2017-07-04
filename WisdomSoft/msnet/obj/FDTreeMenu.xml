@@ -305,8 +305,9 @@ namespace Section01 {
 	</folder>
 
 	<folder title="wsh">
-	<record title ="EmbedScript.wsf" action="Loadfile" path="F:\WSH\EmbedWsf\EmbedScript.wsf" option="root" />
-	<record title="EmbedAnt.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedAnt.wsf" option="root" />
+	<!--<record title ="EmbedScript.wsf" action="Loadfile" path="F:\WSH\EmbedWsf\EmbedScript.wsf" option="root" />-->
+	<record title ="EmbedScript.wsf" action="Loadfile" path="F:\WSH\EmbedWsf\EmbedScript.wsf" />
+	<record title="EmbedAnt.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedAnt.wsf" />
 	<record title="Embedphp.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Embedphp.wsf" />
 	<record title ="hello-csscript.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\hello-csscript.wsf" />
 	<record title="Msxml2.DOMDocument.wsf" action="LoadFile" path="F:\WSH\EmbedWsf\Msxml2.DOMDocument.wsf" />

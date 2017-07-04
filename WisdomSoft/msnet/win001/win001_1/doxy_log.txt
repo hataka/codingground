@@ -1,0 +1,1 @@
+error: Failed to rename file F:/GitHub/hataka/codingground/WisdomSoft/msnet/win001/win001_1/doxygen/latex/classWinMain.tex to F:/GitHub/hataka/codingground/WisdomSoft/msnet/win001/win001_1/doxygen/latex/classWinMain.tex.tmp!
