@@ -14,6 +14,7 @@
  * description: 
  *
  *================================================================*/
+using System;
 using System.Windows.Forms;
 
 class WinMain : Form {
