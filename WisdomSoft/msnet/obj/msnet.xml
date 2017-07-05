@@ -105,48 +105,87 @@
 	</folder>
 
 	<folder title="win011">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win011_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_1/main.cs"/>
+		<record title="win011_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_2/main.cs"/>
+		<record title="win011_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_3/main.cs"/>
+		<record title="win011_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_4/main.cs"/>
+		<record title="win011_5" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_5/main.cs"/>
+		<record title="win011_6" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_6/main.cs"/>
+	</folder>
+
+	<folder title="win012">
+		<record title="win012_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win012/win012_1/main.cs"/>
 	</folder>
 
 	<folder title="win013">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win013_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win013/win013_1/main.cs"/>
+		<record title="win013_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win013/win013_2/main.cs"/>
+		<record title="win013_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win013/win013_3/main.cs"/>
+		<record title="win013_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win013/win013_4/main.cs"/>
 	</folder>
 	
 	<folder title="win014">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win014_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win014/win014_1/main.cs"/>
 	</folder>
 	
 	<folder title="win015">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win015_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win015/win015_1/main.cs"/>
+		<record title="win015_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win015/win015_2/main.cs"/>
 	</folder>
 	
 	<folder title="win016">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win016_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win016/win016_1/main.cs"/>
 	</folder>
 	
 	<folder title="win017">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win017_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win017/win017_1/main.cs"/>
 	</folder>
 	
 	<folder title="win018">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win018_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win018/win018_1/main.cs"/>
+		<record title="win018_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win018/win018_2/main.cs"/>
+		<record title="win018_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win018/win018_3/main.cs"/>
+		<record title="win018_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win018/win018_4/main.cs"/>
 	</folder>
 	
 	<folder title="win019">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win019_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win019/win019_1/main.cs"/>
+		<record title="win019_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win019/win019_2/main.cs"/>
+		<record title="win019_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win019/win019_3/main.cs"/>
+		<record title="win019_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win019/win019_4/main.cs"/>
 	</folder>
 	
 	<folder title="win020">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+		<record title="win020_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win020/win020_1/main.cs"/>
+		<record title="win020_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win020/win020_2/main.cs"/>
+		<record title="win020_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win020/win020_3/main.cs"/>
 	</folder>
 	
 	<folder title="win021">
