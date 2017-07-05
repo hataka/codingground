@@ -12,6 +12,7 @@
     <movie minorVersion="0" />
     <movie platform="Custom" />
     <movie background="#FFFFFF" />
+    <movie preferredSDK="F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>

@@ -324,7 +324,12 @@ namespace Section01 {
 	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedWsf.fdp" />
 	</folder>
 	<folder title="FDTreemenu">
-	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\SettingData\XmlTreeMenu.xml" />
+		<record title="EmbedWsf.fdp" action="LoadFile" path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\SettingData\XmlTreeMenu.xml" />
+	</folder>
+	<folder title="php">
+	<record title="obj/glob_recursive.php" action="LoadFile" path="F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\glob_recursive.php" />
+	<record title="Lib.class.php" action="LoadFile" path="F:\php1\commonLib\Lib.class.php" />
+	<record title="tag_Hook.class.php" action="LoadFile" path="C:\Apache2.2\htdocs\pukiwiki2016\include\tag_Hook.class.php" />
 	</folder>
 
 </folder>
