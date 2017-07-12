@@ -9,7 +9,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.view.View;
 import android.widget.Toast;
 
-public class Layout06 extends Activity {
+public class MainActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class Layout06 extends Activity {
 			@Override
 			public void onClick(View v) {
 				String msg = String.format("[%d , %d]\n", v.getWidth(),v.getHeight());
-				Toast.makeText(Layout06.this, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				//System.out.printf("[%d , %d]\n", v.getWidth(),v.getHeight());
 			}
 		});
@@ -44,7 +44,7 @@ public class Layout06 extends Activity {
 			@Override
 			public void onClick(View v) {
 				String msg = String.format("[%d , %d]\n", v.getWidth(),v.getHeight());
-				Toast.makeText(Layout06.this, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				//System.out.printf("[%d , %d]\n", v.getWidth(),v.getHeight());
 			}
 		});
@@ -58,7 +58,7 @@ public class Layout06 extends Activity {
 			@Override
 			public void onClick(View v) {
 				String msg = String.format("[%d , %d]\n", v.getWidth(),v.getHeight());
-				Toast.makeText(Layout06.this, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				//System.out.printf("[%d , %d]\n", v.getWidth(),v.getHeight());
 			}
 		});

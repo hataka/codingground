@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root title="GitHub Download Execute" icon="" expand="true">
   <folder title="WebSite">
-    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
-    <record title="yahoo" path="http://www.yahoo.co.jp/" />
+   <record title="Google" path="http://www.google.co.jp/favicon.ico" />
+   <record title="yahoo" path="http://www.yahoo.co.jp/" />
     <record title="WisdomSoft" path="http://wisdom.sakura.ne.jp/" />
   </folder>
-	<folder title="win001">
+	<folder title="win001" tooltip="ウインドウフォーム" path="http://wisdom.sakura.ne.jp/system/msnet/msnet_win1.html">
 		<record title="win001_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
 	</folder>
-	<folder title="win002">
+	<folder title="win002" tooltip="線の描画" path="http://wisdom.sakura.ne.jp/system/msnet/msnet_win2.html">
 		<record title="win002_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win002/win002_1/main.cs"/>
 		<record title="win002_2" action="script" command="cs" 
@@ -20,7 +20,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win002/win002_4/main.cs"/>
 	</folder>
 
-	<folder title="win003">
+	<folder title="win003" tooltip="曲線" path="http://wisdom.sakura.ne.jp/system/msnet/msnet_win3.html">
 		<record title="win003_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win003/win003_1/main.cs"/>
 		<record title="win003_2" action="script" command="cs" 
@@ -29,7 +29,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win003/win003_3/main.cs"/>
 	</folder>
 
-	<folder title="win004">
+	<folder title="win004" tooltip="図形を描画" path="http://wisdom.sakura.ne.jp/system/msnet/msnet_win4.html">
 		<record title="win004_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win004/win004_1/main.cs"/>
 		<record title="win004_2" action="script" command="cs" 
@@ -40,7 +40,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win004/win004_4/main.cs"/>
 	</folder>
 
-	<folder title="win005">
+	<folder title="win005" tooltip="論理ブラシ" path="http://wisdom.sakura.ne.jp/system/msnet/msnet_win5.html">
 		<record title="win005_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win005/win005_1/main.cs"/>
 		<record title="win005_2" action="script" command="cs" 
@@ -51,7 +51,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win005/win005_4/main.cs"/>
 	</folder>
 
-	<folder title="win006">
+	<folder title="win006" tooltip="塗りつぶす">
 		<record title="win006_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win006/win006_1/main.cs"/>
 		<record title="win006_2" action="script" command="cs" 
@@ -64,7 +64,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win006/win006_5/main.cs"/>
 	</folder>
 
-	<folder title="win007">
+	<folder title="win007" tooltip="論理ペン">
 		<record title="win007_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win007/win007_1/main.cs"/>
 		<record title="win007_2" action="script" command="cs" 
@@ -77,12 +77,12 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win007/win007_5/main.cs"/>
 	</folder>
 
-	<folder title="win008">
+	<folder title="win008" tooltip="Pens と Brushes">
 		<record title="win008_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win008/win008_1/main.cs"/>
 	</folder>
 
-	<folder title="win009">
+	<folder title="win009" tooltip="文字の描画">
 		<record title="win009_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win009/win009_1/main.cs"/>
 		<record title="win009_2" action="script" command="cs" 
@@ -93,7 +93,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win009/win009_4/main.cs"/>
 	</folder>
 
-	<folder title="win010">
+	<folder title="win010" tooltip="フォントの列挙">
 		<record title="win010_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win010/win010_1/main.cs"/>
 		<record title="win010_2" action="script" command="cs" 
@@ -104,7 +104,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win010/win010_4/main.cs"/>
 	</folder>
 
-	<folder title="win011">
+	<folder title="win011" tooltip="パス">
 		<record title="win011_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_1/main.cs"/>
 		<record title="win011_2" action="script" command="cs" 
@@ -119,12 +119,12 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win011/win011_6/main.cs"/>
 	</folder>
 
-	<folder title="win012">
+	<folder title="win012" tooltip="リージョン">
 		<record title="win012_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win012/win012_1/main.cs"/>
 	</folder>
 
-	<folder title="win013">
+	<folder title="win013" tooltip="イメージの描画">
 		<record title="win013_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win013/win013_1/main.cs"/>
 		<record title="win013_2" action="script" command="cs" 
@@ -135,29 +135,29 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win013/win013_4/main.cs"/>
 	</folder>
 	
-	<folder title="win014">
+	<folder title="win014" tooltip="イメージの情報">
 		<record title="win014_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win014/win014_1/main.cs"/>
 	</folder>
 	
-	<folder title="win015">
+	<folder title="win015" tooltip="イメージの制御">
 		<record title="win015_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win015/win015_1/main.cs"/>
 		<record title="win015_2" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win015/win015_2/main.cs"/>
 	</folder>
 	
-	<folder title="win016">
+	<folder title="win016" tooltip="テクスチャブラシ">
 		<record title="win016_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win016/win016_1/main.cs"/>
 	</folder>
 	
-	<folder title="win017">
+	<folder title="win017" tooltip="座標単位">
 		<record title="win017_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win017/win017_1/main.cs"/>
 	</folder>
 	
-	<folder title="win018">
+	<folder title="win018" tooltip="ウィンドウの情報">
 		<record title="win018_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win018/win018_1/main.cs"/>
 		<record title="win018_2" action="script" command="cs" 
@@ -168,7 +168,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win018/win018_4/main.cs"/>
 	</folder>
 	
-	<folder title="win019">
+	<folder title="win019" tooltip="ウィンドウの制御">
 		<record title="win019_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win019/win019_1/main.cs"/>
 		<record title="win019_2" action="script" command="cs" 
@@ -179,7 +179,7 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win019/win019_4/main.cs"/>
 	</folder>
 	
-	<folder title="win020">
+	<folder title="win020" tooltip="マウスイベント">
 		<record title="win020_1" action="script" command="cs" 
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win020/win020_1/main.cs"/>
 		<record title="win020_2" action="script" command="cs" 
@@ -188,11 +188,217 @@
 			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win020/win020_3/main.cs"/>
 	</folder>
 	
-	<folder title="win021">
-		<record title="win001_1" action="script" command="cs" 
-			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win001/win001_1/main.cs"/>
+	<folder title="win021" tooltip="再描画">
+		<record title="win021_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win021/win021_1/main.cs"/>
 	</folder>
 	
+	<folder title="win022" tooltip="キー入力">
+		<record title="win022_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win022/win022_1/main.cs"/>
+		<record title="win022_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win022/win022_2/main.cs"/>
+	</folder>
+	
+	<folder title="win023" tooltip="スクロール処理">
+		<record title="win023_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win023/win023_1/main.cs"/>
+	</folder>
+	
+	<folder title="win024" tooltip="スタイル">
+		<record title="win024_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win024/win024_1/main.cs"/>
+	</folder>
+	
+	<folder title="win025" tooltip="透明なウィンドウ">
+		<record title="win025_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win025/win025_1/main.cs"/>
+	</folder>
+	
+	<folder title="win026" tooltip="移動イベント">
+		<record title="win026_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win026/win026_1/main.cs"/>
+		<record title="win026_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win026/win026_2/main.cs"/>
+	</folder>
+	
+	<folder title="win027" tooltip="アイコン">
+		<record title="win027_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win027/win027_1/main.cs"/>
+		<record title="win027_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win027/win027_2/main.cs"/>
+		<record title="win027_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win027/win027_3/main.cs"/>
+		<record title="win027_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win027/win027_4/main.cs"/>
+	</folder>
+	
+	<folder title="win028" tooltip="カーソル">
+		<record title="win028_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_1/main.cs"/>
+		<record title="win028_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_2/main.cs"/>
+		<record title="win028_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_3/main.cs"/>
+		<record title="win028_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_4/main.cs"/>
+		<record title="win028_5" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_5/main.cs"/>
+		<record title="win028_6" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_6/main.cs"/>
+		<record title="win028_7" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win028/win028_7/main.cs"/>
+	</folder>
+	
+	<folder title="win029" tooltip="メッセージボックス ">
+		<record title="win029_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win029/win029_1/main.cs"/>
+		<record title="win029_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win029/win029_3/main.cs"/>
+		<record title="win029_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win029/win029_3/main.cs"/>
+		<record title="win029_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win029/win029_4/main.cs"/>
+		<record title="win029_5" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win029/win029_5/main.cs"/>
+	</folder>
+	
+	<folder title="win030" tooltip="メニュー">
+		<record title="win030_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win030/win030_1/main.cs"/>
+		<record title="win030_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win030/win030_2/main.cs"/>
+	</folder>
+	
+	<folder title="win031" tooltip="メニュー項目">
+		<record title="win031_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_1/main.cs"/>
+		<record title="win031_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_2/main.cs"/>
+		<record title="win031_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_3/main.cs"/>
+		<record title="win031_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_4/main.cs"/>
+		<record title="win031_5" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_5/main.cs"/>
+		<record title="win031_6" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_6/main.cs"/>
+		<record title="win031_7" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win031/win031_7/main.cs"/>
+	</folder>
+	<folder title="win032" tooltip="メニューイベント">
+		<record title="win032_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win032/win032_1/main.cs"/>
+	</folder>
+
+	<folder title="win033" tooltip="ポップアップ">
+		<record title="win033_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win033/win033_1/main.cs"/>
+		<record title="win033_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win033/win033_2/main.cs"/>
+	</folder>
+
+	<folder title="win034" tooltip="子コントロール">
+		<record title="win034_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win034/win034_1/main.cs"/>
+		<record title="win034_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win034/win034_2/main.cs"/>
+		<record title="win034_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win034/win034_3/main.cs"/>
+		<record title="win034_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win034/win034_4/main.cs"/>
+		<record title="win034_5" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win034/win034_5/main.cs"/>
+	</folder>
+
+	<folder title="win035" tooltip="イメージリスト">
+		<record title="win035_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win035/win035_1/main.cs"/>
+	</folder>
+
+	<folder title="win036" tooltip="ボタン">
+		<record title="win036_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win036/win036_1/main.cs"/>
+		<record title="win036_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win036/win036_2/main.cs"/>
+		<record title="win036_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win036/win036_3/main.cs"/>
+		<record title="win036_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win036/win036_4/main.cs"/>
+	</folder>
+
+	<folder title="win037" tooltip="チェックボックス">
+		<record title="win037_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win037/win037_1/main.cs"/>
+		<record title="win037_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win037/win037_2/main.cs"/>
+		<record title="win037_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win037/win037_3/main.cs"/>
+	</folder>
+
+	<folder title="win038" tooltip="ラジオボタン">
+		<record title="win038_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win038/win038_1/main.cs"/>
+	</folder>
+
+	<folder title="win039" tooltip="グループボックス">
+		<record title="win039_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win039/win039_1/main.cs"/>
+	</folder>
+
+	<folder title="win040" tooltip="リストボックス">
+		<record title="win040_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win040/win040_1/main.cs"/>
+		<record title="win040_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win040/win040_2/main.cs"/>
+		<record title="win040_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win040/win040_3/main.cs"/>
+		<record title="win040_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win040/win040_4/main.cs"/>
+		<record title="win040_5" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win040/win040_5/main.cs"/>
+	</folder>
+	
+	<folder title="win041" tooltip="テキストボックス">
+		<record title="win041_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win041/win041_1/main.cs"/>
+		<record title="win041_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win041/win041_2/main.cs"/>
+		<record title="win041_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win041/win041_3/main.cs"/>
+		<record title="win041_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win041/win041_4/main.cs"/>
+	</folder>
+	
+	<folder title="win042" tooltip="リッチテキスト">
+		<record title="win042_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win042/win042_1/main.cs"/>
+		<record title="win042_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win042/win042_2/main.cs"/>
+		<record title="win042_3" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win042/win042_3/main.cs"/>
+		<record title="win042_4" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win042/win042_4/main.cs"/>
+	</folder>
+	
+	<folder title="win043" tooltip="ツールチップ">
+		<record title="win043_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win043/win043_1/main.cs"/>
+	</folder>
+	
+	<folder title="win044" tooltip="コンボボックス">
+		<record title="win044_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win044/win044_1/main.cs"/>
+		<record title="win044_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win044/win044_2/main.cs"/>
+	</folder>
+	
+	<folder title="win045" tooltip="アップダウン">
+		<record title="win045_1" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win045/win045_1/main.cs"/>
+		<record title="win045_2" action="script" command="cs" 
+			path="https://raw.githubusercontent.com/hataka/codingground/master/WisdomSoft/msnet/win045/win045_2/main.cs"/>
+	</folder>
 	
 	
 </root>

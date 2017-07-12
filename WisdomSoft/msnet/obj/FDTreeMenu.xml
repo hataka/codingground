@@ -48,7 +48,8 @@
 -->  
   </folder>
   <folder title="WebSite">
-    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+   <!-- <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />-->
+    <record title="Google" path="http://www.google.co.jp/" />
     <record title="yahoo" path="http://www.yahoo.co.jp/" />
     <record title="WisdomSoft" path="http://wisdom.sakura.ne.jp/" />
   </folder>
@@ -323,9 +324,11 @@ namespace Section01 {
 	<folder title="fdp">
 	<record title="EmbedWsf.fdp" action="LoadFile" path="F:\WSH\EmbedWsf\EmbedWsf.fdp" />
 	</folder>
+	
 	<folder title="FDTreemenu">
 		<record title="EmbedWsf.fdp" action="LoadFile" path="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\SettingData\XmlTreeMenu.xml" />
 	</folder>
+	
 	<folder title="php">
 	<record title="obj/glob_recursive.php" action="LoadFile" path="F:\GitHub\hataka\codingground\WisdomSoft\msnet\obj\glob_recursive.php" />
 	<record title="Lib.class.php" action="LoadFile" path="F:\php1\commonLib\Lib.class.php" />

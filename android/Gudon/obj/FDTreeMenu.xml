@@ -29,7 +29,7 @@
 
 <folder title="Menu">
     <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
-    <record title="Flashdevelop XmlTreeMenu" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\XmlTreeMenu.xml" />
+    <record title="Flashdevelop XmlTreeMenu" action="menu" path="$(AppDir)\SettingData\XmlTreeMenu.xml" />
     <record title="Projoectメニュー" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\FlashProject.xml" />
 <!--
     <record title="ビルド実行環境" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\FDTreeMenu_work.xml" />
@@ -80,15 +80,13 @@
   </folder>
 -->
   <folder title="ExecuteScript" expand="false">
-    <record title="RunScript" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
-    <record title="Build" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:build" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
-    <record title="RunWsScript" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:RunWsScript" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
-<!--
-    <record title="Sakura_MultiOpen" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:Sakura_MultiOpen" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
--->
-    <record title="clean" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:clean" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
-    <record title="doxygen" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:doxygen" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
-    <record title="make_ppr" action="executescript" command="development" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:make_ppr" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
+    <record title="RunScript" action="executescript" command="execute" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
+    <record title="Build" action="executescript" command="execute" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:build" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
+    <record title="RunWsScript" action="executescript" command="execute" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:RunWsScript" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
+
+    <record title="clean" action="executescript" command="execute" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:clean" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
+    <record title="doxygen" action="executescript" command="execute" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:doxygen" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
+    <record title="make_ppr" action="executescript" command="execute" args="F:\Programs\PSPad editor\Template_01\VCS2008_WindowsApplication\RunApp2.wsf;temp;//job:make_ppr" path = "F:\codingground\java\swt.snippets8\Snippet001\build.xml" icon="F:\icons\shell32_112.ico" />
 
   </folder>
 

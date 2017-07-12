@@ -16,5 +16,7 @@ F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop.14..sln
 F:\WSH\wsf\common_lib.js
 
 http://wisdom.sakura.ne.jp/
-//http://www.google.co.jp
+http://www.nifty.com
+http://www.google.co.jp/favicon.ico
+http://www.yahoo.co.jp/
 //Type=record;Title=sdcardディレクトリ作成;Tooltip=;PathBase=;Action=browse;Command=;Path=https://stackoverflow.com/questions/2130932/how-to-create-directory-automatically-on-sd-card;Args=;Icon=;Option=

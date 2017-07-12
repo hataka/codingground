@@ -9,5 +9,5 @@
  * link: http://ichitcltk.hustle.ne.jp/gudon2/index.php?pageType=file&id=Android053_layout2
  * description: Layout04 addViewメソッドの引数に幅と高さの値を指定
  *================================================================*/
-gradle.ext.applicationId = "gudon.sample.layout03";
+gradle.ext.applicationId = "gudon.sample.layout04";
 include ':app'

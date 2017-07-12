@@ -1,4 +1,4 @@
-package gudon.sample.layout07;
+package gudon.sample.MainActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.view.View;
 import android.widget.Toast;
 
-public class Layout07 extends Activity {
+public class MainActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class Layout07 extends Activity {
 			@Override
 			public void onClick(View v) {
 				String msg = String.format("[%d , %d]\n", v.getWidth(),v.getHeight());
-				Toast.makeText(Layout07.this, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				//System.out.printf("[%d , %d]\n", v.getWidth(),v.getHeight());
 			}
 		});
@@ -57,7 +57,7 @@ public class Layout07 extends Activity {
 				v.getLocationOnScreen(location);
 				//System.out.printf("locationOnScreen = [x : %d , y : %d]\n", location[0], location[1]);
 				msg += String.format("locationOnScreen = [x : %d , y : %d]\n", location[0], location[1]);
-				Toast.makeText(Layout07.this, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 			}
 		});
 
@@ -70,7 +70,7 @@ public class Layout07 extends Activity {
 			@Override
 			public void onClick(View v) {
 				String msg = String.format("[%d , %d]\n", v.getWidth(),v.getHeight());
-				Toast.makeText(Layout07.this, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				//System.out.printf("[%d , %d]\n", v.getWidth(),v.getHeight());
 			}
 		});

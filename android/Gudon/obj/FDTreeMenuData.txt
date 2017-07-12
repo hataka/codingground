@@ -7,9 +7,10 @@ F:\GitHub\hataka\codingground\android\Gudon\obj\
 F:\GitHub\hataka\codingground\android\Gudon\obj\
 F:\GitHub\hataka\codingground\android\Gudon\obj\
 
-http://ichitcltk.hustle.ne.jp/gudon2/index.php?pageType=folder&id=android
+//http://ichitcltk.hustle.ne.jp/gudon2/index.php?pageType=folder&id=android
 
 F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop.14..sln
+Type=record;Title=愚鈍人 android;Tooltip=;PathBase=;Action=browse;Command=;Path=http://ichitcltk.hustle.ne.jp/gudon2/index.php?pageType=folder&id=android;Args=;Icon=;Option=
 
 
 //$(ProjectDir)\obj\FDTreeMenu.xml
