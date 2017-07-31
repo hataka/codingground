@@ -1,5 +1,5 @@
 <?xml version="1.0"  encoding="UTF-8"?>
-<project name="msnet" default="build" basedir=".">
+<project name="java" default="build" basedir=".">
     <property environment="env" />
     <property name="name" value="win001_1"/>
     <property name="target" value="main"/>
