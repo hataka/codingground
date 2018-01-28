@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run "F:\Programs\FlashDevelop\Tools\flexsdk\bin\adl -nodebug F:\HomePage\travel.coocan\Flash\ApacheFlex\mx\charts\CandlestickChart\CandlestickChartExample-app.xml",0
+</script>
+</job>
