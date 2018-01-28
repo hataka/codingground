@@ -1,0 +1,105 @@
+<html>
+ <head>
+ <title>定数</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>定数</h1>
+<hr>
+ <h2>不変の値</h2>
+開発効率と保守性を向上する目的で、私たちは「定数」を定義できます<br>
+定数とは、コンパイル時に展開することができるリテラルを表します<br>
+<br>
+定数は変数と異なり、プログラム中で常に不変の値を表します<br>
+つまり、リテラルのエイリアスであり、常にその値を保証してくれるのです<br>
+定数を宣言するには <strong>const</strong> キーワードを指定します<br>
+<br><b>
+[attributes] [modifiers] const type declarators;<br>
+<br></b>
+attributes には属性、modifiers には修飾子を指定します<br>
+type は定数の型、declarators は定数宣言子を記述します<br>
+<strong>定数宣言子</strong>は必ず次の形を持ちます<br>
+<br><b>
+identifier = constant-expression<br>
+<br></b>
+identifier は定数の識別子、constant-expression は定数式を指定します<br>
+constant-exporession の評価結果が、定数の値となります<br>
+<br>
+定数は静的なので、実行時に初期化されることはありません<br>
+そして、定数は一見変数のように扱えますが<strong>代入はできません</strong><br>
+定数の値は常に不変であり、定数はそのリテラルのエイリアス的存在なのです<br>
+<pre class="prg">class Test {
+	public const string strKitty = "Kitty on your lap";
+
+	static void Main() {
+		const string strName ="Rena";
+		//strName = "Yuki";		//代入できない
+		//strKitty = "Di Gi Charat";	//代入できない
+
+		System.Console.WriteLine(strKitty);
+		System.Console.WriteLine(strName);
+	}
+}</pre>
+strKitty と strName はそれぞれ定数です<br>
+これらの値はコンパイル時に評価され、リテラルの別名として働きます<br>
+定数の値は基本的にリテラルに等しく、式中に指定することは可能ですが<br>
+定数の内容を変更することはできません<br>
+
+<br><hr>
+<h2>読み取り専用</h2>
+定数はリテラルの別名的存在であると説明しました<br>
+すなわち定数は宣言時にその値が確定していなければなりません<br>
+<br>
+しかし、ディスプレイの解像度などクライアントコンピュータの情報は<br>
+一度取得すれば定数的に扱えるべきでありながら、実行時までその値はわかりません<br>
+このような場合、定数ではなく<strong>読み取り専用</strong>を用います<br>
+<br>
+読み取り専用は定数ではなく変数ですが、一度書き込むともう変更はできません<br>
+読み取り専用フィールドは初期化子またはコンストラクタで初期化します<br>
+読み取り専用を宣言するには <strong>readonly</strong> キーワードを使用します<br>
+<br>
+readonly は<strong>フィールドにのみ指定</strong>できます<br>
+また、読み取り専用は定数とは異なりインスタンスを持つことができます<br>
+そのため、定数のように静的に扱いたい場合は静的フィールドに指定し<br>
+静的コンストラクタで読み取り専用フィールドを初期化するという方法が取られます<br>
+<pre class="prg">class Test {
+	public static readonly string strKitty;
+
+	static Test() {
+		strKitty = "Kitty on your lap";
+	}
+
+	static void Main() {
+		//strKitty = "Di Gi Charat";	//代入できない
+		System.Console.WriteLine(strKitty);
+	}
+}</pre>
+strKitty は読み取り専用なので、静的コンストラクタでこれを初期化しています<br>
+もちろん、これ以外の場所では初期化子を除いて初期化できないので<br>
+他のメソッドから見れば、定数のように扱うことができるのです<br>
+
+<br><hr>
+<h2>const</h2>
+<b>[attributes] [modifiers] const type declarators;</b><br>
+<br>
+定数を宣言します<br>
+これを指定した場合、常に静的な定数として動作します<br>
+<br>
+<b>attributes</b> - フィールドの属性を指定します<br>
+<b>modifiers</b> - フィールドの修飾子を指定します<br>
+<b>type</b> - 定数の型を指定します<br>
+<b>declarators</b> - 定数宣言子群を指定します<br>
+<br>
+<h2>readonly</h2>
+読み取り専用フィールドであることを宣言します<br>
+このフィールドはコンストラクタ、または変数初期化子でのみ初期化することができます<br>
+それ以外では、値を変更することを許されません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs40.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs42.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

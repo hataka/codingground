@@ -1,0 +1,120 @@
+<html>
+ <head>
+ <title>名前の衝突</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>名前の衝突</h1>
+<hr>
+ <h2>インターフェイスの問題点</h2>
+インターフェイスには、ある特定の状態になると問題が発生します<br>
+それは、基底クラスとインターフェイスで同一のシグネチャが存在する場合<br>
+それぞれを継承、実装したクラスで名前の衝突が発生するというものです<br>
+
+<pre class="prg">interface A {
+	string Name { get; }
+}
+
+class B {
+	private const string name = "Kitty on your lap";
+	public string Name { get { return name; } }
+}
+
+class C : B , A {}
+
+class Test {
+	static void Main() {
+		C obj = new C();
+		System.Console.WriteLine(obj.Name);
+	}
+}</pre>
+
+クラス C は、インターフェイス A を実装しなければなりませんが<br>
+クラス C は A で定義されているプロパティ Name を実装していません<br>
+ところが、このプログラムは正常にコンパイルされてしまいます<br>
+<br>
+これは、コンパイラは B クラスの Name プロパティを A の実装と勘違いしてしまうからです<br>
+だからといって、B クラスの設計者はインターフェイス A の仕様にしたがって<br>
+Name プロパティを作ったという保証はどこにもありません<br>
+なぜならば、B クラスは A インターフェイスを実装していないからです<br>
+B.Name プロパティは A インターフェイスとはまったく関連がないと考えることができます<br>
+<br>
+開発者は、インターフェイスとクラスの関係にこのような問題があることを認識しなければなりません<br>
+そこで、オブジェクトは常に<strong>目的の型にキャスト</strong>して用いる癖をつけることです<br>
+それだけでも、継承関係で競合した名前などでは適切なメソッドを呼び出せます<br>
+
+<pre class="prg">interface A {
+	void Write();
+}
+
+interface B {
+	void Write();
+}
+
+class Kitty : A , B {
+	void A.Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	void B.Write() {
+		System.Console.WriteLine("Di Gi Charat");
+	}
+}
+
+class Test {
+	static void Main() {
+		System.Object obj = new Kitty();
+		((A)obj).Write();
+		((B)obj).Write();
+	}
+}</pre>
+このプログラムでは、インターフェイス A と B で同名のメソッドを定義しています<br>
+この二つのインターフェイスを同時に一つのクラスで実装すると名前が衝突するでしょう<br>
+しかし、Kitty クラスはクラスからインターフェイスの実装を隠蔽することで<br>
+それぞれの実装を区別し、適切なメソッドを呼び出せるように工夫してあります<br>
+<br>
+となれば、あとはオブジェクトを適切なインターフェイス型にキャストすることで<br>
+それぞれのインターフェイスの適切なメソッド（実装）を呼び出すことができます<br>
+
+<br>
+ただし、次のような場合はコンパイルすることすらできません<br>
+同じシグネチャを持つ二つのインターフェイスを結合したインターフェイス型の場合<br>
+どちらのメソッドを呼び出してよいのか判断できず、曖昧になってしまうからです<br>
+
+<pre class="prg">interface A {
+	void Write();
+}
+
+interface B {
+	void Write();
+}
+
+interface C : A , B {}
+
+class Kitty : C {
+	void A.Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	void B.Write() {
+		System.Console.WriteLine("Di Gi Charat");
+	}
+}
+
+class Test {
+	static void Main() {
+		C obj = new Kitty();
+		obj.Write();
+	}
+}</pre>
+
+C 型の参照は A と B 型の Write() メソッドの実装を持ちます<br>
+しかし、C 型のオブジェクトから Write() を呼び出すと<br>
+どの Write() メソッドを呼び出してよいか判断できず、コンパイルすることができないのです<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs46.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs48.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

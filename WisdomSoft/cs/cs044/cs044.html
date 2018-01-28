@@ -1,0 +1,176 @@
+<html>
+ <head>
+ <title>演算子の定義</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>演算子の定義</h1>
+<hr>
+ <h2>演算子のオーバーロード</h2>
+実は、オーバーロードできるのはメソッドだけではない<br>
+C++ 同様に、C# 言語も演算子をオーバーロードして演算子の機能を拡張できる<br>
+<br>
+演算子のオーバーロードは、言語自体を強化するものでもないし<br>
+また、演算子のオーバーロードがなくても問題なくプログラムを組むことができることから<br>
+この機能に対しては C++ のころから疑問視する声があった<br>
+<br>
+この数年オブジェクト指向の中核となった Java 言語は<br>
+C++ の演算子のオーバーロードやテンプレートなど、多くの機能を削ったにもかかわらず<br>
+簡素でかつ強力な言語として世界中で注目されることとなったのは事実である<br>
+<br>
+しかし、演算子のオーバーロードはオブジェクト指向の抽象化に貢献します<br>
+C# では、演算子のオーバーロードやインデクサなどを駆使して<br>
+直感的にソースを記述できる様に技術設計されているのです<br>
+<br>
+まず、オーバーロードされた演算子は常に <strong>public static</strong> です<br>
+そして、メンバ宣言時に <strong>operator</strong> キーワードを指定します<br>
+<br><b>
+public static result-type operator unary-operator (op-type operand)<br>
+<br></b>
+これが、演算子のオーバーロードです<br>
+ご覧のように、演算子のオーバーロードはプロパティやインデクサ同様に<br>
+暗黙的に適切なメソッドを呼び出すための手段にすぎません<br>
+<br>
+result-type には演算結果を返すための戻り値の型を指定します<br>
+技術的にはどのような型でもかまいませんが、常識として演算子が受ける引数に関連のある<br>
+その演算子が<strong>本来持っている意味を尊重</strong>した値を返すべきです<br>
+<br>
+unary-operator には、オーバーロードする演算子を指定します<br>
+オーバーロードできる演算子は、次のものに限られています<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>単項演算子<th>2項演算子
+<tr><th>+<th>+
+<tr><th>-<th>-
+<tr><th>!<th>*
+<tr><th>~<th>/
+<tr><th>++<th>%
+<tr><th>--<th>&
+<tr><th>true<th>|
+<tr><th>false<th>^
+<tr><th><th>&#60;&#60;
+<tr><th><th>&#62;&#62;
+<tr><th><th>==
+<tr><th><th>!=
+<tr><th><th>&#60;
+<tr><th><th>&#62;
+<tr><th><th>&#60;=
+<tr><th><th>&#62;=
+</table>
+<br>
+op-type はオペランドの型、operand は指定されたオペランドを受ける仮引数です<br>
+単項演算子の場合は一つですが、2項演算子の場合は2つの引数を受け取ります<br>
+重要なことですが代入演算子　<strong>= はオーバーロードできません</strong><br>
+<br>
+さらに、従来の演算子をオーバーロードで隠蔽するということもできません<br>
+このことから、演算子のオーバーロードでは必ずクラス型を受け取る必要があります<br>
+2項演算子の場合は、オペランドのうち一方がクラス型でなければなりません<br>
+<br>
+しかし、複合代入演算子は演算子をオーバーロードすると暗黙的にオーバーロードされます<br>
+例えば + 演算子をオーバーロードすると += 演算子もオーバーロードされるのです<br>
+<pre class="prg">class Output {
+	public static Output operator &#60;&#60; (Output cout , System.Object obj) {
+		System.Console.WriteLine(obj.ToString());
+		return cout;
+	}
+}
+
+class Test {
+	static void Main() {
+		Output cout = new Output();
+		cout &#60;&#60;= "Kitty on your lap";
+	}
+}</pre>
+このプログラムは、C# 言語で C++ のコンソール出力を簡単に再現してみたものです<br>
+C++ では直感的にストリームを操作できるように演算子のオーバーロードが採用されていました<br>
+<br>
+&#60;&#60; 演算子を Output クラスがオーバーロードしています<br>
+プログラム中で Outpu &#60;&#60; Object という演算が見つかるとメソッドが呼び出されます<br>
+複合代入演算子は演算子をオーバーロードした時点で暗黙的にオーバーロードされます<br>
+そのため &#60;&#60;= は cout と文字列を評価して cout に戻り値を格納しています<br>
+
+<br><hr>
+<h2>ユーザー定義変換</h2>
+むしろ、演算子のオーバーロードにおいて重要なのは<strong>ユーザー定義変換</strong>です<br>
+これは通常の演算子ではなく<strong>キャスト演算子</strong>をオーバーロードします<br>
+<br>
+この機能を用いれば、文字列を独自のクラス型にキャストするということが可能になります<br>
+当然、与えられた文字列をどのように加工して独自のクラス型を生成するかという仕様は<br>
+クラスやユーザー定義変換の設計者が考えることです<br>
+<br>
+通常、ユーザー定義変換を宣言するにも operator キーワードを使いますが<br>
+これ以外に、明示的な変換を意味する <strong>explicit</strong> キーワードと<br>
+暗黙的な変換を意味する <strong>implicit</strong> キーワードを用います<br>
+<br><b>
+public static implicit operator conv-type-out ( conv-type-in operand )<br>
+public static explicit operator conv-type-out ( conv-type-in operand )<br>
+<br></b>
+conv-type-out には変換後の型を<br>
+conv-type-in operand は変換される型をそれぞれ指定します<br>
+ユーザー定義変換が使用されると、この変換メソッドが自動的に呼び出されます<br>
+変換メソッドは、引数を受け取り、それを元に変換後の型を返します<br>
+<br>
+ただし、受け取る型と変換後の型に継承関係があってはいけません<br>
+例えば、ユーザー定義変換は System.Object を受け取ることはできないのです<br>
+<pre class="prg">class Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public static explicit operator Kitty(string str) {
+		System.Console.WriteLine("Kitty に変換");
+		return new Kitty(str);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = (Kitty)"Kitty on your lap";
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+Kitty クラスは明示的なユーザー定義変換を宣言しています<br>
+文字列を明示的に Kitty クラスに変換しようとした場合、このメソッドが呼び出されます<br>
+これを実行すれば、次のような結果がコンソールに出力されます<br>
+<br><b>
+Kitty に変換<br>
+Kitty on your lap<br>
+<br></b>
+正しく変換メソッドが呼び出され、予想した形で Kitty のインスタンスを生成できていますね<br>
+この機能も、メソッド呼び出すための手段に過ぎないことがわかると思います<br>
+<br>
+この機能は、単純にメソッドの呼び出しを暗黙的にしている単純なものですが<br>
+それでも、キャストを用いた直感的な変換機構をクラスに持たせることができます<br>
+一般的なプログラム言語のように静的な StringToKitty() メソッドを作っても意味は同じです<br>
+StringToKitty() メソッドが String 型を受け取り Kitty を返すならば、それは変換メソッドと呼べます<br>
+<br>
+しかし、さらに強力なのは C# が暗黙的なユーザー変換もサポートしている点です<br>
+暗黙的な変換には implicit キーワードを使ったユーザー変換を宣言します<br>
+ただし、暗黙的な変換しかないユーザー定義変換を明示的に行った場合は<br>
+エラーにはならず、暗黙的な変換メソッドが呼び出されます<br>
+<pre class="prg">class Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public static implicit operator Kitty(string str) {
+		System.Console.WriteLine("Kitty に変換");
+		return new Kitty(str);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = "Kitty on your lap";
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs43.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs45.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

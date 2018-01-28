@@ -1,0 +1,185 @@
+<html>
+ <head>
+ <title>空間の可視化</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>空間の可視化</h1>
+<hr>
+ <h2>エイリアスディレクティブ</h2>
+名前空間はクラスライブラリのカプセル化や識別子の問題を解決する最良の手段ですが<br>
+クラスの利用者は、名前空間をわざわざ入力しなければならず<br>
+頻繁に使う名前空間を何度も書く場合、それは効率の低下につながります<br>
+<br>
+そこで、<strong>using</strong> キーワードを用います<br>
+このキーワードを用いれば、指定した名前空間を現在の名前空間で可視化することが可能です<br>
+これによって、多用する名前空間の修飾を省略することが可能です<br>
+<br><b>
+using [alias = ]class_or_namespace;<br>
+<br></b>
+alias には、名前空間のエイリアスとなる識別子を指定します<br>
+class_or_namespace には、別名をつける名前空間、または型を指定します<br>
+<br>
+alias を指定すれば、長い名前空間やクラス名に新しい名前を付けることができます<br>
+ある特定の名前空間の多用するクラスに簡単な別名をつければ<br>
+記述しなければならない修飾が減り、開発効率の向上を期待することができます<br>
+当然ですが、別名となる識別子は宣言された空間の別の識別子と衝突してはいけません<br>
+<br>
+これを <strong>using エイリアスディレクティブ</strong> と呼びます<br>
+ただし、using ディレクティブは<strong>名前空間のメンバ</strong>です<br>
+名前空間、またはコンパイル単位の宣言空間にしか用いることができません<br>
+
+<pre class="prg">using cout = System.Console;
+
+class Test {
+	static void Main() {
+		cout.WriteLine("Kitty on your lap");
+	}
+}</pre>
+
+これまで、コンソールに文字列を出力する時は System.Console... と記述しました<br>
+ところが、すでに承知のとおりこれを何度も記述するのは大変面倒な作業です<br>
+そこで、using エイリアスディレクティブを用いて別名を命名します<br>
+エイリアスディレクティブは、名前空間や型に別の名前をつけることができるので<br>
+このプログラムでは、System.Console に cout という名前をつけました<br>
+<br>
+using エイリアスディレクティブのスコープは、上のプログラムのように<br>
+コンパイル単位の宣言空間で宣言された場合、ファイル全体に共有されますが<br>
+名前空間のメンバとした場合、その名前空間の内部でのみ適応されます<br>
+
+<pre class="prg">namespace A {
+	using cout = System.Console;
+}
+
+class Test {
+	static void Main() {
+		A.cout.WriteLine("Kitty on your lap");	//cout が不明
+	}
+}</pre>
+
+別名 cout は名前空間 A のメンバですが、これは A の空間のための別名です<br>
+そのため、エイリアスディレクティブは他の空間からは常に不可視です<br>
+このプログラムをコンパイルすると Main() メソッドの cout でコンパイルエラーとなります<br>
+名前空間 A に cout という識別子は存在しないと判断されるためです<br>
+<br>
+また、using エイリアスディレクティブは他のエイリアスの影響を受けません<br>
+using で指定する型や名前空間は、常に本名を強制されます<br>
+例えば、次のような指定はコンパイルエラーとなるでしょう<br>
+<pre><b>namespace A.B {}
+
+namespace C {
+	using Alias1 = A;
+	using Alias2 = Alias1.B;
+}</b></pre>
+
+問題は、Alias2 で指定している Alias1 という識別子です<br>
+ここで指定する識別子だけは、他のエイリアスの影響を受けないため<br>
+Alias1 という識別子は存在しないと判断されてしまうのです<br>
+
+<br><hr>
+<h2>名前空間ディレクティブ</h2>
+エイリアスディレクティブを用いる以外にも、便利な方法が存在します<br>
+それが、指定した名前空間を可視化する<strong>名前空間ディレクティブ</strong>です<br>
+<br>
+using ディレクティブを用いる時 Alias を指定しないで名前空間だけを指示すると<br>
+コンパイラはディレクティブの宣言空間で不明な識別子を発見すると<br>
+using ディレクティブで指定した名前空間を検索するようになります<br>
+つまり、指定した名前空間をインポートし、その空間で可視化するということです<br>
+
+<pre class="prg">using System;
+
+class Test {
+	static void Main() {
+		Console.WriteLine("Kitty on your lap");
+	}
+}</pre>
+
+このプログラムは、using 名前空間ディレクティブを用いることによって<br>
+コンパイル単位で System 名前空間を可視化しています<br>
+<br>
+これによって Main() メソッドを見てもわかるように<br>
+わざわざ、System 名前空間を修飾しなくても Console クラスが見えています<br>
+System 名前空間には、頻繁に使うクラスが多く宣言されているので<br>
+このように名前空間ディレクティブを用いることで、効率的にプログラムすることができます<br>
+<br>
+名前空間ディレクティブの使用には、注意しなければならない点がいくつかあるのですが<br>
+重要なのは<strong>型はインポートするが、空間はインポートしない</strong>ことです<br>
+名前空間ディレクティブによって、クラスや構造体などは可視化されますが<br>
+可視化した名前空間に含まれる別の名前空間はその対象とはならないのです<br>
+
+<pre class="prg">namespace A.B {
+	class Kitty {}
+}
+
+namespace C {
+	using A;
+	class Test {
+		static void Main() {
+			B.Kitty obj;
+		}
+	}
+}</pre>
+
+このプログラムは一見正しい様に見えますが、コンパイルできません<br>
+using A によって、名前空間 A はインポートされるため、A のメンバには直接アクセスできます<br>
+しかし、A にネストされた名前空間 B は名前空間ディレクティブではインポートされないため<br>
+Main() メソッドの B という名前空間名は発見されません<br>
+<br>
+また、名前空間ディレクティブでインポートした名前空間の識別子と<br>
+using を宣言した名前空間の識別子が衝突した場合<br>
+エラーにはならず<strong>カレントスペースの識別子で隠蔽</strong>されます<br>
+<pre class="prg">namespace KittyScope {
+	class Kitty {
+		public override string ToString() {
+			return "Kitty on your lap";
+		}
+	}
+}
+
+namespace MainScope {
+	using KittyScope ;
+
+	class Kitty {
+		public override string ToString() {
+			return "Silver Gene";
+		}
+	}
+
+	class Test {
+		static void Main() {
+			System.Console.WriteLine(new Kitty());
+			System.Console.WriteLine(new KittyScope.Kitty());
+		}
+	}
+}</pre>
+
+このプログラムを実行した結果、次のようになるでしょう<br>
+<br><b>
+Silver Gene<br>
+Kitty on your lap<br>
+<br></b>
+このプログラムでは、KittyScope と MainScope 名前空間の両方にKitty クラスが存在し<br>
+MainScope 内で KittyScope を名前空間ディレクティブで可視化します<br>
+すると、Kitty クラスの名前が競合し、KittyScope の Kitty クラスは隠蔽されます<br>
+そのため、Main() メソッドは結局 KittyScope の Kitty クラスにアクセスするために<br>
+名前空間を直接修飾しなければならないのです<br>
+
+<br><hr>
+<h2>using ディレクティブ</h2>
+<b>
+using [alias = ]class_or_namespace;<br>
+<br></b>
+名前空間ディレクティブによって名前空間を現在の空間にインポートします<br>
+または、エイリアスディレクティブによって空間や型の別名を定義します<br>
+<br>
+<b>alias</b> - 名前空間、または型の別名となる識別子を指定します<br>
+<b>class_or_namespace</b> - 名前空間、または型を指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs50.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs52.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

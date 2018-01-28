@@ -1,0 +1,182 @@
+<html>
+ <head>
+ <title>イベント</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>イベント</h1>
+<hr>
+ <h2>事象駆動</h2>
+C# は、これまでの言語と異なり言語仕様でイベントをサポートします<br>
+これは、過去の言語には見られない稀な性質です<br>
+<br>
+他の一般的な言語では、イベントの登録や解除、メッセージの送信などは<br>
+インターフェイスを通してメソッドを呼び出す方法などが考えられるでしょう<br>
+しかし、C# 言語はこれらの動作をまとめる方法を提供しています<br>
+<br>
+イベントとは主に GUI システムで用いられるイベント駆動型を指します<br>
+これまで、コンソールプログラムを中心にプログラムしてきたので<br>
+コンソールプログラムしか経験のない方には、いささか理解し難いかもしれません<br>
+ですが、このイベント機能を覚えれば、C# の GUI プログラムを学習する時に役に立つでしょう<br>
+<br>
+C# のイベントは、デリゲートを発展させた機能です<br>
+イベントを宣言するには <strong>event</strong> キーワードを用います<br>
+<br><b>
+[attributes] [modifiers] event type declarator;<br>
+<br></b>
+attributes には属性、modifiers には修飾子<br>
+type にはイベントの型、declarator には変数宣言子群を指定します<br>
+<br>
+イベントの型は、<strong>必ずデリゲート型</strong>でなければなりません<br>
+修飾子には new、static、virtual、override、abstract、及びアクセス修飾子を指定できます<br>
+<br>
+イベントメンバは、ほぼ<strong>デリゲート型変数と同じ扱い</strong>ができます<br>
+イベントメンバを左オペランドにして += 演算子でデリゲートを加算すれば<br>
+マルチキャストデリゲートとして、指定デリゲートをイベントに追加できます<br>
+<br>
+では、そもそもデリゲートとして扱えるならばイベントの意義とはなんでしょう？<br>
+実は、イベントはデリゲートと違って<strong>呼び出しに制限</strong>があるのです<br>
+デリゲート型メンバ変数は、公開することによってコールバックメソッドの登録ができますが<br>
+他のクラスから<strong>直接操作される危険性</strong>もあり、これはオブジェクト指向に反します<br>
+イベントの発生によるコールバックメソッドの呼び出しは、そのオブジェクトが行うべきです<br>
+<br>
+イベントメンバは、そのクラスの内部ではデリゲートのように扱えますが<br>
+外部からは <strong>+= か -= の左辺</strong>にしか指定できないという制限があり<br>
+これによって、外部コードがデリゲートにアクセスするのを防ぐのです<br>
+当然、この理想上 += や -= の演算結果は代入されたデリゲートに問わず void を返します<br>
+<pre class="prg">delegate void KittyCallback(string str);
+
+class Kitty {
+	private string str;
+	public event KittyCallback KittyListener;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public void StartEvent() {
+		KittyListener(str);		//Kitty内からは呼び出せる
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("Kitty on your lap");
+		obj.KittyListener += new KittyCallback(Action);
+		//obj.KittyListener(); 	//呼び出せない
+		obj.StartEvent();
+	}
+	static void Action(string str) {
+		System.Console.WriteLine(str);
+	}	
+}</pre>
+このプログラムは、イベントの発生をコンソールで再現しているものです<br>
+Main() メソッドは Kitty のインスタンスを生成し、イベント KittyListener に<br>
+Test.Action() メソッドをコールバックメソッドとして登録します<br>
+<br>
+しかし、外部から KittyListener へのアクセスは += または -= に限られます<br>
+obj.KittyListener() としてイベントを発生させたくても<br>
+外部から直接アクセスできないように設計されているのです<br>
+こうすることで、イベントを公開しながら外部コードによるデータの調査を逃れることができます<br>
+<br>
+ちなみに、このようにイベントによって呼び出してほしいメソッドを<br>
+一般に<strong>イベントハンドラ</strong>と呼び、通常は独自のスレッドを持ちます<br>
+(スレッドについては、後記します)<br>
+
+<br><hr>
+<h2>イベントアクセッサ</h2>
+イベントの登録や解除の過程に特殊な処理が必要な場合も少なくありません<br>
+イベント登録の管理を独自に手動で行う場合は特に必要となります<br>
+<br>
+一般に、イベントの登録はイベント登録用メソッド(例えば addMouseListener())を用い<br>
+これによって、コールバックメソッドの管理を行います<br>
+しかし、イベント機能を言語仕様でサポートしている C# はより高度な<br>
+<strong>イベントアクセッサ</strong>という、より直感的な方法を提供します<br>
+<br>
+イベントアクセッサは、簡単に説明するならばプロパティのイベント版です<br>
++= でイベントを追加された時と -= で解除された時に<br>
+自動的に指定のメソッドを呼び出す暗黙的なメソッド実行方法の一つです<br>
+<br><b>
+[attributes] [modifiers] event type member-name {accessor-declarations};<br>
+<br></b>
+momber-name と accessor-declarations 以外は、先ほどの event の宣言と同じです<br>
+member-name にはアクセッサメンバの識別子<br>
+accessor-declarations には、イベントアクセッサ宣言子群を指定します<br>
+<br>
+イベントアクセッサ宣言子群は<br>
+<strong>add アクセッサ宣言</strong> と <strong>remove アクセッサ宣言</strong> があります<br>
+それぞれ、宣言する順番は関係ありません<br>
+<br><b>
+[attributes] add { ...<br>
+[attributes] remove {...<br>
+<br></b>
+attributes には、属性郡を指定することができます<br>
++= で呼び出された場合は add が、-= で呼び出された時は remove ブロックが実行されます<br>
+この性質から、イベントアクセッサがプロパティと考え方は同じということがわかるでしょう<br>
+MSIL レベルでは、単純にメソッドを呼び出しているだけにすぎないのです<br>
+<br>
+add も remove も、戻り値が void 型でイベント型の value パラメータを受けます<br>
+value には += や -= で指定した右オペランドが格納されています<br>
+<pre class="prg">using cout = System.Console;
+delegate void KittyCallback();
+
+class Kitty {
+	private static KittyCallback kitty_listener;
+	public static event KittyCallback KittyListener {
+		add {
+			cout.WriteLine("add : " + value);
+			kitty_listener += value;
+		}
+		remove {
+			cout.WriteLine("remove : " + value);
+			kitty_listener -= value;
+		}
+	}
+}
+
+class Test {
+	static void Main() {
+		KittyCallback call = new KittyCallback(Action);
+		Kitty.KittyListener += call;
+		Kitty.KittyListener -= call;
+	}
+	static void Action() {}
+}</pre>
+
+このプログラムは、イベントアクセッサ KittyListener を宣言し<br>
+Main() メソッドでこれにデリゲート KittyCallback 型の変数 call を渡しています<br>
+アクセッサは、暗黙的に value というパラメータでこれを受け取っています<br>
+<br>
+このアクセッサを用いれば、イベントハンドラの登録などを制御し<br>
+イベントに応じて独自のアルゴリズムで登録と解除の処理を行えます<br>
+しかも、利用者は単純に代入するだけでよいという簡易性を保ったままでです<br>
+
+
+<br><hr>
+<h2>event</h2>
+<b>
+[attributes] [modifiers] event type declarator;<br>
+<br></b>
+イベントを宣言します<br>
+<br>
+<b>attributes</b> - 属性を指定します<br>
+<b>modifiers</b> - 修飾子を指定します<br>
+<b>type</b> - イベントのデリゲート型を指定します<br>
+<b>declarator</b> - 変数宣言子群を指定します<br>
+<br>
+<b>
+[attributes] [modifiers] event type member-name {accessor-declarations};<br>
+<br></b>
+イベントアクセッサを宣言します<br>
+<br>
+<b>attributes</b> - 属性を指定します<br>
+<b>modifiers</b> - 修飾子を指定します<br>
+<b>type</b> - イベントアクセッサのデリゲート型を指定します<br>
+<b>member-name</b> - イベントアクセッサの識別子を指定します<br>
+<b>accessor-declarations</b> - イベントアクセッサ宣言子群を指定します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs55.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs61.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

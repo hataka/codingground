@@ -1,0 +1,90 @@
+<html>
+ <head>
+ <title>属性パラメータ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>属性パラメータ</h1>
+<hr>
+ <h2>名前付きパラメータ</h2>
+前回の「属性」の章をよく理解すれば、属性がクラスやメンバにコンパイル時に関連付けられ<br>
+これをリフレクション API で調べることによって、実行時に<br>
+動的にクラスの性質を知る手段が、言語レベルで確立されたととがわかります<br>
+<br>
+しかし、属性の種類によっては、以前の初期化方法では冗長になることもあります<br>
+例えば、そのクラスの著作者をあらわす属性を作成したとしましょう<br>
+その属性が公開され、標準化されているならばともかく<br>
+そうでなければ、著作者はほとんど同じ人物、または同じ社名になるでしょう<br>
+それならば、デフォルトの値を決め、必要な時だけ選択できれば便利というものです<br>
+<br>
+前回のサンプルプログラムのような、属性クラスのコンストラクタが要求する<br>
+アタッチする時に必ず指定しなければならない属性値を<strong>位置パラメータ</strong>と呼びます<br>
+位置パラメータは、省略することはできません<br>
+<br>
+これに対して、省略可能な<strong>名前付きパラメータ</strong>と呼ばれる属性値があります<br>
+名前付きパラメータとは、属性クラスのコンストラクタで設定されない<br>
+readonly、static、const ではないメンバ、または static ではないプロパティを表します<br>
+<br>
+これらの名前付きパラメータのデフォルト値は、コンストラクタで代入します<br>
+では、デフォルト値以外を代入したい時はどのようにすれば良いのでしょうか<br>
+名前付きパラメータを指定するには、位置パラメータの次に<strong>代入式</strong>を指定します<br>
+<br><b>
+[Attribute(parameter , member = value , ...)] ...<br>
+<br></b>
+位置パラメータは確実に指定しなければならないので、最初に指定します<br>
+その後、必要であれば、メンバ名を指定して属性クラスのメンバに代入を行えるのです<br>
+属性クラスは、コンストラクタで何らかの値が代入されたかを調べ<br>
+メンバが初期化されていなければ、デフォルトの値を与えるなどの処置が行えます<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public String strTitle;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+		if (strTitle == null) strTitle = "Kitty on your lap";
+	}
+}
+
+[Kitty(KittyName.RENA)] class Kitty1 {}
+[Kitty(KittyName.YUKI , strTitle = "Hiza no ue no pertner")] class Kitty2 {}
+
+class Test {
+	public static void Main() {
+		WriteAtt(typeof(Kitty1));
+		WriteAtt(typeof(Kitty2));
+	}
+	private static void WriteAtt(Type t) {
+		foreach(Object tmp in t.GetCustomAttributes(false)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null) {
+				Console.WriteLine("作品 : " + attrKitty.strTitle);
+				Console.WriteLine("名前 : " + attrKitty.name);
+			}
+		}
+	}
+}</pre>
+このプログラムを実行すれば、次のような結果になります<br>
+<br><b>
+作品 : Kitty on your lap<br>
+名前 : RENA<br>
+作品 : Hiza no ue no pertner<br>
+名前 : YUKI<br>
+<br></b>
+
+プログラムを見ると KittyAttribute 属性クラスが定義されています<br>
+この属性は、コンストラクタが要求する name 位置パラメータと<br>
+コンストラクタの引数で要求されない strTitle 名前付きパラメータがあります<br>
+strTitle メンバは、省略された場合、デフォルトの "Kitty on your lap" が割り当てられます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs62.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs64.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

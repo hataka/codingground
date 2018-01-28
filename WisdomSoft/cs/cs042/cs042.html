@@ -1,0 +1,159 @@
+<html>
+ <head>
+ <title>列挙型</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>列挙型</h1>
+<hr>
+ <h2>順列の定数</h2>
+コンポーネントの開発では、頻繁に定数を利用する必要があります<br>
+定数はコンポーネントの利用者が、コンポーネントの動作を「選択」する手段に用いられます<br>
+<br>
+例えば、Win32 API の MessageBox() 関数は、ダイアログに表示するボタンを定数で受け取ります<br>
+MB_OK ならば OK ボタンのダイアログを表示するというような仕様になっています<br>
+このように、動作が決まっているならその動作を定数で通知するという方法があります<br>
+<br>
+この場合、定数の内容よりも定数自体の興味があります<br>
+さらに、選択するべき動作が大量にある場合、定数を宣言するだけでも大変です<br>
+そこで、このような定数の列挙が必要な場合は<strong>列挙型</strong>を用います<br>
+<br>
+列挙型は、基本的に C 言語の列挙と同じ概念です<br>
+名前付きの定数を持つ独立した型で、クラスと同じ場所で宣言することができます<br>
+列挙形の宣言は <strong>enum</strong> キーワードで行います<br>
+<br><b>
+[attributes] [modifiers] enum identifier [:base-type] {enumerator-list};<br>
+<br></b>
+attributes は属性、modifiers は列挙型の修飾子を指定します<br>
+identifier は列挙型の識別子、base-type は列挙の基底<br>
+enumerator-list は列挙の本文を指定します<br>
+<br>
+列挙の本文とは<strong>列挙メンバ宣言子群</strong>です<br>
+列挙メンバは常に属性群と識別子、及びそれの初期化子で構成されます<br>
+列挙メンバはデフォルトで int 型の 0 からの昇順の定数となります<br>
+<br>
+列挙のメンバ型は base-type で指定します<br>
+base-type は必ず数値型でなければならず char は指定できません<br>
+また、修飾子に abstract と sealed を指定することもできません<br>
+列挙は抽象化することはできず、派生も許されません<br>
+<pre class="prg">enum Kitty : uint { RENA , YUKI , MIMI }
+
+class Test {
+	static void Main() {
+		GetKitty(Kitty.RENA);
+		GetKitty(Kitty.YUKI);
+		GetKitty((Kitty)2);
+	}
+	static void GetKitty(Kitty em) {
+		switch(em) {
+		case Kitty.RENA:
+			System.Console.WriteLine("This is RENA");
+			break;
+		case Kitty.YUKI:
+			System.Console.WriteLine("This is YUKI");
+			break;
+		case Kitty.MIMI:
+			System.Console.WriteLine("This is MIMI");
+			break;
+		}
+	}
+}</pre>
+このプログラムには、いくつか注目してほしい重要なポイントがあります<br>
+まず一つは、C# の列挙型は独立した「型」であり、C のように曖昧ではありません<br>
+<br>
+Kitty は uint を基底とする列挙型です<br>
+GetKitty() メソッドは、Kitty 型の値を受け取りそれを評価します<br>
+そして、その評価に応じて適切な処理を行うメソッドをエミュレートしています<br>
+<br>
+列挙型は、定数値を明示的に指定しない場合は<strong>暗黙的に定められ</strong><br>
+最初のメンバを 0 として、その後のメンバは前のメンバに 1 加算した値となります<br>
+それぞれのメンバは列挙型として独立していますが、内部的な数値は uint 型です<br>
+面白いことに GetKitty((Kitty)2) は Kitty.MIMI に等しい結果となるのです<br>
+最初のメンバ RENA = 0 であり、続いて YUKI = 1、MIMI = 2 というように割り当てられているからです<br>
+<br>
+ここで問題なのが、<strong>列挙型の正体</strong>です<br>
+C# は他言語のような単純なビット単位の型は存在しません<br>
+つまり、あらゆる型は Object を継承したクラス（参照）または構造体（値）なのです<br>
+<br>
+実は、<strong>System.Enum</strong> クラスを基底とした型を「列挙型」と呼びます<br>
+列挙型の全てのメンバはこのクラスを基底としています<br>
+さらに、巧みな .NET の構造が列挙と数値型の相互変換を可能にしています<br>
+先ほどのプログラムでは、数値を列挙に変換するという特殊なキャストが行えました<br>
+<br>
+単純に列挙型を式中に含めれば、仕様上 ToString() が呼び出されます<br>
+列挙型の ToString() は単純にそのメンバの名前を返します<br>
+列挙型の内部的数値を見たい場合は、その数値型にキャストします<br>
+<pre class="prg">enum Kitty : int { RENA , YUKI , MIMI }
+
+class Test {
+	static void Main() {
+		System.Console.WriteLine("RENA = " + (int)Kitty.RENA);
+		System.Console.WriteLine("YUKI = " + (int)Kitty.YUKI);
+		System.Console.WriteLine("MIMI = " + (int)Kitty.MIMI);
+	}
+}</pre>
+このプログラムを実行すると、次のような結果になります<br>
+<br><b>
+RENA = 0<br>
+YUKI = 1<br>
+MIMI = 2<br>
+<br></b>
+先ほど説明したように昇順に数値が割り当てられていることを確認できます<br>
+さらに、列挙は明示的に数値を指定することができます<br>
+ある地点で定数を指定した場合、それ以降のメンバは指定した定数から加算されます<br>
+<pre class="prg">enum Kitty : int { RENA , YUKI = 10 , MIMI }
+
+class Test {
+	static void Main() {
+		System.Console.WriteLine("RENA = " + (int)Kitty.RENA);
+		System.Console.WriteLine("YUKI = " + (int)Kitty.YUKI);
+		System.Console.WriteLine("MIMI = " + (int)Kitty.MIMI);
+	}
+}</pre>
+このプログラムでは YUKI を明示的に 10 という定数にしています<br>
+これによって、YUKI の値に暗黙的に依存する MIMI の値も変更されます<br>
+これを実行すると、次のような結果になりました<br>
+<br><b>
+RENA = 0<br>
+YUKI = 10<br>
+MIMI = 11<br>
+<br></b>
+MIMI はその前のメンバ YUKI の値に 1 加算した値となります<br>
+YUKI の値を明示的に指定したことによって MIMI の値も変化したのです<br>
+当然、MIMI 以降にメンバを指定していれば 12 , 13 ... と列挙されることになります<br>
+<br>
+列挙の定数式は他の列挙メンバに依存することも可能です<br>
+つまり、ある地点のメンバは他のメンバの値に等しいとすることができます<br>
+<pre class="prg">enum Kitty : uint { RENA , YUKI , MIMI , IWAO = YUKI }
+
+class Test {
+	static void Main() {
+		System.Console.WriteLine("RENA = " + (int)Kitty.RENA);
+		System.Console.WriteLine("YUKI = " + (int)Kitty.YUKI);
+		System.Console.WriteLine("MIMI = " + (int)Kitty.MIMI);
+		System.Console.WriteLine("岩男潤子 = " + (int)Kitty.IWAO);
+	}
+}</pre>
+Kitty のメンバ IWAO は同一の列挙メンバ YUKI に等しいです<br>
+ただし、これは互いに依存する再帰的な関係が生まれた場合はエラーとなります<br>
+互いに影響し合う定義を<strong>循環定義</strong>と呼びます<br>
+<pre class="prg">enum Kitty : uint { TARUTO = TAI , TAI }
+
+class Test {
+	static void Main() {
+		System.Console.WriteLine("TARUTO = " + (int)Kitty.TARUTO);
+		System.Console.WriteLine("TAI = " + (int)Kitty.TAI);
+	}
+}</pre>
+列挙メンバ TARUTO は明示的に TAI に依存し<br>
+かつ TAI は暗黙的に TARUTO に依存する循環定義の関係があります<br>
+そのため、このプログラムはコンパイルすることができません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs41.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs43.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

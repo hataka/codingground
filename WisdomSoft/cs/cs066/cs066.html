@@ -1,0 +1,159 @@
+<html>
+ <head>
+ <title>アンセーフ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>アンセーフ</h1>
+<hr>
+ <h2>アンセーフコード</h2>
+本来 C# 言語の型は値型、または参照型のいずれかであり<br>
+参照型はガーベジコレクタによって、自動的にメモリ管理されます<br>
+<br>
+ところが、C# には<strong>ポインタ型</strong>が存在しています<br>
+C/C++ と同様に、C# 言語もまた、低水準で高度なメモリ管理を提供しています<br>
+このような、ポインタを用いた C# コードを<strong>アンセーフコード</strong>と呼びます<br>
+<br>
+アンセーフコードは、ガーベジコレクションの対象外となります<br>
+すなわち、ポインタの扱いは従来どおり、プログラマの手腕に委ねられるのです<br>
+通常のプログラムでは、アンセーフコードを用いるメリットはありません<br>
+それならば、C++ 言語を用いて .NET プログラムを行ったほうが効率的でしょう<br>
+<br>
+しかし、アンセーフコードは直接ポインタを扱うわけであり<br>
+ガーベジコレクタの管理対象メモリ領域に配置される変数よりも高速に動作します<br>
+<br>
+アンセーフコードは、特定の<strong>アンセーフコンテキスト</strong>でのみ使用できます<br>
+アンセーフコンテキストとは <strong>unsafe</strong> 修飾子が指定されているブロックを指します<br>
+このキーワードは、クラスや構造体、インターフェイス、及びメンバに修飾できます<br>
+同時に unsafe キーワードを使用するプログラムは、コンパイルする時に<br>
+<strong>/unsafe</strong> オプションを指定しなければなりません<br>
+<br>
+C# 言語の型は、値型と参照型のみでしたが、<br>
+アンセーフコンテキストでは、これにポインタ型が追加されます<br>
+ポインタ型は、<strong>アンマネージド型</strong>か<strong>void</strong>キーワードと<br>
+それに続く <strong>*</strong> 記号のトークンで構成されます<br>
+この仕様は、C/C++ 言語とまったく同じなので、従来の言語に慣れていれば親しみやすいでしょう<br>
+<br>
+ポインタ型において * の前に指定される型のことを、ポインタ型の<strong>リファレント型</strong>と呼びます<br>
+リファレント型は、常にポインタが指す変数の型を指定します<br>
+すなわち int 型のポインタ型は int * であり、リファレント型は int です<br>
+<br>
+しつこいようですが、ポインタはガーベージコレクションの対象外です<br>
+すなわち<strong>ポインタは参照を指せない</strong>ということを理解してください<br>
+参照型はガーベージコレクションの追跡対象です<br>
+とうぜん、参照型を含む構造体なども指すことはできません<br>
+<br>
+.NET における変数は<strong>固定変数</strong>と<strong>移動可能変数</strong>があり<br>
+固定変数とは、ガーベージコレクタの対象外の全ての変数のことを表します<br>
+すなわち、ローカル変数や値パラメータなどです<br>
+固定変数の特徴は<strong>変数のメモリアドレスが不動</strong>であることです<br>
+<br>
+これに対し、移動可能変数とはガーベージコレクション対象記憶領域に位置する変数で<br>
+オブジェクトのフィールドや配列の要素などはこれに属します<br>
+移動可能変数は、ガーベージコレクタが自動的にアドレスを変更します<br>
+メモリは、確保と解放を繰り返すことによってフラグメンテーションが発生するためです<br>
+<br>
+ポインタ型が受け取るアドレスは、常に固定変数のアドレスでなければなりません<br>
+もし移動可能変数のアドレスを受けたとしても、逆参照する時に存在が保証されません<br>
+そのため、C# では、このようにポインタに対する規制も厳しく設定されているのです<br>
+<br>
+固定変数のアドレスを得るには、アンパサンド記号 <strong>&</strong> を用います<br>
+これを<strong>アドレス式</strong>と呼び、アドレス式は常に & と単項式で構成されます<br>
+アドレス式は、指定した単項式のメモリアドレスを返します<br>
+この値を、互換性のあるポインタ型変数で受け取ることができます<br>
+<br>
+ポインタ変数が指すアドレスの値を参照するには<strong>間接参照式</strong>を用います<br>
+間接参照式は、アスタリスク * にポインタ型の単項式を指定します<br>
+間接参照式は、ポインタ型のリファレント型の値を返します<br>
+<pre class="prg">class Test {
+	public static unsafe void Main() {
+		int x = 10;
+		int * po = &x;
+		System.Console.WriteLine(&x);
+	}
+}</pre>
+このプログラムの Main() メソッドは unsafe 修飾子が指定されています<br>
+これは、アンセーフコードなので、コンパイル時に /unsafe オプションを指定してください<br>
+<br>
+ポインタ型変数 po は、int 型の固定変数のポインタを取得できます<br>
+変数 x のアドレスを & 記号を用いたアドレス式で取得していることがわかりますね<br>
+<br>
+ポインタを通じて、構造体のメンバにアクセスするには <strong>-&gt;</strong> 演算子を使います<br>
+これについても、C/C++ に慣れている人にとってはお馴染みでしょう<br>
+<pre class="prg">struct Point {
+	public int x , y;
+	public Point(int x , int y) {
+		this.x = x;
+		this.y = y;		
+	}
+}
+
+unsafe class Test {
+	public static void Main() {
+		Point pt = new Point(400 , 300);
+		WritePoint(&pt);
+	}
+	public static void WritePoint(Point *pt) {
+		System.Console.WriteLine(
+			"x = " + pt-&#62;x + " : y = " + pt-&#62;y
+		);
+	}
+}</pre>
+
+このプログラムは、座標を指定する構造体 Point を定義しています<br>
+Main メソッドでは Point 構造体を宣言、初期化しています<br>
+WritePoint() メソッドは、Point 構造体のポインタを受け取り、値を出力します<br>
+
+<br><hr>
+<h2>移動可能変数のポインタ</h2>
+通常、移動可能変数のポインタを取得することはできません<br>
+移動可能変数は、そのアドレス自体がガーベジコレクタによって移動させられるため<br>
+ポインタそのものに意味が無くなってしまうのです<br>
+<br>
+そこで、移動可能変数のポインタを取得するには<br>
+移動可能変数のアドレスを、一時的に固定させる必要があります<br>
+これを行うには <strong>fixed</strong> ステートメントを用います<br>
+<br><b>
+fixed ( type* ptr = expr ) statement<br>
+<br></b>
+type にはリファレント型を、ptr にはポインタ変数名を指定します<br>
+expr は、ポインタ変数に代入する移動可能変数のアドレス式を指定します<br>
+後は、statement に必要な処理コードを指定します<br>
+<br>
+移動可能変数は fixed のステートメントを実行している間は、アドレスが固定されます<br>
+これによって、一時的に移動可能変数のアドレスが保証され、ポインタが使えます<br>
+fixed ステートメントブロックの間、このポインタは有効です<br>
+<br>
+例え静的変数でも、フィールドは移動可能変数に属します<br>
+そこで、フィールド変数のポインタを得るには fixed を使います<br>
+<pre class="prg">unsafe class Test {
+	public static int param = 10;
+	public static void Main() {
+		fixed(int *pParam = &amp;param)
+			System.Console.WriteLine(*pParam);
+	}
+}</pre>
+このプログラムは、Text クラスの param フィールドのポインタを取得し<br>
+fixed ステートメントを用いて、一時的にメモリの再配置を防いでいます<br>
+
+<br><hr>
+<h2>unsafe</h2>
+アンセーフコンテキストであることを表す修飾子です<br>
+クラス、構造体、インターフェイス、及びメンバに指定することができます<br>
+<br>
+<h2>fixed ( type* ptr = expr ) statement</h2>
+値型、またはポインタ型の移動可能変数のポインタを取得し<br>
+CLR にアドレスを変更させてはいけないということを知らせます<br>
+<br>
+<b>type</b> - ポインタのリファレント型を指定します<br>
+<b>ptr</b> - ポインタ変数名を指定します<br>
+<b>expr</b> - 移動可能変数のアドレス式を指定します<br>
+<b>statement</b> - 埋め込みステートメントを指定します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs65.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs67.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<html>
+ <head>
+ <title>桁あふれ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>桁あふれ</h1>
+<hr>
+ <h2>桁あふれの監視</h2>
+数値の演算をコンピュータで行っていると、アナログでは存在しない問題が発生します<br>
+それは、演算結果を格納するメモリサイズが得られた結果よりも少ない状態です<br>
+となれば、当然オーバーフローして正しい計算結果は得られません<br>
+<br>
+オーバーフローの処理は、一般では溢れた上位ビットを切り捨てます<br>
+しかし、重要な計算を行う時に誤った結果をプログラムが表示する危険性もあるため<br>
+アプリケーションの種類によっては、オーバーフローの発生を知る必要が生じることもあります<br>
+<br>
+そこで、C# はコンパイラに依存したオーバーフローのチェックだけではなく<br>
+プログラマが明示的にオーバーフローの監視を行えるように設計されています<br>
+それが <strong>checked</strong> 演算子による演算の監視です<br>
+<br><b>
+checked (expression)<br>
+<br></b>
+expression には、桁あふれを監視する式を指定します<br>
+checked 演算子は expression を評価して、問題がなければ結果を返します<br>
+しかし、オーバーフローが発生すると <strong>System.OverflowException</strong> を発生させます<br>
+<br>
+expression に定数式を指定すれば、これは静的に判断できるので意味がありません<br>
+そのため、コンパイルエラーが発生します<br>
+
+<pre class="prg">class Test {
+	static void Main() {
+		try {
+			byte x = 255;
+			x = checked((byte)(x * 4));
+		}
+		catch (System.OverflowException err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+}</pre>
+
+このプログラムでは byte 型の 8 ビットの数値を演算しています<br>
+ここで、checked を用いなかった場合の動作はコンパイラや開発環境に依存します<br>
+明示的ないとがある場合、checked を用いて桁あふれの監視を行います<br>
+<br>
+変数 x には 255 という数値が格納されていて、これは byte 型の最大値です<br>
+これに 4 を乗算するわけですから、当然オーバーフローが発生します<br>
+<br>
+しかし、プログラムの大部分で桁あふれが発生すると問題があるという場合<br>
+ありとあらゆる演算を checked 演算子で行うのは、大変な手間がかかります<br>
+そのような場合は checked <strong>ステートメント</strong>をもちいます<br>
+<br><b>
+checked block<br>
+<br></b>
+block には、checked を適用するステートメントブロックを指定します<br>
+この点を除けば、checked ステートメントの効果は checked 演算子に等しいです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		checked {
+			try {
+				byte x = 255;
+				x = (byte)(x * 4);
+			}
+			catch (System.OverflowException err) {
+				System.Console.WriteLine(err.Message);
+			}
+		}
+	}
+}</pre>
+多くのコンパイラで互換性を取り、コンパイラ結果を同じにするには<br>
+このように checked などで桁あふれチェックコンテキストを制御するべきです<br>
+<br>
+因みに、逆に例外を発生させたくない場合はどうしましょう<br>
+つまり、桁あふれが発生するとあふれた部分を<strong>切り捨てる</strong>という場合です<br>
+これは、一般的にはデフォルトの状態ですが、環境によって異なる可能性もあります<br>
+デフォルトに依存したくない場合、やはり明示的に制御するべきです<br>
+<br>
+あふれ部を切り捨てる場合は <strong>unchecked</strong> 演算子を用います<br>
+また、広範囲に指定するならば unchecked ステートメントも存在します<br>
+<br><b>
+unchecked (expression)<br>
+unchecked block<br>
+<br></b>
+expression には、桁あふれをチェックする式を指定します<br>
+block はこれをステートメントブロック単位で行います<br>
+<pre class="prg">class Test {
+	static void Main() {
+		byte x = 255;
+		System.Console.WriteLine(unchecked((byte)(x * 4)));
+	}
+}</pre>
+このプログラムの演算では、オーバーフローが発生しますが<br>
+unchecked 演算子を明示的に指定しているため、例外は発生しません<br>
+こうすることで、開発環境のデフォルトの処理に依存することを避けることができます<br>
+x に4 を乗算したのだから、実行すれば左に 2 回シフトした結果が得られるはずです<br>
+ただし、当然あふれた部分は切り捨てられています<br>
+<br><b>
+1111 1111 -&#62; <font style="color:#FF0000">11</font> 1111 1100<br>
+<br></b>
+桁あふれした上位2ビットの赤い部分はカットされます<br>
+よって 1111 1100 (255 - 3 = 252) がコンソールに出力されます<br>
+
+<br><hr>
+<h2>checked</h2>
+<b>
+checked (expression)<br>
+checked block<br>
+<br></b>
+演算の桁あふれをチェックします<br>
+桁あふれが発生した場合 System.OverflowException をスローします<br>
+<br>
+<b>expression</b> - チェックする式を指定します<br>
+<b>block</b> - チェックするステートメントブロックを指定します<br>
+<br>
+<h2>unchecked</h2>
+<b>
+unchecked (expression)<br>
+unchecked block<br>
+<br></b>
+演算の桁あふれの報告を行わないことを明示します<br>
+桁あふれが発生した場合、あふれた上位ビットを切り捨てます<br>
+<br>
+<b>expression</b> - 報告を行わない式を指定します<br>
+<b>block</b> - 報告を行わないステートメントブロックを指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs52.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs54.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<html>
+ <head>
+ <title>例外のスロー</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>例外のスロー</h1>
+<hr>
+ <h2>例外を発生させる</h2>
+様々な処理をパッケージ化した独自のメソッドなどを制定した時<br>
+利用者が予想しない値や不正な値をパラメータで使用するようなこともあります<br>
+例えば、インタプリンタを開発して構文エラーが見つかった場合なども同じことが言えます<br>
+この時、エラーが致命的ならばあなたのメソッドは例外を投げて処理を停止させるでしょう<br>
+<br>
+例外を明示的に発生させる場合は <strong>throw</strong> キーワードを用います<br>
+これを用いて明示的に例外を発生させることを「例外をスローする」と表現します<br>
+<br><b>
+throw [expression];<br>
+<br></b>
+expression は Exception 型に互換性のある例外の式を指定します<br>
+System.Exception については、.NET クラスライブラリのドキュメントを参照してください<br>
+この場では、とりあえず Exception はコンストラクタで文字列を受け取り<br>
+その文字列は Message プロパティで活かされるということだけを知ってください<br>
+<br><b>
+public Exception();<br>
+public Exception(string message);<br>
+<br></b>
+実際には Exception は四つのコンストラクタを持っていますが、省略します<br>
+<pre class="prg">class Test {
+	static void Main(string[] args) {
+		try { Kitty(); }
+		catch (System.Exception err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+	public static void Kitty() {
+		throw new System.Exception("Kitty on your lap");
+	}
+}</pre>
+
+このプログラムの Kitty() メソッドは明示的に例外を発生させます<br>
+例外がスローされるので、呼び出しもとでは catch が実行されます<br>
+<br>
+このプログラムでは Exception 例外をそのままスローしていますが<br>
+Exception の派生クラスであれば、独自のクラスを例外としてスローすることもできます<br>
+<br>
+構文上の規則はありませんが、習慣として例外クラスは<br>
+クラス名の終端に Exception という名前をつけ<br>
+System.Exception の四つのコンストラクタを再現することが推奨されます<br>
+実用する独自の例外クラスであれば、このような規則を尊重する必要があるでしょう<br>
+<pre class="prg">class KittyException : System.Exception {
+	public override string Message {
+		get { return "Kitty on your lap"; }
+	}
+}
+
+class Test {
+	static void Main(string[] args) {
+		try { Kitty(); }
+		catch (KittyException err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+	public static void Kitty() {
+		throw new KittyException();
+	}
+}</pre>
+
+KittyException クラスは Exception クラスを継承した例外クラスです<br>
+この例外をスローすることで、独自の例外処理を行うことができます<br>
+必要であれば、オーバーライド以外に独自のメソッドを追加して<br>
+特殊化した処理に対応することも可能となるでしょう<br>
+<br>
+例外は、catch から、さらにそれを含む上位層へスローすることも可能です<br>
+これを、<strong>例外の再スロー</strong>と呼びます<br>
+例外の処理中に、さらに例外を再スローするには式を省略した throw を指定します<br>
+ただし、式を省略した throw は catch 句の内部でしか指定できません<br>
+<br>
+一般に、例外が最初に発生したポイントを<strong>スローポイント</strong>と呼びます<br>
+そして、例外がスローされてから適切な例外ハンドラに到達するまでの手続き<br>
+すなわち catch の検索過程を<strong>例外の伝播</strong>と呼びます<br>
+
+<pre class="prg">class Test {
+	static void Main(string[] args) {
+		try { A(); }
+		catch (System.Exception err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+	static void A() {
+		try { B(); }
+		catch { 
+			System.Console.WriteLine("Silver Gene");
+			throw;
+		}
+	}
+	static void B() {
+		throw new System.Exception("Kitty on your lap");
+	}
+}</pre>
+
+B() メソッドは例外をスローします<br>
+すると、A() メソッドの包括的 catch がこれを捕捉します<br>
+例外が捕捉されれば、これ以上例外が捕捉されるようなことはありません<br>
+つまり、Main() メソッドまで制御が戻るようなことはないはずなのです<br>
+<br>
+しかし、A() メソッドの catch は throw ステートメントを指定することによって<br>
+さらに、例外を再スローして Main() メソッドの try 句に例外をスローします<br>
+このプログラムを実行した結果を見れば、動作を理解できるでしょう<br>
+<br><b>
+Silver Gene<br>
+Kitty on your lap<br>
+<br></b>
+A() メソッドの再スローをコメント化してコンパイルして実行すれば<br>
+Main メソッドの catch に制御が移らないことを確認できるでしょう<br>
+<br>
+例外の捕捉構造は、場合によって複雑化することもあります<br>
+このような場合に備え、技術者は例外の伝播がどのような手続きをとるかを知るべきです<br>
+<br>
+例外の伝播は、まずスローポイントを包含する try を確認し<br>
+もっとも内側の try から外側に向かって catch を検索していきます<br>
+catch の検索は、書かれた順番に評価して適切なハンドラを探します<br>
+<br>
+catch の検索ができなかった場合は、次の try 句に移行しますが<br>
+各 try 句に finally が記述されている場合は、必ずそれを実行します<br>
+これを繰り返しながら、例外は上位のメソッドに向かって帰還していきます<br>
+現在のスレッド、プロセスに適切な例外処理がなければ、規定の方法で強制終了します<br>
+<pre class="prg">class Test {
+	static void Main(string[] args) {
+		try { A(); }
+		catch (System.Exception err) { 
+			System.Console.WriteLine(err.Message);
+		}
+		finally {
+			System.Console.WriteLine("Silver Gene");
+		}
+	}
+	static void A() {
+		try { B(); }
+		catch (System.DivideByZeroException err) {
+			System.Console.WriteLine(err.Message);
+		}
+		finally {
+			System.Console.WriteLine("Di Gi Charat");
+		}
+	}
+	static void B() {
+		try {
+			int x = 0;
+			x = 10 / x; //DivideByZeroException 発生
+		}
+		catch (System.IndexOutOfRangeException err) { 
+			System.Console.WriteLine(err.Message);
+		}
+		finally {
+			System.Console.WriteLine("Kitty on your lap");
+		}
+	}
+}</pre>
+
+このプログラムは、B() メソッドの try 句がスローポイントとなります<br>
+B() メソッドは DivideByZeroException を処理しないので、例外は捕捉されません<br>
+そのため、B() メソッドからスタックをさかのぼって検索が続行されます<br>
+<br>
+すると A() メソッドの try 句で捕捉できるハンドラが発見され例外が捕捉されます<br>
+もし、この場でも見つからなければ、さらにスタックを辿って上位層を検索します<br>
+例外は捕捉されたので、再スローされなければ上位が検索されることはありませんが<br>
+finally には必ず制御が移されるので、これを追って検索の様子を確認できます<br>
+<br><b>
+Kitty on your lap<br>
+0 で除算しようとしました。<br>
+Di Gi Charat<br>
+Silver Gene<br>
+<br></b>
+プログラムを実行すると、このような結果を得ることができます<br>
+スローポイントからメソッドを呼び出した順にスタックを登っていることがわかります<br>
+
+<br><hr>
+<h2>throw</h2>
+<b>
+throw [expression];<br>
+<br></b>
+例外をスローします<br>
+<br>
+<b>expression</b> - スローする例外クラスの式を指定します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs48.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs50.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<html>
+ <head>
+ <title>DLL 呼び出し</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>DLL 呼び出し</h1>
+<hr>
+ <h2>プラットフォーム呼び出しサービス</h2>
+.NET プラットフォームは、一つのシステムとして完成しています<br>
+その仕組みは、GUI や ネットワーク環境など、システムとして独立できる能力があり<br>
+.NET 標準クラスライブラリを使えば、GUI アプリケーションを作成することも簡単です<br>
+<br>
+しかし、.NET はネイティブプラットフォームの機能を呼び出す手段も提供しています<br>
+Win32 API プログラマは、独自の DLL を C/C++ で作成する能力があるでしょう<br>
+.NET からプラットフォームを呼び出すことができれば、便利なのは間違いありません<br>
+ただし、システムを呼び出した場合 .NET アプリケーションはそのシステムに依存してしまいます<br>
+<br>
+DLL を呼び出すことができれば、事実上 Windows の全ての機能を引き出すことができます<br>
+しかし、.NET の思想は OS を抽象化することであることを忘れてはいけません<br>
+.NET におけるシステム呼び出しサービスを <strong>PInvoke</strong> と呼ぶこともあります<br>
+<br>
+システムを呼び出すには、コンパイラに API の位置を知らせる必要があります<br>
+これには、<strong>System.Runtime.InteropServices.DllImport</strong> 属性を用います<br>
+<br><b>
+public sealed class DllImportAttribute : Attribute<br>
+<br></b>
+この属性クラスのコンストラクタは次のように定義されています<br>
+コンストラクタ引数は、位置パラメータとして指定しなければなりません<br>
+<br><b>
+public DllImportAttribute(string dllName);<br>
+<br></b>
+dllName には、DLL の名前を指定します<br>
+DLL の本体は、システムが発見できる位置になければなりません<br>
+この属性が指定されたメソッドは、指定した DLL に存在すると解釈されます<br>
+<br>
+Windows API は C 言語から呼び出せるように設計されていて<br>
+オブジェクト思考の立場から見れば、それは常に public static なメソッドです<br>
+呼び出す API のエントリポイントは、コンパイラがメソッド名から判断します<br>
+<br>
+また、C# 言語では外部メソッドを呼び出す場合、<br>
+必ず、メソッドに <strong>extern</strong> 修飾子を指定しなければなりません<br>
+この extern キーワードは、一般的に DllImport 属性とセットで用いられます<br>
+<br>
+どの DLL を呼び出すかは、プログラマが判断する作業です<br>
+DLL の知識、及び Win32 API のネイティブな型情報を知っている必要があります<br>
+<pre class="prg">using System;
+using System.Runtime.InteropServices;
+
+class Win32 {
+	[DllImport("USER32.DLL")]
+	public static extern int MessageBoxA(
+		int hWnd , String lpText , String lpCaption , uint uType
+	);
+
+	public const int MB_OK =		0x00000000;
+	public const int MB_OKCANCEL = 		0x00000001;
+	public const int MB_ABORTRETRYIGNORE =	0x00000002;
+	public const int MB_YESNOCANCEL = 	0x00000003;
+	public const int MB_YESNO = 		0x00000004;
+	public const int MB_RETRYCANCEL =	0x00000005;
+
+	public const int MB_ICONHAND = 		0x00000010;
+	public const int MB_ICONQUESTION =	0x00000020;
+	public const int MB_ICONEXCLAMATION =	0x00000030;
+	public const int MB_ICONASTERISK = 	0x00000040;
+}
+
+class Test {
+	public static void Main() {
+		Win32.MessageBoxA(0 , "Kitty on your lap" ,
+			"MsgBox" , Win32.MB_YESNO | Win32.MB_ICONEXCLAMATION);
+	}
+}</pre>
+
+このプログラムは、Win32 の MesssgeBox() ファンクションを呼び出します<br>
+プログラムが実行されると USER32.DLL がメモリにロードされ<br>
+API が呼び出され、Kitty on your lap と書かれたダイアログが出現します<br>
+<br>
+DllImport 属性が指定された Win32.MessageBoxA() メソッドは<br>
+USER32.DLL ライブラリの MessageBoxA() というエクスポート関数であることを表しています<br>
+<br>
+DllImport の EntryPoint 名前付きパラメータを使用すれば<br>
+メソッド名ではなく、このパラメータで DLL の関数の位置を指定することができます<br>
+こうすれば、独自の新しい名前で DLL の関数を C# から呼び出すことができるでしょう<br>
+<pre class="prg">using System;
+using System.Runtime.InteropServices;
+
+class Win32 {
+	[DllImport("USER32.DLL" , EntryPoint="MessageBoxA")]
+	public static extern int Dialog(
+		int hWnd , String lpText , String lpCaption , uint uType
+	);
+
+	public const int MB_OK =		0x00000000;
+	public const int MB_OKCANCEL = 		0x00000001;
+	public const int MB_ABORTRETRYIGNORE =	0x00000002;
+	public const int MB_YESNOCANCEL = 	0x00000003;
+	public const int MB_YESNO = 		0x00000004;
+	public const int MB_RETRYCANCEL =	0x00000005;
+
+	public const int MB_ICONHAND = 		0x00000010;
+	public const int MB_ICONQUESTION =	0x00000020;
+	public const int MB_ICONEXCLAMATION =	0x00000030;
+	public const int MB_ICONASTERISK = 	0x00000040;
+}
+
+class Test {
+	public static void Main() {
+		Win32.Dialog(0 , "Kitty on your lap" ,
+			"MsgBox" , Win32.MB_YESNO | Win32.MB_ICONEXCLAMATION);
+	}
+}</pre>
+
+このプログラムの Win32.Dialog() メソッドは<br>
+DllImport 属性で USER32.DLL の MessageBoxA() 関数を呼び出すことを表しています<br>
+プログラムを実行すれば、先ほどのプログラムとまったく同じ結果を得ることができます<br>
+<br>
+ところで、C# の int 等の数値型は、単純な数値型ではありません<br>
+この実体は構造体ですし、String 型も単純な 1 バイトの配列とは異なります<br>
+Win32 API において、文字列とは単純な配列であり、クラスや構造体ではありません<br>
+C# から DLL を呼び出す場合、このギャップはどのように解決しているのでしょうか<br>
+<br>
+実は、.NET は<strong>マーシャリング</strong>と呼ばれる方法でこれを解決します<br>
+.NET 型を DLL 関数に直接渡すことは、互換性がないためできません<br>
+そこで、.NET は DLL を呼び出す時、マーシャリングと呼ばれる処理を行うことによって<br>
+.NET 型の値をネイティブ型に変換し、DLL に情報を渡しているのです<br>
+<br>
+そもそも、.NET の型にはネイティブ型の情報が属性として含まれているため<br>
+String 型を DLL に渡そうとすれば、Win32 の LPSTR 型に変換される仕組みを持っているのです<br>
+より詳しくこの実装を見たければ、<strong>MarshalAs</strong> 属性を調べるとよいでしょう<br>
+この属性も System.Runtime.InteropServices 名前空間に含まれています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs64.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs66.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

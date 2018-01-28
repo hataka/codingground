@@ -1,0 +1,213 @@
+<html>
+ <head>
+ <title>予約属性</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>予約属性</h1>
+<hr>
+ <h2>属性の属性</h2>
+属性は、要素の情報を明記し、プログラムレベルで要素と情報を関連付けられます<br>
+この概念は、XML を学習することでより本質的に理解できると思いますが<br>
+そもそも .NET は XML との連帯のために存在するプラットフォームであり<br>
+.NET のためにある C# 言語が XML の要素のような性質があるのは偶然ではありません<br>
+<br>
+しかし、C# 言語には属性の性質を定める手段が、言語レベルでは存在しません<br>
+属性によっては、クラス専用に作成されていて、メンバに指定されると都合が悪いかもしれません<br>
+XML には、要素と属性を関連付ける文書型定義がありますが C# にはないのです<br>
+<br>
+そこで、こういった属性の性質を<strong>予約属性</strong>を用いてコンパイラに知らせます<br>
+予約属性は、言語自体の情報をコンパイラに知らせるための属性です<br>
+このうち <strong>AttributeUsage</strong> 属性は、属性の情報を明記する属性です<br>
+<pre><b>[AttributeUsage(
+   validon,
+   AllowMultiple=allowmultiple,
+   Inherited=inherited
+)]</pre></b>
+
+validon には、列挙型 <strong>AttributeTargets</strong> 型の値を指定します<br>
+この値は、位置パラメータで必須です<br>
+このパラメータによって、属性が有効な対象を指定することができます<br>
+<br>
+AllowMultiple には、多重適応に関する情報を<br>
+Inherited には、継承に関する情報を指定する名前付きパラメータです<br>
+これらのパラメータに付いては、後で説明します<br>
+<br>
+AttributeTargets のメンバは以下のようなものがあり、これらは組み合わせて使うこともできます<br>
+<br>
+<table border="1">
+<tr><th>メンバ<th>解説
+<tr><td>All		<td>属性は、全てに適応可能である
+<tr><td>Assembly		<td>属性は、アセンブリに適応可能である
+<tr><td>Class		<td>属性は、クラスに適応可能である
+<tr><td>Constructor	<td>属性は、コンストラクタに適応可能である
+<tr><td>Delegate		<td>属性は、デリゲートに適応可能である
+<tr><td>Enum		<td>属性は、列挙型に適応可能である
+<tr><td>Event		<td>属性は、イベントに適応可能である
+<tr><td>Field		<td>属性は、フィールドに適応可能である
+<tr><td>Interface		<td>属性は、インターフェイスに適応可能である
+<tr><td>Method		<td>属性は、メソッドに適応可能である
+<tr><td>Module		<td>属性は、モジュールに適応可能である
+<tr><td>Parameter		<td>属性は、パラメータに適応可能である
+<tr><td>Property		<td>属性は、プロパティに適応可能である
+<tr><td>ReturnValue	<td>属性は、戻り値に適応可能である
+<tr><td>Struct		<td>属性は、構造体に適応可能である
+</table>
+<br>
+例えば、属性クラスが AttributeTargets.Class パラメータを指定した<br>
+AttributeUsage 属性を持っているのならば、その属性はクラスにのみ有効です<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+[AttributeUsage(AttributeTargets.Class)]
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+[Kitty(KittyName.RENA)] class Kitty {
+	[Kitty(KittyName.YUKI)] public void KittyMethod() {}	//エラー
+}
+
+class Test {
+	public static void Main() {}
+}</pre>
+
+このプログラムの Kitty 属性は、クラスにのみ指定できる属性です<br>
+しかし、Kitty クラスの KittyMethod() メソッドにも用いているため、コンパイルできません<br>
+<br>
+AttributeUsage は、名前付きパラメータで属性の重複定義も指定できます<br>
+属性は、基本的に一つの要素にいくつ指定してもかまいません<br>
+XML では、一つの要素が複数の属性を持つことはよくあることです<br>
+<br>
+しかし <strong>同じ属性を重複定義</strong>することは望ましいことではなく<br>
+コンパイラは、デフォルトで属性の重複定義を見つけるとエラーを出します<br>
+すなわち、一つの要素に対して同じ属性を1回以上指定することはできないということです<br>
+<br>
+AttributeUsage の AllowMultiple 名前付きパラメータを指定すれば<br>
+その属性が重複定義可能であるかどうかを明示することができます<br>
+AllowMultiple は bool 型のパラメータで、デフォルトで false に設定されています<br>
+true を指定すれば重複定義が可能であることを表します<br>
+<br>
+その属性が、一つの要素に対して複数指定されたもかまわないのであれば<br>
+この名前付きパラメータを true に設定すればよいのです<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+[AttributeUsage(AttributeTargets.Class , AllowMultiple=true)]
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+[Kitty(KittyName.RENA)]
+[Kitty(KittyName.YUKI)]
+[Kitty(KittyName.MIMI)]
+class Kitty {}
+
+class Test {
+	public static void Main() {
+		Type t = typeof(Kitty);
+		foreach(Object tmp in t.GetCustomAttributes(false)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null)
+				Console.WriteLine("名前 : " + attrKitty.name);
+		}
+	}
+}</pre>
+
+このプログラムの Kitty クラスは Kitty 属性を3つも重複定義しています<br>
+本来ならば、このプログラムはコンパイルすることはできません<br>
+しかし、Kitty クラスは AttributeUsage で重複可能であることを明示しているため<br>
+プログラムは問題なくコンパイルすることができます<br>
+<br>
+さらに、オブジェクト思考における属性の問題は<strong>継承するかどうか</strong>です<br>
+通常、属性とは対象の要素にのみ関連付けられる情報であるため<br>
+属性を持つクラスを継承したクラスは、基底クラスの属性と関連はありません<br>
+<br>
+クラスを継承する時、その属性を継承するかどうかは<br>
+AttributeUsage 属性の Inherited 名前付きパラメータで指定します<br>
+このパラメータも bool 型で、true を指定すれば継承可能であることを意味します<br>
+逆に false を指定すれば継承できません<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+[AttributeUsage(AttributeTargets.All , Inherited=false)]
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+[Kitty(KittyName.RENA)] class Kitty {}
+class KittyEx : Kitty {}
+
+class Test {
+	public static void Main() {
+		Type t = typeof(KittyEx);
+		foreach(Object tmp in t.GetCustomAttributes(true)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null)
+				Console.WriteLine("名前 : " + attrKitty.name);
+		}
+	}
+}</pre>
+このプログラムの Kitty 属性は Inherited 名前付きパラメータで<br>
+継承不可であることを明示しています<br>
+Type クラスの GetCustomAttributes() メソッドのパラメータを true にし<br>
+Kitty クラスの派生クラスである KittyEx から属性をたどりますが、属性は見つかりません<br>
+プログラムを実行しても、何も出力されないでしょう<br>
+<br>
+逆に Inherited に true を指定すれば、プログラムは RENA を出力します<br>
+KittyEx クラスが、基底クラス Kitty の Kitty 属性を継承していることを確認できます<br>
+<br>
+Inherited が true の場合は AllowMultiple パラメータが状態が重要になります<br>
+Inherited と AllowMultiple の両方が true の場合、属性は純粋に加算されていきますが<br>
+AllowMultiple が　false であれば、<strong>属性はオーバーライド</strong>されます<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+[AttributeUsage(AttributeTargets.All , AllowMultiple=false , Inherited=true)]
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+[Kitty(KittyName.RENA)] class Kitty {}
+[Kitty(KittyName.YUKI)] class KittyEx : Kitty {}
+
+class Test {
+	public static void Main(String[] args) {
+		Type t = typeof(KittyEx);
+		foreach(Object tmp in t.GetCustomAttributes(true)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null)
+				Console.WriteLine("名前 : " + attrKitty.name);
+		}
+	}
+}</pre>
+このプログラムの KittyEx は Kitty クラスの Kitty 属性を継承しています<br>
+さらに、KittyEx でも Kitty 属性を指定していますが、この場合は重複定義にはなりません<br>
+継承した Kitty 属性がオーバーライドされ、プログラムは YUKI を出力します<br>
+<br>
+この他にも、いくつかの予約属性が存在しますが、この場では省略しいます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs63.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs65.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

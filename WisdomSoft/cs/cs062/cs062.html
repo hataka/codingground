@@ -1,0 +1,246 @@
+<html>
+ <head>
+ <title>属性</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>属性</h1>
+<hr>
+ <h2>ユーザー定義宣言情報</h2>
+C# には、C++ や Java の特性を受け継ぎ、その機能を拡張するだけではなく<br>
+従来の言語にはない強力な新機能を搭載しています<br>
+その機能のひとつとして上げられるものの一つが<strong>属性</strong>です<br>
+<br>
+これまで、ユーザーが作成するクラスや構造体、メソッドやフィールドなどには<br>
+静的かインスタンスか、公開か非公開かなどを指定する修飾子を用いました<br>
+これらの修飾子は、全て言語設計者が作り出したものです<br>
+<br>
+属性は、これら修飾子に加えて C# 型と情報を関連付ける手段として提供されます<br>
+従来の言語に慣れすぎている人は、この新しい概念は理解に苦しむかもしれません<br>
+しかし、この機能によって本来はリソースや定数として扱っていた情報を<br>
+直接クラスに関連付けられるので、XML や Web との融合を目的とする .NET の開発に適します<br>
+<br>
+属性とは、属性クラスのことをあらわします<br>
+属性クラスとは <strong>System.Attribute</strong> クラスの派生クラスを指します<br>
+私たちが属性を定義する時は、この Attribute クラスを継承します<br>
+<br><b>
+public abstract class Attribute<br>
+<br></b>
+このクラスを継承したクラスは、属性クラスとなります<br>
+そう、属性の実体は単純に Attribute を継承したクラスなのです<br>
+例えば、次のように属性クラスを宣言したとしましょう<br>
+<pre class="prg">using System;
+enum KittyName { RENA , YUKI , MIMI }
+
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}</pre>
+
+KittyAttribute クラスは Attribute クラスを継承しているので属性クラスです<br>
+このクラスは宣言情報として KittyName をコンストラクタから受け取ります<br>
+<br>
+さて、これで新しい宣言情報となる属性クラスを定義することができました<br>
+属性をクラスやメンバに指定する場合、それらの宣言構文を思い出してください<br>
+<br><b>
+[attributes] [modifiers] class identifier [:base-list] { class-body }[;]<br>
+<br></b>
+これは、クラスの宣言構文です<br>
+最初の attributes が属性宣言子群を指定する場所です<br>
+ここに、属性クラスのコンストラクタを指定することでクラスと関連付けます<br>
+<pre class="prg">[KittyAttribute(KittyName.RENA)] class Kitty {}</pre>
+例えば、これは Kitty クラスの宣言に KittyAttribute 属性を用いて情報を追加しています<br>
+追加する情報の形は、属性クラスを定義するあなたの手に委ねられています<br>
+このように、型やメンバに属性を指定することを<strong>アタッチする</strong>といいます<br>
+<br>
+属性で追加した宣言情報は、実行時に取り出すことが可能です<br>
+型の属性に問い合わせるには、リフレクション API を用います<br>
+属性も型情報の一つなので、リフレクション で問い合わせるという考えは理解できるでしょう<br>
+<br>
+型の属性を取得するには MemberInfo クラスの <strong>GetCustomAttributes()</strong> を使います<br>
+このメソッドは、型が保有する属性のインスタンスを生成して返します<br>
+<br><b>
+public abstract object[] GetCustomAttributes(bool inherit);<br>
+<br></b>
+inghrit は、型の継承チェーンをさかのぼって、基底クラスの属性も検索するかどうかを指定します<br>
+true を指定すれば、メソッドは基底クラスの属性も検索して属性を返します<br>
+Type クラスや MethodInfo、FieldInfo などは全て MemberInfo の派生クラスです<br>
+各クラスは GetCustomAttributes() を再定義しています<br>
+<br>
+GetCustomAttributes() が返した object 型の配列にクラスの各種属性が含まれます<br>
+これを、as 演算子などで目的の型に変換すれば、後はそのクラスの仕様にあわせ<br>
+その属性がもっている、型情報を引き出すことができます<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+[KittyAttribute(KittyName.RENA)] class Kitty {}
+
+class Test {
+	static void Main(string[] args) {
+		Type t = typeof(Kitty);
+		foreach(Object tmp in t.GetCustomAttributes(false)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null)
+				Console.WriteLine("名前 : " + attrKitty.name);
+		}
+	}
+}</pre>
+
+これが、先ほどの属性クラスを用いたプログラムの完成版です<br>
+クラス Kitty は KittyAttribute 属性を宣言情報として保有しています<br>
+Main() メソッドでは typeof 演算子で Kitty クラスの型情報を取得し<br>
+GetCustomAttributes() メソッドを用いて Kitty クラスの属性情報を引き出しています<br>
+
+<br><hr>
+<h2>属性名のショートカット</h2>
+属性クラスの名前は、最後に Attribute と付けるのが一般的です<br>
+これは言語規定では定められていませんが、.NET の暗黙のルールです<br>
+<br>
+C# では、属性クラスのコンストラクタを指定するとき<br>
+クラス名の <strong>Attributeを省略</strong> することができます<br>
+例えば、次のプログラムは有効です<br>
+<br><b>
+class XAttribute : System.Attribute {...<br>
+[X] class C {...<br>
+<br></b>
+クラスに属性をアタッチするとき、属性クラスの Attribute を省略していますね<br>
+このとき、C# コンパイラは最初に X という名前の属性クラスを探します<br>
+そして、X という名前の属性クラスが見つからなければ<br>
+コンパイラは名前の末尾に Attribute という文字列を付加して再度検索するのです<br>
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+[Kitty(KittyName.RENA)] class Kitty {}
+
+class Test {
+	static void Main(string[] args) {
+		Type t = typeof(Kitty);
+		foreach(Object tmp in t.GetCustomAttributes(false)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null)
+				Console.WriteLine("名前 : " + attrKitty.name);
+		}
+	}
+}</pre>
+
+Kitty という名前の属性クラスは存在しませんし Kitty クラスと名前が衝突しています<br>
+しかし、このプログラムは正常にコンパイルすることができるでしょう<br>
+Kitty という名前の属性クラスが見つからなければ、コンパイラは KittyAttribute を探します<br>
+<br>
+言語規定で属性は Attribute という名前を末尾につけなければならないわけではないので<br>
+当然、属性に Attribute が付いていないからといってショートカットとは限りません<br>
+Attribute が付いていない状態でも、その名前の属性クラスと一致した場合<br>
+コンパイラはフルネームで一致する属性クラスを優先して選択します<br>
+
+<pre class="prg">using System;
+
+class KittyAttribute : Attribute {}
+class Kitty : Attribute {}
+
+[Kitty()] class Kitty1 {}
+[KittyAttribute()] class Kitty2 {}
+
+class Test {
+	static void Main(string[] args) {
+		CheckAttribute(typeof(Kitty1));
+		CheckAttribute(typeof(Kitty2));
+	}
+	static void CheckAttribute(Type t) {
+		foreach(Object tmp in t.GetCustomAttributes(false)) {
+			if (tmp is KittyAttribute)
+				Console.WriteLine(t + " have KittyAttribute");
+			else if (tmp is Kitty)
+				Console.WriteLine(t + " have Kitty");
+		}
+	}
+}</pre>
+
+Kitty という属性と KittyAttribute という属性があります<br>
+この場合 Kitty() と指定すると Kitty 属性クラスをあらわします<br>
+プログラムを実行した結果、次のようになりました<br>
+<br><b>
+Kitty1 have Kitty<br>
+Kitty2 have KittyAttribute<br>
+<br></b>
+Kitty 属性をアタッチしたとき、Kitty 属性が検索されたため<br>
+ショートカット機能は適応されなかったことがわかります<br>
+
+<br><hr>
+<h2>メンバ属性</h2>
+属性は、クラスだけではなく、メンバに付けることも可能です<br>
+この場合も、同様にリフレクション API から属性を得ることができます<br>
+属性の指定方法は、クラスの場合と同様です<br>
+<br>
+クラスのメンバの MemberInfo クラスの取得方法は、前章で紹介しましたね<br>
+ただし、以下のサンプルでは Type クラスの <strong>GetMethod()</strong> メソッドを使います<br>
+<br><b>
+public MethodInfo GetMethod(string name);<br>
+<br></b>
+name には、この型が保有する公開メソッドの名前を指定します<br>
+メソッドが成功すれば MethodInfo 型の参照が、失敗すれば null が返ります<br>
+
+
+<pre class="prg">using System;
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class KittyAttribute : Attribute {
+	public readonly KittyName name;
+	public KittyAttribute(KittyName name) {
+		this.name = name;
+	}
+}
+
+class Kitty {
+	[Kitty(KittyName.RENA)] public void KittyMethod() {}
+}
+
+class Test {
+	public static void Main() {
+		Type t = typeof(Kitty);
+		System.Reflection.MethodInfo mi = 
+			t.GetMethod("KittyMethod");
+
+		foreach(Object tmp in mi.GetCustomAttributes(false)) {
+			KittyAttribute attrKitty = tmp as KittyAttribute;
+			if (attrKitty != null) 
+				Console.WriteLine("名前 : " + attrKitty.name);
+		}	
+	}
+}</pre>
+
+このプログラムの Kitty クラスの KittyMethod() メソッドは<br>
+KittyAttribute 属性を持っています<br>
+Main() メソッドでは Type クラスの GetMethod() メソッドで MethodInfo を取得し<br>
+ここから、メソッドが保有する KittyAttribute のインスタンスを取得しています<br>
+<br>
+この原理は、プロパティやフィールドなどでも同様です<br>
+そのメンバに対する何らかの追加情報を、属性を使って明示できるのです<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs61.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs63.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

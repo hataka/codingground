@@ -1,0 +1,91 @@
+<html>
+ <head>
+ <title>コレクション</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>コレクション</h1>
+<hr>
+ <h2>配列の繰り返し処理</h2>
+通常、配列に対して複雑な処理を連続的に行う場合はループを使います<br>
+グラフィックスシステムの複雑な画像処理やフィルタ処理によく出てくるアルゴリズムです<br>
+<br>
+このような処理には、この講座の配列のサンプルソースのように<br>
+配列の要素数を何らかの方法で取得し、それをカウンタ変数と比較して監視します<br>
+<br><b>
+for (int i = 0 ; i < ary.Length ; i++) ...<br>
+<br></b>
+こうすることで、配列 ary の全ての要素を繰り返し処理で操作することができますが<br>
+しかし、ループ条件の式に誤りがあれば簡単にバグにつながってしまいます<br>
+そこで、Visual Basic の <strong>For Each...Next</strong> ステートメントを C# でも採用したのです<br>
+<br>
+VB の For Each...Next の仕様であれば、配列を安全に列挙できるのです<br>
+Microsoft は C# にもこれを採用し、要素単位で同一の処理を行う方法を提供したのです<br>
+C# では <strong>foreach</strong> ステートメントとして次のような構文を持ちます<br>
+<br><b>
+foreach (type identifier in expression) statement<br>
+<br></b>
+この構文は Perl 言語の foreach 文によく似ているでしょう<br>
+type には型、identifier には識別子、expression には配列を指定します<br>
+<br>
+foreach は expression で指定した配列の全要素分だけ statement を繰り返し実行します<br>
+statement は配列を処理するための埋め込みステートメントです<br>
+実は、繰り返すごとに expression の要素が 0 番から順に identifier に格納されます<br>
+statement で配列の要素にアクセスするには、この identifier を参照すれば良いのです<br>
+<br><b>
+foreach(string str in str_ary) GetString(str);<br>
+<br></b>
+例えば上の例は、str_ary という文字列型配列が存在するとして<br>
+この配列の全要素を順に GetString(string) メソッドに渡して処理させたいとします<br>
+foreach は str_ary のインデックス 0 番を一時的なローカル変数 str に保存し<br>
+その後、埋め込みステートメントである GetString(str) を実行します<br>
+<br>
+埋め込みステートメントのエンドポイントに到達すれば、再び foreach の先頭に復帰し<br>
+今度は str_ary のインデックス 1 番を str に保存して埋め込みステートメントを実行します<br>
+これが、str_ary.Length - 1 回繰り返されるのです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string[] str = {
+			"Kitty on your lap" ,
+			"Silver Gene" ,
+			"Di Gi Charat" ,
+			"Tokyo mew mew"
+		};
+
+		foreach(string tmp in str)
+			System.Console.WriteLine(tmp);
+	}
+}</pre>
+これを実行すれば、配列 str の文字列が順にコンソールに出力されます<br>
+<br>
+ところで、Perl や Visual Basic とは異なり、C# は一貫したかつ正確な型情報を持ちます<br>
+C# の曖昧性のない型情報を考えれば foreach に指定できる式の型は何でしょう？<br>
+<br>
+一般には foreach で指定する型は「配列である」と説明します<br>
+しかし、正確に説明するとこれは配列ではなく<strong>コレクション型</strong>と呼ばれるもので<br>
+System.Array もコレクション型であるという表現がもっとも適切でしょう<br>
+<br>
+コレクション型の性質を網羅するには、インターフェイスについて詳しい知識が必要です<br>
+ここではまだインターフェイスについて解説していないので詳しくは説明しませんが<br>
+単純に説明すると GetEnumerator() インスタンスメソッドを持つクラスをコレクション型と言います<br>
+より詳しく知りたいならば .NET クラスライブラリの構造をよく研究すると良いでしょう<br>
+
+<br><hr>
+<h2>foreach</h2>
+<b>foreach (type identifier in expression) statement</b><br>
+<br>
+コレクション型を評価し、埋め込みステートメントを実行します<br>
+<br>
+<b>type</b> - 一時的な仮変数の型を指定します<br>
+<b>identifier</b> - 一時的な仮変数の識別子を指定します<br>
+<b>expression</b> - コレクション型の式を指定します<br>
+<b>statement</b> - 埋め込みステートメントを指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs42.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs44.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

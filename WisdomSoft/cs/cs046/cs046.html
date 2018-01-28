@@ -1,0 +1,193 @@
+<html>
+ <head>
+ <title>is と as</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>is と as</h1>
+<hr>
+ <h2>実装の確認</h2>
+インターフェイスやボクシング変換を学習し、それを実用に移すとある問題が見つかります<br>
+それは、アップキャストは常に保証されますが、ダウンキャストがまったく保証されないということです<br>
+<br>
+オブジェクト指向プログラミングでは、実行時まで型がわからないケースが多く<br>
+参照型を目的の型にダウンキャストする場合、確実性を持ちません<br>
+例えば、次のプログラムを見てください<br>
+<pre class="prg">class A {}
+class B {}
+
+class Test {
+	static void Main() {
+		System.Object objA = new A();
+		B objB = (B)objA;
+	}
+}</pre>
+これは、A クラスを Object 型に変換した objA という参照型があります<br>
+これを B クラスに変換しようとしていますが、Object 参照が B 型の実装を持つかどうかは<br>
+コンパイル時点では判断できません（このように、単純な場合は見ればわかりますが…）<br>
+<br>
+そのため、コンパイルすることはできますが、実行すると処理が停止します<br>
+A クラスは B クラスと互換性がないため、A クラスの実装を持つ参照型 objA は<br>
+B クラスにキャストすることはユーザー定義変換を除いてありえません<br>
+この場合「例外」と呼ばれる割り込みが発生し、次のような文字を残して強制終了されます<br>
+
+<pre><b>未処理の例外 : System.InvalidCastException: 種類 System.InvalidCastException の
+例外がスローされました。
+   at Test.Main()</b></pre>
+
+例外の捕捉（処理方法）については、後ほど詳しく説明しますが<br>
+このように、保証されない変換というのは頻繁に行われるケースもあり<br>
+その度に、例外を発生させ処理を停止させるようでは、正常なプログラムとは言えません<br>
+<br>
+そこで、キャストする前に<strong>実装を確認</strong>する方法が存在します<br>
+もちろん、実行時に動的に参照型の実装を確認できます<br>
+実装の問い合わせには <strong>is</strong> 演算子を用います<br>
+<br><b>
+expression is type<br>
+<br></b>
+expression には参照型の式、type には型を指定します<br>
+expression が type である場合は true そうでなければ false を返します<br>
+<br>
+これをキャストする前に行い、実装を確認すれば<br>
+実装を持つ場合と、持たない場合で異なる処理を施すことができます<br>
+
+<pre class="prg">class A {}
+class B {}
+
+class Test {
+	static void Main() {
+		System.Object obj = new A();
+		Check(obj);
+		obj = new B();
+		Check(obj);
+	}
+	static void Check(System.Object obj) {
+		if (obj is B) System.Console.WriteLine("This is B");
+		else System.Console.WriteLine("This is not B");
+	}
+}</pre>
+このプログラムの Test.Check() メソッドは<br>
+渡された参照型が B クラスの実装を持つかどうかを確認するメソッドです<br>
+渡された参照型を is 演算子で確認してその結果を文字列で出力します<br>
+<br>
+もちろん、インターフェイスの実装を持つかどうかも調べることができます<br>
+おそらく、動的に参照型を変換する最も多いケースの一つが<br>
+何らかのクラスの参照をインターフェイス型にキャストするプログラムでしょう<br>
+このようなケースに is 演算子は大きく貢献してくれます<br>
+
+<pre class="prg">interface KittyStandard {
+	string Name { get; }
+}
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class Kitty : KittyStandard {
+	private string name;
+	public Kitty(KittyName name) {
+		this.name = name.ToString();
+	}
+	string KittyStandard.Name { get { return name; } }
+}
+
+class Test {
+	static void Main() {
+		System.Object kitty = new Kitty(KittyName.MIMI);
+		CheckKittyStandard(kitty);
+
+		kitty = new Test();
+		CheckKittyStandard(kitty);
+	}
+	static void CheckKittyStandard(System.Object obj) {
+		if (obj is KittyStandard)
+			System.Console.WriteLine(((KittyStandard)obj).Name);
+		else	System.Console.WriteLine("This is not KittyStandard");
+	}
+}</pre>
+Test.CheckKittyStandard() メソッドは渡された参照型を is 演算子で調べます<br>
+参照型が KittyStandard インターフェイスを実装している場合と<br>
+そうでない場合に応じて、コンソールに結果を示す文字列を出力します<br>
+<br>
+このように、is は参照型を目的の型に変換できるかどうかを動的に調べられます<br>
+ただし、is 演算子が調べるのは参照変換、ボクシング変換、アンボクシング変換のみです<br>
+is 演算子はユーザー定義変換など、その他の変換は<strong>考慮しません</strong><br>
+
+<br><hr>
+<h2>安全な変換</h2>
+is 演算子は実装を調べ、その結果をブールで返すというものでしたが<br>
+もともと、調べる目的がキャストならば <strong>as</strong> 演算子を用いるべきです<br>
+<br>
+as 演算子は明示的なキャストを安全に変換する機能を提供します<br>
+この演算子を用いてキャストした場合、例外は発生しません<br>
+もし、目的の型の実装を持たない場合は <strong>null を返す</strong>のです<br>
+<br><b>
+expression as type<br>
+<br></b>
+expression には変換する参照型を、type には変換する型を指定します<br>
+この結果、変換できる場合はその型を、できない場合は null を返します<br>
+<pre class="prg">class A {}
+class B {}
+class C : B {}
+
+class Test {
+	static void Main() {
+		System.Object objA = new A();
+		System.Object objC = new C();
+
+		B objB = objA as B;
+		Check(objB);
+
+		objB = objC as B;
+		Check(objB);
+	}
+	static void Check(System.Object obj) {
+		if (obj == null) System.Console.WriteLine("this can't cast B type");
+		else System.Console.WriteLine("Success");
+	}
+}</pre>
+
+B objB = objA as B は、objA を B に as 演算子を用いて明示的に変換しようとしています<br>
+しかし objA は B を実装しないので、この結果は null となるでしょう<br>
+通常のキャスト変換では、例外となりますが、as を用いた場合は発生しないのです<br>
+<br>
+ただし、null を参照した場合は例外を発生されるので<br>
+変換した参照にアクセスするならば、やはり if で調べる必要があります<br>
+<br>
+is と as 演算子で重要な違いは MSIL でも見られます<br>
+キャストが目的の場合 is 演算子はブールを調べた後にキャストすることになりますが<br>
+この時、実装を調べる時に isinst コードを用いて実装を確認し<br>
+さらに、キャストする場合は castclass コードでキャストするという２重のキャストになります<br>
+しかし as 演算子ならば isinst コードを用いて１度キャストするだけなので<br>
+is に比べてキャストだけが目的の場合は as の方が効率的と考えられます<br>
+<br>
+また、as 演算子は参照変換とボクシング変換しか行いません<br>
+ユーザー定義変換など、その他の変換には通常のキャストを用いるしかありません<br>
+
+<br><hr>
+<h2>is</h2>
+<b>
+expression is type</b><br>
+<br>
+参照型の実装を動的に問い合わせ、その結果をブーリアンで返します<br>
+expression が type 型の実装を持つならば true、そうでなければ false を返します<br>
+<br>
+<b>expression</b> - 調べる参照型の式を指定します<br>
+<b>type</b> - 型を指定します<br>
+<br>
+<h2>as</h2>
+<b>
+expression as type</b><br>
+<br>
+参照変換、またはボクシング変換を明示的に行います<br>
+expression が type 型の実装を持たなければ null が返ります<br>
+<br>
+<b>expression</b> - 変換する式を指定します<br>
+<b>type</b> - 型を指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs45.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs47.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

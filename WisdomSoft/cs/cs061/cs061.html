@@ -1,0 +1,228 @@
+<html>
+ <head>
+ <title>型情報</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>型情報</h1>
+<hr>
+ <h2>リフレクションAPI</h2>
+私たち人間は、特定のクラス（型）の情報がほしい時<br>
+開発者のドキュメントを参照して仕様や公開されているメソッドなどを知ることができます<br>
+<br>
+アプリケーションレベルでは稀なケースですが<br>
+開発環境などを作成する場合、クラスの型情報を実行時に必要とすることがあります<br>
+そこで、.NET は実行時にプログラムが型情報をえる手段を提供しています<br>
+<br>
+型の物理的な情報を得るには <strong>リフレクション API</strong> が鍵を握ります<br>
+リフレクション API は <strong>System.Reflection</strong> 名前空間に定義されるクラスです<br>
+リフレクション API のクラスを全てここで解説することはできませんが<br>
+型情報を取得するまでの重要な操作方法のみを説明します<br>
+リフレクション API の全容を知りたい方は、Microsoft のドキュメントを参照してください<br>
+<br>
+まず、型情報の基盤となるクラスが <strong>System.Type</strong> クラスです<br>
+このクラスは、次のように定義されています<br>
+<br><b>
+public abstract class Type : MemberInfo, IReflect<br>
+<br></b>
+このクラスを用いて型に問い合わせることができます<br>
+Type クラスを用いれば、必要とするほとんどの型情報を取得できるでしょう<br>
+<br>
+では、Type クラスのインスタンスはどのように作ればよいのでしょうか？<br>
+Type クラスのコンストラクタは protected なので、外部からアクセスできません<br>
+Type のインスタンスを取得する方法はいくつかあるのですが<br>
+C# において一番簡単な方法は <strong>typeof</strong> 演算子を用いることです<br>
+<br><b>
+typeof(type)<br>
+<br></b>
+type には、問い合わせたい型を指定します<br>
+これで、指定した型の情報を格納する Type の参照が返ります<br>
+<pre class="prg">using System;
+
+class Test {
+	static void Main() {
+		Type[] t = {
+			typeof (Type) ,
+			typeof (Int32) ,
+			typeof (Console)
+		};
+		foreach(Type tmp in t) Console.WriteLine(tmp);
+	}	
+}</pre>
+このプログラムは typeof 演算子を用いて問い合わせたい型の Type を取得します<br>
+Type クラスの ToString() は情報を格納しているクラスの名前を返します<br>
+このプログラムを実行すると、次のようになるでしょう<br>
+<br><b>
+System.Type<br>
+System.Int32<br>
+System.Console<br>
+<br></b>
+Type クラスには、型情報を取得する様々なプロパティが存在します<br>
+目的に応じてドキュメントを調べて、取得したい情報のプロパティを利用するとよいでしょう<br>
+<br>
+問い合わせたい型の Type インスタンスを得る方法はこれだけではありません<br>
+全ての型のルートクラスとなる Object クラスは<br>
+型情報を返す <strong>GetType()</strong> メソッドを提供します<br>
+<br><b>
+public Type GetType();<br>
+<br></b>
+このメソッドは、隠蔽されない限り全ての型がサポートすることになります<br>
+型の名前ではなく、インスタンスから情報を取得したい場合はこれを用いるとよいでしょう<br>
+<pre class="prg">using System;
+
+class Test {
+	static void Main() {
+		CheckType('A');
+		CheckType(50);
+		CheckType("Kitty on your lap");
+	}
+	static void CheckType(Object obj) {
+		Type t = obj.GetType();
+		Console.WriteLine(t);
+	}
+}</pre>
+Test クラスの CheckType() メソッドは Object 型の参照を受け取ります<br>
+そして、GetType() メソッドを用いて Type 型のインスタンスを作成し<br>
+型の名前をコンソールに出力します<br>
+<br><b>
+System.Char<br>
+System.Int32<br>
+System.String<br>
+<br></b>
+先ほどと違うのは、型名を指定するという静的な方法ではなく<br>
+オブジェクトから動的に Type を取得するという点です<br>
+<br>
+さらに、文字列で型を指定して動的に Type を取得する方法もあります<br>
+この方法であれば、ユーザーに情報がほしいクラス名を指定させることも可能です<br>
+文字列で型情報を得るには静的な <strong>Type.GetType()</strong> メソッドを使います<br>
+Type クラスの GetType() 静的メソッドは、クラス名で型情報を取得できるのです<br>
+<br><b>
+public static Type GetType(string typeName);<br>
+<br></b>
+これ以外にも GetType() メソッドはオーバーロードされていますが<br>
+この場では最も簡単な、文字列だけを受け取る上のメソッドを紹介します<br>
+<br>
+typeName には、型の名前をあらわす文字列を指定します<br>
+.NET ライブラリは言語に依存しないので、int などのエイリアスでは取得できません<br>
+名前空間も含めた、型のフルネームを指定しなければなりません<br>
+<pre class="prg">using System;
+
+class Test {
+	static void Main(string[] args) {
+		if (args.Length == 0) return;
+
+		Type[] t = new Type[args.Length];
+		for (int i = 0 ; i < args.Length ; i++) t[i] = Type.GetType(args[i]);
+		foreach(Type tmp in t) Console.WriteLine(tmp);
+	}
+}</pre>
+このプログラムは、コマンドライン引数で得られた文字列の型情報を表示します<br>
+例えば、test.exe 実行ファイルを生成したとして、次のように動作します<br>
+<br><b>
+C:\dir_name>test System.Char System.Console<br>
+System.Char<br>
+System.Console<br>
+<br></b>
+この方法を用いれば、プログラムが明示的に型情報を要求しなくても<br>
+ユーザーに文字列として取得したい型情報を入力させることができます<br>
+
+<br><hr>
+<h2>メンバ情報</h2>
+前記したように、リフレクション API を網羅して説明することはできませんが<br>
+ここでは、簡単に Type からクラスのメンバ情報を取得する方法を説明しましょう<br>
+<br>
+リフレクション API は System.Reflection 名前空間に属するクラスのことで<br>
+フィールドやメソッドの情報を物理レベルで問い合わせる方法を提供します<br>
+<br>
+クラスのメンバ全体の情報を取得するには、リフレクション API の一つ<br>
+<strong>System.Reflection.MemberInfo</strong> クラスを用います<br>
+このクラスは System.Type クラスの親クラスに属するクラスでもあります<br>
+<br><b>
+public abstract class MemberInfo : ICustomAttributeProvider<br>
+<br></b>
+このクラスを用いれば、メンバの情報を取得することができます<br>
+メンバの情報を取得する手段は様々ですが、この場では最も簡単な方法である<br>
+Type クラスのインスタンスメソッド GetMembers() メソッドを用いる方法を使いましょう<br>
+<br><b>
+public MemberInfo[] GetMembers();<br>
+<br></b>
+このメソッドは、Type オブジェクトが持つ型が保有するメンバの情報を<br>
+MemberInfo 型のオブジェクトの配列として返します<br>
+MemberInfo はそれぞれ1つのメンバを表すので、配列の数はそのままメンバの数となります<br>
+ここで返される列挙されたメンバ情報は、基底クラスの情報も含みます<br>
+<pre class="prg">using System;
+using System.Reflection;
+
+class Test {
+	static void Main(string[] args) {
+		if (args.Length == 0) return;
+
+		Type t = Type.GetType(args[0]);
+		MemberInfo[] mi = t.GetMembers();
+		foreach(MemberInfo tmp in mi) Console.WriteLine(tmp);
+	}
+}</pre>
+
+このプログラムは、コマンドライン引数で調べたいクラスの名前を指定すると<br>
+そのクラスのメンバ情報がコマンドラインに列挙されます<br>
+<br>
+しかし、メンバをフィールドとメソッドに区別し<br>
+それぞれに特殊化した情報をより確実に取得し、操作したい場合<br>
+フィールドは <strong>System.Reflection.FieldInfo</strong> クラスを用い<br>
+メソッドは <strong>System.Reflection.MethodInfo</strong> クラスを用います<br>
+<br><b>
+public abstract class FieldInfo : MemberInfo<br>
+public abstract class MethodInfo : MethodBase<br>
+<br></b>
+それぞれのインスタンスを取得するには MemberInfo 同様に<br>
+Type クラスの <strong>GetFields()</strong> メソッドと <strong>GetMethods()</strong> を使います<br>
+GetFields はフィールド情報を列挙した FieldInfo オブジェクトの配列<br>
+GetMethods はメソッド情報を列挙した MethodInfo オブジェクトの配列を返します<br>
+<br><b>
+public FieldInfo[] GetFields();<br>
+public MethodInfo[] GetMethods();<br>
+<br></b>
+これらのオブジェクトを取得すれば、より精密のメンバ情報を得られます<br>
+この他にもイベントやプロパティ、コンストラクタを取得する方法もありますが<br>
+それらについても、ほとんど同様の手法でプログラムすることができます<br>
+詳しくは Microsoft のドキュメントを参照してください<br>
+<pre class="prg">using System;
+using System.Reflection;
+
+class Test {
+	static void Main(string[] args) {
+		if (args.Length == 0) return;
+
+		Type t = Type.GetType(args[0]);
+		FieldInfo[] field = t.GetFields();
+		MethodInfo[] method = t.GetMethods();
+
+		if (field.Length != 0)
+			Console.WriteLine("----------Fields----------");
+		foreach(FieldInfo tmp in field) Console.WriteLine(tmp);
+
+		if (method.Length != 0)
+			Console.WriteLine("---------Methods--------");
+		foreach(MethodInfo tmp in method) Console.WriteLine(tmp);
+	}
+}</pre>
+コマンドライン引数から型名を指定すれば<br>
+その型のフィールドとメソッド情報をコンソールに出力します<br>
+
+<br><hr>
+<h2>typeof</h2>
+<b>
+typeof(type)<br>
+<br></b>
+指定した型の Type オブジェクトを返します<br>
+C# 固有のエイリアスを指定することも可能です<br>
+<br>
+<b>type</b> - 型を指定します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs56.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs62.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

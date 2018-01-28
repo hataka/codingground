@@ -1,0 +1,202 @@
+<html>
+ <head>
+ <title>ポインタ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ポインタ</h1>
+<hr>
+ <h2>ポインタの型キャスト</h2>
+アンセーフコンテキストでは、ポインタ型のキャストも可能になります<br>
+ポインタ型のキャストにも、暗黙的に行えるものと、そうでないものがあります<br>
+<br>
+ポインタ型は、明示的にキャストすることで、非常にユニークな使い方ができます<br>
+C/C++ 言語の経験者にとっては、お馴染みの作業かもしれませんが<br>
+Java から C# 言語に移行してきた人であれば、ポインタの威力を肌で感じることでしょう<br>
+<br>
+ポインタ型は、明示的にキャストすることで、<strong>他のポインタ型に変換</strong>できます<br>
+この変換作業によっては、メモリの直接アクセスにでしか行えない面白いことができます<br>
+例えば、次の例は数値型変数のポインタを char * 型として扱っています<br>
+<pre class="prg">unsafe class Test {
+	public static void Main() {
+		int i = 0x41;
+		char *c = (char *)&amp;i;
+		System.Console.WriteLine(*c);
+	}
+}</pre>
+int 型変数 i のポインタを char 型のポインタ変数に変換していることが確認できます<br>
+WriteLine() メソッドに、char 型のポインタ c の関節参照の値を渡すとどうなるのでしょう<br>
+ポインタが指す実体は int 型の変数で 0x41 という値を持っています<br>
+<br>
+しかし、char 型のポインタに変換したポインタ変数の間接参照は<br>
+char 型のメモリサイズを対象とし、0x41 という文字コードを持つ char 型として扱われます<br>
+ASCII 文字コードで 'A' をあらわすため、このプログラムは A を出力します<br>
+<br>
+この機能を用いれば、世にも恐ろしいソースを記述することができます<br>
+ポインタのキャストは、メモリアドレスの実体に関係無く<br>
+そのアドレスが指すメモリの情報を指定した型に無理やり当てはめてしまうため<br>
+次のような強硬手段を用いることも可能となっています<br>
+<pre class="prg">struct Location {
+	public int x , y;
+}
+
+struct Size {
+	int width , height;
+	public void Write() {
+		System.Console.WriteLine(width + "\n" + height);
+	}
+}
+
+unsafe class Test {
+	public static void Main() {
+		Location lt = new Location();
+		lt.x = 100; lt.y = 200;
+
+		Size *sz = (Size *)&amp;lt;
+		sz->Write();
+	}
+}</pre>
+
+警告が出るかもしれませんが、問題なくコンパイルすることができます<br>
+このプログラムは Location 構造体の lt 変数を Main() メソッドで作成し、メンバを設定します<br>
+そして、このプログラムは恐ろしい強硬手段を用います<br>
+<br>
+Location 構造体と Size 構造体のフィールドの物理サイズは同じです<br>
+この性質を利用して、Location 構造体の変数を Size 型のポインタにキャストして代入します<br>
+sz ポインタ型変数が指す先は、Location 構造体のメモリアドレスです<br>
+しかし、キャストによって、Size 構造体を用いているかのように錯覚させることができます<br>
+もちろん、特別な緊急事態を除いてこのようなプログラムを書いてはいけません<br>
+<br>
+さらに、ポインタ型は<strong>整数型にキャスト</strong>することが可能であり<br>
+整数型は<strong>ポインタ型にキャスト</strong>するということが可能になっています<br>
+すなわち、メモリアドレスの値を直接見たり、数値をアドレスとして使うことができるのです<br>
+<pre class="prg">unsafe class Test {
+	public static void Main() {
+		int x = 0x10;
+		System.Console.WriteLine((int)&x);
+	}
+}</pre>
+
+これを実行すれば、標準出力には何らかの値が表示されるでしょう<br>
+ここで表示される値こそ、ポインタ変数が格納しているアドレスそのものです<br>
+もちろん、この数値が表す意味自体は、プログラマが知る必要はありません<br>
+<br>
+このアドレス値は、キャストすることで通常の整数型変数に代入することも可能であり<br>
+その整数型変数をキャストして、ポインタ型変数に代入することも可能です<br>
+<br>
+高度なオブジェクト指向プログラムでは、普段、そのようなことをしてはいけません<br>
+なぜならば、数値型変数が保有する値が本当に有効なメモリアドレスかどうか<br>
+これを確かめる術はなく、場合によっては不正なメモリにアクセスしかねないからです<br>
+<br>
+しかし、C# 言語はネイティブなシステムの API を呼び出す機能があり<br>
+システムの API と互換性を取るために、ポインタによる演算を行うことがあります<br>
+以下のような斬新なプログラムも、C 言語ではよくある演算です<br>
+
+<pre class="prg">using cout = System.Console;
+
+struct Msg {
+	public const int INT = 0x2;
+	public const int KITTY = 0x4;
+	
+	public unsafe static bool Proc(uint msg , int lParam) {
+		switch(msg) {
+		case INT:
+			cout.WriteLine(*((int *)lParam));
+			return true;
+		case KITTY:
+			((Kitty *)lParam)-&#62;Write();
+			return true;
+		default:
+			cout.WriteLine(lParam);
+			return false;
+		}
+	}
+}
+
+struct Kitty {
+	public void Write() {
+		cout.WriteLine("Kitty on your lap");
+	}
+}
+
+unsafe class Test {
+	public static void Main() {
+		int x = 0x10;
+		Kitty cat = new Kitty();
+
+		Msg.Proc(Msg.INT , (int)&amp;x);
+		Msg.Proc(Msg.KITTY , (int)&amp;cat);
+		Msg.Proc(0 , 0x100);
+	}
+}</pre>
+
+このプログラムの Msg.Proc() メソッドは Win32 のウィンドウプロシージャを思い出させます<br>
+msg には、意味のあるシステムからの通知を受ける値だと仮定し<br>
+lParam は、通知ごとに意味の異なる、追加情報だと想定してください<br>
+<br>
+システム設計理論から考えて、通知の追加情報は動的であるべきです<br>
+システムが通知するメッセージによっては、膨大な情報量が必要な時もあるでしょう<br>
+<br>
+lParam 追加情報の意味は msg によって一意に定まります<br>
+システムはあらかじめ、メッセージに関連した lParam の情報を定めます<br>
+そして、システムは構造体をメソッドに渡したい時、ポインタをキャストして渡すのです<br>
+これは、実際に Windows API が取った手段です<br>
+<br>
+メッセージを受けるメソッドは、msg パラメータを調べれば<br>
+システムが何を要求しているかを知ることができます<br>
+そして、メッセージによって lParam に何が格納されているかを知ることができるのです<br>
+必要によっては lParam に格納されている値をキャストして、間接参照を行います<br>
+<br>
+上の例では、Main() メソッドから INT と KITTY メッセージを通知します<br>
+INT メッセージの場合、lParam には int 型のポインタが格納され<br>
+KITTY の場合は Kitty 構造体のポインタが格納されていると定義します<br>
+<br>
+Proc メソッドは、switch() によってメッセージを解析し<br>
+それぞれのメッセージの専用処理を用意し、これに対応しています<br>
+このプログラムを実行すれば、次のような文字が出力されるでしょう<br>
+<br><b>
+16<br>
+Kitty on your lap<br>
+256<br>
+<br></b>
+この結果を見れば、アドレスが正しくキャストされていることがわかります<br>
+
+<br><hr>
+<h2>汎用ポインタ</h2>
+C# 言語における参照型の Object クラスのように<br>
+あらゆるポインタ型を代入することができるポインタ型が存在すれば便利です<br>
+<br>
+この要求は <strong>void *</strong> 型が解決してくれるでしょう<br>
+これは、C 言語で言う「汎用ポインタ」とまったく同じで、全てのポインタを代入できます<br>
+ポインタ型の void * 型へのキャストは、暗黙的に行えます<br>
+<br>
+先ほどの Msg.Proc() メソッドは、数値型のパラメータがあり<br>
+必要に応じて、数値を渡したり、ポインタのアドレスを渡す方法が用いられましたが<br>
+型がわからないが、ポインタ型であるということが確定している場合は void * 型を使います<br>
+このポインタ型は未知の型へのポインタとして用いることができるのです<br>
+当然ですが、間接参照を行うには明示的に型キャストしなければ使えません<br>
+<pre class="prg">unsafe class Test {
+	public static void Main() {
+		char c = 'C';
+		int i = 0x10;
+
+		WritePointer(&amp;c);
+		WritePointer(&amp;i);
+	}
+	public static void WritePointer(void *po) {
+		System.Console.WriteLine(*((uint *)po));
+	}
+}</pre>
+
+このプログラムの WritePointer() メソッドは、あらゆるポインタ型を受け取れます<br>
+受け取ったポインタは、uint 型のポインタと解釈し、整数で内容を出力します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs66.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs68.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<html>
+ <head>
+ <title>例外</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>例外</h1>
+<hr>
+ <h2>エラーの処理</h2>
+オブジェクト指向プログラミングでは、実行時に動的に発生したエラーを補足するため<br>
+統一したエラー処理システムとして「例外」をサポートします<br>
+例外は C++ や Java などのプログラム言語経験者にとっては馴染みのあるものでしょう<br>
+<br>
+例外は、私たちプログラマが予想しない処理に対して明示的に発生させるものと<br>
+正常に処理できない状態に発生する規定の例外があります<br>
+これらが発生した場合、プログラムは割り込みを発生させ本来のプログラムを中断します<br>
+<br>
+規定の例外とは、例えば new 演算子を用いてヒープにインスタンスを生成しようとした時<br>
+ヒープの容量が足りなくて、インスタンスを生成できないといった実行時の例外です<br>
+たとえば、次のプログラムは代表的な例外の一つです<br>
+
+<pre class="prg">class Test {
+	static void Main() {
+		int zero = 0;
+		System.Console.WriteLine(10 / zero);
+	}
+}</pre>
+
+数学の問題上 0 の除算はできません<br>
+0 の除算が定数であればコンパイル時にエラーを出せますが<br>
+これが動的に、つまり変数によって実行時に発生した場合は例外となります<br>
+<br>
+例外を捕捉することによって、実行時に発生した致命的なエラーを受け<br>
+特定の終了処理を施してスマートな、統一されたエラー処理を実現できます<br>
+<br>
+さらに、例外はエラー処理をクラス利用者に強制する効果もあります<br>
+C 言語でシステムに強く関連したプログラムを経験している方はよくわかると思いますが<br>
+関数がエラーを返すという場合、プログラマはエラーをチェックする必要がありますが<br>
+これを怠った場合、その後の処理で致命的なクラッシュが発生する可能性があります<br>
+しかし例外は、利用者からエラーチェックを解放する役割もあるのです<br>
+<br>
+例外が発生した場合、これを処理するためには例外を捕捉する必要があります<br>
+例外の捕捉には <strong>try</strong> と <strong>catch</strong> キーワードを用います<br>
+<br><b>
+try try-block<br>
+catch (exception-declaration) catch-block<br>
+...<br>
+<br></b>
+try-block は例外の発生を監視するコードブロックを指定します<br>
+このブロック内のコードが例外を発生（スロー）させた場合は捕捉します<br>
+<br>
+exception-declaration は捕捉する<strong>例外の型</strong>を指定します<br>
+発生した例外がこの型であれば、catch-block を実行します<br>
+catch ブロックは、続けていくつでも指定することができます<br>
+catch-block は例外の処理用コードを記述します<br>
+<br>
+例外の型とは <strong>System.Exception</strong> を基底とするクラスを指します<br>
+発生する例外には必ず型があり、catch は例外のインスタンスを受け取ります<br>
+try ブロック内で例外が発生すると、プログラムは catch ブロックを検索します<br>
+exception-declaration で発生した例外と一致する型が見つかれば、そのブロックに制御を移します<br>
+<br>
+例外を処理する catch ブロックでは exceptioni-declaration で受け取った<br>
+発生した例外型の<strong>例外変数</strong>をローカル変数として扱い<br>
+例外変数から発生した例外に関連する情報を受け取ることができます<br>
+あらゆる例外は System.Exception を基底クラスとしなければなりません<br>
+<br><b>
+public class Exception : ISerializable<br>
+<br></b>
+Exception クラスで重要なのは、最低限例外の原因を<br>
+catch の例外変数が把握できるように設計されていることです<br>
+例外の説明は Message プロパティが文字列として返してくれます<br>
+<br><b>
+public virtual string Message {get;}<br>
+<br></b>
+独自の例外を作る場合も、このプロパティをオーバーライドすることによって<br>
+利用者が例外のメッセージを文字列として取得して表示することができます<br>
+
+<pre class="prg">class Test {
+	static void Main() {
+		try {
+			int zero = 0;
+			System.Console.WriteLine(10 / zero);
+		}
+		catch(System.Exception err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+}</pre>
+
+先ほどのプログラムと同様に、このプログラムでも 0 の除算が発生します<br>
+しかし try によって、例外が発生する可能性のあるコードを監視し<br>
+0 で除算しようとした場合は例外をキャッチするようにプログラムされています<br>
+<br>
+System.Console.WriteLine(10 / zero); を実行しようとすると例外が発生するので<br>
+プログラムは即座に処理を中断し catch ブロックに制御を移します<br>
+正確には、0 の除算の例外は <strong>System.DivideByZeroException</strong> クラスです<br>
+ただし、この例外は基底クラス Exception に暗黙的に変換できるため<br>
+catch の検索時に Exception 型のブロックが実行されたという仕組みです<br>
+もちろん、次のようにプログラムしても結果は同じです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		try {
+			int zero = 0;
+			System.Console.WriteLine(10 / zero);
+		}
+		catch(System.DivideByZeroException err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+}</pre>
+DivideByZeroException 例外は、0 の除算が発生した時に生成される例外です<br>
+例外は必ず処理しなければならないというものではないので<br>
+try 区の 0 の除算だけを処理する場合はこれを指定します<br>
+当然、何らかのエラー専用の例外は、そのエラーに応じた特殊化した機能を持つこともあります<br>
+<br>
+catch 句は必要な限り何個でも記述することができます<br>
+例外の型に応じて、それに適したエラー処理を施すことができるのです<br>
+
+<pre class="prg">class Test {
+	static void Main(string[] args) {
+		try {
+			if (args[0] == "A") {
+				int x = 0;
+				x = 10 / x;
+			}
+			else if (args[0] == "B") {
+				System.Object obj = null;
+				string str = obj.ToString();
+			}
+		}
+		catch (System.IndexOutOfRangeException err) {
+			System.Console.WriteLine(err.Message);
+		}
+		catch (System.DivideByZeroException err) {
+			System.Console.WriteLine(err.Message);
+		}
+		catch (System.NullReferenceException err) {
+			System.Console.WriteLine(err.Message);
+		}
+	}
+}</pre>
+このプログラムの try は、複数の catch を持ちます<br>
+try で発生した例外は、その型に応じて適切な処理を施されるのです<br>
+<br>
+IndexOutOfRangeException 例外は、配列で不正なインデックスにアクセスした場合の例外です<br>
+このプログラムでは、コマンドライン引数を与えないで実行するとこれが発生します<br>
+NullReferenceException は null 参照をアクセスした場合に発生します<br>
+MS-DOS プロンプトで次のように実行すると、結果はこうなりました<br>
+<pre class="dos">C:\program\C#>test
+種類 System.IndexOutOfRangeException の例外がスローされました。
+
+C:\program\C#>test A
+0 で除算しようとしました。
+
+C:\program\C#>test B
+オブジェクトのインスタンスが必要とされる場所で、値 'null' が見つかりました。</pre>
+
+それぞれ、適切な例外処理が実行されていることを確認できますね<br>
+<br>
+もし、例外が発生する型や情報に興味がない場合は<br>
+このような処理はむしろ面倒に感じるかもしれません<br>
+本来、プロジェクトレベルの正式はソフトウェアは適切で親切なエラー処理をするべきですが<br>
+その必要がない場合は<strong>包括的 catch 句</strong>という構文を使います<br>
+<br><b>
+try try-block catch catch-block<br>
+<br></b>
+try-block には例外を監視するコードを<br>
+catch-block には例外が発生した時の処理用コードを指定します<br>
+<br>
+これまでの、例外変数を受ける catch 句を<strong>具体的 catch 句</strong>と呼び<br>
+包括的 catch 句はこれに対して、例外変数を受け取りません<br>
+どのような例外にも対応し、文字どおり包括的にエラー処理を行います<br>
+具体的 catch 句との併用も可能ですが、その場合は必ず最後に包括的 catch 区を指定します<br>
+<pre class="prg">class Test {
+	static void Main(string[] args) {
+		try {
+			if (args[0] == "A") {
+				int x = 0;
+				x = 10 / x;
+			}
+			else if (args[0] == "B") {
+				System.Object obj = null;
+				string str = obj.ToString();
+			}
+		}
+		catch {
+			System.Console.WriteLine("例外がスローされました");
+		}
+	}
+}</pre>
+このプログラムは、どのような例外が発生しても catch が実行されます<br>
+例外変数を指定しない包括的 catch は、try 句で発生した例外を全て受け取ります<br>
+
+<br><hr>
+<h2>後片付け</h2>
+try 句が無事に終了するか、例外が発生することによって<br>
+場合によっては、何らかの後処理が必要になることがあります<br>
+<br>
+例えば、try 句でディスクファイルを操作している場合<br>
+最終的には、バッファをフラッシュしてストリームを閉じる動作が必要になるでしょう<br>
+このような場合、例外に応じて同じ処理を書くというのは合理的ではありません<br>
+そこで、try 句の後処理として <strong>finally</strong> ブロックが存在します<br>
+<br><b>
+try try-block finally finally-block<br>
+<br></b>
+try-block には例外を監視するブロックを<br>
+finally-block は、制御が try から離れた時に実行するステートメントを記述します<br>
+<br>
+このことから、try ステートメントは３つの構文に分けられます<br>
+try-catch と try-finally、そして try-catch-finally という構文です<br>
+<br><b>
+try ブロック catch 句群<br>
+try ブロック finally 句<br>
+try ブロック catch 句群 finally 句<br>
+<br></b>
+catch を指定する場合、finally は必ず最後に指定します<br>
+finally は catch と異なり必ず実行されるというところに注目してください<br>
+<pre class="prg">class Test {
+	static void Main(string[] args) {
+		try {
+			System.Console.WriteLine(args[0]);
+		}
+		catch (System.Exception err) {
+			System.Console.WriteLine(err.Message);
+		}
+		finally {
+			System.Console.WriteLine("Kitty on your lap");
+		}
+	}
+}</pre>
+このプログラムは、コマンドラインから引数を渡さなければ例外が発生します<br>
+例外が発生してもしなくても、try 句が終了するか<br>
+または、catch を終了すると制御が finally 句に移行します<br>
+どのようなケースでも、必ず finally が実行されることが確認できます<br>
+
+<br><hr>
+<h2>try</h2>
+<b>try try-block<br>
+catch (exception-declaration) catch-block<br>
+...<br>
+<br>
+try try-block catch catch-block<br>
+<br>
+try try-block finally finally-block<br>
+<br></b>
+例外の発生を監視し、例外を捕捉してエラー処理を行います<br>
+exception-declaration を指定しない catch の場合は<br>
+全ての例外を捕捉する包括的 catch となります<br>
+<br>
+<b>try-block</b> - 例外を監視するコードブロックを指定します<br>
+<b>exception-declaration</b> - 捕捉する例外と、例外変数を指定します<br>
+<b>catch-block</b> - 例外発生時に実行するブロックを指定します<br>
+<b>finally-block</b> - try 終了後に実行するブロックを指定します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs47.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs49.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

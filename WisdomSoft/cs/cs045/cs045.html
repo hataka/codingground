@@ -1,0 +1,268 @@
+<html>
+ <head>
+ <title>インターフェイス</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>インターフェイス</h1>
+<hr>
+ <h2>ビヘイビアの定義</h2>
+C# は C++ 言語のように多重継承を行うことはできません<br>
+常に直列的な継承を行うことで、インスタンスや名前の衝突を避けるという目的があります<br>
+しかし、これだけでは完成されたオブジェクト指向プログラムを作成することはできません<br>
+<br>
+そこで、多重継承ではなく<strong>インターフェイス</strong>という技術が使われます<br>
+これは、Java 言語でも使われており、Java プログラマにとってはお馴染みのものです<br>
+<br>
+インターフェイスは抽象的にクラスの動作「ビヘイビア」を宣言します<br>
+しかし、インターフェイスはその実装を持つことはなく、ただのシグネチャの宣言でとどまります<br>
+そして、クラスがインターフェイスを実装することではじめて意味をなします<br>
+<br>
+クラスは1つの基底クラスしかもつことができませんが、インターフェイスはいくつも実装できます<br>
+「インターフェイスを継承する」という表現も存在しますが、これは論理的な解釈であり<br>
+物理的な動作を見ると「実装する」という表現が適確なのでこの場では「実装する」という表現を使います<br>
+<br>
+クラス宣言では、クラスベースの最初の識別子がクラスならばそのクラスを継承し<br>
+その後、カンマ ( , ) で区切ってインターフェイス型リストを指定します<br>
+最初の識別子がインターフェイスならば、インターフェイス型リストであると判断します<br>
+<br>
+インターフェイスの役割は、クラスに対する契約です<br>
+インターフェイスを実装するクラスは、インターフェイスで宣言される全てのメンバ<br>
+すなわち、宣言されている<strong>ビヘイビアを必ず実装</strong>しなければなりません<br>
+宣言されているメソッドなどが実装されていなければ、そのクラスはコンパイルできません<br>
+<br>
+インターフェイスの宣言は <strong>interface</strong> キーワードを用います<br>
+<br><b>
+[attributes] [modifiers] interface identifier [:base-list] {interface-body}[;]<br>
+<br></b>
+インターフェイスの定義は、クラスのそれとほとんど変わりません<br>
+attributes に属性、modifiers に修飾子、identifier に識別子<br>
+そして、base-list に基底インターフェイスなどを指定することもできます<br>
+interface-body には、インターフェイスのメンバを定義します<br>
+<br>
+ただし、インターフェイスのメンバは実装のないビヘイビアです<br>
+インターフェイスはクラスと交わす契約書にすぎません<br>
+また、インターフェイスは常に公開される必要があるため、メンバはアクセス可能性を指定されません<br>
+<br>
+実装のないビヘイビアとは、つまりはシグネチャだけを定義するものです<br>
+メソッド、プロパティ、インデクサなどを指定することができます<br>
+（まだ説明していませんが、イベントというものも指定できます）<br>
+<br><b>
+type method(list);<br>
+type property { get; set; }<br>
+type this [list] { get; set; }<br>
+<br></b>
+上からメソッド、プロパティ、インデクサのインターフェイスでの宣言構文です<br>
+type には型、list にはパラメータリストを指定することができます<br>
+
+<pre class="prg">interface KittyStandard {
+	void WriteName();
+}
+
+class Kitty : KittyStandard {
+	private string name;
+	public Kitty(string name) {
+		this.name = name;
+	}
+	public void WriteName() {
+		System.Console.WriteLine(name);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty("RENA");
+		rena.WriteName();
+	}
+}</pre>
+
+このプログラムでは KittyStandard というインターフェイスを定義しています<br>
+このインターフェイスを実装するクラスは、必ずインターフェイスで宣言しているビヘイビアを<br>
+クラス内で再定義して、その実装を保有しなければコンパイルすることができません<br>
+<br>
+つまり、実装がどのような形であれ KittyStandard 型は WriteName() メソッドを持ちます<br>
+プロジェクトの設計者がインターフェイスを設計してその仕様をアプリケーション設計者に指示すれば<br>
+異なるコンポーネント間でも、インターフェイスを通じて同じ操作を保証することができるのです<br>
+<br>
+<table>
+<tr><th class="Rect" colspan="2">設計者
+<tr><th colspan="2">↓
+<tr><th class="Rect" colspan="2">インターフェイス
+<tr><th colspan="2">↓
+<tr><th class="Rect" colspan="2">開発者
+<tr><th>↓<th>↓
+<tr><th class="Rect">コンポーネントA<th class="Rect">コンポーネントB
+<tr><th colspan="2">↑
+<tr><th class="Rect" colspan="2">クラス利用者
+</table>
+<br>
+クラスの利用者は、例えコンポーネントの開発者が異なっていても<br>
+開発者が設計者のインターフェイス仕様を守ってコンポーネントを開発していれば<br>
+まったく同じ操作を異なるコンポーネント間で保証されるのです<br>
+<pre class="prg">interface KittyStandard {
+	void WriteName();
+}
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class Kitty_On_Your_Lap : KittyStandard {
+	private string name;
+	public Kitty_On_Your_Lap(KittyName name) {
+		this.name = name.ToString();
+	}
+	public void WriteName() {
+		System.Console.WriteLine(name);
+	}
+}
+
+class Di_Gi_Charat : KittyStandard {
+	private const string name = "Di Gi Charat";
+	public void WriteName() {
+		System.Console.WriteLine(name);
+	}
+}
+
+class Test {
+	static void Main() {
+		KittyStandard kitty = new Kitty_On_Your_Lap(KittyName.RENA);
+		kitty.WriteName();
+
+		kitty = new Di_Gi_Charat();
+		kitty.WriteName();
+	}
+}</pre>
+このプログラムを理解できれば、インターフェイスの強力さがわかるでしょう<br>
+インターフェイス KittyStandard はそれだけでもインターフェイス型として独立しています<br>
+KittyStandard 型は、実装はともかく WriteName() というシグネチャを保証しているのです<br>
+<br>
+KittyStandard インターフェイスを実装するクラスは、常に WriteName() を保証します<br>
+そのため、KittyStandard を実装するクラスは KittyStandard 形であるとも考えられ<br>
+このプログラムのように異なるクラスを同一の型として扱うことができるのです<br>
+<br>
+このプログラムでは Kitty_On_Your_Lap クラスと Di_Gi_Charat クラスがあります<br>
+それぞれ KittyStandard インターフェイスを実装しているため<br>
+クラスの関連がなくても KittyStandard 型として一貫した操作を提供しているのです<br>
+Main() メソッドの操作を見れば、これは明らかでしょう<br>
+
+<br><hr>
+<h2>名前の隠蔽</h2>
+インターフェイスを実装するクラスは必ずそのインターフェイスで定義されている<br>
+メソッドやプロパティといったビヘイビアを実装することを義務付けられます<br>
+<br>
+そのため、インターフェイス型のメソッドにはインターフェイス型でアクセスするこも<br>
+インターフェイスを実装するクラス型でアクセスすることも可能です<br>
+しかし、これが場合によっては不要な混乱や問題を発生させることもあります<br>
+<br>
+問題なのは、インターフェイス型とクラス型のメソッドの名前の衝突です<br>
+インターフェイス型は、仕様を持った意味のあるシグネチャの定義であり<br>
+できることならクラス型ではなくインターフェイス型としてアクセスされることが好ましく<br>
+実装するクラスのメソッドとしてアクセスされるのは、時として好ましくありません<br>
+<br>
+そこで、<strong>インターフェイス方の名前を隠蔽</strong>する方法があります<br>
+実は、クラスのメンバの宣言はインターフェイスを指定する構文も存在します<br>
+<br><b>
+type interfacce-name.member...<br>
+<br></b>
+type にはメンバ型を、interface-name にはインターフェイスを指定します<br>
+インターフェイスを指定する場合、アクセス可能性を指定することはできません<br>
+インターフェイスで定義されているビヘイビアは常に公開される必要があります<br>
+<br>
+こうして、インターフェイス名でメンバを修飾することでクラスと切り離すことができます<br>
+クラスはインターフェイスを実装しますが、クラスからはその名前を隠蔽するのです<br>
+このインターフェイスの実装にアクセスするには、インターフェイス型にキャストしなければなりません<br>
+<pre class="prg">interface KittyStandard {
+	void WriteName();
+}
+
+enum KittyName { RENA , YUKI , MIMI }
+
+class Kitty : KittyStandard {
+	private string name;
+	public Kitty(KittyName name) {
+		this.name = name.ToString();
+	}
+	public void WriteName() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	void KittyStandard.WriteName() {
+		System.Console.WriteLine(name);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty kitty = new Kitty(KittyName.YUKI);
+		kitty.WriteName();
+		((KittyStandard)kitty).WriteName();
+	}
+}</pre>
+このプログラムの Kitty クラスは二つの WriteName() メソッドを持ちます<br>
+コンパイルして実行すると次のような結果になりました<br>
+<br><b>
+Kitty on your lap<br>
+YUKI<br>
+<br></b>
+重要なのは、Kitty クラスの void KittyStandard.WriteName() メソッドです<br>
+このメソッドは KittyStandard で修飾することによって名前を隠蔽しているのです<br>
+<br>
+そのため、Main() メソッドで Kitty 型として WriteName() でアクセスした場合<br>
+Kitty クラスの WriteName() メソッドを呼び出され<br>
+KittyStandard にキャストして WriteName() を実行すると<br>
+KittyStandard の WriteName() メソッドが呼び出されます<br>
+
+<br><hr>
+<h2>インターフェイスの結合</h2>
+インターフェイスは、他のインターフェイスを含むことで結合させることができる<br>
+構文はクラスの継承と同じで、他のインターフェイスを継承するような形になります<br>
+<br>
+この機能を用いれば、いくつかのインターフェイスを合成し<br>
+必要であればさらに新しい機能を定義することが可能である<br>
+<pre class="prg">interface A {
+	void WriteA();
+}
+
+interface B {
+	void WriteB();
+}
+
+interface C : A , B {}
+
+class Kitty : C {
+	public void WriteA() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	public void WriteB() {
+		System.Console.WriteLine("Silver Gene");
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.WriteA();
+		obj.WriteB();
+	}
+}</pre>
+このプログラムのインターフェイス C は A と B を結合したものです<br>
+新しい機能の追加はありませんが、A の定義と B の定義を結合した状態にあります<br>
+
+<br><hr>
+<h2>interface</h2>
+<b>
+[attributes] [modifiers] interface identifier [:base-list] {interface-body}[;]</b><br>
+<br>
+インターフェイスを宣言します<br>
+<br>
+<b>attributes</b> - 属性を指定します<br>
+<b>modifiers</b> - 修飾子を指定します<br>
+<b>identifier</b> - 識別子を指定します<br>
+<b>base-list</b> - 他の結合するインターフェイスを指定します<br>
+<b>intarface-body</b> - ビヘイビア（操作特性）を定義します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs44.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs46.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

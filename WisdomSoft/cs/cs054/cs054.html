@@ -1,0 +1,171 @@
+<html>
+ <head>
+ <title>デリゲート</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>デリゲート</h1>
+<hr>
+ <h2>関数ポインタ</h2>
+C/C++ で低水準なシステムプログラムを開発したことがある人は<br>
+これらの言語が関数のエントリーポイントを扱う重要性をよくご存知だと思います<br>
+関数のエントリーポイントを表すアドレスを、一般に「関数ポインタ」と呼びましたが<br>
+この関数ポインタは、システムに呼び出してほしい関数の位置などを知らせることができました<br>
+<br>
+C# でもこのような機能は必要であると考えられましたが<br>
+関数ポインタは型保証がなく、リスクが生じるのでオブジェクト指向には適しません<br>
+そこで、C# では<strong>デリゲート</strong>という機能が用いられます<br>
+<br>
+デリゲートは関数ポインタに代わる機能で、コールバック関数などの作成に用いられます<br>
+さらに、当然オブジェクト思考という見解からインスタンスメソッドにも対応しなければなりません<br>
+デリゲートは、C++ では不完全だった型の保証も含めてコールバックを保証するのです<br>
+<br>
+デリゲートを宣言するには <strong>delegate</strong> キーワードを用います<br>
+これでデリゲートを宣言し、メソッドの位置を格納するデリゲート型の参照型変数を生成します<br>
+まずは、デリゲートの宣言構文を紹介しましょう<br>
+<br><b>
+[attributes] [modifiers] delegate result-type identifier ([formal-parameters]);<br>
+<br></b>
+見てわかるように、ほとんどメソッドの宣言と同じです<br>
+attributes には属性、modifiers には修飾子、result-type には戻り値<br>
+identifier には識別子、formal-parameters には仮パラメータを指定します<br>
+<br>
+デリゲートの宣言は名前空間やクラスのメンバ空間などで宣言できます<br>
+クラスのメンバ空間で宣言した場合も、インスタンスとの関わりはありません<br>
+new、public、protected、internal、private のいずれかの修飾子のみ指定できます<br>
+<br>
+これが、関数ポインタの代わりにメソッドの位置を記憶するデリゲートの宣言です<br>
+この時点で、まずデリゲート型が作成されたことになります<br>
+この型を使用するには、<strong>デリゲートのインスタンス</strong>を生成します<br>
+デリゲートは、クラスのようにふるまうのでインスタンスが必要なのです<br>
+<br>
+new 演算子を用いるということはクラスのインスタンス生成と同じです<br>
+しかしデリゲートは、いささか特殊な生成式を持っています<br>
+<br><b>
+new delegate_type(expression);<br>
+<br></b>
+delegate_type は生成するデリゲートの型を指定します<br>
+expression には、デリゲートが呼び出すべきメソッドを指定します<br>
+または、他のデリゲート型を指定してコピーを作る場合もあります<br>
+<br>
+expression に指定するメソッドは、必ずデリゲート型と同じシグネチャでなければなりません<br>
+シグネチャが同じであれば、型が保証されるのでほかに制約されるものはありません<br>
+生成されたデリゲート型変数は、指定したメソッドの位置情報を格納しています<br>
+<br>
+デリゲートを用いてメソッドにアクセスする方法はいたって簡単です<br>
+デリゲートの識別子と () を用いて、通常のメソッドのように呼び出すことができます<br>
+<pre class="prg">delegate void KittyCallback();
+
+class Test {
+	static void Main() {
+		KittyCallback kitty = new KittyCallback(Kitty);
+		kitty();
+	}
+	static void Kitty() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}</pre>
+
+KittyCallback はデリゲートです<br>
+KittyCallback 型のインスタンスは戻り値が void、パラメータ無しのメソッドの位置を保有します<br>
+KittyCallback kitty = new KittyCallback(Kitty) に注目していただければわかるように<br>
+デリゲート型 kitty 変数は Main.Kitty() メソッドの位置情報を持っているのです<br>
+<br>
+デリゲートの特殊な呼び出し規約で kitty() とすれば、そのまま Kitty() メソッドが呼び出されます<br>
+これを見れば、デリゲートがコールバックに適していることがよくわかるでしょう<br>
+<br>
+デリゲート型はインスタンスを生成し、参照型の変数をもつということは<br>
+これも System.Object を基底とした一貫した型情報を持っていることを想像できます<br>
+実際にその通りで、デリゲート型とは <strong>System.Delegate</strong> の派生クラスを指します<br>
+重要なことですが、Delegate クラスはデリゲート型ではありません<br>
+Delegate クラスの<strong>派生クラスがデリゲート型</strong>なのです<br>
+<br><b>
+public abstract class Delegate : ICloneable, ISerializable<br>
+<br></b>
+デリゲート型は、全てこのクラスを拡張しているのです<br>
+必要であれば Object 型にキャストしたり、Delegate の機能を使うこともできます<br>
+このクラスの詳細については、.NET クラスライブラリのリファレンスを参照してください<br>
+<br>
+また、デリゲート型は <strong>暗黙的に sealed</strong> となっています<br>
+デリゲート型からさらに派生クラスを生成することはできません<br>
+<br>
+上のプログラムのデリゲートは静的なメソッドを参照しましたが<br>
+デリゲートはシグネチャが同じであれば、インスタンスのメソッドでもかまいません<br>
+この時、デリゲートはインスタンスの情報と共にメソッドの情報を格納します<br>
+<pre class="prg">delegate void KittyCallback();
+
+class Kitty {
+	private string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public void Write() {
+		System.Console.WriteLine(str);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("Kitty on your lap");
+		KittyCallback write = new KittyCallback(obj.Write);
+		write();
+	}
+}</pre>
+このプログラムは、KittyCallback デリゲートに Kitty のインスタンスメソッドを格納しています<br>
+デリゲートは、メソッドを呼び出す時にインスタンスを参照してアクセスします<br>
+<br>
+また、デリゲートの宣言はクラスなどのメンバとして扱うことも可能です<br>
+基本的な扱いはメソッドと同じですが、オーバーライドはできません<br>
+ただし、基底クラスで同一の宣言がある場合 new で隠蔽することは可能です<br>
+
+<pre class="prg">class Test {
+	delegate void KittyCallback();
+	static void Main() {
+		KittyCallback kitty = new KittyCallback(Kitty);
+		kitty();
+	}
+	static void Kitty() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}</pre>
+
+このプログラムの KittyCallback デリゲートは Test クラスで宣言されています<br>
+他のスコープからこれにアクセスする時は、静的に Test.KittyCalback とすることでアクセスできます<br>
+当然ですが、デリゲート型変数は通常の参照型変数としてフィールドに配置できます<br>
+<br>
+これまでのサンプルでは戻り値が void で、パラメータがないシグネチャのデリゲートでしたが<br>
+コールバックの仕様などにあわせて、目的のシグネチャを指定できます<br>
+
+<pre class="prg">class Test {
+	delegate void WriteCallback(System.Object str);
+	static void Main() {
+		WriteCallback write = new WriteCallback(System.Console.WriteLine);
+		write("Kitty on your lap");
+	}
+}</pre>
+
+このプログラムでは、第一パラメータに Object 型の参照を受ける<br>
+WriteCallback デリゲートを宣言しています<br>
+そして Console.WriteLine() メソッドを参照するインスタンスを作成しています<br>
+
+<br><hr>
+<h2>delegate</h2>
+<b>
+[attributes] [modifiers] delegate result-type identifier ([formal-parameters]);<br>
+<br></b>
+デリゲートを宣言します<br>
+<br>
+<b>attributes</b> - 属性を指定します<br>
+<b>modifiers</b> - 修飾子を指定します<br>
+<b>result-type</b> - 戻り値の型を指定します<br>
+<b>identifier</b> - 識別子を指定します<br>
+<b>formal-parameters</b> - パラメータを指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs53.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs55.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

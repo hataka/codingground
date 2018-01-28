@@ -1,0 +1,178 @@
+<html>
+ <head>
+ <title>名前空間</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>名前空間</h1>
+<hr>
+ <h2>名前の階層</h2>
+オブジェクト指向言語は、三大特性の一つとして「カプセル化」があります<br>
+名前空間は、このカプセル化を実現する一つの手段で<br>
+クラスなどに識別子に対して、その上にさらに別の階層を与えるものです<br>
+<br>
+名前空間を用いることで、巨大なプロジェクトチームによる開発もより効率的に行えます<br>
+非オブジェクト指向言語ならば、それぞれのチームが互いに名前の競合に注意する必要がありますが<br>
+名前空間を用いれば、トップレベルの階層にそれぞれのチーム名を与えることで<br>
+以下の階層はどのような名前をつけても、他のチームと識別子が衝突することはありません<br>
+<br>
+これまでのプログラムは、最上階層に class や interface を配置してきましたが<br>
+この上の最上位のスコープとして名前空間が入るのです<br>
+名前空間の宣言には <strong>namespace</strong> キーワードを用います<br>
+<br><b>
+namespace name[.name1] ...] { type-declarations }<br>
+<br></b>
+name には、この名前空間の名前となる<strong>修飾識別子</strong>を指定します<br>
+type-declarations に、名前空間の本文を指定します<br>
+名前空間の本文とは、これまで書いてきたようなクラスや構造体になります<br>
+<br>
+名前空間をわかりやすく表現するならば、UNIX のディレクトリシステムに似ています<br>
+名前空間はディレクトリのように、階層化（ネスト）することも可能です<br>
+<pre class="prg">namespace KittyScope {
+	class Kitty {}
+}
+
+class Test {
+	static void Main() {
+		//Kitty obj = new Kitty(); //Kitty はこの空間に存在しない
+		KittyScope.Kitty obj = new KittyScope.Kitty();
+	}
+}</pre>
+
+このプログラムは、KittyScope という名前空間に Kitty クラスを宣言しています<br>
+このクラスに別の名前空間からアクセスするには KittyScope を明示的に指定する必要があります<br>
+Test クラスは KittyScope ではないから、直接 Kitty クラスは見えません<br>
+もちろん、KittyScope 名前空間内からは見えるので、名前空間を指定する必要はありません<br>
+<br>
+異なる名前空間は、名前が衝突することはありません<br>
+各名前空間で同名のクラスがあっても、それぞれのクラスは名前空間で識別されます<br>
+<pre class="prg">namespace KittyScope {
+	class Kitty {
+		public override string ToString() {
+			return "Kitty on your lap";
+		}
+	}
+}
+
+namespace MainScope {
+	class Kitty {
+		public override string ToString() {
+			return "Tokyo mew mew";
+		}
+	}
+
+	class Test {
+		static void Main() {
+			MainScope.Kitty objA = new MainScope.Kitty();
+			KittyScope.Kitty objB = new KittyScope.Kitty();
+			System.Console.WriteLine(objA +"\n" + objB);
+		}
+	}
+}</pre>
+
+このプログラムでは KittyScope と MainScope の名前空間で<br>
+Kitty クラスという同名のクラスが宣言されています<br>
+しかし、それぞれ宣言されている名前空間は異なるので衝突することはありません<br>
+<br>
+因みに、Main() メソッドで MainScope.Kitty と指定してありますが<br>
+Test クラスも MainScope 空間内で宣言されているため、MainScope は省略できます<br>
+<br>
+さらに、名前空間は別の名前空間を含むことができます<br>
+これによって、ルート空間からサブ空間へ階層化させることが可能です<br>
+
+<pre><b>namespace A {
+	namespace B {
+		namespace C {...</pre></b>
+こうして階層化した名前空間の識別子にアクセスするには、ルートから順に指定してアクセスします<br>
+例えば、空間 C のクラス c の M() メソッドにアクセスするには A.B.C.c.M() と指定します<br>
+内部空間からのアクセスであれば、上位空間の指定は省略することが可能となります<br>
+同様のアクセスが B からならば、A と B の指定は省略してもかまいません<br>
+<pre class="prg">namespace A {
+	namespace B {
+		namespace C {
+			class Kitty {
+				public override string ToString() {
+					return "Kitty on your lap";
+				}
+			}
+		}
+	}
+}
+class Test {
+	static void Main() {
+		A.B.C.Kitty obj = new A.B.C.Kitty();
+		System.Console.WriteLine(obj);
+	}
+}</pre>
+このような機能を用いれば、コンポーネントの目的に応じてカプセル化することも<br>
+社内専用ライブラリの開発チームの権威レベルを表すことも可能です<br>
+<br>
+名前空間の階層は . トークンで識別子を区切って一度に宣言することも可能です<br>
+上の名前空間のネスト宣言は次のように宣言しても同じです<br>
+<br><b>
+namespace A.B.C {...<br>
+<br></b>
+このように、階層的な名前空間を一度に宣言することも可能です<br>
+少なくとも、上のプログラムよりは以下のプログラムのほうがスマートでしょう<br>
+<pre class="prg">namespace A.B.C {
+	class Kitty {
+		public override string ToString() {
+		return "Kitty on your lap";
+		}
+	}
+}
+class Test {
+	static void Main() {
+		A.B.C.Kitty obj = new A.B.C.Kitty();
+		System.Console.WriteLine(obj);
+	}
+}</pre>
+
+ところで、名前空間の識別子が衝突してしまったらどうなるのでしょうか？<br>
+名前空間は名前の衝突を避ける手段として生まれたものですが<br>
+名前空間の修飾識別子が同名になることもありえる話です<br>
+<br>
+じつは、この場合はエラーになりませんし、問題もありません<br>
+名前空間は実体を持つわけではなく、識別子の区分けにすぎません<br>
+名前空間の宣言で、修飾識別子が重複している場合は<br>
+それぞれが<strong>同一の空間</strong>と判断されて処理されることになります<br>
+<pre class="prg">namespace KittyScope {
+	class Kitty {
+		public override string ToString() {
+			return "Kitty on your lap";
+		}
+	}
+}
+
+namespace KittyScope {
+	class Test {
+		static void Main() {
+			Kitty obj = new Kitty();
+			System.Console.WriteLine(obj);
+		}
+	}
+}</pre>
+
+プログラムを見ると KittyScope という名前空間が重複して宣言されています<br>
+しかし、これはコンパイル時には同一の空間にまとめられるので問題はありません<br>
+Test クラスから見ても Kitty クラスから見ても、互いに同じ空間にあると考えられます<br>
+これを利用すれば、異なる位置に同一の名前空間を書くことができます<br>
+
+<br><hr>
+<h2>namespece</h2>
+<b>
+namespace name[.name1] ...] { type-declarations }<br>
+<br></b>
+名前空間を宣言します<br>
+<br>
+<b>name</b> - 名前空間の修飾識別子を指定します<br>
+<b>type-declarations</b> - 名前空間の本文を指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs49.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs51.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

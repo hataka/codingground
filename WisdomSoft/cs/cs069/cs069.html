@@ -1,0 +1,57 @@
+<html>
+ <head>
+ <title>型のサイズ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>型のサイズ</h1>
+<hr>
+ <h2>sizeof 演算子</h2>
+アンセーフコードは、直接メモリを扱うことができるため<br>
+C 言語の様に、高度なポインタの演算ということもできるようになります<br>
+<br>
+メモリを直接扱うということからも、場合によっては型のサイズが重要になります<br>
+特に、構造体の型破りな変換など、プロ的な(?)裏技をやる時などは必要になるでしょう<br>
+例えば、構造体の末尾に暗黙的なリソース情報を付加する時などです<br>
+<br>
+型のサイズを取得する時は <strong>sizeof()</strong> 演算子を用います<br>
+<br><b>
+sizeof(type)<br>
+<br></b>
+type には、サイズを調べたい型の名前を指定します<br>
+この演算子は、指定した型のサイズを表す int 型を返します<br>
+ただし、type に指定する式は<strong>アンマネージド型</strong>でなければなりません<br>
+すなわち、ポインタ変数に代入できる型でなければならないのです<br>
+<br>
+C# がデフォルトで備えている int や long というような型は<br>
+調べる前にコンパイラが理解できるため、この時は sizeof() 演算子は定数を返します<br>
+それ以外の型であれば、実装時に依存した値を返すようになります<br>
+<pre class="prg">struct Kitty {
+	int nSize;
+	long l;
+}
+	
+unsafe class Test {
+	public static void Main() {
+		System.Console.WriteLine(sizeof(int));
+		System.Console.WriteLine(sizeof(Kitty));
+	}
+}</pre>
+このプログラムを実行すれば、int 型と Kitty 型のサイズを出力します<br>
+sizeof() 演算子で調べられるのは型のサイズだけであり<br>
+C 言語の様に変数を直接渡して調べることはできないので、注意してください<br>
+
+<br><hr>
+<h2>sizeof(type)</h2>
+特定の型が使用するバイト数を返します<br>
+<br>
+<b>type</b> - サイズを調べたいアンマネージド式を指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs68.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs70.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<html>
+ <head>
+ <title>スタック</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>スタック</h1>
+<hr>
+ <h2>ポインタの演算</h2>
+アンセーフコードにおいて、配列のポインタを格納することはできませんでした<br>
+C# の配列は、C のような物理的に連続した配列ではないからです<br>
+<br>
+しかし、アンセーフコードは物理的に連続したメモリ領域をサポートしています<br>
+このような領域を得るには <strong>stackalloc</strong> キーワードを用います<br>
+このキーワードは、連続したスタック領域のポインタを返してくれます<br>
+<br><b>
+type * ptr = stackalloc type [ expr ];<br>
+<br></b>
+type にはポインタのリファレント型を、ptr はポインタ変数の名前を指定します<br>
+expr は、スタックに割り当てる連続したメモリの配列数を指定します<br>
+スタックは明示的に解放することはできず、メソッドの処理を抜けた時に解放されます<br>
+<br>
+これで、ptr は連続した物理メモリの配列の、先頭へのポインタということになります<br>
+C# のポインタも、C 言語同様に<strong>ポインタの演算</strong>が可能であり<br>
+stackalloc で割り当てたメモリへのポインタは、演算によって適当な位置にアクセスできます<br>
+<br>
+ポインタの演算には、++、--、+、- の算術演算子と比較演算子を用いることができ<br>
+ポインタをインクリメントするということは、配列の要素を1進めることを意味します<br>
+これは、C 言語同様に、ポインタのアドレスに 1 加算すると言う事が<br>
+単純にアドレスの値を 1 増やすことではないことを表します<br>
+<br>
+4 バイト型のポインタをインクリメントすれば、それはアドレスに 4 を加算するということです<br>
+ポインタ型 p の要素 p[3] にアクセスしたい時 <strong>*(p + 3)</strong> を指定します<br>
+括弧で括るのは、* 演算子が + 演算子よりも優先順位が高いためです<br>
+
+<pre class="prg">unsafe class Test {
+	public static void Main() {
+		int * iIndex = stackalloc int [2];
+		*iIndex = 0x10;
+		*(iIndex + 1) = 0x100;
+
+		System.Console.WriteLine(*iIndex + "\n" + *(iIndex + 1));
+	}
+}</pre>
+このプログラムを実行すれば、16 と 256 という数値が表示されます<br>
+プログラムは、最初にスタックに int 型2つ分の領域を確保しています<br>
+そして、その先頭に 0x10 を、その次に 0x100 という値を保存しています<br>
+<br>
+32 ビットコンピュータの int 型は4バイトです<br>
+もし iIndex が 10000 というアドレスを指していれば iIndex + 1 は 10004 を指します<br>
+<br>
+スタックに確保しているメモリ領域は int 型2つ分、すなわち int[2] の配列です<br>
+iIndex はこの配列の先頭のアドレスであり、1 を加算すれば iIndex[1] に等しくなります<br>
+*(iIndex + 1) というポインタの演算は、2番目の要素のアドレスを表すことになります<br>
+<br>
+これを用いれば、例えば文字列の表現方法を C 言語と互換にできます<br>
+C 言語の文字列とは char 型の配列であり、終端を 0 で表すというものでした<br>
+
+<pre class="prg">unsafe class Test {
+	public static void Main() {
+		char* str = stackalloc char[256];
+		SetStringToChar(str , "Kitty on your lap");
+		WriteChar(str);
+	}
+	static void SetStringToChar(char *pstr , string strSet) {
+		int iCount = 0;
+		for ( ; iCount &#60; strSet.Length ; iCount++)
+			*(pstr + iCount) = strSet[iCount];
+		*(pstr + iCount) = (char)0;
+	}
+	static void WriteChar(char *pstr) {
+		for(int iCount = 0 ; *(pstr + iCount) != 0 ; iCount++)
+			System.Console.Write(*(pstr + iCount));
+	}
+}</pre>
+
+このプログラムの SetStringToChar() メソッドは<br>
+char 型のポインタを受け取り、そこに指定した string 型の文字列を移植します<br>
+string 型は、単一の文字のアクセスにインデクサをサポートしているので、それを用います<br>
+<br>
+string の文字列の変換が終われば、最後に 0 を代入します<br>
+これで、C 言語風 char 型文字配列のできあがりです<br>
+WriteChar() メソッドは、受け取った char 型のポインタを出力します<br>
+この時、文字列の終端は 0、すなわち NULL 文字が見つかるまで表示します<br>
+<br>
+このように、stackalloc キーワードを使えば<br>
+C 言語の様に物理的に連続したメモリ領域を直接扱えます<br>
+ただし、stackalloc は動的にメモリを取得するものではありません<br>
+スタックに確保するメモリサイズは、常にコンパイル時に決定する静的なものです<br>
+
+<br><hr>
+<h2>ポインタの要素アクセス</h2>
+配列の先頭へのポインタは、上のようにポインタの演算を用いることで<br>
+配列上の任意の要素に直接アクセスすることができました<br>
+<br>
+しかし、ポインタは単純に要素アクセスで参照することができます<br>
+ポインタの要素アクセスもまた、基本式に [ ] で添え字を指定する形を取ります<br>
+通常、この方がソースは読みやすいので、こちらを使うべきかもしれません<br>
+例えば、次のプログラムは上のプログラムとまったく同じものです<br>
+<pre class="prg">unsafe class Test {
+	public static void Main() {
+		char* str = stackalloc char[256];
+		SetStringToChar(str , "Kitty on your lap");
+		WriteChar(str);
+	}
+	static void SetStringToChar(char *pstr , string strSet) {
+		int iCount = 0;
+		for ( ; iCount &#60; strSet.Length ; iCount++)
+			pstr[iCount] = strSet[iCount];
+		pstr[iCount] = (char)0;
+	}
+	static void WriteChar(char *pstr) {
+		for(int iCount = 0 ; pstr[iCount] != 0 ; iCount++)
+			System.Console.Write(pstr[iCount]);
+	}
+}</pre>
+pstr[iCount] という形で、ポインタ変数から直接、要素にアクセスしています<br>
+pstr[iCount] というポインタ要素アクセス式は *(pstr + iCount) に等しいと考えられます<br>
+
+<br><hr>
+<h2>type * ptr = stackalloc type [ expr ];</h2>
+スタックに、指定した型の配列を割り当て<br>
+割り当てた配列のポインタを返します<br>
+<br>
+<b>type</b> - 型を指定します<br>
+<b>ptr</b> - ポインタ変数の名前を指定します<br>
+<b>expr</b> - 割り当てる配列の個数を指定します<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs67.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs69.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<html>
+ <head>
+ <title>リソース</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>リソース</h1>
+<hr>
+ <h2>using ステートメント</h2>
+using ディレクティブがローカルスコープで利用できない理由として<br>
+using キーワードのもう一つの姿である <strong>using ステートメント</strong>があります<br>
+<br>
+using ステートメントは<strong>リソース</strong>を取得、実行、解放をパックして行う機能を持ち<br>
+ここで使う「リソース」の定義は System.IDisposable インターフェイスを実装する型を指します<br>
+IDisposable は System 名前空間で次のように定義されています<br>
+<br><b>
+public interface IDisposable<br>
+<br></b>
+このインターフェイスはいたって単純なもので<br>
+値を返さない、パラメータを受け取らない単純な一つのメソッドを宣言しています<br>
+<br><b>
+void Dispose();<br>
+<br></b>
+このメソッドは、リソースを解放する時に呼び出されるメソッドです<br>
+using ステートメントは、終了時にこのメソッドを呼び出すため<br>
+リソースは必ず IDisposable インターフェイスを実装する必要があるのです<br>
+using ステートメントの構文は次のようになっています<br>
+<br><b>
+using (expression | type identifier = initializer) statement...<br>
+<br></b>
+expression はリソースに変換できる型の式を指定します<br>
+式を指定しない場合は、もう一方のローカル変数宣言を宣言することになります<br>
+type は変数の型、identifier は識別子、initializer は初期化子を指定します<br>
+<br>
+statement には、埋め込みステートメントを指定します<br>
+ここで、式やローカル変数宣言で行った参照を実行し、操作します<br>
+using のエンドポイントに到達すると、プログラムは自動的に Dispose() を呼び出します<br>
+<pre class="prg">using System;
+
+class Kitty : IDisposable {
+	private string name;
+	void IDisposable.Dispose() {
+		Console.WriteLine("Dispose : " + name);
+	}
+	public string Name {
+		get { return name;	}
+		set { name = value;	}
+	}
+}
+
+class Test {
+	static void Main() {
+		using (Kitty obj = new Kitty()) obj.Name = "Kitty on your lap";
+	}
+}</pre>
+
+このプログラムは、Kitty クラスを using ステートメントでリソースとして扱っています<br>
+プログラムを実行すると、次のような結果になりました<br>
+<br><b>
+Dispose : Kitty on your lap<br>
+<br></b>
+Dispose() メソッドが実行されていることがわかりますね<br>
+それも、Kitty は Dispose() メソッドを隠蔽しているので<br>
+ちゃんと IDisposable 型にキャストしていることもここから確認できます<br>
+<br>
+この using の動作は、じつは try-finally に等しいのです<br>
+以下のプログラムは、じつは上の using を使ったプログラムに等しいです<br>
+<pre class="prg">using System;
+
+class Kitty : IDisposable {
+	private string name;
+	void IDisposable.Dispose() {
+		Console.WriteLine("Dispose : " + name);
+	}
+	public string Name {
+		get { return name;	}
+		set { name = value;	}
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		try {
+			obj.Name = "Kitty on your lap";
+		}
+		finally {
+			if (obj != null) ((IDisposable)obj).Dispose();
+		}
+	}
+}</pre>
+例外の扱いに慣れている場合は、この方が書きやすいかもしれませんが<br>
+やはり using ステートメントを用いた方が明らかにスマートです<br>
+GUI のルートウィンドウの破棄やデータ伝送をパッケージ化したクラスなどでは<br>
+一般的に何らかの後処理が必要になるため、リソース化によってより効率的にプログラムできます<br>
+<br>
+using ステートメントのリソース処理で複数のリソースを扱いたい場合<br>
+通常は、using ステートメントをネスティングすることで実現できます<br>
+<pre class="prg">using System;
+
+class Kitty : IDisposable {
+	private string name;
+	void IDisposable.Dispose() {
+		Console.WriteLine("Dispose : " + name);
+	}
+	public string Name {
+		get { return name;	}
+		set { name = value;	}
+	}
+}
+
+class Test {
+	static void Main() {
+		using (Kitty rena = new Kitty()) {
+			using (Kitty yuki = new Kitty()) {
+				rena.Name = "RENA";
+				yuki.Name = "YUKI";
+			}
+		}
+	}
+}</pre>
+
+Main() メソッドで using ステートメントがネストされていることに注目してください<br>
+この場合、Dispose() が呼び出されるのは内側で指定されたリソースからです<br>
+<br>
+しかし、多くのリソースを同時に扱う場合、これでは可読性が低下します<br>
+そこで、次のようにカンマ , で区切ることで複数の変数を指定できます<br>
+<pre class="prg">using System;
+
+class Kitty : IDisposable {
+	private string name;
+	void IDisposable.Dispose() {
+		Console.WriteLine("Dispose : " + name);
+	}
+	public string Name {
+		get { return name;	}
+		set { name = value;	}
+	}
+}
+
+class Test {
+	static void Main() {
+		using (Kitty rena = new Kitty() , yuki = new Kitty()) {
+			rena.Name = "RENA";
+			yuki.Name = "YUKI";
+		}
+	}
+}</pre>
+このプログラムでは、１つの using ステートメントで<br>
+同時に複数のローカル変数を指定しています<br>
+ただし、異なる型の変数を宣言することはできません<br>
+
+<br><hr>
+<h2>using ステートメント</h2>
+<b>
+using (expression | type identifier = initializer) statement<br>
+<br></b>
+リソースを生成、実行します<br>
+制御がエンドポイントに到達するとリソースを解放します<br>
+<br>
+<b>expression</b> - リソース型の式を指定します<br>
+<b>type</b> - リソース型を指定します<br>
+<b>identifier</b> - ローカル変数の識別子を指定します<br>
+<b>initializer</b> - 初期化子を指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs51.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs53.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

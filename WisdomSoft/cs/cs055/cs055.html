@@ -1,0 +1,145 @@
+<html>
+ <head>
+ <title>マルチキャスト</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>マルチキャスト</h1>
+<hr>
+ <h2>デリゲートの合成</h2>
+デリゲートが関数ポインタのように、メソッドの位置をあらわすものということは理解できたでしょう<br>
+そして、これは一般にコールバックの登録などに用いることができます<br>
+<br>
+デリゲート型は、さらにこれまでの言語にはない特殊な性質があります<br>
+じつは、あるデリゲート型は他のデリゲート型と加算演算子で結合できるのです<br>
+この機能を<strong>マルチキャストデリゲート</strong>と呼びます<br>
+<br>
+結合されたデリゲートは、配列のように複数のデリゲートがパックされています<br>
+このデリゲートのメソッドを実行すれば、登録されている全てのデリゲートが実行されます<br>
+<pre class="prg">class Test {
+	delegate void KittyCallback();
+	static void Main() {
+		KittyCallback kitty = new KittyCallback(Kitty);
+		kitty += new KittyCallback(Temp);
+		kitty();
+	}
+	static void Kitty() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	static void Temp() {
+		System.Console.WriteLine("Silver Line");
+	}
+}</pre>
+このプログラムのデリゲート型変数 kitty は最初、Kitty() メソッドを格納しています<br>
+そして、さらにこの変数に Temp() メソッドを持つデリゲート型を加算しています<br>
+これを実行すると、次のような結果になりました<br>
+<br><b>
+Kitty on your lap<br>
+Silver Line<br>
+<br></b>
+これを見てわかるように、マルチキャストデリゲートは一度に登録されている<br>
+全てのデリゲートを、格納順にシーケンシャルに実行します<br>
+<br>
+なぜこのような機能が必要なのか、最初は戸惑うかもしれません<br>
+しかし、高度なオブジェクト指向プログラマなどは、すぐにこの意味を理解できるでしょう<br>
+<br>
+例えば、GUI システムのイベント呼び出し機能でよく行われるのですが<br>
+あるイベントが、他の多くのグラフィックコンポーネントに影響するという処理を実現する時<br>
+多くのコンポーネントが同時に、コールバックの登録をすることになります<br>
+MVCアーキテクチャなどを勉強すれば、この概念をより具体的に理解できます<br>
+<br>
+<table>
+<tr><th class="Rect" colspan="2">イベント
+<tr><th colspan="2">↓
+<tr><th class="Rect" colspan="2">通知コンポーネント
+<tr><th colspan="2">↓
+<tr><th class="Rect" colspan="2">コールバック
+<tr><th>↓<th>↓
+<tr><th class="Rect">ビュー1<th class="Rect">ビュ−2
+</table>
+<br>
+実際にはもう少し複雑ですが、GUI システムのイベント呼び出しの遷移図です<br>
+何らかのコンポーネントがイベントを受けると、登録されているコールバックを呼び出します<br>
+登録されるメソッドは複数でも問題がないため（むしろ、複数の登録が望まれる）<br>
+コンポーネントは、このようなモデリングを実現しなければならないのです<br>
+<br>
+代表的なのは、画像処理ソフトの解像度選択スライダーです<br>
+スライダーを動かせば、プレビュー画像の解像度を変更するこのコンポーネントは<br>
+スライダーを動かすというイベントで、スライダーの移動やプレビュー画像の大きさ<br>
+それに関連する様々なコンポーネントのビューを同時に変更する必要があります<br>
+<br>
+Java の場合、コンポーネントが登録されるコールバックメソッドを受け取り<br>
+メソッドで動的に配列を処理して扱う必要がありました<br>
+この作業は、少なくとも初心者の方には難しく感じてしまうでしょう<br>
+<br>
+デリゲートを用いれば、このような面倒は一気に解決します<br>
+単純にコールバックするメソッドをマルチキャストデリゲートでパックするだけで<br>
+後は、簡単に呼び出すことができるからです<br>
+<br>
+しかし、コンポーネントの状況が変更すれば<br>
+イベントの通知の必要性がなくなり、コールバックを解除したくなるかもしれません<br>
+このような場合に応じて、マルチキャストデリゲートは<br>
+特定のデリゲートを解除することができるように設計されています<br>
+<br>
+マルチキャストデリゲートから特定のデリゲートを解除するには<br>
+解除したいデリゲートをマルチキャストデリゲートから<strong>減算</strong>します<br>
+この処理は、非常に直感的で理解しやすいと思います<br>
+<pre class="prg">delegate void KittyCallback();
+
+class Kitty {
+	private string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public static implicit operator KittyCallback(Kitty obj) {
+		return new KittyCallback(obj.Write);
+	}
+	public void Write() {
+		System.Console.WriteLine(str);
+	}
+}
+
+class Test {
+	static void Main() {
+		KittyCallback[] obj = new KittyCallback[] {
+			new Kitty("Kitty on your lap") ,
+			new Kitty("Selver Gene") ,
+			new Kitty("Tokyo mew mew")
+		};
+
+		KittyCallback kitty = null;
+		foreach(KittyCallback tmp in obj)
+			kitty += tmp;
+		kitty();
+
+		System.Console.WriteLine("\n----減算後----");
+		kitty -= obj[1];
+		kitty();
+	}
+}</pre>
+
+このプログラムでは、マルチキャストデリゲートの kitty を作成し<br>
+作成したデリゲートを foreach ですべて kitty に加算します<br>
+<br>
+その後、この kitty からデリゲート obj1を減算しています<br>
+これによって obj1 は kitty から外されます<br>
+このプログラムを実行すると、次のような結果になります<br>
+<br><b>
+Kitty on your lap<br>
+Selver Gene<br>
+Tokyo mew mew<br>
+<br>
+----減算後----<br>
+Kitty on your lap<br>
+Tokyo mew mew<br>
+<br></b>
+この結果を見れば、意図どおりにデリゲートが解除されていることが確認できます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs54.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs56.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>
