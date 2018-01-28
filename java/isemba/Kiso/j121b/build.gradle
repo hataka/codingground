@@ -1,0 +1,83 @@
+// -*- mode: gradle -*-  Time-stamp: <2017-05-06 10:21:06 kahata>
+/*================================================================
+ * title: 仙波一郎 JAVAプログラミング「基礎と応用」 実数演算
+ * file: build.gradle
+ * path: F:\codingground\java\isemba\Kiso\j121b\build.gradle
+ * url:  http://localhost/codingground/java/isemba/Kiso/j121b/build.gradle
+ * created: Time-stamp: <2017-05-06 10:21:06 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: http://antlers.cis.ibaraki.ac.jp/PROGRAM/JAVA/java.shtml
+ *  http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/java.shtml
+ *  http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/KISO/j121b.htm
+ * description: 
+ *================================================================*/
+////////////////////////////////////////////////////////////////////
+//  << j121b.java >>
+//
+//  基礎（２）：文字列
+//
+//  ●文字列の長さ
+//　　s.length()と書くと、変数sが指す文字列の長さが得られる。
+//　　"abc"のとき、s.length()で3が得られる。
+//
+//  ●文字列の比較
+//　　s.equals("文字列")と書くと、変数sが指す文字列と引数の文字列が比較され、
+//　　等しいときtrue、等しくないときfalseが得られる。
+//
+//  ●文字列の位置指定
+//　　s.charAt(i)と書くと、変数sが指す文字列中でi番目の文字が得られる。
+//    先頭の文字が、0番目の文字となる。
+//
+//  ●部分列の指定
+//    s.substring(i)と書くと、変数sが指す文字列のi番目以降の文字列が得られる。
+//    s.substring(i,j)と書くと、変数sが指す文字列のi番目からj-1番目までの
+//　　文字列が得られる。
+//
+////////////////////////////////////////////////////////////////////
+
+apply plugin: "eclipse"
+defaultTasks 'main'
+description = "基礎（２）：文字列 文字列の長さ 文字列の比較 文字列の位置指定 部分列の指定";
+
+task runScript {
+  doLast{  
+
+		
+    // 文字列比較。
+    String s1,s2,s3;
+    s1 = "水戸市"; 
+    s2 = "日立市";
+    s3 = "水戸市";
+    System.out.println("\n仙波一郎 JAVAプログラミング「基礎と応用」 実数演算\n"
+				+"基礎（２）：文字列 文字列の長さ 文字列の比較 文字列の位置指定 部分列の指定\n");
+    System.out.println("s1 =" + s1);
+    System.out.println("s2 =" + s2);
+    System.out.println("s3 =" + s3);
+    System.out.println("s1.equals(s2) =" + s1.equals(s2));
+    System.out.println("s1.equals(s3) =" + s1.equals(s3));
+    System.out.println();
+
+    // 文字列の長さと文字指定。
+    String s4 = "a漢1";
+    System.out.println("s4 =" + s4);
+    System.out.println("s4.charAt(0) =" + s4.charAt(0));
+    System.out.println("s4.charAt(1) =" + s4.charAt(1));
+    System.out.println("s4.charAt(2) =" + s4.charAt(2));
+    System.out.println("s4.length() =" + s4.length());
+    System.out.println();
+
+    // 部分列の指定。 
+    String s5;
+    s5 = "abcdefg";
+    System.out.println("s5 =" + s5);
+    System.out.println("s5.substring(3) =" + s5.substring(3));
+    System.out.println("s5.substring(3,5) =" + s5.substring(3,5));
+  }
+}
+
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}

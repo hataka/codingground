@@ -1,0 +1,103 @@
+// -*- mode: gradle -*-  Time-stamp: <2017-05-05 12:51:01 kahata>
+/*================================================================
+ * title: 仙波一郎 JAVAプログラミング「基礎と応用」 実数演算
+ * file: build.gradle
+ * path: C:\Users\和彦\Google ドライブ\codingground\java\isemba\KISO\j111\build.gradle
+ * url:  C:/Users/和彦/Google ドライブ/codingground/java/isemba/KISO/j111/build.gradle
+ * created: Time-stamp: <2017-05-05 12:51:01 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: 
+ * description: 
+ *================================================================*/
+import java.lang.String;
+
+defaultTasks 'run'
+description = "基礎（２）：変数、型 整数演算 加算：+, 減算：-, 乗算：*, 除算：/, 剰余：% "
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+group = 'isemba'
+version = '1.0-SNAPSHOT'
+
+// Define the main class for the application
+mainClassName = 'j112a'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+sourceSets.main.java.srcDirs   = ["$projectDir"]
+//buildDir = 'target'
+buildDir = "$projectDir"
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+	jcenter()
+	mavenCentral()   
+	maven { url "https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/" }
+	maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+	compile 'com.google.guava:guava:21.0'
+  //compile files('F:/java/lib/swt.jar')
+	//compile 'org.codehaus.groovy:groovy-all:2.2.0', files(....)
+  //compile 'org.codehaus.groovy:groovy-all:2.2.1'
+  compile group: 'org.eclipse.swt', name: 'org.eclipse.swt.win32.win32.x86_64', version:'4.4'
+  //groovy group: localGroovy()  
+	//groovy group: 'org.codehaus.groovy', name: 'groovy', version: '2.0.1'
+  //testCompile "junit:junit:4.11"
+  //testCompile group: 'junit', name: 'junit', version:'3.8.1'
+	testCompile 'junit:junit:4.12'
+}
+
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}
+
+task runScript {
+	description = "基礎（２）：変数、型 整数演算 加算：+, 減算：-, 乗算：*, 除算：/, 剰余：% "
+  doLast {
+		String outbuf="";
+		//  String indent = "    ";
+		String indent = "";
+
+    outbuf+=indent + "基礎（２）：整数演算(加算：+, 減算：-, 乗算：*, 除算：/, 剰余：)\n\n";
+		// outbuf+="整数演算\n";
+
+    // 変数の宣言と代入。
+    int x,y,z;
+    x = 123; y = 45; 
+    outbuf+=indent + "x = " + x + "  y = " + y +"\n";
+
+    // 加算。
+    z = x + y;
+    outbuf+=indent + "加算　x + y = " + z + "\n";
+
+    // 減算。
+    z = x - y;
+    outbuf+=indent + "減算　x - y = " + z + "\n";
+
+    // 乗算。
+    z = x * y;
+    outbuf+=indent + "乗算　x * y = " + z + "\n";
+
+    // 割算。
+    z = x / y;
+    outbuf+=indent + "割算　x / y = " + z + "\n";
+
+    // 剰余。
+    z = x % y;
+    outbuf+=indent + "剰余　x % y = " + z + "\n";
+		System.out.println(outbuf);
+  }
+}

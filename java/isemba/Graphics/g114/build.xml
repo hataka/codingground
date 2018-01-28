@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="g114">
+  <property environment="env"/>
+  <dirname property="ant.file.dir" file="${ant.file}"/>
+  <property name="appname" value="${ant.project.name}"/>
+  <property name="ECLIPSE_HOME" value="C:/eclipse461/eclipse/"/>
+  <property name="FD_PATH" value="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\FlashDevelop.exe" />
+  <!--
+    <property name="${env.JAVA_HOME}" value="C:\Program Files\Java\jdk1.8.0_102"/>
+		<property name="PATH" value="C:/Program Files/Java/jdk1.8.0_102/bin"/>
+  -->
+  <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <property name="appname" value="${ant.project.name}"/>
+   	<path id="main.classpath">
+        <pathelement location="."/>
+        <pathelement path="${java.class.path}" />
+        <!-- <pathelement location="../CommonLibrary/*.class"/>-->
+        <!-- <pathelement location="../swt-4.5-win32-win32-x86_64/swt.jar"/>-->
+        <!-- <pathelement location="F:/codingground/swt.snippets/java/swt-4.5-win32-win32-x86_64/swt.jar"/> -->
+				<pathelement location="C:/eclipse461/workspace/CommonLibrary"/>
+        <pathelement location="f:/java/lib/swt.jar"/>
+    </path>
+    <target name="init">
+    
+    <!--
+        <copy includeemptydirs="false" todir=".">
+            <fileset dir=".">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    -->
+    </target>
+    
+    <target name="clean">
+        <delete>
+            <fileset dir="." includes="**/*.class"/>
+            <fileset dir="." includes="**/*.bak"/>
+        </delete>
+        <!--  <delete dir="./commonLibrary"/> -->
+    </target>
+
+    <target name="clearall">
+       <delete>
+          <fileset dir="." includes="**/*.class"/>
+          <!--
+          <fileset dir="." includes="**/.classpath"/>
+          <fileset dir="." includes="**/.project"/>
+          <fileset dir="." includes="**/*.bat"/>
+           -->
+          <fileset dir="." includes="**/.gitignore"/>
+          <fileset dir="." includes="**/*.wsf"/>
+          <fileset dir="." includes="**/*.bak"/>
+          <fileset dir="." includes="**/*.ppr"/>
+          <fileset dir="." includes="**/*.fdp"/>
+          <fileset dir="." includes="**/FDTreeMenu.xml"/>
+          <fileset dir="." includes="**/Manifest.txt"/>
+       </delete>
+       <!--
+       <delete dir="./commomLibrary"/>
+       <delete dir="./CommonLibrary"/>
+       <delete dir="./commonLibrary"/>
+        -->
+    </target>
+
+    <target name="cleanall" depends="clean" />
+    <target name="build" depends="build-project"/>
+
+		<target name="rebuild" >
+			<antcall target="clean" />
+			<antcall target="build" />
+			<antcall target="run" />
+		</target>
+		
+    
+    <target name="build-project" depends="init">
+      <echo message="${ant.project.name}: ${ant.file}"/>
+      <javac srcdir="."
+         includes="**/*.java"
+         destdir="."
+         encoding="utf-8"
+         debug="true"
+         includeAntRuntime="no"
+         fork="true"
+         classpathref="main.classpath">
+      </javac>
+    </target>
+    
+  <target name="runScript">
+		<script language="javascript"><![CDATA[
+		//var Vector = java.util.Vector;
+		//var JFrame = Packages.javax.swing.JFrame;
+		// or preferrably
+		//var Vector = Java.type("java.util.Vector")
+		var JFrame = Java.type("javax.swing.JFrame")
+/*
+		// パネルの定義。
+		var gp114 = function(){
+			this.paintComponent = function(g){
+				//super.paintComponent(g);
+				var x0,y0,x1,y1,rx,ry;
+				x0 = 40; y0 = 40; x1 = x0; y1 = y0; rx = 150; ry = 100;
+				for(i=0; i<=31; i++ ) {
+					if( i%4 == 0 ) { x1 = x0 + rx; rx = (int)(0.9*rx); }
+					if( i%4 == 1 ) { y1 = y0 + ry; ry = (int)(0.9*ry); }
+					if( i%4 == 2 ) { x1 = x0 - rx; rx = (int)(0.9*rx); }
+					if( i%4 == 3 ) { y1 = y0 - ry; ry = (int)(0.9*ry); }
+					g.drawLine(x0,y0,x1,y1);
+					x0 = x1; y0 = y1;
+				}
+			}
+		}
+	}
+
+	// フレームの定義。
+	var gf114 = function(){
+		this.gf114(String t) { // コンストラクタ。
+			//super(t);
+			// フレームからコンテントペインを取得。
+			Container c = this.getContentPane();
+			// パネルを生成し、フレームに追加。
+			var gp = new gp114();
+			gp.setBackground(Color.white);
+			c.add(gp,BorderLayout.CENTER);
+		}
+	}
+    // フレーム生成。
+    var gf = new gf114("フレーム"); 
+    // フレームウィンドウの大きさを設定
+    gf.setSize(300,200);
+    // 「閉じる」ボタンがクリックされたとき、プログラムを終了する。
+    gf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // フレーム表示。
+    gf.setVisible(true);
+		*/
+		]]></script>
+	</target>  
+    
+
+	
+	
+    <target name="create_jar" depends="build">
+      <!--  <jar destfile="F:/java/SWT/git.eclipse/Snippet2/${appname}.jar" filesetmanifest="mergewithoutmain"> -->
+      <jar destfile="${basedir}/${appname}.jar" filesetmanifest="mergewithoutmain">
+        <manifest>
+           <attribute name="Main-Class" value="${appname}"/>
+           <attribute name="Class-Path" value="."/>
+        </manifest>
+        <!-- <fileset dir="F:/java/SWT/git.eclipse/Snippet2"/> -->
+        <fileset dir="${basedir}" includes="*.class"/>
+        <!-- <zipfileset excludes="META-INF/*.SF" src="F:/java/lib/swt.jar"/> -->
+      </jar>
+    </target>
+
+	<target name="run">
+        <java classname="${appname}" failonerror="true" fork="yes">
+            <classpath refid="main.classpath"/>
+        </java>
+    </target>
+
+    <target name="runjar">
+        <java jar="${basedir}/${appname}.jar" failonerror="true" fork="yes">
+            <classpath refid="main.classpath"/>
+        </java>
+    </target>
+
+	<target name="${ant.project.name}">
+        <java classname="${ant.project.name}" failonerror="true" fork="yes">
+            <classpath refid="main.classpath"/>
+        </java>
+    </target>
+
+	<target name="open-fd-project" description="open FD Project" >
+	<exec executable="${FD_PATH}" spawn="true">
+		<arg value="-reuse" />
+		<arg value="${ant.file.dir}/${appname}.fdp" />
+	</exec>
+	</target>
+	
+	<target name="open-src-in-fd" description="open source in FD">
+		<exec executable="${FD_PATH}" spawn="true">
+			<arg value="-reuse" />
+			<arg value="${ant.file.dir}/${appname}.java" />
+		</exec>
+	</target>
+
+</project>
+

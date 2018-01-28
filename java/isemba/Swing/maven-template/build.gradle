@@ -1,0 +1,157 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+/////////////////////////////////////////////////////////////////////////////
+// Properties
+defaultTasks 'run'
+group = 'isemba'
+version = '1.0-SNAPSHOT'
+description = "j101"
+
+//sourceSets.main.java.srcDirs   = ["$projectDir"]
+//sourceSets.main.groovy.srcDirs = ["$projectDir"]
+/*
+compileJava {
+  options.encoding = 'utf-8'
+  copy {
+    from 'classes/main'
+    into '.'
+    include '** / *.class' //修正必要
+    //include '** / *.jsp' //修正必要
+    //exclude { details -> details.file.name.endsWith('.html') &&
+    //                     details.file.text.contains('staging') }	
+  }
+}
+*/
+/*
+sourceSets {
+	main {
+		java {
+			//srcDir 'src/java'
+    	//srcDirs = ["$projectDir/src/java"]
+    	srcDirs = ["$projectDir"]
+		}
+		
+		resources {
+			//srcDir 'src/resources'
+			srcDirs ["$projectDir/resources"]
+		}
+		
+		groovy {
+			srcDirs = ["$projectDir/src/groovy"]
+			//srcDirs = ["$projectDir"]
+  	}
+	}
+}
+*/
+//buildDir = "$projectDir"
+buildDir = 'target'
+//buildDir = "$projectDir"
+def user_home = System.getenv()['USERPROFILE']+"\\.maven"
+// Define the main class for the application
+mainClassName = 'isemba.j101'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+//http://www.my-notebook.net/82f61937-bc91-4323-8380-a09c8dede37f.html
+ant.env = ant.property(environment:'env')
+ext.env = System.getenv()
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}
+
+repositories {
+		jcenter()
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+	compile 'com.google.guava:guava:21.0'
+	compile 'org.codehaus.groovy:groovy-all:2.4.10'
+  //compile 'org.codehaus.groovy:groovy-all:2.2.1'
+  //groovy group: localGroovy()  
+	//groovy group: 'org.codehaus.groovy', name: 'groovy', version: '2.0.1'
+ 	//compile files('C:/eclipse461/workspace/CommonLibrary/CommonLibrary.jar')
+    testCompile group: 'junit', name: 'junit', version:'3.8.1'
+}
+
+buildscript {
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
+	dependencies {
+		//classpath files('F:/java/lib/swt.jar')
+		//classpath files('C:/eclipse461/workspace/CommonLibrary/CommonLibrary.jar')
+	}
+}
+/////////////////////////////////////////////////////////////////////////////
+// Tasks
+task create_run_jar(type: Jar, dependsOn: jar)  {
+  description 'Create swt Executable Jar in rootDir'
+	destinationDir = file("$rootDir")
+	exclude "META-INF/*.SF"  
+	archiveName = "${rootProject.name}.jar"
+	manifest {
+		attributes 'Main-Class' : mainClassName
+	}
+  from configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}
+  from "$buildDir/classes/main"
+  from "$buildDir/resources/main"
+	from zipTree('F:/java/lib/swt.jar')
+}
+
+//task runJar(dependsOn:[jar]){ //自動起動する
+task runJar {
+	description 'Run Executable Jar  at root'
+	doLast {
+		//println(jar.archivePath)
+		ant.java(jar:"$rootDir/${rootProject.name}.jar",fork:true)
+	}
+}
+
+task listPath  {
+	description 'src配下の*.javaファイルをリストアップします'
+  doLast{
+		def path = ant.path {
+			fileset(dir: 'src', includes: '**/*.java')
+		}
+		path.list().each {
+			println it
+		}
+	}
+}
+
+task echo_properties {
+	description '組込みプロパティを リストアップします'
+	doLast {
+		println 'Hello, Gradle!'
+		println "|rootDir		  |$rootDir|"  // $rootDir の代わりに $project.rootDir でも OK
+		println "|project.name	 |$project.name|"  // $rootDir の代わりに $project.rootDir でも OK
+  	println "|projectDir	   |$projectDir|"
+  	println "|buildDir		 |$buildDir|"
+  	println "|gradleHomeDir	|$gradle.gradleHomeDir|"
+  	println "|gradleUserHomeDir|$gradle.gradleUserHomeDir|"
+  	println "|rootProject.name |$rootProject.name|"
+  	println "|description	  |$description|"
+  	println "|version		  |$version|"
+  	//println "|userhome		 |$user_home|"
+	}
+}
+/////////////////////////////////////////////////////////////////////////////
+// Embed Script
+import java.io.*;
+
+task runScript {
+  description = "基礎（１）：画面への出力"
+  doLast {
+  	println("ここにgroovy script を実装します");
+  }
+}
+	

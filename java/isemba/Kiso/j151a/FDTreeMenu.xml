@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<root title="$(CurProjectName)" icon="" expand="true">
+  <folder title="Menu">
+    <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
+    <record title="XmlTreeMenu" action="menu" path="$(BaseDir)\SettingData\XmlTreeMenu.xml" />
+    <record title="Projoectメニュー" action="menu" path="$(BaseDir)\SettingData\FlashProject.xml" />  
+    <record title="ビルド実行環境" action="menu" path="$(BaseDir)\SettingData\FDTreeMenu.xml" />  
+
+  </folder>
+  <folder title="LocalSite">
+    <record title="PukiWki2012" path="http://localhost/pukiwiki2012/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="FrameWork" path="http://localhost/FrameWork/FrameWork.html" />
+    <record title="C# links" path="http://localhost/VCSharp/links/dir_traverse_htmllink.php" />
+  </folder>
+  <folder title="WebSite">
+    <record title="Google" path="http://www.google.co.jp/" icon="$(BaseDir)\Settings\icons\google.ico" />
+  </folder>
+  <folder title="ビルド">
+    <record title="build.bat" action="RunProcess" path="$(CurProjectDir)\build.bat" option="Console" />
+    <record title="Makefile" action="RunProcess" command="C\cygwin\usr\local\bin\gmake.bat" args=" -f Makefile" path="$(CurProjectDir)\Makefile" option="Console" />
+<!--
+   <folder title="C#">
+    </folder>
+    
+   <folder title="C/C++">
+    </folder>
+
+    <folder title="Java">
+    </folder>
+    
+    <folder title="Flex4">
+    </folder>
+
+    <folder title="Latex">
+    </folder>
+-->
+  </folder>
+  <folder title="実行">
+   <record title="RunApp.wsf" action="RunProcess" command="wscript.exe" args="//nologo $(CurProjectDir)\RunApp.wsf" path="$(CurProjectDir)\RunApp.wsf"/>
+    <record title="Console Output(exe)" action="RunProcess" path="$(CurProjectDir)\$(CurFilenameNoExt).exe" option="Console" />
+    <record title="Windows Output(exe)" action="RunProcess" path="$(CurProjectDir)\$(CurFilenameNoExt).exe" />
+    
+<!--    
+    <folder title="C#">
+     <record title="CsScript" action="RunProcess" command="F:\Programs\csscript\cscs.exe" args="//lologo $(CurFile)" path="$(CurFile)" option="Console" />
+     <record title="WsScript" action="RunProcess" command="F:\Programs\csscript\csws.exe" args="//lologo $(CurFile)" path="$(CurFile)" />
+     <record title="RunCsScript.wsf" action="RunProcess" command="wscript.exe" args="//nologo $(CurProjectDir)\RunCsScript.wsf" path="//nologo (CurProjectDir)\RunCsScript.wsf" option="Console" />
+     <record title="RunWsScript.wsf" action="RunProcess" command="wscript.exe" args="//nologo $(CurProjectDir)\RunWsScript.wsf" path="$(CurProjectDir)\RunWsScript.wsf" />
+    </folder>
+    
+    <folder title="C/C++">
+    </folder>
+-->    
+    <folder title="Java">
+    <record title="Console Output" action="RunProcess" command="java" args="$(CurProjectName)" path="$(CurProjectDir)\$(CurProjectName).class" option="Console" />
+    <record title="Windows Output" action="RunProcess" command="java" args="$(CurProjectName)" path="$(CurProjectDir)\$(CurProjectName).class" option="Silent" />
+
+    <record title="Applet" action="RunProcess" command="appletviewer" path="$(CurProjectDir)\$(CurProjectName).java" option="Silent" />
+    </folder>
+<!--    
+    <folder title="Flex4">
+    </folder>
+
+    <folder title="Latex">
+    </folder>
+-->
+    <record title="PanelOutput" action="" command="" args="" path="" />
+
+    <record title="現在のファイルをWebで実行" action="" command="" args="" path="" />
+
+    <record title="ファイル名を指定して実行" action="" command="" args="" path="" />
+
+
+    
+    
+  </folder>
+
+
+  <record title="現在のファイルを PSPadで開く" action="RunProcess" command="F:\Programs\PSPad editor\PSPad.exe" path="$(CurFile)" />
+</root>

@@ -1,0 +1,83 @@
+// -*- mode: java -*- Time-stamp: <09/05/19 16:28:13 kazuhiko>
+/*====================================================================
+ * name: s103.java
+ * created : Time-stamp: <09/06/20(土) 08:29:15 hata>
+ * $Id$
+ * Programmed by kahata
+ * To compile:
+ * To run:
+ * links: http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/java.shtml
+ * http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/SWING/s103.htm
+ * description:
+ * ====================================================================*/
+////////////////////////////////////////////////////////////////////////////////
+// << s103.java >>
+//
+//  Ｓｗｉｎｇ（０）：フレーム（配置）
+//
+//　　システムに関係する情報（画面の解像度など）はToolkitクラスを使って取得する。
+//    Toolkitクラスは、java.awtパッケージに含まれる。
+//
+//  ●Toolkitクラスのメソッド
+//    public static Toolkit getDefaultToolkit()
+//      機能：デフォルトのツールキットを取得する。ツールキットには、システムの
+//　　　　　　情報が含まれる。
+//    public abstract Dimension getScreenSize() throws HeadlessException
+//      機能：画面のサイズ（幅：width　高さ：height）を取得する。
+//
+//　●java.awt.Componentクラスから継承したメソッド
+//　　public void setLocation(int x, int y)
+//      機能：コンポーネントの左上隅を、座標(x,y)に移動する。
+//
+////////////////////////////////////////////////////////////////////////////////
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
+
+import javax.swing.JFrame;
+
+class s103 extends JFrame {
+
+  ///////////////////
+  // コンストラクタ //
+  ///////////////////
+  s103(String t) {
+
+    // 親クラスのコンストラクタを呼び出す。
+    super(t);
+
+    // 画面の大きさを調べる。
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    Dimension d = tk.getScreenSize();
+
+    // フレームの大きさを設定。
+    this.setSize(d.width/4, d.height/4);
+
+    // フレームの位置を設定。
+    this.setLocation(d.width/2, d.height/2);
+
+  }
+
+
+  public static void centerScreen(Window frame) {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+	    frame.setLocation(x, y);
+	}
+  //////////////////
+  // mainメソッド //
+  //////////////////
+  public static void main(String[] args) {
+
+    // フレームの作成。
+    s103 f = new s103("フレーム");
+
+    // 「閉じる」ボタンがクリックされたとき、プログラムを終了する。
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    // フレームの表示。
+    f.setVisible(true);
+  }
+}

@@ -1,0 +1,6 @@
+//F:\java\gradle\swt-snippets\Snippet002\FDTreeMenu.xml
+$(CurProjectDir)\FDTreeMenu.xml
+//$(CurProjectDir)\RunApp8.wsf
+$(CurProjectDir)\build.xml
+$(CurProjectDir)\build.gradle
+$(CurProjectDir)\pom.xml

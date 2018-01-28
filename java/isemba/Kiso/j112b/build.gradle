@@ -1,0 +1,188 @@
+// -*- mode: gradle -*-  Time-stamp: <2017-05-05 11:20:21 kahata>
+/*================================================================
+ * title: 仙波一郎 JAVAプログラミング「基礎と応用」 実数演算
+ * file: build.gradle
+ * path: C:\Users\和彦\Google ドライブ\codingground\java\isemba\KISO\j112b\build.gradle
+ * url:  C:/Users/和彦/Google ドライブ/codingground/java/isemba/KISO/j112b/build.gradle
+ * created: Time-stamp: <2017-05-05 11:20:21 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: 
+ * description: 
+ *================================================================*/
+
+apply plugin: "eclipse"
+defaultTasks 'runScript'
+description = "基礎（２）：変数、型 実数演算 加算：+, 減算：-, 乗算：* , 除算：/ ";
+
+//apply plugin: 'java'
+//apply plugin: 'maven'
+//apply plugin: 'application'
+//apply plugin: 'groovy'
+
+//group = 'isemba'
+//version = '1.0-SNAPSHOT'
+//buildDir = 'target'
+
+//mainClassName = 'isemba.App'
+description = "j112b"
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
+//tasks.withType(JavaCompile) {
+//	options.encoding = 'UTF-8'
+//}
+
+//repositories {
+  //mavenCentral()   
+//	maven { url "https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/" }
+//     maven { url "http://repo.maven.apache.org/maven2" }
+//}
+/*
+dependencies {
+    compile group: 'org.eclipse.swt', name: 'org.eclipse.swt.win32.win32.x86_64', version:'4.4'
+    //groovy group: localGroovy()  
+	//groovy group: 'org.codehaus.groovy', name: 'groovy', version: '2.0.1'
+	//compile 'org.codehaus.groovy:groovy-all:2.2.1'
+    testCompile group: 'junit', name: 'junit', version:'3.8.1'
+}
+*/
+task runScript << {
+    System.out.println("実数演算");
+    System.out.println();
+
+    // 変数の宣言と代入。
+    float x,y,z;
+    x = (float)12.3; y = (float)4.5; 
+    System.out.println("x = " + x + "  y = " + y);
+
+    // 加算。
+    z = x + y;
+    System.out.println("加算　x + y = " + z);
+
+    // 減算。
+    z = x - y;
+    System.out.println("減算　x - y = " + z);
+
+    // 乗算。
+    z = x * y;
+    System.out.println("乗算　x * y = " + z);
+
+    // 割算。
+    z = x / y;
+    System.out.println("割算　x / y = " + z);
+}
+/*
+ant.importBuild('build.xml') {
+  antTaskName -> "ant_${antTaskName}".toString()
+}
+*/
+/*
+task j131a << {
+    // 配列の宣言（int型の変数aの宣言）。
+    //int a[];               
+    //int[] a;               
+    def  a;
+    // 配列の確保（10個分の配列を確保。a[0],a[1],...,a[9]）。
+    a = new int[10];
+
+    // 配列要素へ代入。
+    a[0] = 111; a[1] = 222; a[2] = 333;
+ 
+    // 配列aの確認。
+    System.out.println("a[0] = " + a[0]);
+    System.out.println("a[1] = " + a[1]);
+    System.out.println("a[2] = " + a[2]);
+    // 配列aの要素数を確認。
+    System.out.println("配列aの要素数 = " + a.length);
+    System.out.println();
+
+    // 配列の宣言。配列の領域を確保していないことに注意。
+    //int b[]; 
+    def  b;
+    b = a; // 変数aに格納されているアドレスが変数bに代入される。
+
+    // 配列bの確認。
+    System.out.println("b[0] = " + b[0]);
+    System.out.println("b[1] = " + b[1]);
+    System.out.println("b[2] = " + b[2]);
+    // 配列bの要素数を確認。
+    System.out.println("配列bの要素数 = " + b.length);
+    System.out.println();
+
+    // 配列bを変更すると、配列aに影響する。
+    b[0] = -b[0]; b[1] = -b[1]; b[2] = -b[2];
+	
+	
+    // 配列bの確認。
+    System.out.println("b[0] = " + b[0]);
+    System.out.println("b[1] = " + b[1]);
+    System.out.println("b[2] = " + b[2]);
+    // 配列aの確認。
+    System.out.println("a[0] = " + a[0]);
+    System.out.println("a[1] = " + a[1]);
+    System.out.println("a[2] = " + a[2]);
+}
+*/
+/*
+task j141a {
+ 	description '基礎（４）：分岐（if文）\n if(条件式) {'
+	doLast {
+	def i,j,k;
+
+    // if文の動作確認。
+    i = 111; j = 222;
+    System.out.println("i=" + i + " j=" + j);
+    if( i < j ) {           
+      System.out.println(i + " < " + j);
+    } else {
+      System.out.println(i + " >= " + j);
+    }
+    System.out.println();
+
+    // if文の動作確認。
+    i = 222; j = 111;
+    System.out.println("i=" + i + " j=" + j);
+    if( i < j ) {           
+      System.out.println(i + " < " + j);
+    } else {
+      System.out.println(i + " >= " + j);
+    }
+    System.out.println();
+
+    // if文の動作確認。
+    i = 111; j = 222; k = 333;
+    System.out.println("i=" + i + " j=" + j + " k=" + k);
+    if( (i < j)&&(j < k) ) {           
+      System.out.println(i + " < " + j + " < " + k);
+    } else {
+      System.out.println("i = "+i+" j = "+j+" k = "+k);
+    }
+    System.out.println();
+
+    // if文の動作確認。
+    i = 333; j = 222; k = 111;
+    System.out.println("i=" + i + " j=" + j + " k=" + k);
+    if( (i < j)&&(j < k) ) {           
+      System.out.println(i + " < " + j + " < " + k);
+    } else {
+      System.out.println("i=" + i + " j=" + j + " k=" + k);
+    }
+
+	 }
+}
+*/
+	//http://d.hatena.ne.jp/Kazuhira/20120805/1344172437
+	/*
+task hellogroovy << {
+	Greet g = new Greet('world') // create object
+	g.salute() // Output "Hello World!"
+}
+	
+
+task fooTask << {
+    GroovyClass g = new GroovyClass()
+    g.foo()
+}
+*/

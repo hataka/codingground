@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<root title="TreeMenu" icon="" expand="true">
+  <folder title="Menu">
+    <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
+    <record title="XmlTreeMenu" action="menu" path="C:\Documents and Settings\kazuhiko\Local Settings\Application Data\FlashDevelop\SettingData\XmlTreeMenu.xml" />
+  </folder>
+  
+  <folder title="Links">
+    <record title="仙波一郎" path="http://antlers.cis.ibaraki.ac.jp/PROGRAM/JAVA/java.shtml" />
+    <folder title="WebSite">
+      <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+      <record title="pukiwiki2016" path="http://kahata.travel.coocan.jp/pukiwiki2012/index.php" icon="F:\icons\pukiwiki.ico" />
+      <record title="KingFM" path="http://www.king.org/" />
+      <record title="KingFM OnLine" path="http://v6.player.abacast.net/3" />
+    </folder>
+<!--    
+    <folder title="LocalSite">
+      <record title="PukiWki" path="http://localhost/pukiwiki/index.php" icon="F:\icons\pukiwiki.ico" />
+    </folder>
+-->  
+  </folder>
+
+  <folder title="FDProjects">
+    <folder title="Top">
+      <record title="ApacheServer" action="OpenProject" path="C:\Apache2.2\htdocs\ApacheServer.fdp" />
+      <record title="Neko" action="OpenProject" path="F:\cpp\Neko\Neko.fdp" />
+      <record title="VisualCpp2008_Samples" action="OpenProject" path="F:\cpp\VisualCpp2008_Samples\VisualCpp2008_Samples.fdp" />
+      <record title="isemba" action="OpenProject" path="F:\java\isemba\isemba.fdp" />
+      <record title="WSH" action="OpenProject" path="F:\WSH\WSH.fdp" />
+      <record title="WisdomSoft" action="OpenProject" path="F:\WisdomSoft\framework\WisdomSoft.fdp" />
+      <record title="ZetCode" action="OpenProject" path="F:\ZetCode\ZetCode.fdp" />
+      <record title="codingground" action="OpenProject" path="F:\codingground\codingground.fdp" />
+    </folder>
+
+    <folder title="Java">
+      <folder title="isemba">
+        <record title="Applet" action="OpenProject" path="F:\codingground\java\isemba\Applet\Applet.fdp" />
+        <record title="Class" action="OpenProject" path="F:\codingground\java\isemba\Class\Class.fdp" />
+        <record title="Collection" action="OpenProject" path="F:\codingground\java\isemba\Collection\Collection.fdp" />
+        <record title="DataBase" action="OpenProject" path="F:\codingground\java\isemba\DataBase\DataBase.fdp" />
+        <record title="File" action="OpenProject" path="F:\codingground\java\isemba\File\File.fdp" />
+        <record title="GUI" action="OpenProject" path="F:\codingground\java\isemba\GUI\GUI.fdp" />
+        <record title="Graphics" action="OpenProject" path="F:\codingground\java\isemba\Graphics\Graphics.fdp" />
+        <record title="JApplet" action="OpenProject" path="F:\codingground\java\isemba\JApplet\JApplet.fdp" />
+        <record title="Kiso" action="OpenProject" path="F:\codingground\java\isemba\Kiso\Kiso.fdp" />
+        <record title="Mail" action="OpenProject" path="F:\codingground\java\isemba\Mail\Mail.fdp" />
+        <record title="NetWork" action="OpenProject" path="F:\codingground\java\isemba\NetWork\NetWork.fdp" />
+        <record title="Ouyo" action="OpenProject" path="F:\codingground\java\isemba\Ouyo\Ouyo.fdp" />
+        <record title="Swing" action="OpenProject" path="F:\codingground\java\isemba\Swing\Swing.fdp" />
+        <record title="Thread" action="OpenProject" path="F:\codingground\java\isemba\Thread\Thread.fdp" />
+        <record title="servlet-sample" action="OpenProject" path="F:\codingground\java\isemba\servlet-sample\servlet-sample.fdp" />
+      </folder>
+    </folder>
+    <folder title="PHP">
+      <record title="PHP_MySQL" action="OpenProject" path="F:\php1\PHP_MySQL\PHP_MySQL.fdp" />
+      <record title="sslib" action="OpenProject" path="F:\php1\sslib\sslib.fdp" />
+    </folder>
+    <folder title="WSH">
+      <record title="VBScript Tips" action="OpenProject" path="F:\WSH\VBScript\VBScript_Tips\VBScript_Tips.fdp" />
+      <record title="VBS for WMI" action="OpenProject" path="F:\WSH\WMI\VBSforWMI\wsf\VBSforWMI.fdp" />
+    </folder>
+	</folder>
+
+
+  <folder title="Eclipse WorkBench">
+    <folder title="仙波一郎">
+      <record title="Applet" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Applet" />
+      <record title="Class" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Class" />
+      <record title="Collection" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Collection" />
+      <record title="DataBase" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\DataBase" />
+      <record title="File" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\File" />
+      <record title="GUI" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\GUI" />
+      <record title="Graphics" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Graphics" />
+      <record title="JApplet" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\JApplet" />
+      <record title="Kiso" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Kiso" />
+      <record title="Mail" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Mail" />
+      <record title="NetWork" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\NeyWork" />
+      <record title="Ouyo" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Ouyo" />
+      <record title="Swing" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Swing" />
+      <record title="Thread" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\isemba\Thread" />
+    </folder>
+    <record title="swt" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\swt" />
+    <record title="Swing-Tips" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\Swing-Tips" />
+    <record title="git.eclipse" action="winexe" path="F:\eclipse3.5.1EE\eclipse\eclipse.exe" icon="F:\icons\eclipse.ico" args="-data F:\java\swt\git.eclipse" />
+  </folder>
+
+
+
+<!--
+  <folder title="zip menu" expand="true">
+    <folder title="WisdomSoft" expand="false">
+      <record title="cpp" action="menu" path="F:\codingground\WisdomSoft\cpp.xml" />
+      <record title="cs" action="menu" path="F:\codingground\WisdomSoft\cs.xml" />
+      <record title="msnet" action="menu" path="F:\codingground\WisdomSoft\msnet.xml" />
+    </folder>
+    <folder title="php" expand="false">
+      <record title="Pocket_Shokai_PHP_sample" action="menu" path="F:\codingground\php\Pocket_Shokai_PHP_sample.xml" />
+    </folder>
+  </folder>
+-->
+<!--
+   case "Quote" : return "\"";
+   case "CBI" : return GetCBI();
+   case "STC" : return GetSTC();
+   case "AppDir" : return GetAppDir();
+   case "UserAppDir" : return GetUserAppDir();
+   case "TemplateDir": return GetTemplateDir();
+   case "BaseDir" : return GetBaseDir();
+   case "SelText" : return GetSelText();
+   case "CurFilename": return GetCurFilename();
+   case "CurFilenameNoExt": return GetCurFilenameNoExt();
+   case "CurFile" : return GetCurFile();
+   case "CurDir" : return GetCurDir();
+   case "CurWord" : return GetCurWord();
+   case "CurSyntax": return GetCurSyntax();
+   case "Timestamp" : return GetTimestamp();
+   case "OpenFile" : return GetOpenFile();
+   case "SaveFile" : return GetSaveFile();
+   case "OpenDir" : return GetOpenDir();
+   case "DesktopDir" : return GetDesktopDir();
+   case "SystemDir" : return GetSystemDir();
+   case "ProgramsDir" : return GetProgramsDir();
+   case "PersonalDir" : return GetPersonalDir();
+   case "WorkingDir" : return GetWorkingDir();
+   case "Clipboard": return GetClipboard();
+   case "Locale": return GetLocale();
+   case "Dollar": return "$";
+
+   arg = arg.Replace("$(CurProjectDir)"
+   arg = arg.Replace("$(CurProjectName)"
+   arg = arg.Replace("$(CurProjectUrl)"
+   arg = arg.Replace("$(Quote)", "\"");
+   arg = arg.Replace("$(Dollar)", "$");
+   arg = arg.Replace("$(AppDir)", PathHelper.AppDir);
+   arg = arg.Replace("$(BaseDir)", PathHelper.BaseDir);
+   arg = arg.Replace("$(CurFileUrl)"
+-->
+<!--
+  <folder title="zip explode" expand="true">
+    <folder title="F:/codingground">
+      <folder title="WisdomSoft">
+    <record title="cpp.zip" action="ExecuteScript" args="F:\codingground\WisdomSoft\cpp.zip" path="$(BaseDir)\CsMacro\zip_TreeMenu.cs" />
+    <record title="cs.zip" action="ExecuteScript" args="F:\codingground\WisdomSoft\cs.zip" path="$(BaseDir)\CsMacro\zip_TreeMenu.cs" />
+    <record title="msnet.zip" action="ExecuteScript" args="F:\codingground\WisdomSoft\msnet.zip" path="$(BaseDir)\CsMacro\zip_TreeMenu.cs" />
+      </folder>
+    </folder>
+	</folder>
+
+  <folder title="実行" expand="false">
+    <record title="RunScript(doc)" action="ExecuteScript" path="$(BaseDir)\CsMacro\RunScript.cs" option="Document"/>
+    <record title="RunScript(con)" action="ExecuteScript" path="$(BaseDir)\CsMacro\RunScript.cs" option="Console"/>
+    <record title="RunScript(richtext)" action="ExecuteScript" path="$(BaseDir)\CsMacro\RunScript.cs" option="richtext"/>
+    <record title="php実行 (Web)" path="$(CurFileUrl)" />
+
+    <record title="KingFM.php" action="RunProcess" command="C:\eclipse461\xampp\php\php.exe" path="C:\Apache2.2\htdocs\Music\KingFM\MakePlaylist\KingFM.php" option="Document" />
+    <record title="zip_test" action="RunProcess" command="C:\eclipse461\xampp\php\php.exe" args="C:\Apache2.2\htdocs\Music\KingFM\MakePlaylist\zip_test.php work/cpp.zip#cpp/cpp003/cpp003_1/main.cpp" path="C:\Apache2.2\htdocs\Music\KingFM\MakePlaylist\zip_test.php" option="Document" />
+
+    <record title="cpp zip Menu" action="menu" path="F:\codingground\Neko\cpp_zip.xml" />
+    <record title="PlaylistMaker(Web)" path="http://localhost/Music/KingFM/MakePlaylist/KingFM.php" />
+  </folder>
+  
+  <folder title="Tools">
+    <record title="Audacity" action="winexe" path="C:\Program Files (x86)\Audacity\audacity.exe" />
+    <record title="Media Player" action="winexe" path="C:\Program Files\Windows Media Player\wmplayer.exe" />
+    <record title="vlc" action="winexe" path="C:\Program Files\VideoLAN\VLC\vlc.exe" />
+  </folder>
+  <folder title="Player">
+    <record title="KingFM" action="player" path="C:\Apache2.2\htdocs\Music\KingFM\MakePlaylist\KingFM.asx" />
+  </folder>
+-->  
+  <folder title="KingFM">
+    <record title="作曲家 A" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\A.xml" />
+    <record title="作曲家 B" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\B.xml" />
+    <record title="作曲家 C" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\C.xml" />
+    <record title="作曲家 D" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\D.xml" />
+    <record title="作曲家 E" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\E.xml" />
+    <record title="作曲家 F" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\F.xml" />
+    <record title="作曲家 G" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\G.xml" />
+    <record title="作曲家 H" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\H.xml" />
+    <record title="作曲家 I" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\I.xml" />
+    <record title="作曲家 J" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\J.xml" />
+    <record title="作曲家 K" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\K.xml" />
+    <record title="作曲家 L" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\L.xml" />
+    <record title="作曲家 M" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\M.xml" />
+    <record title="作曲家 N" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\N.xml" />
+    <record title="作曲家 O" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\O.xml" />
+    <record title="作曲家 P" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\P.xml" />
+    <record title="作曲家 Q" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\Q.xml" />
+    <record title="作曲家 R" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\R.xml" />
+    <record title="作曲家 S" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\S.xml" />
+    <record title="作曲家 T" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\T.xml" />
+    <record title="作曲家 V" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\V.xml" />
+    <record title="作曲家 W" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\W.xml" />
+    <record title="作曲家 Y" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\Y.xml" />
+    <record title="作曲家 Z" action="menu" path="F:\My Music\KingFM\RecursiveFileList\Playlist\Z.xml" />
+  </folder>
+</root>

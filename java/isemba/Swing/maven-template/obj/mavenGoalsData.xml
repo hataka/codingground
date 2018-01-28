@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root title="pom.xml">
+<record title="compile" default="true" action="RunProcess" command="cmd.exe" args="/k mvn compile" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="target/classes 配下にjavaコンパイルした.classファイルを作成します" />
+
+<record title="exec:java" default="false" action="RunProcess" command="cmd.exe" args="/k mvn exec:java" 
+				titlecolor="blue"
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="java メインクラスを実行します" />
+
+<record title="package" default="false" action="RunProcess" command="cmd.exe" args="/k mvn package" 
+				titlecolor="blue"
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="クラスをpackage化して実行可能なjarを作成します" />
+
+<record title="test-compile" default="false" action="RunProcess" command="cmd.exe" args="/k mvn test-compile" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="target/test-classes 配下にコンパイルしたテスト用.classファイルを作成します" />
+
+<record title="test" default="false" action="RunProcess" command="cmd.exe" args="/k mvn test" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="target/test-classes 配下にコンパイルしたテスト用.classファイルを作成しテスト結果を表示します" />
+
+<record title="clean" default="false" action="RunProcess" command="cmd.exe" args="/k mvn clean" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="target ディレクトリを削除します" />
+	
+<record title="install" default="false" action="RunProcess" command="cmd.exe" args="/k mvn install" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="作成した成果物（jarファイル）をローカルのmavenリポジトリに配備します" />
+	
+<record title="archetype:generate" default="false" action="RunProcess" command="cmd.exe" args="/k mvn archetype:generate" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="maven プロジェ口を手動で作成します" />
+	
+<record title="site" default="false" action="RunProcess" command="cmd.exe" args="/k mvn site" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="pom.xmlをもとにプロジェクトの情報をHTML形式に出力します" />
+
+<record title="idea:idea" default="false" action="RunProcess" command="cmd.exe" args="/k mvn idea:idea" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="mavenプロジェクトをInteliJ形式のフォルダ構成に変換します" />
+
+<record title="eclipse:eclipse" default="false" action="RunProcess" command="cmd.exe" args="/k mvn eclipse:eclipse" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="eclipseの.classpath, .projectを作成します" />
+
+<record title="ant:ant" default="false" action="RunProcess" command="cmd.exe" args="/k mvn ant:ant" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="antのビルドファイルを作成します" />
+	
+<record title="jar:jar" default="false" action="RunProcess" command="cmd.exe" args="/k mvn jar:jar" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="targetにjarを作成します" />
+	
+<record title="war:war" default="false" action="RunProcess" command="cmd.exe" args="/k mvn war:war" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="targetにjarを作成します" />
+	
+<record title="help" default="false" action="RunProcess" command="cmd.exe" args="/k mvn -help" 
+				path="$(CurProjectDir)\pom.xml" 
+				tooltip="コマンドライン helpを表示します" />
+</root>

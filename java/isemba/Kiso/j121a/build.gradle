@@ -1,0 +1,57 @@
+// -*- mode: gradle -*-  Time-stamp: <2017-05-06 09:39:08 kahata>
+/*================================================================
+ * title: 仙波一郎 JAVAプログラミング「基礎と応用」 実数演算
+ * file: build.gradle
+ * path: F:\codingground\java\isemba\Kiso\j121a\build.gradle
+ * url:  http://localhost/codingground/java/isemba/Kiso/j121a/build.gradle
+ * created: Time-stamp: <2017-05-06 09:39:08 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: http://antlers.cis.ibaraki.ac.jp/PROGRAM/JAVA/java.shtml
+ * description: 
+ *================================================================*/
+ //  << j121a.java >>
+//
+//  基礎（２）：文字列
+//
+//  ●文字列の宣言
+//    String 変数名;
+//　　・String型の変数には、文字列が直接格納されずに、文字列が格納されている
+//　　　場所を指す情報（アドレスという）が格納されている。
+//    ・String型の変数が指す文字列は、変更できない。
+//
+//　●文字列を連結するには、＋演算子を使う。
+//
+////////////////////////////////////////////////////////////////////
+ /**
+   文字列を連結するには、＋演算子を使う
+ */
+
+apply plugin: "eclipse"
+defaultTasks 'runScript'
+description = "基礎（２）：文字列";
+
+task runScript {
+  doLast{  
+
+    // 文字列変数の宣言。
+    String s1,s2,s3;
+    System.out.println("\n文字列の連結\n");
+
+    // 文字列変数への代入。
+    s1 = "12345";
+    s2 = "abc"; 
+    System.out.println("s1 =" + s1);
+    System.out.println("s2 =" + s2);
+
+    // 文字列の連結。
+    s3 = s1 + s2;
+    System.out.println("s1 + s2 =" + s3);
+  }
+}
+
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}

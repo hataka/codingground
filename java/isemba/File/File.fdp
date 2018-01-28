@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <preBuildCommand>cmd.exe /k build.bat</preBuildCommand>
+  <postBuildCommand alwaysRun="False" />
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="wscript.exe //nologo RunApp.wsf" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>

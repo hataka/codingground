@@ -1,0 +1,86 @@
+////////////////////////////////////////////////////////////////////////////////
+// << s114a.java >>
+//
+//  Ｓｗｉｎｇ（１）：レイアウトマネージャー（BoxLayout）
+//
+//　　部品は左から右へ(または上から下へ)配置される。
+//　　フレームの大きさが変わっても配置は変わらない。
+//
+//　●BoxLayoutクラスのコンストラクタ
+//    public BoxLayout(Container target, int axis)
+//      機能：部品を方向axisに配置するレイアウトマネージャを作成する。
+//            target： 設定するコンテナ。
+//            BoxLayout.X_AXIS： 左から右へ。
+//            BoxLayout.Y_AXIS： 上から下へ。
+//
+////////////////////////////////////////////////////////////////////////////////
+
+import java.awt.Container;
+import java.awt.Font;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+
+class s114a extends JFrame {
+
+  ////////////////////
+  // コンストラクタ //
+  ////////////////////
+  s114a(String s) {
+
+    super(s);
+
+    // フレームからコンテンツペインを取得。
+    Container c = this.getContentPane();
+
+    // コンテンツペインのレイアウトマネージャをBoxLayoutに設定。
+    c.setLayout(new BoxLayout(c, BoxLayout.X_AXIS));
+
+    // ボタンとラベルの作成。
+    JButton b1 = new JButton("ボタン１");
+    //b1.setFont(new Font("MS ゴッシク", Font.PLAIN, 24));
+
+    JButton b2 = new JButton("ボタン２");
+    JButton b3 = new JButton("ボタン３");
+
+    // ボタンをコンテンツペイン内に追加。
+    c.add(b1);
+    c.add(b2);
+    c.add(b3);
+  }
+
+  //////////////////
+  // mainメソッド //
+  //////////////////
+  public static void main(String[] args) {
+
+	  UIManager.put("Button.font",new Font("ＭＳ ゴシック", Font.PLAIN, 12)); //Buttonのフォント設定
+	  UIManager.put("Label.font",new Font("ＭＳ ゴシック", Font.PLAIN, 12)); //Labelのフォント設定
+	  UIManager.put("List.font",new Font("ＭＳ ゴシック", Font.PLAIN, 12)); //Listのフォント設定
+	  UIManager.put("ComboBox.font",new Font("ＭＳ ゴシック", Font.PLAIN, 12)); //ComboBoxのフォント設定
+
+	  // フレーム１の作成。
+    s114a f1 = new s114a("フレーム１");
+    // フレームの大きさを設定。
+    f1.setSize(300,200);
+    // フレームの位置を設定。
+    f1.setLocation(0,0);
+    // 「閉じる」ボタンがクリックされたとき、プログラムを終了する。
+    f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // フレームの表示。
+    f1.setVisible(true);
+
+    // フレーム２の作成。
+    s114a f2 = new s114a("フレーム２");
+    // フレームの大きさを設定。
+    f2.setSize(360,240);
+    // フレームの位置を設定。
+    f2.setLocation(0,300);
+    // 「閉じる」ボタンがクリックされたとき、プログラムを終了する。
+    f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // フレームの表示。
+    f2.setVisible(true);
+  }
+}

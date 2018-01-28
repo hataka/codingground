@@ -1,0 +1,96 @@
+// -*- mode: java -*- Time-stamp: <09/05/19 16:28:13 kazuhiko>
+/*====================================================================
+ * name: j344a.java 
+ * created : Time-stamp: <09/07/01(水) 06:39:18 hata>
+ * $Id$
+ * Programmed by kahata
+ * To compile:
+ * To run:
+ * links: http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/java.shtml
+ *   http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/APPLET/j344a.htm
+ * description: Java プログラミング(基礎と応用)  仙波一郎
+ * ====================================================================*/
+////////////////////////////////////////////////////////////////////////////////
+//  << j344a.java >>
+//
+//  アプレット（４）：イベント処理（マウス操作、MouseMotionListenerインターフェース）
+//
+//　●操作
+//　　マウスをドラッグして曲線を描く。
+//    ・repaintメソッドから呼び出されるupdateメソッドをオーバーライドする。
+//　　　すなわち、以前に描画した文字や図形を消去しないようにする。
+//
+//　●イベント処理
+//　　イベントソース： マウス
+//　　イベントクラス： MouseEventクラス
+//　　イベントリスナ： MouseMotionListenerインターフェース
+//                  　 mouseDragged,mouseMovedメソッド
+//
+//  ●MouseMotionListenerインターフェース
+//　　マウス操作（ドラッグ）に関するインターフェース。
+//    ２個のメソッドすべてを定義する必要がある。
+//
+//   　 mouseDragged   : マウスのボタンが押してドラッグしたときに呼び出される。
+//      mouseMoved     : マウスを移動する(ボタンは押さない)と呼び出される。 
+//
+////////////////////////////////////////////////////////////////////////////////
+
+import java.applet.Applet; 
+import java.awt.*; 
+import java.awt.event.*;     
+
+public class j344a extends Applet implements MouseMotionListener {
+
+  int Px=0,Py=0; // マウスの直前の位置。
+  int Cx,Cy;     // マウスの現在の位置。
+ 
+  public void init() {
+
+    // アプレットの背景色を灰色に設定。
+    this.setBackground(Color.lightGray);
+
+    // イベントリスナの登録。
+    this.addMouseMotionListener(this);
+
+  }
+
+  public void update(Graphics g) {
+    if( (Px == 0)&&(Py == 0) ) { Px = Cx; Py = Cy; }
+    g.drawLine(Px,Py,Cx,Cy); // 直線の描画。
+    Px = Cx; Py = Cy; // 直前の位置を更新。
+  }
+
+  public void mouseDragged(MouseEvent e) {
+    Cx = e.getX(); // クリックした点のx座標を取得する。 
+    Cy = e.getY(); // クリックした点のy座標を取得する。 
+    repaint();
+  }
+
+  public void mouseMoved(MouseEvent e) { }
+
+}
+/*
+</pre>
+
+<font size=5 color=blue>ＨＴＭＬファイル</font><br>
+
+<pre>
+<html>
+<head>
+  <title>アプレット</title>
+</head>
+<body bgcolor=white text=black>
+<applet code="j344a.class" width="300" height="200">
+</applet>
+<body>
+<html>
+</pre>
+
+<font size=5 color=blue>実行結果</font><br>
+
+<applet code="j344a.class" width="300" height="200">
+</applet>
+
+</body>
+</html>
+*/

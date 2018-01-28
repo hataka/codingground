@@ -1,0 +1,74 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+/////////////////////////////////////////////////////////////////////////////
+// Tasks
+/*
+
+プロパティファイルの読み込み 普通にgroovyコードを書くしかないと思われる
+def props = new Properties()
+file("foo.properties").withInputStream {
+	stream -> props.load(stream)
+}
+println props['bar']
+
+//baz
+*/
+//ext.mainClassName= mainClassName
+/*
+task create_run_jar(type: Jar, dependsOn: jar)  {
+  description 'Create swt Executable Jar in rootDir'
+	destinationDir = file("$rootDir")
+	exclude "META-INF/*.SF"  
+	archiveName = "${rootProject.name}.jar"
+	manifest {
+		attributes 'Main-Class' : mainClassName
+	}
+  from configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}
+  from "$buildDir/classes/main"
+  from "$buildDir/resources/main"
+	from zipTree('F:/java/lib/swt.jar')
+}
+
+//task runJar(dependsOn:[jar]){ //自動起動する
+task runJar {
+	description 'Run Executable Jar  at root'
+	doLast {
+		//println(jar.archivePath)
+		ant.java(jar:"$rootDir/${rootProject.name}.jar",fork:true)
+	}
+}
+*/
+task listPath  {
+	description 'src配下の*.javaファイルをリストアップします'
+  doLast{
+		def path = ant.path {
+			fileset(dir: 'src', includes: '**/*.java')
+		}
+		path.list().each {
+			println it
+		}
+	}
+}
+
+task echo_properties {
+	description '組込みプロパティを リストアップします'
+	doLast {
+		println 'Hello, Gradle!'
+		println "|rootDir		  |$rootDir|"  // $rootDir の代わりに $project.rootDir でも OK
+		println "|project.name	 |$project.name|"  // $rootDir の代わりに $project.rootDir でも OK
+  	println "|projectDir	   |$projectDir|"
+  	println "|buildDir		 |$buildDir|"
+  	println "|gradleHomeDir	|$gradle.gradleHomeDir|"
+  	println "|gradleUserHomeDir|$gradle.gradleUserHomeDir|"
+  	println "|rootProject.name |$rootProject.name|"
+  	println "|description	  |$description|"
+  	println "|version		  |$version|"
+  	println "|mainClassName	  |$mainClassName|"
+  	//println "|userhome		 |$user_home|"
+	}
+}

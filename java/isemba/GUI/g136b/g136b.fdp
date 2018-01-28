@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Executed before build -->
+  <preBuildCommand>cmd.exe /k build.bat</preBuildCommand>
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="wscript.exe //nologo RunApp.wsf" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>

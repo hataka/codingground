@@ -1,0 +1,79 @@
+/*
+<!--====================================================================-->
+<!-- << j644a.htm >>                                                    -->
+<!--                                                                    -->
+<!--  JAVAプログラミング　　　　　　　　　　　　　　　　　　　　　　　  -->
+<!--                                                                    -->
+<!--====================================================================-->
+
+<html>
+<head>
+  <title>JAVAプログラミング</title>
+</head>
+
+<body bgcolor="white" text="black">
+
+<pre>*/
+////////////////////////////////////////////////////////////////////////////////
+// << j644a.java >>
+//
+//  ファイル処理（４）PrintWriterクラス（ファイルへ出力）
+//
+//    PrintWriterクラスを使って、ファイルへ出力する。
+//
+//　●PrintWriterクラスのコンストラクタ
+//　　public PrintWriter(String fn) throws FileNotFoundException
+//　　　機能：指定のファイルfnで新しいPrintWriterオブジェクトを作成する。
+//            ファイルが既存の場合、上書きされる。ファイルがない場合、
+//　　　　　　新規ファイルが作成される。
+//            行の自動フラッシュは行わない。
+//
+////////////////////////////////////////////////////////////////////////////////
+
+import java.io.*;
+
+class j644a {
+
+  public static void main(String args[]) {
+
+    try {
+
+      PrintWriter pw = new PrintWriter("j644a.txt");
+
+      int n = 123;                     
+      pw.print(n);                     
+      double d = 123.456;              
+      pw.print(d);                     
+      String s = "日本語";             
+      pw.print(s);                     
+                                       
+      pw.println();                    
+      pw.println(n);                   
+      pw.println(d);                   
+      pw.println(s);                   
+
+      pw.close();
+
+    } catch( Exception e ) { }
+
+  }
+
+} 
+</pre>
+
+<font size=5 color=blue>実行結果</font>
+
+<pre>
+% javac j644a.java
+% java j644a
+
+% type j644a.txt
+123123.456日本語
+123
+123.456
+日本語
+
+</pre>
+
+</body>
+</html>

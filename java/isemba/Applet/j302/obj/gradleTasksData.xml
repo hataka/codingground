@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root title="build.gradle">
+
+<folder title="Application tasks">
+<record title="run" default="true" action="RunProcess" command="cmd.exe" 
+	args="/k gradle -q run" path="$(CurProjectDir)\build.gradle"
+	tooltip="Runs this project as a JVM application" />
+</folder>
+
+<folder title="Build Setup tasks">
+<record title="assemble" action="RunProcess" command="cmd.exe" args="/k gradle -q assemble" path="$(CurProjectDir)\build.gradle" tooltip="Assembles the outputs of this project." />
+<record title="build" action="RunProcess" command="cmd.exe" args="/k gradle -q build" path="$(CurProjectDir)\build.gradle" tooltip="Assembles and tests this project." />
+<record title="buildDependents" action="RunProcess" command="cmd.exe" args="/k gradle -q buildDependents" path="$(CurProjectDir)\build.gradle" tooltip="Assembles and tests this project and all projects that depend on it." />
+<record title="buildNeeded" action="RunProcess" command="cmd.exe" args="/k gradle -q buildNeeded" path="$(CurProjectDir)\build.gradle" tooltip="Assembles and tests this project and all projects it depends on." />
+<record title="classes" action="RunProcess" command="cmd.exe" args="/k gradle -q classes" path="$(CurProjectDir)\build.gradle" tooltip="Assembles main classes." />
+<record title="clean" action="RunProcess" command="cmd.exe" args="/k gradle -q clean" path="$(CurProjectDir)\build.gradle" tooltip="Deletes the build directory." />
+<record title="jar" action="RunProcess" command="cmd.exe" args="/k gradle -q jar" path="$(CurProjectDir)\build.gradle" tooltip="Assembles a jar archive containing the main classes." />
+<record title="testClasses" action="RunProcess" command="cmd.exe" args="/k gradle -q testClasses" path="$(CurProjectDir)\build.gradle" tooltip="Assembles test classes." />
+</folder>
+
+<folder title="Build tasks">
+<record title="init" action="RunProcess" command="cmd.exe" args="/k gradle -q init" path="$(CurProjectDir)\build.gradle" tooltip="Initializes a new Gradle build." />
+<record title="wrapper" action="RunProcess" command="cmd.exe" args="/k gradle -q wrapper" path="$(CurProjectDir)\build.gradle" tooltip="Generates Gradle wrapper files." />
+</folder>
+
+<folder title="Distribution tasks">
+<record title="assembleDist" action="RunProcess" command="cmd.exe" args="/k gradle -q assembleDist" path="$(CurProjectDir)\build.gradle" tooltip="Assembles the main distributions" />
+<record title="distTar" action="RunProcess" command="cmd.exe" args="/k gradle -q distTar" path="$(CurProjectDir)\build.gradle" tooltip="Bundles the project as a distribution." />
+<record title="distZip" action="RunProcess" command="cmd.exe" args="/k gradle -q distZip" path="$(CurProjectDir)\build.gradle" tooltip="Bundles the project as a distribution." />
+<record title="installDist" action="RunProcess" command="cmd.exe" args="/k gradle -q installDist" path="$(CurProjectDir)\build.gradle" tooltip="Installs the project as a distribution as-is." />
+</folder>
+
+<folder title="Documentation tasks">
+<record title="groovydoc" action="RunProcess" command="cmd.exe" args="/k gradle -q groovydoc" path="$(CurProjectDir)\build.gradle" tooltip="Generates Groovydoc API documentation for the main source code." />
+<record title="javadoc" action="RunProcess" command="cmd.exe" args="/k gradle -q javadoc" path="$(CurProjectDir)\build.gradle" tooltip="Generates Javadoc API documentation for the main source code." />
+</folder>
+
+<folder title="Help tasks">
+<record title="buildEnvironment" action="RunProcess" command="cmd.exe" args="/k gradle -q buildEnvironment" path="$(CurProjectDir)\build.gradle" tooltip="Displays all buildscript dependencies declared in root project 'Snippet002'." />
+<record title="components" action="RunProcess" command="cmd.exe" args="/k gradle -q components" path="$(CurProjectDir)\build.gradle" tooltip="Displays the components produced by root project 'Snippet002'. [incubating]" />
+<record title="dependencies" action="RunProcess" command="cmd.exe" args="/k gradle -q dependencies" path="$(CurProjectDir)\build.gradle" tooltip="Displays all dependencies declared in root project 'Snippet002'." />
+<record title="dependencyInsight" action="RunProcess" command="cmd.exe" args="/k gradle -q dependencyInsight" path="$(CurProjectDir)\build.gradle" tooltip="Displays the insight into a specific dependency in root project 'Snippet002'." />
+<record title="dependentComponents" action="RunProcess" command="cmd.exe" args="/k gradle -q dependentComponents" path="$(CurProjectDir)\build.gradle" tooltip="Displays the dependent components of components in root project 'Snippet002'. [incubating]" />
+<record title="help" action="RunProcess" command="cmd.exe" args="/k gradle -q help" path="$(CurProjectDir)\build.gradle" tooltip="Displays a help message." />
+<record title="model" action="RunProcess" command="cmd.exe" args="/k gradle -q model" path="$(CurProjectDir)\build.gradle" tooltip="Displays the configuration model of root project 'Snippet002'. [incubating]" />
+<record title="projects" action="RunProcess" command="cmd.exe" args="/k gradle -q projects" path="$(CurProjectDir)\build.gradle" tooltip="Displays the sub-projects of root project 'Snippet002'." />
+<record title="properties" action="RunProcess" command="cmd.exe" args="/k gradle -q properties" path="$(CurProjectDir)\build.gradle" tooltip="Displays the properties of root project 'Snippet002'." />
+
+<record title="task" action="RunProcess" command="cmd.exe" args="/k gradle -q tasks --all" path="$(CurProjectDir)\build.gradle" tooltip="Displays all tasks  of root project 'Snippet002'." />
+
+</folder>
+
+<folder title="IDE tasks">
+<record title="cleanEclipse" action="RunProcess" command="cmd.exe" args="/k gradle -q cleanEclipse" path="$(CurProjectDir)\build.gradle" tooltip="Cleans all Eclipse files." />
+<record title="eclipse" action="RunProcess" command="cmd.exe" args="/k gradle -q eclipse" path="$(CurProjectDir)\build.gradle" tooltip="Generates all Eclipse files." />
+</folder>
+
+<folder title="Verification tasks">
+<record title="check" action="RunProcess" command="cmd.exe" args="/k gradle -q check" path="$(CurProjectDir)\build.gradle" tooltip="Runs all checks." />
+<record title="test" action="RunProcess" command="cmd.exe" args="/k gradle -q test" path="$(CurProjectDir)\build.gradle" tooltip="Runs the unit tests." />
+</folder>
+
+<folder title="Other tasks">
+<record title="ant.build" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.build" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.build-eclipse-compiler" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.build-eclipse-compiler" path="$(CurProjectDir)\build.gradle" tooltip="compile project with Eclipse compiler" />
+<record title="ant.build-project" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.build-project" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.build-refprojects" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.build-refprojects" path="$(CurProjectDir)\build.gradle" tooltip="Build all projects which reference this project. Useful to propagate changes." />
+<record title="ant.build-subprojects" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.build-subprojects" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.clean" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.clean" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.cleanall" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.cleanall" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.clearall" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.clearall" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.create_run_jar" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.create_run_jar" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.init" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.init" path="$(CurProjectDir)\build.gradle" tooltip="Table example snippet2: sort a table by column" />
+<record title="ant.init-eclipse-compiler" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.init-eclipse-compiler" path="$(CurProjectDir)\build.gradle" tooltip="copy Eclipse compiler jars to ant lib directory" />
+<record title="ant.open-fd-project" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.open-fd-project" path="$(CurProjectDir)\build.gradle" tooltip="open FD Project" />
+<record title="ant.open-src-in-fd" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.open-src-in-fd" path="$(CurProjectDir)\build.gradle" tooltip="open source in FD" />
+<record title="ant.run" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.run" path="$(CurProjectDir)\build.gradle" tooltip="execute Target" />
+<record title="ant.runjar" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.runjar" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="ant.Snippet2" action="RunProcess" command="cmd.exe" args="/k gradle -q ant.Snippet2" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="cleanEclipseClasspath" action="RunProcess" command="cmd.exe" args="/k gradle -q cleanEclipseClasspath" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="cleanEclipseJdt" action="RunProcess" command="cmd.exe" args="/k gradle -q cleanEclipseJdt" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="cleanEclipseProject" action="RunProcess" command="cmd.exe" args="/k gradle -q cleanEclipseProject" path="$(CurProjectDir)\build.gradle" tooltip="" />
+<record title="compileGroovy" action="RunProcess" command="cmd.exe" args="/k gradle -q compileGroovy" path="$(CurProjectDir)\build.gradle" tooltip="Compiles the main Groovy source." />
+<record title="compileJava" action="RunProcess" command="cmd.exe" args="/k gradle -q compileJava" path="$(CurProjectDir)\build.gradle" tooltip="Compiles main Java source." />
+<record title="compileTestGroovy" action="RunProcess" command="cmd.exe" args="/k gradle -q compileTestGroovy" path="$(CurProjectDir)\build.gradle" tooltip="Compiles the test Groovy source." />
+<record title="compileTestJava" action="RunProcess" command="cmd.exe" args="/k gradle -q compileTestJava" path="$(CurProjectDir)\build.gradle" tooltip="Compiles test Java source." />
+<record title="create_run_jar" action="RunProcess" command="cmd.exe" args="/k gradle -q create_run_jar" path="$(CurProjectDir)\build.gradle" tooltip="Create swt Executable Jar in rootDir" />
+<record title="echo_properties" action="RunProcess" command="cmd.exe" args="/k gradle -q echo_properties" path="$(CurProjectDir)\build.gradle" tooltip="組込みプロパティを リストアップします" />
+<record title="eclipseClasspath" action="RunProcess" command="cmd.exe" args="/k gradle -q eclipseClasspath" path="$(CurProjectDir)\build.gradle" tooltip="Generates the Eclipse classpath file." />
+<record title="eclipseJdt" action="RunProcess" command="cmd.exe" args="/k gradle -q eclipseJdt" path="$(CurProjectDir)\build.gradle" tooltip="Generates the Eclipse JDT settings file." />
+<record title="eclipseProject" action="RunProcess" command="cmd.exe" args="/k gradle -q eclipseProject" path="$(CurProjectDir)\build.gradle" tooltip="Generates the Eclipse project file." />
+<record title="install" action="RunProcess" command="cmd.exe" args="/k gradle -q install" path="$(CurProjectDir)\build.gradle" tooltip="Installs the 'archives' artifacts into the local Maven repository." />
+<record title="listPath" action="RunProcess" command="cmd.exe" args="/k gradle -q listPath" path="$(CurProjectDir)\build.gradle" tooltip="src配下の*.javaファイルをリストアップします" />
+<record title="processResources" action="RunProcess" command="cmd.exe" args="/k gradle -q processResources" path="$(CurProjectDir)\build.gradle" tooltip="Processes main resources." />
+<record title="processTestResources" action="RunProcess" command="cmd.exe" args="/k gradle -q processTestResources" path="$(CurProjectDir)\build.gradle" tooltip="Processes test resources." />
+<record title="runJar" action="RunProcess" command="cmd.exe" args="/k gradle -q runJar" path="$(CurProjectDir)\build.gradle" tooltip="Run Executable Jar  at root" />
+<record title="RunScript" titlecolor="red" action="RunProcess" command="cmd.exe" args="/k gradle -q RunScript" path="$(CurProjectDir)\build.gradle" tooltip="埋め込みgroovy を実行します" />
+<record title="startScripts" action="RunProcess" command="cmd.exe" args="/k gradle -q startScripts" path="$(CurProjectDir)\build.gradle" tooltip="Creates OS specific scripts to run the project as a JVM application." />
+</folder>
+</root>

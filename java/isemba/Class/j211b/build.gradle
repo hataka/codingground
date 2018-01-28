@@ -1,0 +1,212 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+//apply plugin: 'cpp'
+/////////////////////////////////////////////////////////////////////////////
+// Properties
+defaultTasks 'run'
+group = 'isemba'
+version = '1.0-SNAPSHOT'
+description = "j211b"
+
+//sourceSets.main.java.srcDirs   = ["$projectDir"]
+//sourceSets.main.groovy.srcDirs = ["$projectDir"]
+/*
+compileJava {
+  options.encoding = 'utf-8'
+  copy {
+    from 'classes/main'
+    into '.'
+    include '** / *.class' //修正必要
+    //include '** / *.jsp' //修正必要
+    //exclude { details -> details.file.name.endsWith('.html') &&
+    //                     details.file.text.contains('staging') }	
+  }
+}
+*/
+/*
+sourceSets {
+	main {
+		java {
+			//srcDir 'src/java'
+    	//srcDirs = ["$projectDir/src/java"]
+    	srcDirs = ["$projectDir"]
+		}
+		
+		resources {
+			//srcDir 'src/resources'
+			srcDirs ["$projectDir/resources"]
+		}
+		
+		groovy {
+			srcDirs = ["$projectDir/src/groovy"]
+			//srcDirs = ["$projectDir"]
+  	}
+	}
+}
+*/
+//buildDir = "$projectDir"
+buildDir = 'target'
+//buildDir = "$projectDir"
+def user_home = System.getenv()['USERPROFILE']+"\\.maven"
+// Define the main class for the application
+mainClassName = 'isemba.j211b'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+//http://www.my-notebook.net/82f61937-bc91-4323-8380-a09c8dede37f.html
+ant.env = ant.property(environment:'env')
+ext.env = System.getenv()
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}
+
+repositories {
+		jcenter()
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+	compile 'com.google.guava:guava:21.0'
+	compile 'org.codehaus.groovy:groovy-all:2.4.10'
+  //compile 'org.codehaus.groovy:groovy-all:2.2.1'
+  //groovy group: localGroovy()  
+	//groovy group: 'org.codehaus.groovy', name: 'groovy', version: '2.0.1'
+ 	//compile files('C:/eclipse461/workspace/CommonLibrary/CommonLibrary.jar')
+    testCompile group: 'junit', name: 'junit', version:'3.8.1'
+}
+
+buildscript {
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
+	dependencies {
+		//classpath files('F:/java/lib/swt.jar')
+		//classpath files('C:/eclipse461/workspace/CommonLibrary/CommonLibrary.jar')
+	}
+}
+/////////////////////////////////////////////////////////////////////////////
+// Tasks
+task create_run_jar(type: Jar, dependsOn: jar)  {
+  description 'Create swt Executable Jar in rootDir'
+	destinationDir = file("$rootDir")
+	exclude "META-INF/*.SF"  
+	archiveName = "${rootProject.name}.jar"
+	manifest {
+		attributes 'Main-Class' : mainClassName
+	}
+  from configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}
+  from "$buildDir/classes/main"
+  from "$buildDir/resources/main"
+	from zipTree('F:/java/lib/swt.jar')
+}
+
+//task runJar(dependsOn:[jar]){ //自動起動する
+task runJar {
+	description 'Run Executable Jar  at root'
+	doLast {
+		//println(jar.archivePath)
+		ant.java(jar:"$rootDir/${rootProject.name}.jar",fork:true)
+	}
+}
+
+task listPath  {
+	description 'src配下の*.javaファイルをリストアップします'
+  doLast{
+		def path = ant.path {
+			fileset(dir: 'src', includes: '**/*.java')
+		}
+		path.list().each {
+			println it
+		}
+	}
+}
+
+task echo_properties {
+	description '組込みプロパティを リストアップします'
+	doLast {
+		println 'Hello, Gradle!'
+		println "|rootDir		  |$rootDir|"  // $rootDir の代わりに $project.rootDir でも OK
+		println "|project.name	 |$project.name|"  // $rootDir の代わりに $project.rootDir でも OK
+  	println "|projectDir	   |$projectDir|"
+  	println "|buildDir		 |$buildDir|"
+  	println "|gradleHomeDir	|$gradle.gradleHomeDir|"
+  	println "|gradleUserHomeDir|$gradle.gradleUserHomeDir|"
+  	println "|rootProject.name |$rootProject.name|"
+  	println "|description	  |$description|"
+  	println "|version		  |$version|"
+  	//println "|userhome		 |$user_home|"
+	}
+}
+/////////////////////////////////////////////////////////////////////////////
+// Embed Script
+// -*- mode: java -*- Time-stamp: <2009-06-20 06:20:43 kahata>
+/*====================================================================
+ * name: j211b.java 
+ * created : Time-stamp: <09/06/20(土) 06:11:02 hata>
+ * $Id$
+ * Programmed by kahata
+ * To compile:
+ * To run: JavaConsoleApplication
+ * links: http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/java.shtml
+ * http://jubilo.cis.ibaraki.ac.jp/~isemba/PROGRAM/JAVA/CLASS/j21b.htm
+ * description:
+ * ====================================================================*/
+////////////////////////////////////////////////////////////////////////////////
+//  << j211b.java >>
+//
+//  クラス（１）：オブジェクト（メンバへのアクセス）
+//
+//　●オブジェクトのメンバへのアクセス。
+//
+//　　フィールドへの参照と代入、メソッドの呼び出しを確認する。
+//
+//　　（１）オブジェクトobjの作成。
+//　　（２）フィールドobj.nの参照。
+//　　（３）フィールドobj.nに代入。
+//　　（４）フィールドobj.nの参照。
+//    （５）メソッドm(3)の呼び出し。
+//    （６）メソッドm(4)の呼び出し。
+//    （７）オブジェクトobjの破棄。
+//
+////////////////////////////////////////////////////////////////////////////////
+import java.io.*;
+
+// クラス(C)の定義。
+class C { 
+  int n = 0; // フィールドの定義。
+  int m(int a) { // メソッド(m)の定義。 
+    return 2*a;
+  }
+}
+
+// クラス(j211b)の定義。
+
+task runScript {
+  description = "クラス（１）：オブジェクト（メンバへのアクセス）"
+  doLast {
+  	//println("ここにgroovy script を実装します");
+    
+    C obj = new C(); //（１）
+    System.out.println("（２）obj.n = " + obj.n); //（２）
+    
+    obj.n = 111; //（３）
+    System.out.println("（４）obj.n = " + obj.n); //（４）
+
+    int k = obj.m(3); //（５）
+    System.out.println("（５）k = " + k); 
+    System.out.println("（６）obj.m(4) = " + obj.m(4)); //（６）
+
+    obj = null; //（７）
+    // 次の2つの実行文は、objがオブジェクトを指さなくなるのでエラーになる。
+    // obj.n; 
+    // obj.m(5);
+  }
+}
+	

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="0" key="ant.properties.block.property.sortColumn"/>
+	<item value="false" key="AntPropertiesFileSelectionDialog.showAll"/>
+	<item value="0" key="org.eclipse.ant.ui.ant_types_page_context.sortColumn"/>
+	<item value="127" key="org.eclipse.ant.ui.ant_types_page_context.columnWidth3"/>
+	<item value="127" key="org.eclipse.ant.ui.ant_types_page_context.columnWidth2"/>
+	<item value="1024" key="org.eclipse.ant.ui.ant_types_page_context.sortDirection"/>
+	<item value="133" key="org.eclipse.ant.ui.ant_types_page_context.columnWidth1"/>
+	<item value="0" key="org.eclipse.ant.ui.ant_tasks_page_context.sortColumn"/>
+	<item value="1024" key="ant.properties.block.property.sortDirection"/>
+	<item value="127" key="org.eclipse.ant.ui.ant_tasks_page_context.columnWidth1"/>
+	<item value="191" key="org.eclipse.ant.ui.ant_types_page_context.columnWidth0"/>
+	<item value="158" key="ant.properties.block.property.columnWidth2"/>
+	<item value="184" key="org.eclipse.ant.ui.ant_tasks_page_context.columnWidth0"/>
+	<item value="122" key="org.eclipse.ant.ui.ant_tasks_page_context.columnWidth3"/>
+	<item value="159" key="ant.properties.block.property.columnWidth0"/>
+	<item value="122" key="org.eclipse.ant.ui.ant_tasks_page_context.columnWidth2"/>
+	<item value="1024" key="org.eclipse.ant.ui.ant_tasks_page_context.sortDirection"/>
+	<item value="212" key="ant.properties.block.property.columnWidth1"/>
+	<item value="/Kiso/j121a" key="AntPropertiesFileSelectionDialog.lastContainer"/>
+	<section name="org.eclipse.ant.internal.ui.views.AntView">
+		<item value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;&#x0A;&lt;antView&gt;&#x0D;&#x0A;&lt;project default=&quot;build&quot; error=&quot;false&quot; name=&quot;j101&quot; path=&quot;/Kiso/j101/build.xml&quot;/&gt;&#x0D;&#x0A;&lt;project default=&quot;build&quot; error=&quot;false&quot; name=&quot;j111&quot; path=&quot;/Kiso/j111/build.xml&quot;/&gt;&#x0D;&#x0A;&lt;project default=&quot;build&quot; error=&quot;false&quot; name=&quot;j112aJApplet&quot; path=&quot;/Kiso/j112a/build.xml&quot;/&gt;&#x0D;&#x0A;&lt;project default=&quot;build&quot; error=&quot;false&quot; name=&quot;j112bs&quot; path=&quot;/Kiso/j112b/build.xml&quot;/&gt;&#x0D;&#x0A;&lt;project default=&quot;build&quot; error=&quot;false&quot; name=&quot;j113&quot; path=&quot;/Kiso/j113/build.xml&quot;/&gt;&#x0D;&#x0A;&lt;project default=&quot;build&quot; error=&quot;false&quot; name=&quot;j121a&quot; path=&quot;/Kiso/j121a/build.xml&quot;/&gt;&#x0D;&#x0A;&lt;filterInternalTargets value=&quot;false&quot;/&gt;&#x0D;&#x0A;&lt;/antView&gt;" key="memento"/>
+	</section>
+</section>

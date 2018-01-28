@@ -1,0 +1,82 @@
+
+defaultTasks 'run'// 'clean'
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+group = 'isemba'
+version = '1.0-SNAPSHOT'
+
+// Define the main class for the application
+mainClassName = 'j101'
+description = """s101"""
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+//sourceSets.main.java.srcDirs   = ["$projectDir/src/java"]
+sourceSets.main.java.srcDirs   = ["$projectDir"]
+
+//buildDir = 'target'
+buildDir = "$projectDir"
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+	jcenter()
+	mavenCentral()   
+	maven { url "https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/" }
+	maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+	compile 'com.google.guava:guava:21.0'
+  //compile 'org.codehaus.groovy:groovy-all:2.2.0', files(....)
+  //compile 'org.codehaus.groovy:groovy-all:2.2.1'
+  compile group: 'org.eclipse.swt', name: 'org.eclipse.swt.win32.win32.x86_64', version:'4.4'
+  //groovy group: localGroovy()  
+	//groovy group: 'org.codehaus.groovy', name: 'groovy', version: '2.0.1'
+  //testCompile "junit:junit:4.11"
+  //testCompile group: 'junit', name: 'junit', version:'3.8.1'
+	testCompile 'junit:junit:4.12'
+}
+
+description = "基礎（１）：画面への出力"
+
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}
+
+task runScript {
+  doLast {
+    /* mainという名前のメソッドを定義する。
+       定義部分は、ブロック内に書く。
+       mainメソッドは、Javaで、最初に実行される。*/
+
+    // 文字列の出力。
+    System.out.println("ABCDE abcde");
+
+    // 数値の出力。数値は自動的に文字列"12345"に変換される。
+    System.out.println(12345);
+
+    // 漢字の出力。
+    System.out.println("明治　大正　昭和　平成");
+
+    // 二重引用符の出力。
+    System.out.println("\"");
+
+    // 円マークの出力。
+    System.out.println("\\");
+  }
+}
+
+task fooTask << {
+  // おかしい　unable to resolve GroovyClass
+	//GroovyClass g = new GroovyClass()
+  //g.foo()
+}

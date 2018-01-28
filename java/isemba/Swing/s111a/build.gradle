@@ -1,0 +1,248 @@
+// -*- mode: gradle -*-  Time-stamp: <2017-05-08 20:29:43 kahata>
+/*================================================================
+ * title: 
+ * file: build.gradle
+ * path: F:\codingground\java\isemba\Swing\s111a\build.gradle
+ * url:  F:/codingground/java/isemba/Swing/s111a/build.gradle
+ * created: Time-stamp: <2017-05-08 20:29:43 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: http://gradle.monochromeroad.com/docs/userguide/working_with_files.html
+ * description: 
+ *================================================================*/
+defaultTasks 'run'// 'clean'
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+// Define the main class for the application
+mainClassName = 's111a'
+group = 'isemba'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+/*
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+*/
+compileJava {
+  options.encoding = 'utf-8'
+  copy {
+    from 'classes/main'
+    into '.'
+    include '**/*.class'
+    //include '**/*.jsp'
+    //exclude { details -> details.file.name.endsWith('.html') &&
+    //                     details.file.text.contains('staging') }	
+  }
+}
+
+sourceSets.main.java.srcDirs   = ["$projectDir"]
+//sourceSets.main.groovy.srcDirs = ["$projectDir"]
+/*
+sourceSets {
+	main {
+		java {
+			//srcDir 'src/java'
+    	//srcDirs = ["$projectDir/src/java"]
+    	srcDirs = ["$projectDir"]
+		}
+		resources {
+			//srcDir 'src/resources'
+			srcDirs ["$projectDir/resources"]
+		}
+		groovy {
+			srcDirs = ["$projectDir/src/groovy"]
+			//srcDirs = ["$projectDir"]
+  	}
+	}
+}
+*/
+//buildDir = 'target'
+buildDir = "$projectDir"
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+	jcenter()
+	mavenCentral()   
+	maven { url "https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/" }
+	maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+	compile 'com.google.guava:guava:21.0'
+  compile files('C:/eclipse461/workspace/CommonLibrary/CommonLibrary.jar')
+	//compile fileTree(dir: 'C:/eclipse461/workspace/CommonLibrary', include: '**/*.*')
+	//compile 'org.codehaus.groovy:groovy-all:2.2.0', files(....)
+  //compile 'org.codehaus.groovy:groovy-all:2.2.1'
+  compile group: 'org.eclipse.swt', name: 'org.eclipse.swt.win32.win32.x86_64', version:'4.4'
+  //groovy group: localGroovy()  
+	//groovy group: 'org.codehaus.groovy', name: 'groovy', version: '2.0.1'
+  //testCompile "junit:junit:4.11"
+  //testCompile group: 'junit', name: 'junit', version:'3.8.1'
+	testCompile 'junit:junit:4.12'
+}
+
+ant.importBuild('build.xml') {
+  antTaskName -> "ant.${antTaskName}".toString()
+}
+
+task create_run_jar(type: Jar, dependsOn: jar)  {
+    destinationDir = file("$rootDir")
+  	//include "swingLib.class"  
+  	//include "s111a.class"  
+	  exclude "META-INF/*.SF"  
+	  exclude "lib.class"  
+	  exclude "awt.class"  
+		archiveName = "${mainClassName}.jar"
+    manifest {
+        attributes 'Main-Class' : mainClassName
+    }
+   from configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}
+   from "$buildDir/classes/main"
+   from "$buildDir/resources/main"
+	 from zipTree('C:/eclipse461/workspace/CommonLibrary/CommonLibrary.jar')
+	delete("tmp")
+	delete("libs")
+}
+/*
+task create_run_jar (type: Jar) << {
+  destinationDir = file("$rootDir/target")
+	exclude "META-INF/*.SF"  
+	baseName = "Snippet3"
+  from files('target/classes')
+	from zipTree('F:/java/lib/swt.jar')
+  manifest {
+    attributes 'Main-Class': 'swt.Snippet3'
+  }
+}
+*/
+
+task runJar{ //??
+	//println(jar.archivePath)
+	//ant.runjar()
+	ant.java(jar:"${mainClassName}.jar",fork:true)
+  //ant.java(jar:"${libsDir}${File.separator}${archivesBaseName}.jar",fork:true)
+}
+
+task fooTask << {
+  // おかしい　unable to resolve GroovyClass
+	//GroovyClass g = new GroovyClass()
+  //g.foo()
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Project 固有設定
+////////////////////////////////////////////////////////////////////////////////
+// << s111a.java >>
+//
+//  Ｓｗｉｎｇ（１）：レイアウトマネージャー(FlowLayout）
+//
+//　　部品の配置や大きさを決定するクラスをレイアウトマネージャという。
+//　　レイアウトマネージャーの種類にはつぎのようなものがある。
+//
+//    　　FlowLayout       部品を横１列に配置する。
+//    　　BorderLayout     部品を上下左右、中央に配置する。
+//    　　GridLayout       部品をタイル状に配置する。
+//    　　GridBagLayout    異なる大きさの部品をタイル状に配置する。
+//    　　CardLayout       部品をカード状に配置する。
+//
+//
+//　　FlowLayoutを設定すると、部品を左から右へ並べるように配置できる。
+//    並べられなくなれば、つぎの行に配置する。各部品の間隔は均等。
+//
+//　●java.awt.FlowLayoutクラス
+//    部品(ボタンやテキストフィールドなど)を左から右へ行ごとに配置する。
+//
+//　●FlowLayoutクラスのコンストラクタ
+//　　public FlowLayout(位置, int h, int v)
+//　　　機能：部品の配置を、左から右へ順に並べるよう指定する。各部品の間隔は均等。
+//      位置：左寄せ  FlowLayout.LEFT
+//　　　　　　中央    FlowLayout.CENTER
+//            右寄せ  FlowLayout.RIGHT
+//      hは部品間の水平間隔、vは部品間の垂直間隔。
+//
+//　●JButtonクラスのコンストラクタ
+//　　public Button(String s)
+//      機能：ラベルsをもつボタンを生成する。
+//
+//　●Containerクラスのメソッド
+//    public Component add(Compoment c)  
+//      機能：部品cをこのコンテナ内に追加する。
+//    public void setLayout(LayoutManager lm)
+//      機能：コンテナのレイアウトマネージャをlmに設定する。
+//
+////////////////////////////////////////////////////////////////////////////////
+description = "Ｓｗｉｎｇ（１）：レイアウトマネージャー(FlowLayout）"
+
+import java.awt.*;
+import javax.swing.*;
+import java.awt.Font;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+
+task runScript {
+  doLast {
+  	try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			swingLib.setUIFont(new Font("Meiryo UI", Font.PLAIN, 24));
+		} catch (Exception ex) { ex.printStackTrace();}
+	
+		JFrame frame1 = new JFrame("フレーム１");
+		frame1.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		frame1.getContentPane().add(new s111a());
+		//frame.pack();
+		frame1.setSize(400,300);
+		frame1.setLocation(0,0);
+		//frame.setLocationRelativeTo(null);
+		frame1.setVisible(true);
+
+		JFrame frame2 = new JFrame("フレーム２");
+		frame2.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		frame2.getContentPane().add(new s111a());
+		//frame.pack();
+		frame2.setSize(400,300);
+		//frame2.setLocation(0,300);
+		frame2.setLocationRelativeTo(null);
+		frame2.setVisible(true);
+  }
+}
+
+class s111a extends JPanel {
+  ////////////////////
+  // コンストラクタ //
+  ////////////////////
+  //s111a(String s) { 
+  s111a() { 
+    //super(s);
+    // フレームからコンテンツペインを取得。
+    //Container c = this.getContentPane();
+
+    // コンテンツペインのレイアウトマネージャをFlowLatoutに設定。
+    this.setLayout(new FlowLayout(FlowLayout.LEFT,40,20));
+
+    // ボタンの作成。
+    JButton b1 = new JButton("ボタン１");
+    JButton b2 = new JButton("ボタン２");
+    JButton b3 = new JButton("ボタン３");
+    JButton b4 = new JButton("ボタン４");
+    JButton b5 = new JButton("ボタン５");
+
+    // ボタンをコンテンツペイン内に追加。
+    this.add(b1);
+    this.add(b2);
+    this.add(b3);
+    this.add(b4);
+    this.add(b5);
+  }
+}

@@ -1,0 +1,22 @@
+INDEX VERSION 1.129+F:\codingground\java\isemba\Kiso\.metadata\.plugins\org.eclipse.jdt.core
+3715123871.index
+3997758147.index
+4231426097.index
+348325302.index
+303044015.index
+2493607065.index
+589494812.index
+3278809953.index
+192644242.index
+3862610976.index
+1336444015.index
+3295378398.index
+2755651538.index
+3330040470.index
+2750878495.index
+1409643611.index
+2422141462.index
+2309708319.index
+4181958106.index
+3987554211.index
+2068727803.index

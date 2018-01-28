@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="j112a">
+  <property environment="env"/>
+  <dirname property="ant.file.dir" file="${ant.file}"/>
+  <property name="appname" value="${ant.project.name}"/>
+  <property name="ECLIPSE_HOME" value="C:/eclipse461/eclipse/"/>
+  <property name="FD_PATH" value="F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\FlashDevelop.exe" />
+  <!--
+    <property name="${env.JAVA_HOME}" value="C:\Program Files\Java\jdk1.8.0_102"/>
+		<property name="PATH" value="C:/Program Files/Java/jdk1.8.0_102/bin"/>
+  -->
+  <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <property name="appname" value="${ant.project.name}"/>
+   	<path id="main.classpath">
+        <pathelement location="."/>
+        <pathelement path="${java.class.path}" />
+        <!-- <pathelement location="../CommonLibrary/*.class"/>-->
+        <!-- <pathelement location="../swt-4.5-win32-win32-x86_64/swt.jar"/>-->
+        <!-- <pathelement location="F:/codingground/swt.snippets/java/swt-4.5-win32-win32-x86_64/swt.jar"/> -->
+				<pathelement location="C:/eclipse461/workspace/CommonLibrary"/>
+        <pathelement location="f:/java/lib/swt.jar"/>
+    </path>
+    <target name="init">
+    
+    <!--
+        <copy includeemptydirs="false" todir=".">
+            <fileset dir=".">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    -->
+    </target>
+    
+    <target name="clean">
+        <delete>
+            <fileset dir="." includes="**/*.class"/>
+            <fileset dir="." includes="**/*.bak"/>
+        </delete>
+        <!--  <delete dir="./commonLibrary"/> -->
+    </target>
+
+    <target name="clearall">
+       <delete>
+          <fileset dir="." includes="**/*.class"/>
+          <!--
+          <fileset dir="." includes="**/.classpath"/>
+          <fileset dir="." includes="**/.project"/>
+          <fileset dir="." includes="**/*.bat"/>
+           -->
+          <fileset dir="." includes="**/.gitignore"/>
+          <fileset dir="." includes="**/*.wsf"/>
+          <fileset dir="." includes="**/*.bak"/>
+          <fileset dir="." includes="**/*.ppr"/>
+          <fileset dir="." includes="**/*.fdp"/>
+          <fileset dir="." includes="**/FDTreeMenu.xml"/>
+          <fileset dir="." includes="**/Manifest.txt"/>
+       </delete>
+       <!--
+       <delete dir="./commomLibrary"/>
+       <delete dir="./CommonLibrary"/>
+       <delete dir="./commonLibrary"/>
+        -->
+    </target>
+
+    <target name="cleanall" depends="clean" />
+    <target name="build" depends="build-project"/>
+
+		<target name="rebuild" >
+			<antcall target="clean" />
+			<antcall target="build" />
+			<antcall target="run" />
+		</target>
+		
+    
+    <target name="build-project" depends="init">
+      <echo message="${ant.project.name}: ${ant.file}"/>
+      <javac srcdir="."
+         includes="**/*.java"
+         destdir="."
+         encoding="utf-8"
+         debug="true"
+         includeAntRuntime="no"
+         fork="true"
+         classpathref="main.classpath">
+      </javac>
+    </target>
+    
+  <target name="runScript">
+		<script language="javascript"><![CDATA[
+			var outbuf= new java.lang.String();
+			//重要
+			var System = Java.type('java.lang.System');
+			//  String indent = "    ";
+			var indent = new java.lang.String();
+			outbuf+=indent + "基礎（２）：整数演算(加算：+, 減算：-, 乗算：*, 除算：/, 剰余：)\n\n";
+			// 変数の宣言と代入。
+			var x,y,z;
+			x = 123; y = 45; 
+			outbuf+=indent + "x = " + x + "  y = " + y +"\n";
+			// 加算。
+			z = x + y;
+			outbuf+=indent + "加算　x + y = " + z + "\n";
+			// 減算。
+			z = x - y;
+			outbuf+=indent + "減算　x - y = " + z + "\n";
+			// 乗算。
+			z = x * y;
+			outbuf+=indent + "乗算　x * y = " + z + "\n";
+			// 割算。
+			z = x / y;
+			outbuf+=indent + "割算　x / y = " + z + "\n";
+			// 剰余。
+			z = x % y;
+			outbuf+=indent + "剰余　x % y = " + z + "\n";
+			System.out.println(outbuf);
+		]]></script>
+	</target>  
+	
+	<target name="create_jar" depends="build">
+      <!--  <jar destfile="F:/java/SWT/git.eclipse/Snippet2/${appname}.jar" filesetmanifest="mergewithoutmain"> -->
+      <jar destfile="${basedir}/${appname}.jar" filesetmanifest="mergewithoutmain">
+        <manifest>
+           <attribute name="Main-Class" value="${appname}"/>
+           <attribute name="Class-Path" value="."/>
+        </manifest>
+        <!-- <fileset dir="F:/java/SWT/git.eclipse/Snippet2"/> -->
+        <fileset dir="${basedir}" includes="*.class"/>
+        <!-- <zipfileset excludes="META-INF/*.SF" src="F:/java/lib/swt.jar"/> -->
+      </jar>
+    </target>
+
+	<target name="run">
+        <java classname="${appname}" failonerror="true" fork="yes">
+            <classpath refid="main.classpath"/>
+        </java>
+    </target>
+
+    <target name="runjar">
+        <java jar="${basedir}/${appname}.jar" failonerror="true" fork="yes">
+            <classpath refid="main.classpath"/>
+        </java>
+    </target>
+
+	<target name="${ant.project.name}">
+        <java classname="${ant.project.name}" failonerror="true" fork="yes">
+            <classpath refid="main.classpath"/>
+        </java>
+    </target>
+
+	<target name="open-fd-project" description="open FD Project" >
+	<exec executable="${FD_PATH}" spawn="true">
+		<arg value="-reuse" />
+		<arg value="${ant.file.dir}/${appname}.fdp" />
+	</exec>
+	</target>
+	
+	<target name="open-src-in-fd" description="open source in FD">
+		<exec executable="${FD_PATH}" spawn="true">
+			<arg value="-reuse" />
+			<arg value="${ant.file.dir}/${appname}.java" />
+		</exec>
+	</target>
+
+</project>
+
