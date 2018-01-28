@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<root title="WisdomSoft cs TreeMenu" icon="" expand="true">
+  <folder title="Menu">
+    <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
+    <record title="FlashProject" action="menu" path="F:\VCSharp\MDI\FlashDevelop\FlashDevelop\Bin\Debug\MDIFormData\FlashProject.xml" />
+    <record title="XmlTreeMenu" action="menu" path="F:\VCSharp\MDI\FlashDevelop\FlashDevelop\Bin\Debug\MDIFormData\XmlTreeMenu.xml" />
+    <record title="VC++2008 Sample" action="menu" path="F:\VCSharp\MDI\FlashDevelop\FlashDevelop\Bin\Debug\MDIFormData\VCPP2008_menu.xml" />
+  </folder>
+
+  <folder title="LocalSite">
+    <record title="PukiWki" path="http://localhost/f/pukiwiki/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="FrameWork" path="http://localhost/f/FrameWork/FrameWork.html" />
+  </folder>
+
+  <folder title="WebSite">
+    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+    <record title="yahoo" path="http://www.yahoo.co.jp/" />
+    <record title="pukiwiki2016" path="http://kahata.travel.coocan.jp/pukiwiki2016/index.php" />
+  </folder>
+
+  <folder title="FDProjects">
+    <folder title="Top">
+    <folder title="codingground"> 
+			<record title="GoogleDrive" action="OpenProject" path="C:\Users\和彦\Google ドライブ\codingground\GoogleDrive-codingground.fdp" />
+			<record title="Drive-F" action="OpenProject" path="F:\codingground\codingground.fdp" />
+		</folder>
+      <record title="ApacheServer" action="OpenProject" path="C:\Apache2.2\htdocs\ApacheServer.fdp" />
+      <record title="Neko" action="OpenProject" path="F:\cpp\Neko\Neko.fdp" />
+      <record title="VisualCpp2008_Samples" action="OpenProject" path="F:\cpp\VisualCpp2008_Samples\VisualCpp2008_Samples.fdp" />
+      <record title="isemba" action="OpenProject" path="F:\java\isemba\isemba.fdp" />
+      <record title="WSH" action="OpenProject" path="F:\WSH\WSH.fdp" />
+      <record title="WisdomSoft" action="OpenProject" path="F:\WisdomSoft\framework\WisdomSoft.fdp" />
+      <record title="ZetCode" action="OpenProject" path="F:\ZetCode\ZetCode.fdp" />
+      <record title="codingground" action="OpenProject" path="F:\codingground\codingground.fdp" />
+    </folder>
+    <folder title="C#">
+      <record title="Neko Cs" action="OpenProject" path="F:\cpp\Neko\cs\Neko_cs.fdp" />
+      <record title="Neko Form" action="OpenProject" path="F:\cpp\Neko\form\Neko_form.fdp" />
+      <record title="WisdomSoft cs" action="OpenProject" path="F:\WisdomSoft\framework\programming\cs\cs.fdp" />
+      <record title="WisdomSoft msnet" action="OpenProject" path="F:\WisdomSoft\framework\system\msnet\msnet.fdp" />
+      <record title="CS2008_555tips" action="OpenProject" path="F:\VCSharp\CS2008_555tips\CS2008_555tips.fdp" />
+    </folder>
+    <folder title="Java">
+      <folder title="isemba">
+        <record title="Applet" action="OpenProject" path="F:\java\isemba\Applet\Applet.fdp" />
+        <record title="Class" action="OpenProject" path="F:\java\isemba\Class\Class.fdp" />
+        <record title="Collection" action="OpenProject" path="F:\java\isemba\Collection\Collection.fdp" />
+        <record title="DataBase" action="OpenProject" path="F:\java\isemba\DataBase\DataBase.fdp" />
+        <record title="File" action="OpenProject" path="F:\java\isemba\File\File.fdp" />
+        <record title="GUI" action="OpenProject" path="F:\java\isemba\GUI\GUI.fdp" />
+        <record title="Graphics" action="OpenProject" path="F:\java\isemba\Graphics\Graphics.fdp" />
+        <record title="JApplet" action="OpenProject" path="F:\java\isemba\JApplet\JApplet.fdp" />
+        <!--<record title="Kiso" action="OpenProject" path="F:\java\isemba\Kiso\Kiso.fdp" />-->
+        <record title="Kiso" action="OpenProject" path="F:\codingground\java\isemba\Kiso\Kiso.fdp" />
+        <record title="Mail" action="OpenProject" path="F:\java\isemba\Mail\Mail.fdp" />
+        <record title="NetWork" action="OpenProject" path="F:\java\isemba\NetWork\NetWork.fdp" />
+        <record title="Ouyo" action="OpenProject" path="F:\java\isemba\Ouyo\Ouyo.fdp" />
+        <record title="Swing" action="OpenProject" path="F:\java\isemba\Swing\Swing.fdp" />
+        <record title="Thread" action="OpenProject" path="F:\java\isemba\Thread\Thread.fdp" />
+        <record title="servlet-sample" action="OpenProject" path="F:\java\isemba\servlet-sample\servlet-sample.fdp" />
+      </folder>
+    </folder>
+    <folder title="JavaScript">
+      <record title="semooh" action="OpenProject" path="F:\JavaScript\semooh\semooh.fdp" />
+      <record title="新JavaScript例文辞典" action="OpenProject" path="F:\JavaScript\openspc2\new_javascript_reibun\new_javascript_reibun.fdp" />
+    </folder>
+    <folder title="PHP">
+      <record title="PHP_MySQL" action="OpenProject" path="F:\php1\PHP_MySQL\PHP_MySQL.fdp" />
+      <record title="sslib" action="OpenProject" path="F:\php1\sslib\sslib.fdp" />
+    </folder>
+    <folder title="CPP">
+      <record title="sslib.fdp" action="OpenProject" path="F:\cpp\sslib\sslib.fdp" />
+      <record title="C-C++によるWin32API - APIサンプル集" action="OpenProject" path="F:\c_program\C-C++によるWin32API - APIサンプル集\cwinapi\cwinapi.fdp" />
+    </folder>
+    <folder title="Flash">
+      <record title="ひろしサーバ" action="OpenProject" path="F:\Flash\Hiroshi_server\FDProject\FDProject.fdp" />
+      <record title="Flex3.4 mxml" action="OpenProject" path="F:\Flash\flex3.4\mxml\mxml.fdp" />
+      <record title="Flex3.4 TourDeFlex" action="OpenProject" path="F:\Flash\flex3.4\mxml\TourDeFlex\TourDeFlex.fdp" />
+      <record title="Flex4 TourDeFlex" action="OpenProject" path="F:\Flash\flex4\mxml\TourDeFlex\TourDeFlex 4.fdp" />
+      <record title="Apache Flex" action="OpenProject" path="F:\Flash\ApacheFlex\ApacheFlex.fdp" icon="F:\icons\apache.ico" />
+      <record title="秀和システム Fles3.4プログラミング入門(CD)" action="OpenProject" path="F:\Flash\flex3.4\Flex3.4programmingCD\Flex3.4programmingCD.fdp" />
+      <record title="翔泳社 ActionScript3.0 辞典" action="OpenProject" path="F:\Flash\shoeisha\shoeisha.fdp" />
+      <record title="workspace" action="OpenProject" path="F:\Flash\workspace\workspace.fdp" />
+    </folder>
+    <folder title="WSH">
+      <record title="VBScript Tips" action="OpenProject" path="F:\WSH\VBScript\VBScript_Tips\VBScript_Tips.fdp" />
+      <record title="VBS for WMI" action="OpenProject" path="F:\WSH\WMI\VBSforWMI\wsf\VBSforWMI.fdp" />
+    </folder>
+  </folder>
+
+<!--
+
+  <folder title="ビルド" expand="true">
+    <record title="build.bat" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args=",/k, $(CurProjectDir)\build.bat" />
+    <record title="javac" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args=", /k javac -classpath &quot;$(CurProjectDir);%CLASSPATH%&quot; $(CurProjectName).java"/>
+  </folder>
+  <folder title="実行" expand="true">
+    <record title="Class 実行" action="RunProcess" command="java" args="-classpath &quot;$(CurProjectDir);%CLASSPATH%&quot; $(CurProjectName)" />
+    <record title="jar 実行" action="RunProcess" command="C:\WINDOWS\explorer.exe" args="$(CurProjectDir)\$(CurProjectName).jar" />
+    <record title="RunApp.wsfで実行" action="RunProcess" command="WScript" args="//nologo $(CurProjectDir)\RunApp.wsf" />
+    <record title="java Web Start 実行" action="RunProcess" command="C:\WINDOWS\explorer.exe" args="$(CurProjectDir)\$(CurProjectName).jnlp" />
+    <record title="jar 作成" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args=",/k jar cfm $(CurProjectName).jar MANIFEST.txt *.class" />
+  </folder>
+  <folder title="Source" expand="true">
+    <record title="$(CurProjectName).java" path="$(CurProjectDir)\$(CurProjectName).java" />
+  </folder>
+-->
+
+  <folder title="zip menu" expand="true">
+    <folder title="WisdomSoft" expand="false">
+      <record title="cpp" action="menu" path="F:\codingground\WisdomSoft\cpp.xml" />
+      <record title="cs" action="menu" path="F:\codingground\WisdomSoft\cs.xml" />
+      <record title="msnet" action="menu" path="F:\codingground\WisdomSoft\msnet.xml" />
+    </folder>
+    <folder title="php" expand="false">
+      <record title="Pocket_Shokai_PHP_sample" action="menu" path="F:\codingground\php\Pocket_Shokai_PHP_sample.xml" />
+    </folder>
+  </folder>
+
+  <folder title="zip explode" expand="true">
+    <folder title="F:/codingground">
+      <folder title="WisdomSoft">
+    <record title="cpp.zip" action="ExecuteScript" args="F:\codingground\WisdomSoft\cpp.zip" path="$(BaseDir)\CsMacro\zip_TreeMenu.cs" />
+    <record title="cs.zip" action="ExecuteScript" args="F:\codingground\WisdomSoft\cs.zip" path="$(BaseDir)\CsMacro\zip_TreeMenu.cs" />
+    <record title="msnet.zip" action="ExecuteScript" args="F:\codingground\WisdomSoft\msnet.zip" path="$(BaseDir)\CsMacro\zip_TreeMenu.cs" />
+      </folder>
+    </folder>
+</folder>
+
+	<folder title="KingFM">
+<record title ="MOZART-Piano_Concerto_No.1_in_F,_K.37.wax" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.1_in_F,_K.37.wax" />
+<record title ="MOZART-Piano_Concerto_No.2_in_B-flat,_K.39.wax" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.2_in_B-flat,_K.39.wax" />
+<record title ="MOZART-Piano_Concerto_No.3_in_D,_K.40.wax" path="F:/My Music/KingFM/070111/MOZART-Piano_Concerto_No.3_in_D,_K.40.wax" />
+<record title ="MOZART-Piano_Concerto_No.4_in_G,_K.41.wax" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.4_in_G,_K.41.wax" />
+<record title ="MOZART-Piano_Concerto_No.5_in_D,_K.175.wax" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.5_in_D,_K.175.wax" />
+<record title ="MOZART-Piano_Concerto_No.6_in_B-flat,_K.238.wax" path="F:/My Music/KingFM/070119/MOZART-Piano_Concerto_No.6_in_B-flat,_K.238.wax" />
+<record title ="MOZART-Piano_Concerto_No.7_in_F,_K.242_Lodron.wax" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.7_in_F,_K.242_Lodron.wax" />
+<record title ="MOZART-Piano_Concerto_No.8_in_C,_K.246_Lutzow.wax" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.8_in_C,_K.246_Lutzow.wax" />
+<record title ="MOZART-Piano_Concerto_No.9_in_E-flat,_K.271_Jeunehomme.wax" path="F:/My Music/KingFM/070108/MOZART-Piano_Concerto_No.9_in_E-flat,_K.271_Jeunehomme.wax" />
+<record title ="MOZART-Piano_Concerto_No.10_in_E-flat_K.365.wax" path="F:/My Music/KingFM/060825/MOZART-Piano_Concerto_No.10_in_E-flat_K.365.wax" />
+<record title ="MOZART-Piano_Concerto_No.11_in_F,_K.413.wax" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.11_in_F,_K.413.wax" />
+<record title ="MOZART-Piano_Concerto_No.12_in_A,_K.414.wax" path="F:/My Music/KingFM/070109/MOZART-Piano_Concerto_No.12_in_A,_K.414.wax" />
+<record title ="MOZART-Piano_Concerto_No.13_in_C_K.415_387b.wax" path="F:/My Music/KingFM/060804/MOZART-Piano_Concerto_No.13_in_C_K.415_387b.wax" />
+<record title ="MOZART-Piano_Concerto_No.14_in_E-flat,_K.449.wax" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.14_in_E-flat,_K.449.wax" />
+<record title ="MOZART-Piano_Concerto_No.15_in_B-flat,_K.450.wax" path="F:/My Music/KingFM/070114/MOZART-Piano_Concerto_No.15_in_B-flat,_K.450.wax" />
+<record title ="MOZART-Piano_Concerto_No.16_in_D,_K.451.wax" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.16_in_D,_K.451.wax" />
+<record title ="MOZART-Piano_Concerto_No.17_in_G,_K.453.wax" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.17_in_G,_K.453.wax" />
+<record title ="MOZART-Piano_Concerto_No.18_in_B-flat,_K.456.wax" path="F:/My Music/KingFM/061226/MOZART-Piano_Concerto_No.18_in_B-flat,_K.456.wax" />
+<record title ="MOZART-Piano_Concerto_No.19_in_F,_K.459.wax" path="F:/My Music/KingFM/070110/MOZART-Piano_Concerto_No.19_in_F,_K.459.wax" />
+<record title ="MOZART-Piano_Concerto_No.20_in_D_minor,_K.466.wax" path="F:/My Music/KingFM/070121/MOZART-Piano_Concerto_No.20_in_D_minor,_K.466.wax" />
+<record title ="MOZART-Piano_Concerto_No.21_in_C,_K.467.wax" path="F:/My Music/KingFM/070117/MOZART-Piano_Concerto_No.21_in_C,_K.467.wax" />
+<record title ="MOZART-Piano_Concerto_No.22_in_E-flat,_K.482.wax" path="F:/My Music/KingFM/061212/MOZART-Piano_Concerto_No.22_in_E-flat,_K.482.wax" />
+<record title ="MOZART-Piano_Concerto_No.23_in_A_K.488.wax1" path="F:/My Music/KingFM/061124/MOZART-Piano_Concerto_No.23_in_A_K.488.wax1" />
+<record title ="MOZART-Piano_Concerto_No.25_in_C_K.503.wax" path="F:/My Music/KingFM/061120/MOZART-Piano_Concerto_No.25_in_C_K.503.wax" />
+<record title ="MOZART-Piano_Concerto_No.26_in_D,_K.537_Coronation.wax" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.26_in_D,_K.537_Coronation.wax" />
+<record title ="MOZART-Piano_Concerto_No.27_in_B-flat,_K.595.wax" path="F:/My Music/KingFM/070112/MOZART-Piano_Concerto_No.27_in_B-flat,_K.595.wax" />
+<record title ="MOZART-Flute_Concerto_No.1_in_G,_K.313.wax" path="F:/My Music/KingFM/070110/MOZART-Flute_Concerto_No.1_in_G,_K.313.wax" />
+<record title ="MOZART-Flute_Concerto_No.2_in_D,_K.314.wax" path="F:/My Music/KingFM/070109/MOZART-Flute_Concerto_No.2_in_D,_K.314.wax" />
+	</folder>
+	
+	<folder title="Loadfile">
+		<folder title="java002">
+			<folder title="java002_1">
+				<record title ="Source" action="open" path="F:\codingground\WisdomSoft\java\java002\java002_1\test.java" />
+				<record title ="build.xml" action="Loadfile" path="F:\codingground\WisdomSoft\java\java002\java002_1\build.xml" />
+				<record title ="RunApp.wsf" action="Loadfile" path="F:\codingground\WisdomSoft\java\java002\java002_1\RunApp.wsf" />
+			</folder>
+			<folder title="java002_2">
+				<record title ="Source" action="open" path="F:\codingground\WisdomSoft\java\java002\java002_2\test.java" />
+				<record title ="build.xml" action="Loadfile" path="F:\codingground\WisdomSoft\java\java002\java002_2\build.xml" />
+				<record title ="RunApp.wsf" action="Loadfile" path="F:\codingground\WisdomSoft\java\java002\java002_2\RunApp.wsf" />
+			</folder>
+		</folder>
+
+	</folder>
+
+
+
+</root>

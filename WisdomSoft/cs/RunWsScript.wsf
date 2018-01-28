@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<package title="WisdomSost C# Programming">
+<!--
+XML の構文に厳密に従うファイルを作成する場合は、スクリプト要素で使用する文字が 
+XML の予約文字と見なされないようにする必要があります。
+そのためには、実際はスクリプトになっている部分を <![CDATA[ ... ]]> セクションで囲みます。
+-->
+
+<job id="cs002_1">
+	<resource id="code"><![CDATA[
+// -*- mode: java -*-  Time-stamp: <2016-10-03 06:15:36 kahata>
+/*================================================================
+ * title: 
+ * file: 
+ * path; cs/cs002/cs002_1/main.cs
+ * url:  cs/cs002/cs002_1/main.cs
+ * created: Time-stamp: <2016-10-03 06:15:36 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: http://wisdom.sakura.ne.jp/
+ * link: http://wisdom.sakura.ne.jp/programming/cs/cs2_7.html
+ * description: 
+ *
+ *================================================================*/
+partial class Test {
+	static void Main() {
+		System.Console.WriteLine(new Test());
+	}
+}
+
+partial class Test {
+	public override string  ToString() {
+		return "Test : ふるふるふるむーーーーん";
+	}
+}
+	]]></resource>
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>	
+	<script language="JScript">
+
+		var executable = "C:\\HDD_F\\Programs\\cs-script\\cscs.exe";
+		var filename = "Main.cs";
+		var code =getResource("code");
+		
+		//WScript.Echo(getResource("code"));
+		var shell = new ActiveXObject("WScript.Shell");
+		shell.Run("cmd.exe /k "+ executable + "  "+ createTempFile(code, filename), 1, false);
+		</script>
+
+</job>
+
+
+ <job id="snippet1">
+	<resource id="code">
+	<![CDATA[
+/*******************************************************************************
+ * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+//package org.eclipse.swt.snippets;
+
+/* 
+ * example snippet: Hello World
+ *
+ * For a list of all SWT example snippets see
+ * http://www.eclipse.org/swt/snippets/
+ */
+// Load compatibility script
+//load("nashorn:mozilla_compat.js");
+importPackage(org.eclipse.swt);
+importPackage(org.eclipse.swt.widgets);
+importPackage(org.eclipse.swt.graphics);
+
+	function centerScreen(shell) {
+		bds = shell.getDisplay().getBounds();
+		p = shell.getSize();
+		nLeft = (bds.width - p.x) / 2;
+		nTop = (bds.height - p.y) / 2;
+		shell.setBounds(nLeft, nTop, p.x, p.y);
+	}
+
+	display = Display.getCurrent();
+  if (display == null) display = Display.getDefault();
+	shell = new Shell(display);
+	shell.setText("SWT example Snippet1: Hello World");
+	shell.setSize(800, 600);
+	centerScreen(shell);
+
+	//Snippet1 snipet = new Snippet1(shell,SWT.NONE);	
+
+	shell.open ();
+	while (!shell.isDisposed ()) {
+		if (!display.readAndDispatch ()) display.sleep ();
+	}
+	display.dispose ();
+]]>
+	</resource>
+	
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>	
+	<script language="JScript">
+		var executable = "C:\\cygwin\\usr\\local\\bin\\rhino.bat";
+		var filename = "Main.js"
+		var code =getResource("code");
+		//WScript.Echo(getResource("code"));
+		var shell = new ActiveXObject("WScript.Shell");
+		shell.Run("cmd.exe /k "+ executable + "  "+ createTempFile(code, filename), 0, false);
+	</script>
+</job>
+
+<job id="EnumerateConstantsADO">
+  <reference object="ADODB.Recordset" />
+  <script language="VBScript">
+   <![CDATA[
+    dim title, str, i
+    ctecArray = Array("adOpenUnspecified","adOpenForwardOnly", _
+                      "adOpenKeyset","adOpenDynamic","adOpenStatic")
+    title = "ADO Recordset Values for Constants"
+    str = title & vbNewLine & vbNewLine
+    str = str & "*CursorTypeEnum Constants*" & vbNewLine
+    For i = 0 to ubound(ctecArray)
+      str = str & Eval(ctecArray(i)) & vbTab & ctecArray(i) & vbNewLine
+    Next
+    str = str & vbNewLine
+    str = str & "*LockTypeEnum Constants*" & vbNewLine
+    ltecArray = Array("adLockUnspecified","adLockReadOnly", _
+                      "adLockPessimistic","adLockOptimistic", _
+                      "adLockBatchOptimistic")
+    For i = 0 to ubound(ltecArray)
+      str = str & Eval(ltecArray(i)) & vbTab & ltecArray(i) & vbNewLine
+    Next
+    MsgBox str, vbInformation, Title
+   ]]>
+  </script>
+ </job>
+
+<job id="proj023" icon="imagelist:80">
+<script language="VBScript"><![CDATA[
+    Option Explicit
+	Dim shell
+	
+	Set shell = CreateObject("WScript.Shell")
+	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+
+    WScript.Echo "Domain = ああああ"
+
+
+	if FileExists("proj023.cs") then
+		shell.Run "F:\Programs\csscript\csws.exe proj023.cs",1
+	end if
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+]]></script>
+</job>
+
+<folder title="LocalSite">
+    <record title="PukiWki" path="http://localhost/pukiwiki/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="FrameWork" path="http://localhost/FrameWork/FrameWork.html" />
+    <record title="C# links" path="http://localhost/VCSharp/links/dir_traverse_htmllink.php" />
+    <record title="pdf" action="webbrowser" path="F:\svgGraphics\hirano-lab\00svg-full09.pdf" />
+</folder>
+</package>
+
