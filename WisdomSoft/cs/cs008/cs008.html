@@ -1,0 +1,168 @@
+<html>
+ <head>
+ <title>論理演算</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>論理演算</h1>
+<hr>
+ <h2>論理積</h2>
+プログラムで詳細にビットを操作する場合は、算術演算子ではなく<br>
+ビット単位で演算する<strong>論理演算</strong>を使用します<br>
+<br>
+<strong>論理積 AND</strong> は、二つのオペランドのビット列を比較し<br>
+双方が 1 であれば 1 を、一方でも 0 であれば 0 を出力します<br>
+<br><b>
+1 AND 1 = 1<br>
+0 AND 1 = 0<br>
+1 AND 0 = 0<br>
+0 AND 0 = 0<br>
+<br></b>
+これが論理積と呼ばれる演算です<br>
+C# では、論理積は <strong>&</strong> 演算子を使います<br>
+<br><b>
+expr1 & expr2<br>
+<br></b>
+expr1 と expr2 にはそれぞれ論理積を求める式を指定します<br>
+& はオペランドを二つ受け取る2項演算子で、双方のオペランドの論理積を返します<br>
+二つのオペランドは、各ビット（桁）が論理積で比較されます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int var = 0x3C7C;
+		System.Console.WriteLine(var & 0xF0F0);
+	}
+}</pre>
+このプログラムは、変数 var と 0xF0F0 の論理積を出力します<br>
+論理積はビットの<strong>フィルタリング</strong>に使用することができます<br>
+<br>
+<table>
+<tr><th>0011 1100 0111 1100
+<tr><th>1111 0000 1111 0000
+<tr><th><hr>
+<tr><th>0011 0000 0111 0000
+</table>
+<br>
+上のプログラムの論理積は、このように計算されています<br>
+右辺のオペランドで 0xF0F0 というリテラルを与えることによって<br>
+F は全てのビットが 1 なので、相手のビット列をそのまま出力しますが<br>
+0 は全てのビットが 0 なので、相手のビット列に関係なく 0 が出力されます<br>
+この性質を利用して、論理積で特定のビットを削除したりすることができます<br>
+
+<br><hr>
+<h2>論理和</h2>
+論理積の他に、代表的な論理演算が <strong>論理和 OR</strong> です<br>
+論理和は、二つのビットを比較し一方でも 1 ならば 1 を出力します<br>
+逆に言うと双方が 0 の時のみ 0 を出力するのが論理和です<br>
+<br><b>
+1 OR 1 = 1<br>
+1 OR 0 = 1<br>
+0 OR 1 = 1<br>
+0 OR 0 = 0<br>
+<br></b>
+これが論理和による演算です。論理和は <strong>|</strong> 演算子を使います<br>
+<br><b>
+expr1 | expr2<br>
+<br></b>
+expr1 と expr2 にはそれぞれ論理和を求める式を指定します<br>
+& 演算子同様に二つのオペランドの論理和を返します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		byte a = 1 , b = 2 , c = 4 , d = 8;
+		int x = a | d , y = b | c;
+		System.Console.WriteLine("a | d = " + x);
+		System.Console.WriteLine("b | c = " + y);
+	}
+}</pre>
+このプログラムは各種ビットに意味を持たせたとする a 〜 d の変数を用意しています<br>
+変数 x と y は意味を持った数値を複数組み合わせてシステムに要求するという場合<br>
+このように論理和を使ってビットをセットするという方法が頻繁に用いられます<br>
+変数 x に代入する時の a | d の論理和の動きを見てみましょう<br>
+<br>
+<table>
+<tr><th>0000 0001
+<tr><th>0000 1000
+<tr><th><hr>
+<tr><th>0000 1001
+</table>
+<br>
+答えは 9 になりますが、加算ではなく論理和で求めていることが重要です<br>
+加算は a + a とすると値が増えつづけ意味のない値になりますが<br>
+論理和であれば意味付けされている定数からはみ出すようなことはありません<br>
+
+<br><hr>
+<h2>論理否定</h2>
+整数を単純に否定する場合は、リテラルや数値変数の前に - 単項演算子を付加しました<br>
+これは2の補数が求められ 0 からオペランドを引いた結果が得られました<br>
+<br>
+<strong>論理否定 NOT</strong> は全てのビットを単純に反転させます<br>
+これによって1の補数を求めたり、与えられてビット列を否定できます<br>
+<br><b>
+NOT 1 = 0<br>
+NOT 0 = 1<br>
+<br></b>
+NOT はビットを反転させるだけなのでオペランドは1つしか要求しません<br>
+論理否定は <strong>~</strong> 演算子を使います<br>
+<br><b>
+~ expr<br>
+<br></b>
+expr にはビットを反転させたい式を指定します<br>
+ビットを反転させるので ~ 演算子で1の補数を求めることができます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		sbyte var = 0x07;
+		System.Console.WriteLine(~var + 1);
+	}
+}</pre>
+以前、コンピュータは負数を2の補数で表現すると説明しました<br>
+これは、減算処理を加算処理で行えるというメリットがあるからです<br>
+<br>
+このプログラムでは ~ 演算子で var のビットを反転させ1の補数を求め<br>
+これに1加算することによって2の補数、つまり var の負数を表現しています<br>
+
+<br><hr>
+<h2>排他的論理和</h2>
+プログラム処理の中では、複数の選択の中から常に一つだけを選択するという<br>
+排他的な制御がまれに見かけられます<br>
+<br>
+<strong>排他的論理和 XOR</strong> は、双方のビットが同じ場合は 0、異なる場合は 1 を出力します<br>
+すなわちビットが排他的であれば 1 となる論理演算なのです<br>
+<br><b>
+1 XOR 1 = 0<br>
+1 XOR 0 = 1<br>
+0 XOR 1 = 1<br>
+0 XOR 0 = 0<br>
+<br></b>
+論理和は一方でも 1 ならば 1 を返しましたが<br>
+排他的論理和は一方が 1 の時のみ 1 を返すという仕様になっています<br>
+排他的論理和は <strong>^</strong> 演算子を使います<br>
+<br><b>
+expr1 ^ expr2<br>
+<br></b>
+expr1 と expr2 には排他的論理和を求める式を指定します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int var = 0xA5;
+		System.Console.WriteLine(var ^ 0xF0);
+	}
+}</pre>
+このプログラムは、排他的論理はを使って<strong>部分否定</strong>しているプログラムです<br>
+論理否定はビット全体を否定しましたが、排他的論理和を使えば部分否定ができます<br>
+<br>
+<table>
+<tr><th>1010 0101
+<tr><th>1111 0000
+<tr><th><hr>
+<tr><th>0101 0101
+</table>
+<br>
+2進数 0101 0101 は10進数 85 なのでこれが出力されたはずです<br>
+上位4ビットだけが部分的に否定されていることが確認できますね<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs7.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs9.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

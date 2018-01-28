@@ -1,0 +1,254 @@
+<html>
+ <head>
+ <title>変数</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>変数</h1>
+<hr>
+ <h2>データの保存</h2>
+プログラムは常に何らかのデータ（情報）を扱い、処理の目的に使用します<br>
+データはリテラルだけではその場限りなので、保存する必要があります<br>
+<br>
+現在はHDDが安くなり、誰もが大容量の記録ドライブを手に入れられるようになりましたが<br>
+保存といってもデータファイルとしてHDDに記録するのではなく<br>
+プログラムはより高速でCPUの近くにある主記憶装置（メインメモリ）に一時的に保存します<br>
+<br>
+メモリのどこに保存するかは、コンパイラがコンパイル時に全て計算してくれます<br>
+私たちは、コンパイラにどのアドレスにアクセスしたいかを指示するだけでよいのです<br>
+この保存場所を表す識別子を<strong>変数</strong>と呼びます<br>
+<br>
+変数の命名規則は、クラスの命名規則と同じです<br>
+変数を使用する場合は、まず<strong>宣言</strong>する必要があり<br>
+変数には、なんでも格納できるわけではなく保存するデータ型を指定する必要があるのです<br>
+<br><b>
+type variable1 [, variable2 , ...]<br>
+<br></b>
+type には、宣言する変数の型を示す C# のキーワードを指定します<br>
+variable1 や variable2 には、それぞれ変数の名前を宣言します<br>
+このようにカンマ , で区切ることで同じ型の変数を同じに複数宣言できます<br>
+<br>
+変数の型は、次のようなキーワードが用意されています<br>
+保存する必要があるデータを定め、それに合わせて型を宣言します<br>
+宣言は C 言語と異なり、ブロック内の自由な位置で宣言できます<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>型宣言子<th>説明
+<tr><td>object<td>.NET Framework の System.Object クラスに基く<br>全ての変数の基底オブジェクト型
+<tr><td>bool<td>ブーリアン値 (true / false)
+<tr><td>byte<td>符号なし8bit整数
+<tr><td>sbyte<td>符号付8bit整数
+<tr><td>char<td>16bit Unicode
+<tr><td>short<td>符号付16bit整数
+<tr><td>ushort<td>符号なし16bit整数
+<tr><td>int<td>符号付32bit整数
+<tr><td>uint<td>符号なし32bit整数
+<tr><td>long<td>符号付64bit整数
+<tr><td>ulong<td>符号なし64bit整数
+<tr><td>float<td>32bit浮動小数点
+<tr><td>double<td>64bit浮動小数点
+<tr><td>decimal<td>128bit型。高精度で金融計算に適している
+<tr><td>string<td>Unicode キャラクタの文字列への参照
+</table>
+<br>
+object と bool 型はまだ説明していないが、これは後ほど紹介する（今は必要ない）<br>
+宣言した変数には、その後何らかのデータを<strong>代入</strong>することができます<br>
+代入は主に、<strong>代入演算子 =</strong> を用います<br>
+<br><b>
+variable = expression<br>
+<br></b>
+variable には変数名を、exporession には式（次章で紹介）を指定します<br>
+数学と違い、プログラムは左辺に右辺の値が渡されます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i;
+		double d;
+		string str;
+
+		i = 1024;
+		d = 0.015;
+		str = "Kitty on your lap";
+
+		System.Console.WriteLine(i);
+		System.Console.WriteLine(d);
+		System.Console.WriteLine(str);
+	}
+}</pre>
+整数型変数 i、浮動小数点型変数 d、文字列型変数 str を宣言し<br>
+その後、それぞれの変数に適した型の値を変数に代入しています<br>
+こうすれば、いつでも変数を呼び出して最後に代入した値を取得できます<br>
+<br>
+変数は何度も更新することができます<br>
+なんからの値が代入されている変数は、更新すると前の値は消えてしまいます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str;
+
+		str = "Kitty on your lap";
+		System.Console.WriteLine(str);
+		str = "Tokyo mew mew";
+		System.Console.WriteLine(str);
+	}
+}</pre>
+最初に呼び出した WriteLine() は "Kitty on your lap" を出力し<br>
+その後 str 変数に新しい値を代入してから再び WriteLine() で出力しています<br>
+この時はすでに "Tokyo mew mew" という文字列になっているのでこれが表示されます<br>
+<br>
+注意しなければならないのですが、メソッド内の変数を宣言した時<br>
+変数は使用される前に<strong>必ず初期化</strong>していなければなりません<br>
+初期化とは、変数の宣言後に最初に値を代入することをさしますが<br>
+これが行われていなければコンパイルすることができないのでエラーになります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str;
+		System.Console.WriteLine(str);
+	}
+}</pre>
+このプログラムは、変数の宣言後に何も初期化することなく出力しようとしています<br>
+しかし変数は初期化されていないので、なんの値が入っているのかわかりません<br>
+そのため、このプログラムはコンパイルするとエラーが出るためコンパイルできません<br>
+<br>
+これを防ぐ最良の手段は変数の宣言後に初期化するということですが<br>
+複雑なプログラムではフロー制御によって初期化が複数に分岐することがあるのです<br>
+これでは、ある分岐点では初期化されるが別のパターンで初期化されないことがあります<br>
+このような理由から、変数を<strong>宣言と同時に初期化</strong>することが一般的です<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str = "Kitty on your lap";
+		System.Console.WriteLine(str);
+	}
+}</pre>
+最初に初期化するべき値が決定されているのならば、このように初期化するべきでしょう<br>
+行数も短くなり、その分コードも可読性が増します<br>
+
+<br><hr>
+<h2>サフィックス</h2>
+変数に値や文字列を代入し、データを保存することができました<br>
+ところが、リテラルでは整数型は一つしかありませんが変数には様々な型がありました<br>
+<br>
+ある整数型を変数に代入する時、通常は変数の方に合わせて数値は整形されます<br>
+byte に数値を代入すれば、その数値は8ビットに整形されて代入されます<br>
+ただしこの場合、数値は変数に代入できるだけのサイズである必要があります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		byte var1 = 255;
+		short var2 = 32767;
+		uint var3 = 4294967295;
+
+		System.Console.WriteLine(var1);
+		System.Console.WriteLine(var2);
+		System.Console.WriteLine(var3);
+	}
+}</pre>
+このように、数値リテラルは暗黙の変換で各種の変数型に変換されます<br>
+しかし、リテラルに明確なサイズを指定したい場合は<strong>サフィックス</strong>を付加します<br>
+サフィックスはそのリテラルの型を明確に示すことができるもので、リテラルの末尾に指定します<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>サフィックス<th>リテラル
+<tr><td>無し<td>int、uint、long、ulong のうち、表せる型
+<tr><td>U , u<td>uint、ulong のうち、表せる型
+<tr><td>L , l <td>long、ulong のうち、表せる型
+<tr><td>UL , Ul , uL<br>LU , Lu , lU , lu<td>ulong 型
+</table>
+<br>
+小文字の l は 1 と読み違える可能性があるため、基本的に L を使うことが推奨されます<br>
+サフィックスは、型を明示することで暗黙の変換を防ぎます<br>
+これは、数値の型が厳密に問われる処理などでは重要になることがあります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		ulong var = 255UL;
+		System.Console.WriteLine(var);
+	}
+}</pre>
+このプログラムは数値リテラルのサフィックスを明示しています<br>
+変数の型を int などに変更してコンパイルするとエラーを確認できます<br>
+<br>
+実数リテラルにも同様にサフィックスを指定することができます<br>
+これも、整数型リテラルと考え方は同じです<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>サフィックス<th>リテラル
+<tr><td>無し<td>double型
+<tr><td>F , f<td>float型
+<tr><td>D , d<td>double型
+<tr><td>M , m<td>decimal型
+</table>
+<br>
+実数型は整数型と異なり<strong>変換は行われない</strong>ことに注意してください<br>
+整数型はサフィックスが無くても表現できる範囲であれば格納できましたが<br>
+実数型はサフィックスが無い場合は double 型であると解釈されます<br>
+たとえば、実数リテラルを float に代入するには、F サフィックスを指定する必要があります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		float var1 = 0.02F;
+		double var2 = 12.5D;
+		decimal var3 = 234.63M;
+
+		System.Console.WriteLine(var1);
+		System.Console.WriteLine(var2);
+		System.Console.WriteLine(var3);
+	}
+}</pre>
+このプログラムはサフィックスを指定しているため実数リテラルを各型に代入できますが<br>
+サフィックスを取り除くと double 以外はエラーが出ることが確認できます<br>
+
+<br><hr>
+<h2>負の単項演算子</h2>
+変数の型では、int と uint というような同じサイズの型がそれぞれ用意されています<br>
+int は uint と同じサイズですが<strong>符号付</strong>という点で異なっています<br>
+<br>
+符号とは、数値型で<strong>負数</strong>を表現するための手段です<br>
+コンピュータは負数を最上位ビットで判断し、最上位ビットが1のときは<br>
+以下のビットの2の補数の負の値であると解釈されます（詳しくはコンピュータ科学の分野となる）<br>
+そのため、負数を表現する時は最上位ビットが符号表現のために必要になり<br>
+結果として負数を扱う変数はビットで表現できる値の半分の数値が表現できる最大値となる<br>
+このような理由から負数を使わないならば符号なしの変数を使ったほうが合理的なのです<br>
+<br>
+負数はプログラムで表現する時は<strong>負の単項演算子 -</strong> を数値の前に指定します<br>
+さらに、変数の前に - を指定して変数が格納する値の<strong>符号を反転</strong>できます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int var = 100;
+		System.Console.WriteLine(-10);
+		System.Console.WriteLine(-var);
+
+		var = -1000;
+		System.Console.WriteLine(-var);
+	}
+}</pre>
+このプログラムの結果は次のようになります<br>
+<br><b>
+-10<br>
+-100<br>
+1000<br>
+<br></b>
+最初の WriteLine(-10) は数値リテラル 10 の負数を表しています<br>
+次の WriteLine(-var) は変数 var に格納されている 100 という値を負数にしています<br>
+<br>
+注目は、最後の結果です<br>
+var に -1000 という数値を代入し、この値の負数を -var で表現しています<br>
+結果 -1000 の負数は 1000 というように符号が逆になって表示されます<br>
+<br>
+では、正確には負の単項演算子は符号を逆にするものなのでしょうか？<br>
+正しい考え方としては<strong>2の補数を求める</strong>とするべきでしょう<br>
+（2の補数とは、1の補数に 1 加算したもので、1の補数とはビットを反転したものである）<br>
+<br>
+つまり、本来 -1000 という値は機械語で 1000 の2の補数として表現されます<br>
+1000は2進数で 0011 1110 1000 であり、この2の補数は 1100 0001 1000 です<br>
+この値が var に格納されていて WriteLine(-var) で 1100 0001 1000 の2の補数が求められ<br>
+この結果 0011 1110 1000 となるので10進数の 1000 という値が表示されたのです<br>
+<br>
+では、逆に + 演算子を使えば負数を整数に返られるのかと考えますが<br>
+これは何の意味もありません<br>
+変数の絶対値を求めたい場合は、変数が 0 以下であるかどうかを調べ<br>
+0 以下であればその2の補数を求めることで絶対値を求めます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs3.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs5.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

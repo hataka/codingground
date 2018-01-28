@@ -1,0 +1,142 @@
+<html>
+ <head>
+ <title>switch 文制御</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>switch 文制御</h1>
+<hr>
+ <h2>多分岐</h2>
+C/C++、Java プログラム経験者であれば、これまでの内容は退屈なものだったでしょう<br>
+switch 文もまた、C/C++、Java など多くの言語に共通する使用です<br>
+しかし、C# の switch は C/C++、Java とは異なる使用を含むので<br>
+この章は C/C++、Java プログラム経験者にもよく読んでほしい<br>
+<br>
+if - else 文は2者択一の2分岐フロー制御が基本でした<br>
+ある特定の式の結果を複数に分岐させたい場合は、これよりも <strong>switch</strong> 文が有効です<br>
+<pre><b>switch (expression)
+{
+case constant-expression:
+	statement
+	jump-statement
+[default:
+	statement
+	jump-statement]
+}</pre></b>
+expression には、評価する式を指定します<br>
+ここは if 文と違い、<strong>整数型、char、string、enum</strong>型のいずれかでなければいけません<br>
+（enum は列挙型と呼ばれるもので、これについては後記します）<br>
+<br>
+constant-expression には、expression と比較する定数式を指定します<br>
+この定数式と expression が等しいときにその case の statement が実行されます<br>
+statement には、1つ以上のステートメントを指定することができます<br>
+default は、全ての case に条件が合わなかった時に実行するブロックです<br>
+default は省略可能で、その場合で条件が合わなければ switch ブロックを抜けます<br>
+<br>
+jump-statement には、switch ステートメントから抜け出るためのステートメントを指定します<br>
+基本的には switch ステートメントは <strong>break</strong> ステートメントで終了します<br>
+break は現在実行中の switch 文やループ制御などを抜け出すステートメントです<br>
+jump-statement にはこのような switch を抜け出せるステートメントを指定します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int msg = 1;
+		switch(msg) {
+		case 0:
+			System.Console.WriteLine("Di Gi Charat");
+			break;
+		case 1:
+			System.Console.WriteLine("Kitty on your lap");
+			break;
+		case 2:
+			System.Console.WriteLine("Tokyo mew mew");
+			break;
+		default:
+			System.Console.WriteLine("Nekoneko Zoo");
+			break;
+		}
+	}
+}</pre>
+変数 msg は何らかの意味のある定数を受ける変数だと想定します<br>
+その意味のある値（メッセージ）は多種多様に用意されているならば<br>
+if で制御するよりもこのように switch 文で分岐させたほうがはるかに効率がよいのです<br>
+msg 変数の値を変更してコンパイルし動作を確認して下さい<br>
+<br>
+ところで、C/C++ 経験者ならば default 区の最後に break を指定することは奇妙に思うかもしれない<br>
+C/C++ 言語では、case が実行されると break が発見されるまで実行するのですが<br>
+このとき break がなければ次の case までが継続して実行されるという仕様でした<br>
+これは<strong>フォールスルー</strong>と呼びますが、C#ではフォールスルーは発生しません<br>
+<br>
+一般にフォールスルーが使われることはほとんどなく<br>
+何十万行に及ぶソースを書いても、フォールスルーが見られるのは数える程度です<br>
+そこで、C# はメリットよりもフォールスルーによるバグのリスクの方が高いとして<br>
+各 case 及び default 区の末尾に何らかのジャンプステートメントがなければ<br>
+フォールスルーではなく<strong>コンパイルエラー</strong>を発生される仕様を選んだのです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int msg = 10;
+		switch(msg) {
+		case 0:
+			System.Console.WriteLine("Di Gi Charat");
+		case 1:
+			System.Console.WriteLine("Kitty on your lap");
+		case 2:
+			System.Console.WriteLine("Tokyo mew mew");
+		default:
+			System.Console.WriteLine("Nekoneko Zoo");
+		}
+	}
+}</pre>
+このプログラムは case や default の末尾にジャンプステートメントがありません<br>
+そのため、コンパイル時にエラーが発生してしまいます<br>
+例えばこれを Java と見たてれば、case 0 のステートメントリストが実行されれば<br>
+以下の全ての case や default も実行されるということになります<br>
+<br>
+それと、C# の switch 文は文字列型を使用することもできます<br>
+関係演算同様に長さと各位置の文字が全て等しければ実行されます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str = "Di Gi Charat";
+		switch(str) {
+		case "Tokyo mew mew":
+			System.Console.WriteLine("ご奉仕するニャン");
+			break;
+		case "Di Gi Charat":
+			System.Console.WriteLine("目からビーーーム！");
+			break;
+		default:
+			System.Console.WriteLine("Kitty on your lap");
+			break;
+		}
+	}
+}</pre>
+実行すると case "Di Gi Charat" が実行されます<br>
+大文字と小文字も区別するという点で注意してください<br>
+
+<br><hr>
+<h2>switch</h2>
+<pre><b>switch (expression)
+{
+case constant-expression:
+	statement
+	jump-statement
+[default:
+	statement
+	jump-statement]
+}</pre></b>
+式を評価して一致する定数式のブロックを実行します<br>
+<br>
+<b>expression</b> - 評価する式を指定します<br>
+<b>constant-expression</b> - expression と比較する定数式を指定します<br>
+<b>statement</b> - 1つ以上のステートメントを指定します<br>
+<b>jump-statement</b> - ジャンプステートメントを指定します<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs11.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs13.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

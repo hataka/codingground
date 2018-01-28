@@ -1,0 +1,5 @@
+F:\codingground\WisdomSoft\cs\cs004\cs004_2\bin\Debug\cs004_2.exe
+F:\codingground\WisdomSoft\cs\cs004\cs004_2\bin\Debug\cs004_2.pdb
+F:\codingground\WisdomSoft\cs\cs004\cs004_2\obj\Debug\cs004_2.csprojResolveAssemblyReference.cache
+F:\codingground\WisdomSoft\cs\cs004\cs004_2\obj\Debug\cs004_2.exe
+F:\codingground\WisdomSoft\cs\cs004\cs004_2\obj\Debug\cs004_2.pdb

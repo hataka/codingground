@@ -1,0 +1,180 @@
+<html>
+ <head>
+ <title>if 文制御</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>if 文制御</h1>
+<hr>
+ <h2>条件分岐</h2>
+プログラムは、常に逐次実行するだけではありません<br>
+状況に応じて様々な位置に分岐して、バラエティのあるプログラムを作ってみたいものです<br>
+<br>
+プログラムの分岐の基本は <strong>if</strong> ステートメントで行います<br>
+以前「ブーリアン」で説明した true と false という論理値がここで役に立ちます<br>
+<br><b>
+if (expression) statement<br>
+<br></b>
+expression には bool 型の式を指定します<br>
+この式が <strong>true の時は statement を実行</strong> します<br>
+false であれば、statement を実行せずに次のステップに移行します<br>
+<br>
+このようなことから、一般に expression は関係演算が中心になります<br>
+C/C++ はブーリアンを 0 ならば偽、それ以外ならば真と判断していましたが<br>
+C# は型として独立しているため、expression に数値型を指定できないことに注意してください<br>
+true や false を直接指定することもできますが、リテラルを指定することに意義はありません<br>
+
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 10;
+		if (x &#60;= 100) System.Console.WriteLine("Kitty on your lap");
+		if (x &#62; 100) System.Console.WriteLine("Tokyo mew mew");
+	}
+}</pre>
+このプログラムは、変数 x が 100 と同じかそれ以下の場合と<br>
+100 より大きい場合で表示する文字列が変わるというプログラムです<br>
+この状態では Kitty on your lap が表示されますが<br>
+変数 x の初期値を 101 以上にすると Tokyo mew mew が表示されるようになります<br>
+<br>
+if は自然言語に翻訳するならば「もし…ならば…する」という動作のステートメントです<br>
+これに「そうでなければ…する」という動作を追加させたい場合<br>
+前方の if の条件を否定するという方法もありますが、確実な方法ではなくリスクを含みます<br>
+<br>
+確実に if の条件が false だった時に特定のステートメントを実行したい場合<br>
+if に関連付けた <strong>else</strong> ステートメントを使用します<br>
+<br><b>
+if (expression) statement1<br>
+[else statement2]<br>
+<br></b>
+これが正式な if 文の全容です<br>
+expression にはブール式を指定し、statement1 は<br>
+expression が true の時に実行するステートメントを<br>
+statement2 には、expression が　false だった時に実行するステートメントを指定します<br>
+else 文は上記のプログラムのように省略することが可能です<br>
+<pre class="prg">class Test {
+	static void Main() {
+		bool bl = false;
+		if (bl) System.Console.WriteLine("Kitty on your lap");
+		else System.Console.WriteLine("Tokyo mew mew");
+	}
+}</pre>
+変数 bl が false のため if ステートメントでは偽と評価されます<br>
+そのため、if 文に関連付けられた else 文のステートメントが実行されます<br>
+このように else 文は <strong>if に関連付けられていなければなりません</strong><br>
+else の前に if 文が見つからない場合はコンパイルエラーとなります<br>
+<br>
+複数の else を重ねて if ステートメントによる多分岐を実現することもできます<br>
+実際に複雑な処理をするプログラムの開発にはよく用いられる手法です<br>
+<pre class="prg">class Test {
+	static void Main() {
+		byte x = 2;
+
+		if (x == 0) System.Console.WriteLine("Kitty on your lap");
+		else if (x == 1) System.Console.WriteLine("Di Gi Charat");
+		else if (x == 2) System.Console.WriteLine("Tokyo mew mew");
+		else System.Console.WriteLine("Magical nyan nyan TARUTO");
+	}
+}</pre>
+このプログラムは x の値が 0、1、2、それ以外の 4 パターンに分岐します<br>
+x の値をそれぞれの値に変更してコンパイルすると確認できるでしょう<br>
+<br>
+プログラムを見ると各 else は前方の if にそれぞれ対応しています<br>
+最後の else 文は全ての条件が偽だった時に実行することになります<br>
+<br>
+なお、if のような他のステートメントを持つステートメントを<strong>複合ステートメント</strong>と呼び<br>
+ステートメントに包含されるステートメントを<strong>埋め込みステートメント</strong>と呼ばれます<br>
+if や else で指定するステートメントは埋め込みステートメントになります<br>
+この埋め込みステートメントは通常のステートメントと異なり<strong>宣言はできません</strong><br>
+<pre class="prg">class Test {
+	static void Main() {
+		bool bl = true;
+		if (bl) int x = 10;	//エラー
+	}
+}</pre>
+このプログラムは if の埋め込みステートメントで変数を宣言しているためコンパイルできません<br>
+特定の分岐で変数を宣言したり、後に説明する「ラベル」を指定するには<br>
+後記するブロックのステートメントとして行う必要があります<br>
+
+<br><hr>
+<h2>ブロック</h2>
+if - else ステートメントは条件があう時に単一のステートメントを実行するものです<br>
+しかし、複雑な処理の場合は複数行の処理にまたがることがあります<br>
+<br>
+if - else は、複数行のステートメントを実行する能力はありません<br>
+そこで<strong>ブロック</strong>という方法で複数のステートメントを1つにまとめます<br>
+ブロックはこのような、1つのステートメントが許可される文脈で<br>
+複数のステートメントを記述できる非常に便利な機能です<br>
+<br><b>
+{ statement-list }<br>
+<br></b>
+statement-list には、1つ以上のステートメントを記述します<br>
+ブロックが実行されると制御は statement-list に移行し<br>
+statement-list の実行が終了すると、制御を戻します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 0 , y = 100;
+
+		if (x &#60; y) {
+			x++;
+			y--;
+			System.Console.WriteLine("x = " + x + " : y = " + y);
+		}			
+	}
+}</pre>
+このプログラムの if 文は真と評価された場合<br>
+ブロックに制御を移して、ブロック内のステートメントリストが実行されます<br>
+このように、制御文など単一のステートメントしか扱えない文脈の中には<br>
+ブロックを指定することによって複数のステートメントを実行できるようになります<br>
+
+<br><hr>
+<h2>条件演算子</h2>
+if は一つのステートメントとして分岐処理をサポートしていますが<br>
+1行単位のごく単純な分岐処理の場合、条件演算子を使うことがあります<br>
+<br>
+条件演算子はステートメントではなく演算子としてブーリアンを評価し適切な値を返します<br>
+if ステートメントと異なり、一つの式の中に指定することができます<br>
+条件演算子は <strong>?:</strong> をつかって表現します<br>
+<br><b>
+cond-expr ? expr1 : expr2<br>
+<br></b>
+cond-expr には、ブーリアン型の条件式を指定します<br>
+expr1 は、cond-expr が true だった時に評価する式を<br>
+expr2 は、cond-expr が false だった時に評価する式を指定します<br>
+<br>
+演算子は型を明示しなければいけないため、expr1 と expr2 の型は互換性が必要です<br>
+双方が同じ型であれば、その型がこの式の型となりますが<br>
+expr1 から expr2 への暗黙の変換が可能で、expr2 から expr1 への変換が存在しない場合 expr2 が<br>
+その逆ならば expr1 がこの条件式の型と判断されます<br>
+どちらからも暗黙の変換ができない場合はコンパイルエラーが発生します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		bool bl = true;
+		System.Console.WriteLine(bl ? "Kitty on your lap" : "Tokyo mew mew");
+
+		bl = false;
+		System.Console.WriteLine(bl ? "Kitty on your lap" : "Tokyo mew mew");
+	}
+}</pre>
+評価する条件式によって、条件演算子が返す値が変化することを確認できます<br>
+expr1 と expr2 の型が同じなので、この条件式は「文字列型」とコンパイラは判断します<br>
+
+<br><hr>
+<h2>if - else</h2>
+<b>if (expression) statement1<br>
+[else statement2]<br>
+<br></b>
+ブール式を判定し、評価にしたがって指定されたステートメントを実行します<br>
+<br>
+<b>expression</b> - ブール式を指定します<br>
+<b>statement1</b> - expression が true のときに実行するステートメントを指定します<br>
+<b>statement2</b> - expression が false のときに実行するステートメントを指定します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs10.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs12.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

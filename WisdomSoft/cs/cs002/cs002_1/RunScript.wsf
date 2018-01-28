@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<package title="cs002_1">
+<job id="runSelf">
+	<resource id="code"><![CDATA[
+// -*- mode: java -*-  Time-stamp: <2016-10-03 06:15:36 kahata>
+/*================================================================
+ * title: 
+ * file: 
+ * path; cs/cs002/cs002_1/main.cs
+ * url:  cs/cs002/cs002_1/main.cs
+ * created: Time-stamp: <2016-10-03 06:15:36 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile:
+ * To run: 
+ * link: http://wisdom.sakura.ne.jp/
+ * link: http://wisdom.sakura.ne.jp/programming/cs/cs2_7.html
+ * description: 
+ *
+ *================================================================*/
+partial class Test {
+	static void Main() {
+		System.Console.WriteLine(new Test());
+	}
+}
+
+partial class Test {
+	public override string  ToString() {
+		return "Test : ふるふるふるむーーーーん";
+	}
+}
+	]]></resource>
+	<script language="JScript" src="F:\WSH\wsf\common_lib.js"/>	
+	<script language="JScript"><![CDATA[
+
+		var executable = "C:\\HDD_F\\Programs\\cs-script\\cscs.exe";
+		var filename = "Main.cs";
+		var code =getResource("code");
+		
+		//WScript.Echo(getResource("code"));
+		var shell = new ActiveXObject("WScript.Shell");
+		shell.Run("cmd.exe /k "+ executable + "  "+ createTempFile(code, filename), 1, false);
+	]]></script>
+
+</job>
+
+<job id="execute">
+<script language="VBScript">
+    Option Explicit
+	Dim shell
+	Dim currentDir
+
+	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+	Set shell = CreateObject("WScript.Shell")
+	shell.CurrentDirectory = currentDir
+
+	if FileExists("main.exe") then
+		CreateObject("WScript.Shell").Run "cmd.exe /k, main.exe",1
+	elseif FileExists("Debug\main.exe") then
+		CreateObject("WScript.Shell").Run "cmd.exe /k, Debug\main.exe",1
+	elseif FileExists("bin\Release\main.exe") then
+		CreateObject("WScript.Shell").Run "cmd.exe /k, bin\Release\main.exe",1
+	end if
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+</script>
+</job>
+
+<job id="runCsScript">
+<script language="VBScript"><![CDATA[
+    Option Explicit
+
+	if FileExists("main.cs") then
+		CreateObject("WScript.Shell").Run "cmd.exe /k, F:\Programs\csscript\cscs.exe main.cs",1
+	end if
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+]]></script>
+</job>
+
+
+<job id="build">
+<script language="VBScript"><![CDATA[
+    Option Explicit
+	Dim shell
+	Dim AppName
+	Dim compiler
+	Dim compilerXp
+	Dim compiler81
+	Dim currentDir
+	Dim objExecCmd
+	Dim objFSO          ' FileSystemObject
+	Dim strCopyFile     ' コピー対象ファイル
+	Dim strCopyFolder   ' コピー先フォルダ名
+
+	AppName = "cs002_1"
+	
+	'compilerXp = "C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
+	'compiler81 = "C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
+	'compiler81 = "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\VCSExpress.exe"
+	'compiler81 = "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\VCSExpress.exe"
+	
+	'if FileExists(compilerXp) then
+	'	compiler = compilerXp
+	'end if
+	'if FileExists(compiler81) then
+	'	compiler = compiler81
+	'end if
+
+	compiler = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe"
+	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+	strCopyFile = currentDir & "bin" & "\Release\" & AppName & ".exe"
+	strCopyFolder = currentDir
+
+	Set shell = CreateObject("WScript.Shell")
+	Set objFSO = WScript.CreateObject("Scripting.FileSystemObject")
+
+	shell.CurrentDirectory = currentDir
+
+	if FileExists(AppName & ".csproj") then
+    	Set objExecCmd = shell.Exec(compiler & " " & AppName & ".csproj /rebuild ")
+         Do While objExecCmd.Status = 0
+            ' １秒待ってみる
+            WScript.Sleep(1000)
+        Loop
+	end if
+
+   ' ファイルコピー
+	if FileExists(strCopyFile) then
+     objFSO.CopyFile strCopyFile, strCopyFolder, True
+	end if
+
+   ' ファイル削除
+    'objFSO.DeleteFolder currentDir & "bin", True
+   	'objFSO.DeleteFolder currentDir & "obj", True
+
+	Set objFSO = Nothing
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+
+Function GetOSVersion()
+
+	' XP ならば 5.1 と返ります
+
+	Dim strComputer
+	Dim Wmi 
+	Dim colTarget 
+	Dim strWork 
+	Dim objRow
+	Dim aData
+
+	strComputer = "."
+	Set Wmi = GetObject("winmgmts:" _
+	    & "{impersonationLevel=impersonate}!\\" & strComputer & "\root\cimv2")
+	
+	Set colTarget = Wmi.ExecQuery( "select Version from Win32_OperatingSystem" )
+	For Each objRow in colTarget
+		strWork = objRow.Version
+	Next
+
+	aData = Split( strWork, "." )
+	strWork = aData(0) & "." & aData(1)
+
+	GetOSVersion = CDbl( strWork )
+
+End Function	
+	
+	
+]]></script>
+</job>
+
+<job id="sakura_MultiOpen">
+<script language="JScript" src="F:\FrameWork\scripts\common_lib.js"></script>
+<script language="JScript"><![CDATA[
+
+	var strScriptFolder;
+	strScriptFolder = String(WScript.ScriptFullName).replace(WScript.ScriptName,"");
+	var objApl;
+	var objFolder;
+	var objFolderItems;
+	var objItem;
+	var i;
+	var strOpenFileName ='';
+	objApl = new ActiveXObject("Shell.Application");
+	objFolder = objApl.NameSpace(strScriptFolder);
+	objFolderItems = objFolder.Items();
+	for(i=0;i<objFolderItems.Count;i++) {
+		objItem = objFolderItems.Item(i);
+		if (in_array(fileext(objItem.Name), ['cpp', 'h', 'pro','rc','c','cs','java'])) {
+			strOpenFileName += ' ' + strScriptFolder+objItem.Name;
+		}
+	}
+	var vbHide = 0             //ウィンドウを非表示
+	var vbNormalFocus = 1      //通常のウィンドウ、かつ最前面のウィンドウ
+	var vbMinimizedFocus = 2   //最小化、かつ最前面のウィンドウ
+	var vbMaximizedFocus = 3   //最大化、かつ最前面のウィンドウ
+	var vbNormalNoFocus = 4    //通常のウィンドウ、ただし、最前面にはならない
+	var vbMinimizedNoFocus = 6 //最小化、ただし、最前面にはならない
+
+	var objWShell = new ActiveXObject("WScript.Shell")
+	objWShell.Run("C:\\TiuDevTools\\sakura\\multifile\\multifile.exe" + strOpenFileName,vbNormalFocus, false)
+	objWShell = null
+]]></script>
+</job>
+
+</package>
+

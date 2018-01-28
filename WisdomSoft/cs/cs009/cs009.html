@@ -1,0 +1,166 @@
+<html>
+ <head>
+ <title>ブーリアン</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ブーリアン</h1>
+<hr>
+ <h2>比較演算</h2>
+リテラル及び変数の型には<span.ブーリアン</strong>と呼ばれる特殊な論理値があります<br>
+ブーリアンは、true （真）または false (偽）のいずれかの定数を持ちます<br>
+<br>
+C 言語においてブーリアンは数値型として表現してきました<br>
+C++ では true 及び false という定数が標準で定義されていますが、実装レベルは同じです<br>
+しかし C# では Java のようにブーリアン型として独立しています<br>
+<br>
+ブーリアン型変数は bool で宣言された変数で<br>
+このリテラルや変数は条件分岐で使用され、プログラムの流れに影響します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		bool bl = true;
+		System.Console.WriteLine(bl);
+		bl = false;
+		System.Console.WriteLine(bl);
+	}
+}</pre>
+これがブーリアンリテラル及び変数の実体です<br>
+コンソールにブーリアンの文字列表現 True と False が表示されます<br>
+<br>
+ブーリアンは他の型と異なり数値表現がないので算術演算はできません<br>
+したがって、<strong>比較演算</strong>などを行いその結果を true か flase で格納したります<br>
+このようなブーリアンを返す演算を<strong>関係演算</strong>と総称します<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>演算子<th>説明
+<tr><th>==	<td>等しければ true
+<tr><th>!=	<td>等しくなければ true
+<tr><th>&#60;	<td>小さければ true
+<tr><th>&#62;	<td>大きければ true
+<tr><th>&#60;=	<td>同じか小さければ true
+<tr><th>&#62;=	<td>同じか大きければ true
+</table>
+<br>
+これを利用すれば、数値を比較してその結果を得ることができ<br>
+これは後ほど紹介する条件分岐などに利用することができるのです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int var = 100;
+		System.Console.WriteLine("var == 500 : " + (var == 500));
+		System.Console.WriteLine("var != 500 : " + (var != 500));
+		System.Console.WriteLine("var &#60; 500 : " + (var &#60; 500));
+		System.Console.WriteLine("var &#60;= 100 : " + (var &#60;= 100));
+		System.Console.WriteLine("var &#62; 100 : " + (var &#62; 100));
+		System.Console.WriteLine("var &#62;= 500 : " + (var &#62;= 500));
+	}
+}</pre>
+それぞれの比較演算の結果がコンソールに出力されます<br>
+<br>
+C# は C言語と異なり文字列を string というデータ型で保有します<br>
+（Cは、連続した char 型の配列として文字列を表現します）<br>
+C# は文字列も == と != 演算子で比較演算することが可能な言語です<br>
+<br>
+文字列が等しいと判断される条件は同じ長さ、同じ位置に同じ文字が格納されいる状態<br>
+つまり論理的に文字列が等しければ等しいとされます。直感的でわかりやすいですね<br>
+また、双方が null と呼ばれる特殊なリテラルの場合も等しいと判断されます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str1 = "Kitty on your lap";
+		string str2 = "Kitty on your lap";
+		System.Console.WriteLine(str1 == str2);
+	}
+}</pre>
+二つの文字列型変数は Kitty on your lap という文字列を保有しています<br>
+これらは文字の長さもそれに位置する文字も全て同じなので true を返します<br>
+
+<br><hr>
+<h2>ブール論理演算</h2>
+前回の論理演算はブーリアンにも適応します<br>
+ブーリアンは true と false しかありませんが<br>
+true を 1、false を 0 として前回の関係と照らし合わせるとよいでしょう<br>
+<br>
+例えば true & false は false になり、true | false は true というようになります<br>
+関係演算の中で「双方が真ならば」とか「一方でも真ならば」というような処理に使用します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 100;
+		System.Console.WriteLine((x &#60; 200) & (x &#62; 50));
+		System.Console.WriteLine((x == 50) | (x == 200));
+	}
+}</pre>
+このプログラムは変数 x に対して複数の条件で関係演算を行っています<br>
+最初は x が 200 より小さく、<strong>かつ</strong> 50 よりも大きいといか？<br>
+次は x が 50 と等しい、<strong>または</strong> 200 と等しいか？という演算です<br>
+<br>
+また、ブーリアンの論理否定は <strong>!</strong> 演算子を使用します<br>
+この演算子は右辺のオペランドが true なら false に、false なら true にします<br>
+<br><b>
+! expr<br>
+<br></b>
+expr には否定する論理値をあらわす式を指定します<br>
+これを用いれば、関係演算の中で排他的論理和などを表現できます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		bool var1 = true , var2 = false;
+		System.Console.WriteLine((var1 | var2) & !(var1 & var2));
+		System.Console.WriteLine((var1 | var1) & !(var1 & var1));
+		System.Console.WriteLine((var2 | var2) & !(var2 & var2));
+	}
+}</pre>
+このプログラムは、変数 var1 と var2 を定義し<br>
+それらの <strong>論理和と否定論理積の論理積</strong> を求めます<br>
+こうすることで、関係演算の中で XOR 排他的論理和を求めることができます<br>
+<br>
+このように、否定演算子を用いることで否定論理和や否定論理積を作ることができます<br>
+もちろん、他だ単純にブーリアンを反転させる否定として使うことも多いです<br>
+
+<br><hr>
+<h2>条件付き論理演算子</h2>
+ブーリアンの論理演算の場合は必ずしも両方のオペランドを評価する必要がない場合があります<br>
+例えば、論理積を求めるのに左オペランドが false ならば右オペランドが何であれ<br>
+必ず式の評価が false になることは間違いありません<br>
+<br>
+論理和も同様に、左オペランドが true ならば評価は右オペランドに関係なく ture です<br>
+この場合、右オペランドは評価する必要がないならば評価しないほうが<br>
+当然、実行する命令ステップが減少するためプログラムは高速になります<br>
+<br>
+これを可能にする演算子が<strong>条件付き論理演算子</strong>と呼ばれるものです<br>
+条件付論理積は <strong>&&</strong>、条件付論理和は <strong>||</strong> を使用します<br>
+<br><b>
+expr1 && expr2<br>
+expr1 || expr2<br>
+<br></b>
+expr1 と expr2 には、それぞれ論理積、論理和を求めたい式を指定します<br>
+これらは、左辺のオペランドを最初に評価し<br>
+左辺だけで評価できれば場合は即座に結果を返し、右オペランドを評価しません<br>
+左辺だけでは判定できない場合は右辺も評価します<br>
+それ以外は、通常の論理積、論理和と変わりはありません<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int var = 0;
+		System.Console.WriteLine(false && 5 &#60; (var = 10));
+		System.Console.WriteLine(true || 5 &#60; (var = 10));
+		System.Console.WriteLine(var);
+	}
+}</pre>
+このプログラムでは、論理積や論理和を求める際に<br>
+右オペランドで変数 var に値を代入してから比較演算を行います<br>
+しかし、左オペランドだけで評価できる場合、右オペランドは評価されません<br>
+このプログラムを実行すると、次の結果が得られます<br>
+<br><b>
+False<br>
+True<br>
+0<br>
+<br></b>
+右の代入演算が行われていないことが、最後の 0 で確認できます<br>
+論理演算子を & や | に変えたり、左オペランドのリテラルを反転させると<br>
+右オペランドが評価され var に値 10 が格納されることを確認できます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs8.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs10.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

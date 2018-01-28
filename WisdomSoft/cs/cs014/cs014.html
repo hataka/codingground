@@ -1,0 +1,188 @@
+<html>
+ <head>
+ <title>ループ制御</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ループ制御</h1>
+<hr>
+ <h2>for 文制御</h2>
+さて、逐次制御（順番に正しく実行する制御）と選択制御（分岐処理）の<br>
+二つを使ったプログラムを作れるようになりました<br>
+ここでは構造化プログラムのもう一つの制御である<strong>ループ</strong>について説明します<br>
+<br>
+ループとはその名のとおりプログラムの一定の部分を<br>
+ある条件を満たすまで繰り返し実行するという重要な処理です<br>
+ループ制御は高度なアルゴリズムやグラフィックスシステムの建築に不可欠な存在なのです<br>
+<br>
+一般的に C 言語プログラマの多くは <strong>for</strong> ステートメントを使用します<br>
+このステートメントは「初期化」「条件」「カウント」を同時に制御してくれます<br>
+<br><b>
+for ([initializers]; [expression]; [iterators]) statement<br>
+<br></b>
+initializers には、変数の宣言や初期化を指定します<br>
+C 言語ではこの部分で宣言することはできませんでしたが<br>
+C# は C++ や Java 言語と同様に宣言することもできます<br>
+initializers は、ループを開始する直前に<strong>一度だけ実行</strong>されます<br>
+<br>
+expression には、ループをするための条件式を指定します<br>
+この条件式は statement を実行する前、ループするごとに評価されます<br>
+この式が true を返す間 for ステートメントは statement を繰り返し実行します<br>
+<br>
+iterators は繰り返す度に実行するステップで、statement の実行を終了すると評価されます<br>
+ここで、expression で使われているカウンタ変数などをインクリメントする方法が一般的です<br>
+<br>
+expression に指定する式はブーリアン型であれば何でも良いのですが<br>
+一般的にループ処理は、現在のループ回数を制御するカウンタ変数を用意して使用します<br>
+このカウンタ変数の初期化とループごとのカウンタの加算（通常はインクリメント）を<br>
+for ステートメントは同時にサポートします<br>
+<pre class="prg">class Test {
+	static void Main() {
+		for (int i = 1; i &#60;= 10 ; i++)
+			System.Console.WriteLine(i + "回目のループです");
+	}
+}</pre>
+このプログラムを見れば、for の基本的な概念を理解することができるでしょう<br>
+for ステートメントはカウンタ変数 i をループ開始前に宣言して初期化します<br>
+このループは i が 10 と同じかそれ以下の間繰り返しつづけます<br>
+for の埋め込みステートメントである WriteLine() を実行すると制御は for に戻り<br>
+カウンタ変数 i をインクリメントした後、式を評価し、これを繰り返します<br>
+<br>
+ループするごとに変数 i はインクリメントされ、いつか i は 10 を超えて<br>
+for の expression は false を返しループを抜けることになります<br>
+<br>
+initializers や iterators には、ループとは無関係な変数の宣言や演算ができますが<br>
+通常は論理的にループと関連性のある処理を行うべき場所であるということは意識するべきです<br>
+<br>
+ただし、注意しなければならないのですが<br>
+initializers で変数を宣言した場合は、ループの外からこの変数を見ることはできません<br>
+つまり、initializers で宣言した変数は for の埋め込みステートメント内だけで有効です<br>
+(この考えは「スコープ」と呼び、スコープについて詳しくは後記します)<br>
+<pre class="prg">class Test {
+	static void Main() {
+		for (int i = 1; i &#60;= 10 ; i++)
+			System.Console.WriteLine(i + "回目のループです");
+		System.Console.WriteLine("ループは " + i + " 回目で終了しました");
+	}
+}</pre>
+このプログラムは、for の埋め込みステートメント以外の場所から i を参照しています<br>
+しかし、変数 i は for ステートメントでしか宣言されていないためエラーになります<br>
+<br>
+initializers と iterators は<strong>カンマ演算子で区切る</strong>ことによって<br>
+同時に複数の変数の宣言や演算を行うことができるようになります<br>
+これは、例えばループ内で二つ以上の変数を条件にしたい時などに有効です<br>
+<pre class="prg">class Test {
+	static void Main() {
+		for (int x = 100 , y = 0 ; x != y ; x-- , y++)
+			System.Console.WriteLine("x = " + x + " : y = " + y);
+	}
+}</pre>
+このプログラムはループ内で x と y という二つの変数を扱っています<br>
+この二つの変数が同じ値になった時にループから抜けるというものです<br>
+<br>
+また、for の各設定は<strong>省略することも可能</strong>です<br>
+条件式を省略した場合は常に true である（つまり無限ループ）ということを意味します<br>
+ただし <spa>; は省略できない</strong> ので、例えば全てを省略する場合は <b>for (;;)</b> という書き方をします<br>
+
+<br><hr>
+<h2>while 文制御</h2>
+for 文は非常に汎用的に使用できるループステートメントなので<br>
+多くの C や Java プログラマが好んで使用するステートメントです<br>
+しかし、これよりも簡素に記述することができる <strong>while</strong> ステートメントというものもあります<br>
+<br><b>
+while (expression) statement<br>
+<br></b>
+expression には、ループ条件となる条件式を指定します<br>
+ここが true を返す間 statement を繰り返し実行します<br>
+for 文同様に expression はループ毎に評価され false が返されるまで繰り返します<br>
+statement には、ループで実行したい埋め込みステートメントを指定します<br>
+<br>
+この文は、for と異なりカウンタ変数の宣言やインクリメントは<br>
+statement 内で独自のサポートするなどの対策が必要になります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i = 1;
+		while(i &#60;= 10) {
+			System.Console.WriteLine(i + "回目のループです");
+			i++;
+		}
+	}
+}</pre>
+上の for ステートメントで紹介した最初のプログラムのサンプルと<br>
+同一の処理を while ステートメントで記述してみたプログラムです<br>
+while 文は単純に for 文の for (;expression;) という形と同じであるといえます<br>
+
+<br><hr>
+<h2>do/while 文制御</h2>
+for や while はループの開始前に式を評価します<br>
+通常はこれで問題はありませんが、特殊なケースにおいて面倒が発生します<br>
+それは、<strong>1度は必ずステートメントを実行したい</strong>時です<br>
+<br>
+for や while 文の場合、式が false を返すと<br>
+ループを1度も実行せずに次へ制御を移す可能性があります<br>
+式の中に予測できない値があろうとも、1度以上繰り返し処理をする必要がある場合<br>
+当然、その場に合わせたアルゴリズムで解決することも可能ですが<br>
+アルゴリズムが複雑になったりすると、非効率でソースも読みづらくなります<br>
+<br>
+そのような場合は <strong>do</strong> ステートメントを使用します<br>
+これは、<strong>最初にステートメントを実行</strong>し、その後に式を評価します<br>
+<br><b>
+do statement while (expression);<br>
+<br></b>
+statement は、ループするステートメントを指定します<br>
+expression には、ループの条件となる条件式を指定します<br>
+<br>
+do ステートメントは statement を実行し、その後 expression を評価します<br>
+expression が true ならば do に制御を戻し繰り返し statement を実行します<br>
+expression が false ならば、ループを抜け出し次の処理へ制御を移します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i = 1;
+		do {
+			System.Console.WriteLine(i + "回目のループです");
+			i++;
+		} while (i &#60;= 10);
+	}
+}</pre>
+このプログラムを改良して、例えば i を 100 で初期化してコンパイルして実行してください<br>
+それでも、必ず1度はループステートメントが実行されるのを確認できます<br>
+<br>
+一般的には for や while 文が使用され do ステートメントが使用されることはめったにありません<br>
+繰り返し処理にどのステートメントを使用するかはプログラマの好みに分かれますが<br>
+通常はどの言語でも共通する for を使用することが多いといえるでしょう<br>
+
+<br><hr>
+<h2>for</h2>
+<b>for ([initializers]; [expression]; [iterators]) statement<br></b>
+<br>
+ステートメントを条件が true の間繰り返します<br>
+<br>
+<b>initializers</b> - ローカル変数宣言、またはステートメント式リストを指定します<br>
+<b>expression</b> - ブーリアンを指定します。ここが true の間 statement を実行します<br>
+<b>iterators</b> - 反復子です。ステートメント式リストを指定します<br>
+<b>statement</b> - expression が true の間実行する埋め込みステートメントを指定します<br>
+<br>
+<h2>while</h2>
+<b>while (expression) statement<br></b>
+ステートメントを条件が true の間繰り返します<br>
+カウンタ変数やインクリメントは独自に対応する必要があります<br>
+<br>
+<b>expression</b> - ブーリアンを指定します。ここが true の間 statement を実行します<br>
+<b>statement</b> - expression が true の間実行する埋め込みステートメントを指定します<br>
+<br>
+<h2>do/while</h2>
+<b>do statement while (expression);<br></b>
+ステートメントを実行してから式を評価し<br>
+式が true であればステートメントの先頭に復帰します<br>
+<br>
+<b>statement</b> - expression が true の間実行する埋め込みステートメントを指定します<br>
+<b>expression</b> - ブーリアンを指定します。ここが true であれば statement の先頭に復帰します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs13.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs15.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<html>
+ <head>
+ <title>ジャンプ文</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ジャンプ文</h1>
+<hr>
+ <h2>ループのフロー制御</h2>
+ループ制御によってプログラムはより複雑で高度なアルゴリズムを実現できます<br>
+しかし、複雑なアルゴリズムの場合は単純にループするだけでは実現できません<br>
+<br>
+<strong>ジャンプステートメント</strong> と呼ばれるステートメントをループ内で使えば<br>
+ループの実行制御をより柔軟に行うことができるようになります<br>
+switch 文の各 case の最後に指定するステートメントも、このジャンプステートメントでした<br>
+<br>
+switch で簡単に紹介しましたが、ループを抜け出すには <strong>break</strong> 文を使います<br>
+何らかの理由でループを抜け出したい場合、この break を指定して強制的に抜け出します<br>
+<br><b>
+break;<br>
+<br></b>
+break には何も指定する値などはありません<br>
+switch や ループステートメント内で使用すると、制御を抜け出します<br>
+無限ループなどを作ってしまった場合、この break で抜け出すなどの手段があります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i = 0;
+		while (true) {
+			System.Console.WriteLine(i + "回目のループです");
+			i++;
+			if (i &#62; 10) {
+				System.Console.WriteLine("ループを抜け出します");
+				break;
+			}
+		}
+	}
+}</pre>
+このプログラムの while 文は true を指定しているため無限ループとなっています<br>
+プログラムはループ内でカウンタ変数を加算し、if でそれを調べ<br>
+指定した条件になればループを抜けるようにしかけています<br>
+<br>
+逆にループの先頭に復帰するには <strong>continue</strong> 文を使います<br>
+この文はステートメントの途中でも現在の処理を中断しループの先頭に制御を戻します<br>
+<br><b>
+continue;<br>
+<br></b>
+continue も break 同様にとくに指定する値はありません<br>
+これ以上現在の処理を実行することに意味がなく、次の繰り返しに移りたい時に使用します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		for (int i = 1 ; i &#60;= 100 ; i++) {
+			if ((i % 2) == 1) continue;
+			System.Console.WriteLine(i + "回目のループです");
+		}
+	}
+}</pre>
+このプログラムは、カウンタ変数の2の剰余を求め 1 であれば<br>
+すなわちカウンタ変数が奇数であれば文字を表示せずに次のループに移行します<br>
+この結果、プログラムは偶数回目のループの時のみ文字を表示します<br>
+
+<br><hr>
+<h2>ループのネスト</h2>
+ループの中に別のループを組み込むという複雑な処理を行うこともできます<br>
+これは、高度な配列処理によく用いられる方法です<br>
+このような、ある文の中に同じ文を組み込むことを<strong>ネスト</strong>（入れ子）と呼びます<br>
+<br>
+ネストされたループでは、break や continue 文はどのように働くのでしょうか<br>
+実は、これらのジャンプステートメントは現在処理中のループに対して働きます<br>
+<pre><font style="color:#0000FF">while(expression) {
+	<font style="color:#FF0000">while(expression) {
+		<font style="color:#006000">while(expression) {
+			break;
+		}</font>
+		break;
+	}</font>
+	break
+}</font></pre>
+これは、ネストされた while と break 文の関係を色で表したものです<br>
+break は、それぞれ自分の置かれている位置にもっとも近いループに働きます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		for (int i = 1 ; ; i++) {
+			for (int j = 1 ; ; j++) {
+				System.Console.WriteLine("第二層 " + j);
+				if (j &#62;= 5) break;
+			}
+			System.Console.WriteLine("第一層" + i);
+			if (i &#62;= 5) break;
+		}
+				
+	}
+}</pre>
+ネストされたループを使ったプログラムの例です<br>
+break の効果を示すために条件式は省略して無限ループにしています<br>
+
+<br><hr>
+<h2>制御を返す</h2>
+goto、break、continue 以外に、もう一つジャンプステートメントが存在します<br>
+それは、呼び出し元に制御を返す <strong>return</strong> 文です<br>
+このステートメントは、厳密にはループではなくメソッドに関連するステートメントです<br>
+<br><b>
+return [expression];<br>
+<br></b>
+expression には、呼び出し元に返す適切な値を指定します<br>
+このステートメントは<strong>メソッドを終了</strong>させ、呼び出し元に制御を返します<br>
+私たちが今扱っているメソッドは Main() メソッドです<br>
+Main() メソッド内で return を呼び出すと、その制御はこのプログラムを呼び出した場所に帰ります<br>
+この管理は、私たちではなく OS の仕事になります<br>
+<br>
+私たちが今扱っている Main() メソッドは値を返すものではありません<br>
+そのため、単純に return と記述すればその時点でプログラムは終了します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 0;
+		switch (x) {
+		case 0:
+			System.Console.WriteLine("Kitty on your lap");	
+			return;
+		case 1:
+			System.Console.WriteLine("Tokyo mew mew");
+			return;
+		}
+		System.Console.WriteLine("Di Gi Charat");
+	}
+}</pre>
+switch のいずれかの case ブロックが実行されると<br>
+文字列を出力してそのままメソッドを終了させます<br>
+break であれば、switch 後の WriteLine() メソッドが実行されますが<br>
+return を指定して Main() メソッドを終了させるため、最後の WriteLine() は実行されません<br>
+
+<br><hr>
+<h2>break</h2>
+現在の制御を抜け出して次の処理へ移行します<br>
+<br>
+<h2>continue</h2>
+現在の処理を中断し、ループの先頭に復帰します<br>
+<br>
+<h2>return</h2>
+<b>return [expression];<br></b>
+<br>
+現在のメソッドを終了し、呼び出し元に制御を返します<br>
+<br>
+<b>expression</b> - 呼び出し元に返す適切な戻り値を指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs14.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs16.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

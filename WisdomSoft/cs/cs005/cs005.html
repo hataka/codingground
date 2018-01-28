@@ -1,0 +1,216 @@
+<html>
+ <head>
+ <title>算術演算子</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>算術演算子</h1>
+<hr>
+ <h2>計算</h2>
+プログラムの中心は変数やリテラルなどの演算にあります<br>
+必要な情報を集め、目的の値を算出するために様々な計算を行います<br>
+<br>
+プログラムで変数やリテラルの計算を行うには<strong>算術演算子</strong>を使用します<br>
+算術演算子は + や - などの数学で使用する記号と同じなので直感的にわかりやすいです<br>
+ただし、乗算は *、除算は /、剰余は %、で求めます<br>
+<br>
+演算子は通常1つ以上の<strong>オペランド</strong>を持ちます<br>
+オペランドは変数やリテラルなどの操作される対象の値のことを指します<br>
+演算子とオペランドからなりたつ文を<strong>式</strong>と呼びます<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>演算子<th>説明
+<tr><th>+<td>加算、文字列の結合<br>オペランドの単純な値（単項演算子）
+<tr><th>-<td>減算<br>オペランドの符号否定（単項演算子）
+<tr><th>*<td>乗算
+<tr><th>/<td>除算
+<tr><th>%<td>剰余
+</table>
+<br>
+オペランドを一つしか要求しない演算子を<strong>単項演算子</strong>と呼び<br>
+オペランドを二つ要求する演算子を<strong>2項演算子</strong>と呼びます<br>
+算術演算子は全てが2項演算子で、右辺と左辺にそれぞれ計算する式を指定します<br>
+ただし、符号指定で + と - 演算子は単項演算子として使うこともありましたね<br>
+<br>
+演算子には<strong>計算優先順位</strong>があり、算術演算子は数学と同じ順序を持ちます<br>
+つまり、乗除さんは加減算よりも先に演算されます<br>
+さらに同一の算術演算子が多項式に複数ある場合は左から計算される決まりになっています<br>
+これを<strong>左結合</strong>と呼びます<br>
+計算の優先順位を変えたい場合は、数学同様に ( ) で囲みます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		System.Console.WriteLine(10 + 5 * 2);
+		System.Console.WriteLine((10 + 5) * 2);
+	}
+}</pre>
+この結果は 20 と 30 の二つの結果が表示されます<br>
+最初の演算は 5 * 2 が最初に計算され、次に 10 + 10 が計算されます<br>
+これは、数学同様に乗除算が優先的に計算されるからです<br>
+次は 10 + 5 を ( ) で囲むことで計算順位を優先化させることによって<br>
+15 * 2 という計算になり最終的に 30 という結果を表示するようになっています<br>
+<br>
+演算の結果はメソッドなどに渡すか、変数に代入するなどの受け皿が必要です<br>
+演算の結果新しい値が生成されない場合、これは開発者のミス以外のなにものでもないからです<br>
+（演算の結果、何らかの値が変化しないのならばその意味が無い）<br>
+<br>
+代入演算子は全ての演算子の中で<strong>最も優先順位が低い</strong>ので<br>
+最終的に値を代入する変数はもっとも左辺に配置し、演算式を右辺に配置します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		double a1 = 0.7 , a2 = 0.4 , x;
+		x = 1.0 - (1.0 - a1) * (1.0 - a2);
+		System.Console.WriteLine(x);
+	}
+}</pre>
+例えば、稼動率 70% と 40% の二つのシステムを並列に運用し<br>
+一方でも正常に動作していればシステム全体が運用できるという場合の稼動率の演算です<br>
+この二つの並列システムの稼動率 82% という結果を変数 x に格納しています<br>
+<br>
+例えば、これを利用すればさらに別の並列システムとの稼動率の演算に x を使うことができます<br>
+このように、演算の結果を変数に残すことで別の演算にその変数を使うこともできます<br>
+<br>
+また、+ 演算子を文字列に用いると文字列を結合させることができます<br>
+本来文字列の結合は値の結合のそれとは処理の上でまったく異なりますが<br>
+C# コンパイラは Java 同様に文字列を + 演算子で結合して返すことができます<br>
+一辺、または両辺が文字列の時は両辺を文字列として結合します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str = "Kitty on your lap";
+		str = str + "\nTokyo mew mew";
+		System.Console.WriteLine(str + 1999);
+	}
+}</pre>
+この結果は次のようになります<br>
+<br><b>
+Kitty on your lap<br>
+Tokyo mew mew1999<br>
+<br></b>
+最初に str に代入した文字列にさらに別の文字列を結合し<br>
+WriteLine() で 1999 という数値を文字列として結合して出力しています<br>
+文字列と数値を加算することで数値を文字列に自動変換させることができるので<br>
+単純に数値を文字列に変換したい時も "" と空文字を使って実現できます<br>
+<br>
+因みに、算術演算は左から結合する左結合と書きましたが<br>
+例えば代入演算子は<strong>右結合</strong>なので注意する必要があります<br>
+代入演算子も連続して記述することができ、これを<strong>多重代入</strong>とも呼びます<br>
+<br><b>
+variable1 = variable2 = variable3 = ...<br>
+<br></b>
+この場合は、代入演算は右結合なので variable3 から処理されます<br>
+複数の変数を同時に同じ値に初期化する時などはこれを使用します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int var1 , var2 , var3;
+		var1 = var2 = var3 = 100;
+
+		System.Console.WriteLine("var1 = " + var1);
+		System.Console.WriteLine("var2 = " + var2);
+		System.Console.WriteLine("var3 = " + var3);
+	}
+}</pre>
+全ての変数は 100 を表示します<br>
+
+<br><hr>
+<h2>2項数値昇格</h2>
+式の中の計算は通常は同じデータ型どうしで行われるべきですが<br>
+時には異なるデータ型変数による演算が生じることもあります<br>
+<br>
+異なる型どうしの演算はできないため、コンパイラはこのような演算を発見すると<br>
+一方のオペランドを暗黙に変換し共通の型にしてから演算します<br>
+この時の変換には必ず変換規則が割り当てられるので、プログラマはそれを知っておく必要があります<br>
+<br>
+異なる型どうしが演算しようとすると、二つのオペランドのうち<br>
+サイズが<strong>大きいほうのオペランド型</strong>に他方を変換するのが一般的です<br>
+これは、サイズの昇格はデータを破壊することがないからです<br>
+逆にサイズを縮小すると、上位ビットを切り捨てることでデータが破壊される可能性があるため<br>
+少なくともプログラマが明示しない限り暗黙に変換するべきではないという理論があります<br>
+<br>
+<table>
+<tr>
+	<td class="Rect">一方のオペランドが型が<br><b>decimal</b> であるか？
+	<th>YES→
+	<td class="Rect">もう一方のオペランドを<br><b>decimal</b> に変換<br>float、double ならエラー
+<tr><th>↓NO
+<tr>
+	<td class="Rect">一方のオペランドが型が<br><b>double</b> であるか？
+	<th>YES→
+	<td class="Rect">もう一方のオペランドを<br><b>double</b> に変換
+<tr><th>↓NO
+<tr>
+	<td class="Rect">一方のオペランドが型が<br><b>float</b> であるか？
+	<th>YES→
+	<td class="Rect">もう一方のオペランドを<br><b>float</b> に変換
+<tr><th>↓NO
+<tr>
+	<td class="Rect">一方のオペランドが型が<br><b>ulong</b> であるか？
+	<th>YES→
+	<td class="Rect">もう一方のオペランドを<br><b>ulong</b> に変換<br>sbyte、short<br>int、long ならエラー
+<tr><th>↓NO
+<tr>
+	<td class="Rect">一方のオペランドが型が<br><b>long</b> であるか？
+	<th>YES→
+	<td class="Rect">もう一方のオペランドを<br><b>long</b> に変換
+<tr><th>↓NO
+<tr>
+	<td class="Rect">一方のオペランドが型が<br><b>uint</b> であるか？<br>
+	<th>YES→
+	<td class="Rect">もう一方のオペランドを<br><b>uint</b> に変換<br>sbyte、short、int なら<br>両辺を <b>long</b> に変換
+<tr><th>↓NO
+<tr>
+	<td class="Rect">両辺を <b>int</b> に変換
+</table>
+<br>
+これが、C#の2項数値昇格のマップです<br>
+異なるデータ型の演算を行う場合はこれに注意する必要があります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		double var1 = 3.24;
+		int var2 = 5;
+		System.Console.WriteLine(var1 + var2);
+	}
+}</pre>
+このプログラムでは bouble 型と int 型の変数を加算していますが<br>
+2項数値昇格アルゴリズムのおかげでデータが壊れることなく予想した結果を得られます<br>
+int 型の var2 が double 型に昇格してその上で加算処理されていることがわかります<br>
+
+<br><hr>
+<h2>複合代入演算子</h2>
+代入演算において、代入する変数と何らかの式が計算対象の場合<br>
+通常の代入演算子を使用することもできますが<br>
+これよりも<strong>複合代入演算子</strong>を使用することが推奨されます<br>
+<br>
+通常の演算は、複数の式と演算の結果を変数に代入するものですが<br>
+場合によっては、この演算対象に代入する変数が関わることがあります<br>
+例えば、次のような計算などは演算に代入する変数も使用しています<br>
+<br><b>
+variable = variable + expression...<br>
+<br></b>
+variable に expression を加算したものを variable に代入する計算です<br>
+もちろんこれでも何の問題もないのですが<br>
+このような場合は複合代入演算を使うべきです<br>
+<br>
+複合代入演算子は <strong>op=</strong> という形をとります<br>
+op には、何らかの演算子を指定します<br>
+<br><b>
+variable op = expression<br>
+<br></b>
+variable には変数、expression には variable の演算対象となる式を指定します<br>
+例えば variable に 4 を乗算したい場合 variable *= 4 と記述します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str = "Kitty on your lap";
+		str += "\nTokyo mew mew";
+		System.Console.WriteLine(str);
+	}
+}</pre>
+このプログラムを実行すると、Kitty on your lap と Tokyo mew mew という文字が表示されます<br>
+この結果から、複合代入演算子によって str に文字列が結合したことがわかります<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs4.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs6.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<html>
+ <head>
+ <title>値型と参照型</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>値型と参照型</h1>
+<hr>
+ <h2>値渡しと参照渡し</h2>
+これまで、何度かオブジェクトは<strong>参照型</strong>であると説明しました<br>
+参照とはメモリの有効なアドレスを表す数値であり、それ自体に意味はありません<br>
+プログラムは参照を元にメモリの指定アドレスにアクセスしてインスタンスを操作します<br>
+<br>
+これと対象の int などの変数は直接データそのものを保有する「値型」と呼びます<br>
+参照型と値型には、その性質から非常に興味深い動作をします<br>
+<br>
+値型は、他の変数やメソッドにデータを転送する時は<strong>内容をコピー</strong>します<br>
+メソッドはパラメータを受け取りますが、それはコピーされた値です<br>
+つまり、メソッド内で受け取った値を変更しても<strong>呼び出し元に影響はない</strong>のです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 0;
+		getValue(x);
+		System.Console.WriteLine(x);
+	}
+	static void getValue(int x) {
+		x = 10;
+	}
+}</pre>
+変数 x を Main() メソッドで宣言し、これを制的メソッド getValue() に渡します<br>
+getValue() では受け取った x に対して 10 を代入して制御を戻します<br>
+その後 WriteLine() で x を出力していますが、この結果はどうなると思いますか？<br>
+答えは 0 が出力されます<br>
+<br>
+メソッドに値型が渡された時、メモリアドレスではなくデータのコピーが渡されます<br>
+そのため getValue() で x の値を変更しても、元の Main() 関数の x には関係がないのです<br>
+<br>
+ところが、参照型の場合は話しが違います<br>
+参照型変数が持つ値は<strong>メモリアドレス</strong>そのものです<br>
+この値自体はコピーされてメソッドに渡されますが、値が参照するアドレスは同じです<br>
+つまり、どの位置から呼び出してもアクセスするメモリアドレスは同じということになります<br>
+<pre class="prg">class Test {
+	string str;
+
+	static void Main() {
+		Test obj = new Test();
+		Test tmp = obj;
+		tmp.str = "Kitty on your lap";
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+まず、Test クラスのインスタンスを生成し obj にその参照を格納ています<br>
+obj には何の操作もしないまま、次に別の Test 型の tmp 変数に参照を代入します<br>
+この時<strong>インスタンスは複製されず</strong>参照のコピーだけが渡されます<br>
+<br>
+そして、tmp.str メンバ変数を初期化し WriteLine() で obj.str を出力します<br>
+変数 obj のメンバは初期化していないはずですが、このプログラムの結果は<br>
+Kitty on your lap という文字列をコンソールに出力します<br>
+<br>
+なぜならば、変数 tmp も obj も同じメモリアドレス（すなわちインスタンス）を指しているわけで<br>
+そのうちどれを使ってアクセスしても意味は同じなのです<br>
+<br>
+<table>
+<tr><th class="Rect">変数 obj<th class="Rect">変数 tmp
+<tr><th>↓<th>↓
+<tr><th colspan="2" class="Rect">インスタンス
+</table>
+<br>
+無論、メソッドにコピーされるのも参照型の場合はメモリアドレスを表す値であり<br>
+この値を使ってアクセスする以上、参照するインスタンスは同じものです<br>
+<pre class="prg">class Test {
+	string str;
+
+	static void Main() {
+		Test obj = new Test();
+		getTest(obj);
+		System.Console.WriteLine(obj.str);
+	}
+	static void getTest(Test obj) {
+		obj.str = "Kitty on your lap";
+	}
+}</pre>
+このプログラムは Kitty on your lap と文字列を出力します<br>
+
+<br><hr>
+<h2>参照を渡す</h2>
+さて、値型変数を受けとってその内容を変更しても呼び出し元に影響はありませんでした<br>
+しかし、値型変数を受けとって呼び出し元の変数の内容を変更したい場合はどうしましょう<br>
+<br>
+C言語ではポインタを使い、C++ や Perl 言語では参照を渡し<br>
+Java ではその方法を提供しない(それでも問題はない）方法をとっています<br>
+<br>
+C# は <strong>ref メソッドパラメータ</strong> キーワードを用いてこれを実現します<br>
+ref キーワードはメソッドの仮引数指定時に型名の前に指定します<br>
+ref 修飾子を指定したパラメータを<strong>参照パラメータ</strong>と呼びます<br>
+参照パラメータは変数の値ではなく参照（メモリアドレス）を受け取ります<br>
+<br>
+ただし、<strong>呼び出し側も ref を指定</strong>する必要があります<br>
+明示的に ref を指定してメソッドを呼び出すことで、プログラマはこの変数の内容が<br>
+メソッドによって変更される可能性があることを明確に知ることができます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 0 , y = 0;
+		getLocation(ref x , ref y);
+		System.Console.WriteLine("x = " + x + " : y = " + y);
+	}
+	static void getLocation(ref int x , ref int y) {
+		x = 100;
+		y = 20;
+	}
+}</pre>
+getLocation() メソッドは、座標を取得するメソッドをシュミレートしています<br>
+このような関連した二つの値を返すメソッドは<br>
+一つの値しか返せない戻り値では値を取得できません<br>
+<br>
+そこで、ref 修飾子を指定してその変数の参照を受け取れば<br>
+メソッド内での変更は呼び出しもとの変数そのものに影響します<br>
+上のプログラムを実行すると x は 100、y は 20 という値を出力します<br>
+<br>
+ref 修飾子で受ける変数は<strong>必ず初期化されている</strong>必要があります<br>
+初期化されていない変数を渡そうとするとコンパイルエラーが発生します<br>
+ところが、メソッドで変数を上書きする場合は意味のない初期化となってしまいます<br>
+<br>
+受け取る参照が指す変数が初期化されている必要がない場合<br>
+ref ではなく <strong>out メソッドパラメータ</strong> キーワードを使用します<br>
+これは、参照先が初期化されている必要がないという以外で ref と同じです<br>
+out 修飾子を指定したパラメータを<strong>出力パラメータ</strong>と呼びます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x , y;
+		getLocation(out x , out y);
+		System.Console.WriteLine("x = " + x + " : y = " + y);
+	}
+	static void getLocation(out int x , out int y) {
+		x = 100;
+		y = 20;
+	}
+}</pre>
+このプログラムは先ほどのプログラムと同じですが<br>
+Main() メソッドの x と y 変数を初期化していないという点で違います<br>
+メソッドでの上書きのみを目的とする場合は out を指定しましょう<br>
+逆に、読み込みを行う可能性がある場合は ref を使って初期化を促します<br>
+
+<br><hr>
+<h2>ref</h2>
+メソッドパラメータに指定し引数が<br>
+呼び出しもとの変数のポインタであることをコンパイラに通知します<br>
+変数は初期化されていなければなりません<br>
+<br>
+<h2>out</h2>
+メソッドパラメータに指定し引数が<br>
+呼び出しもとの変数のポインタであることをコンパイラに通知します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs19.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs21.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

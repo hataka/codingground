@@ -1,0 +1,158 @@
+<html>
+ <head>
+ <title>リテラル</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>リテラル</h1>
+<hr>
+ <h2>数値</h2>
+コンピュータは計算が得意であるということは、誰もが知ってる常識です<br>
+当然、プログラムのソースの大部分は計算と制御で埋め尽くされるでしょう<br>
+<br>
+プログラムでは、数値や文字列を直接記述したものを<strong>リテラル</strong>と呼びます<br>
+データには様々な<strong>型</strong>があり、代表どころでは整数、浮動小数、文字などがあります<br>
+数値を使った演算は主に整数型のリテラルで表現することができます<br>
+<br>
+C#の整数型は、0 〜 9 を使った10進数と、0 〜 F を使った16進数を使用できます<br>
+10進数はそのまま、16進数の場合は数値の前に <strong>0x</strong> プリフィックスを付加する必要があります<br>
+なお、16進数のA〜Fは小文字で指定しても問題はありません<br>
+<pre class="prg">class Test {
+	static void Main() {
+		System.Console.WriteLine(1983);
+		System.Console.WriteLine("-ビル・ゲイツが Windows を発表-");
+
+		System.Console.WriteLine(0x7C1);
+		System.Console.WriteLine("-Microsoft が Windows をリリース-");
+	}
+}</pre>
+このプログラムでは WriteLine() メソッドに 1983 という10進整数値と<br>
+7C1 という16進整数値（10進数の 1985)を渡しています<br>
+WriteLine() メソッドは、この数値を文字列に変換しコンソールに出力します<br>
+<br>
+ただし、16進数も10進数も機械語では2進数なので<br>
+これらはコンパイラが扱うものであり、機械語レベルでは同じ扱いです<br>
+そのため、文字列に変換して表示した時は10進数で表示されてしまいます<br>
+
+<br><hr>
+<h2>実数値</h2>
+プログラムが小数も扱う場合は、整数型ではなく実数型を使用します<br>
+実数リテラルは整数と違い<strong>10進数しか扱えない</strong>ので注意してください<br>
+<br>
+実数型は、10進整数部と小数以下の10進指数部からなります<br>
+プログラムでは小数を<strong>浮動小数点</strong>と呼ばれる方法で表現します<br>
+基本的には、数学同様に <b>整数部.小数部</b> という形で表せます<br>
+ただし浮動小数は、アンダーフローや丸め誤差と呼ばれる誤差が発生するので<br>
+その扱いにはある程度のコンピュータ科学知識が必要になることがあります<br>
+<br>
+実数型は、指数表記 e または E を使用することができます<br>
+指数表記は10の累乗を表すもので 4e3 で 4000 というように表すことができます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		System.Console.WriteLine(42.195);
+		System.Console.WriteLine(0.3e-2);		
+	}
+}</pre>
+このプログラムも、実数を問題なくコンソールに出力してくれることでしょう<br>
+
+<br><hr>
+<h2>文字と文字列</h2>
+C# の文字は様々な国の言語を表現できる国際的な Unicode を使用しています<br>
+これは、近年 Java や Windows NT などにも積極的にとり入れられている重要な文字コードで<br>
+アプリケーション開発の国際化の時代に非常に貢献している技術です<br>
+<br>
+Unicode は 2 バイト文字であり、C# は1文字に2バイトの容量を使用します<br>
+これは、C/C++ の ASCII に比べて大きく異なる点の一つです<br>
+<br>
+文字は<strong>シングルクォーテーション '</strong>で囲むことで表現できます<br>
+文字列と違い、文字型は2バイトまでと定められているため1文字しか表せません<br>
+<pre class="prg">class Test {
+	static void Main() {
+		System.Console.WriteLine('A');
+		System.Console.WriteLine('1');
+	}
+}</pre>
+このプログラムは WriteLine() メソッドに文字を渡して表示します<br>
+注意してほしいのですが '1' というのは数値ではなく文字型としての 1 です<br>
+表示された時は 1 としかありませんが、データ型が違うというのは重要です<br>
+この後に紹介する計算などの時には、データ型の違いは重要な項目になります<br>
+<br>
+文字列は、前回紹介したようにダブルクォーテーション " で囲むことで表現できました<br>
+しかし、改行などは文字列の中で表現できませんでした<br>
+改行やタブのような特殊な文字は<strong>エスケープ文字 \</strong>と呼ばれる文字で表現します<br>
+<br>
+エスケープ文字は <strong>\</strong> で始まりその後に何らかの文字などを付加します<br>
+これを<strong>エスケープシーケンス</strong>と呼び、次のものがあります<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>エスケープシーケンス<th>説明<th>Unicode
+<tr><td>\'<td>シングルクォーテーション<td>0x0027
+<tr><td>\"<td>ダブルクォーテーション<td>0x0022
+<tr><td>\\<td>円マーク<td>0x005C
+<tr><td>\0<td>null<td>0x0000
+<tr><td>\a<td>アラート<td>0x0007
+<tr><td>\b<td>バックスペース<td>0x0008
+<tr><td>\f<td>改ページ<td>0x000C
+<tr><td>\n<td>改行<td>0x000A
+<tr><td>\r<td>キャリッジリターン<td>0x000D
+<tr><td>\t<td>水平タブ<td>0x0009
+<tr><td>\v<td>垂直タブ<td>0x000B
+<tr><td>\x16進数<td>16進エスケープシーケンス
+</table>
+<br>
+これらのエスケープシーケンスを文字、または文字列に含ませて出力すると<br>
+それぞれのエスケープシーケンスの意味する文字を出力することができます<br>
+これを使用すれば、文字列内に " を表示させることが出きるようになります<br>
+<br>
+ただし、文字列において \ に続く文字は上のいずれかのエスケープシーケンスである必要があります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		System.Console.WriteLine("Kitty on your lap\nTokyo mew mew");
+		System.Console.WriteLine("\"Nekoneko Zoo\"");
+		System.Console.WriteLine("\x005C\x0009\x005C");
+	}
+}</pre>
+これをコンパイルして実行すると、次のようになります<br>
+<pre><b>Kitty on your lap
+Tokyo mew mew
+"Nekoneko Zoo"
+\       \</pre></b>
+このように、改行コードやタブをエスケープシーケンスで表現できます<br>
+これは C/C++ の経験者であればお馴染みのものでしょう<br>
+<br>
+C# は、上のように " " で囲まれた文字列を<strong>標準文字列</strong>と呼びます<br>
+これに対し、<strong>逐語的文字列</strong>と呼ばれる便利な文字列表現もあります<br>
+<br>
+逐語的文字列は、標準文字列と違い " 以外の全ての文字を文字列内に指定できます<br>
+標準文字列では文字列中に改行することはできませんでしたが<br>
+逐語的文字列はタブ、改行、エスケープ文字などが全てそのまま解釈されます<br>
+ただし、逐語的文字列内で " を表現したい場合は "" と記述します<br>
+<br>
+逐語的文字列は <strong>@" ではじまり " で終わり</strong>ます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		System.Console.WriteLine(
+@"\Kitty on your lap\
+\n	Tokyo mew mew	\t
+""Di Gi Charat"""
+		);
+	}
+}</pre>
+これを実行すると、次のような文字列が出力されます<br>
+<pre><b>\Kitty on your lap\
+\n	Tokyo mew mew	\t
+"Di Gi Charat"</pre></b>
+これを見れば、エスケープ文字は解釈されずにそのまま解釈され<br>
+タブや改行も表現されていることが確認できます<br>
+<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs2.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs4.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

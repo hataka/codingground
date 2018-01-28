@@ -1,0 +1,5 @@
+F:\GitHub\hataka\codingground\WisdomSoft\cs\cs002\cs002_1\bin\Debug\cs002_1.exe
+F:\GitHub\hataka\codingground\WisdomSoft\cs\cs002\cs002_1\bin\Debug\cs002_1.pdb
+F:\GitHub\hataka\codingground\WisdomSoft\cs\cs002\cs002_1\obj\Debug\cs002_1.csprojResolveAssemblyReference.cache
+F:\GitHub\hataka\codingground\WisdomSoft\cs\cs002\cs002_1\obj\Debug\cs002_1.exe
+F:\GitHub\hataka\codingground\WisdomSoft\cs\cs002\cs002_1\obj\Debug\cs002_1.pdb

@@ -1,0 +1,89 @@
+<html>
+ <head>
+ <title>シフト演算</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>シフト演算</h1>
+<hr>
+ <h2>ビットシフト</h2>
+通常私たちは使いなれている10進数を使ってプログラムをしていますが<br>
+機械語レベルでは全てが2進数であり、数値も命令コードもデータも例外ではありません<br>
+<br>
+そこで、算術演算以外にビットを直接扱って演算することもあります<br>
+とくにビットを左右に移動させる<strong>シフト演算</strong>は時に非常に効果的です<br>
+<br>
+シフト演算には<strong>右シフト</strong>と<strong>左シフト</strong>があります<br>
+右シフトは連続したビットを右に、左シフトはビットを左にずらします<br>
+<br><b>
+0010 0110 -右に1シフト-&#62; 0001 0011<br>
+0011 0101 -左に2シフト-&#62; 1101 0100<br>
+<br></b>
+例えばこのように2進ビット列を左右に振ることができます<br>
+これは8ビット型のデータをシフトしていますが<br>
+シフト演算で<strong>溢れたビットは抹消</strong>されます<br>
+<br>
+シフト演算子は、算術演算子同様に2項演算子です<br>
+左シフト演算子は <strong>&#60;&#60;</strong>、右シフト演算子は <strong>&#62;&#62;</strong> と記述します<br>
+<br><b>
+expr &#60;&#60; count<br>
+expr &#62;&#62; count<br>
+<br></b>
+expr には int、uint、long、ulong 型いずれかのシフトする式を指定します<br>
+count は int 型のシフトする回数を指定します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 10;
+		System.Console.WriteLine(((x &#60;&#60; 2) + x) &#60;&#60; 1);
+		System.Console.WriteLine(x &#62;&#62; 1);
+	}
+}</pre>
+2進数の各桁は2のウエイト（2のn乗）なので、シフトはある重要な意味を持ちます<br>
+すなわち左に1回シフトするごとに値は常に2倍となり<br>
+右に1回シフトするごとに値は半分になる（2で割る）ということになります<br>
+<br>
+この性質を生かし、最初の WriteLine() は x を 10 倍して表示します<br>
+x を2回左シフトすることで 4 倍になり、これに x を加算することで5倍<br>
+さらに左に1回シフトすることで、x の値を10倍にしてメソッドに渡しています<br>
+<br>
+下の WriteLine() メソッドは、x を1回右シフトすることで2で割っています<br>
+このような処理以外も、例えば上位ビットを削除したい場合や<br>
+24ビットで表される加法混色(RGB)の値で上位ビットの色の値だけを指定する時など<br>
+シフト演算はシステムプログラムやグラフィックの分野でも活躍します<br>
+
+<br><hr>
+<h2>算術シフト</h2>
+ここで一つ問題になるのが、シフトすることでできた空きビットの値です<br>
+シフトで溢れた値が抹消されるのは問題ありませんが<br>
+その反対側でできた空きビットは一体どの値で初期化されるのでしょう<br>
+<br>
+溢れたビットがシフト方向の反対側に出現するということはありません<br>
+ビットが回転する場合はシフトではなく「ローテート」と呼ばれる技術になります<br>
+<br>
+通常は、シフトの場合反対側にできた空きビットは常に 0 で初期化します<br>
+このようなシフト演算を<strong>論理シフト</strong>と呼びます<br>
+しかし、論理シフトはビット列全体を対象にするため<strong>最上位ビットが1</strong>の場合<br>
+これは符号ビットなので、符号が反転してしまう可能性があります<br>
+<br>
+そこで、右シフトをする時は<strong>空ビットは符号ビットで初期化</strong>されます<br>
+(もちろん、符号なしの型であれば符号ビットがないので論理シフトになる）<br>
+そうしなければ2の補数で表現されている負数をシフトで演算できないからですね<br>
+このようなシフト演算を<strong>算術シフト</strong>と呼びます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = -10;
+		System.Console.WriteLine(x &#60;&#60; 1);
+		System.Console.WriteLine(x &#62;&#62; 1);
+	}
+}</pre>
+コンパイルして実行すると、両方とも最上位ビットも数値も予想したとおりの結果になり<br>
+期待するシフト演算の意味を失うことはありません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs6.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs8.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<html>
+ <head>
+ <title>キャスト</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>キャスト</h1>
+<hr>
+ <h2>型の変換</h2>
+異なる型どうしの算術演算は「2項数値昇格」のアルゴリズムで<br>
+暗黙のうちにサイズの大きな型にあわせて演算が実行されました<br>
+<br>
+ところが、暗黙の型変換による恩恵が受けられない場合もあります<br>
+基本的に short から int へ変換する拡張変換は暗黙の型変換が発生します<br>
+<br><b>
+short x = value;<br>
+int y = x;<br>
+<br></b>
+value は、何らかの数値リテラルや short 型の変数と考えれば<br>
+この代入式は問題なくコンパイルができます<br>
+short から int への型変換は、数値表現範囲が広くなるだけなので<br>
+暗黙のうちに変換してもデータが失われるようなことはありません<br>
+<br>
+しかし、int を short に変換するような<strong>縮小変換はできない</strong>のです<br>
+もし int 型の変数を short に代入しようとするとコンパイルエラーが発生します<br>
+これは、縮小変換によって上位ビットのデータが失われる可能性があるためです<br>
+そのため、縮小変換には<strong>キャスト式</strong>を使って明示的型キャストを行います<br>
+<br><b>
+( type ) expr<br>
+<br></b>
+type には変換する型名を、expr には型変換を行う式を指定します<br>
+こうすれば、暗黙に変換できない場合に明示的に変換を指定できます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		ushort us = 0xA5FF;
+		byte sb = (byte)us;
+
+		System.Console.WriteLine("ushort = " + us);
+		System.Console.WriteLine("byte = " + sb);
+	}
+}</pre>
+このプログラムは、ushort 型変数 us を byte 型に縮小変換します<br>
+us の値は符号なし 16bit で 1010 0101 1111 1111 となっています<br>
+これを 8bit の byte 型にキャストすると上位 8bit が失われます<br>
+ということは、下位 8bit が代入され 1111 1111、すなわち sb は10進数 255 となります<br>
+<br>
+キャスト式の注意点としては、<strong>(type) の後に演算子を置かない</strong> ということです<br>
+たとえば、以下のキャスト式は非常にあいまいといえます<br>
+<br><b>
+( type ) - variable<br>
+<br></b>
+これは、type と variable の差を求めている算術演算にも受け取れますし<br>
+-variable を type にキャストしようとしているとも読み取れます<br>
+<br>
+この場合 type が既定のキーワード（int や long）ならばキャストとなります<br>
+キーワード以外の型の識別子だった場合はキャスト式ではないと判断されます<br>
+安全にキャストするには (type)(-variable) と記述することが推奨されます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs9.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs11.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

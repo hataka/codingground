@@ -1,0 +1,137 @@
+<html>
+ <head>
+ <title>コンストラクタ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>コンストラクタ</h1>
+<hr>
+ <h2>インスタンスの初期化</h2>
+これまで、クラスのメンバ変数はインスタンスを生成した後<br>
+それぞれのインスタンスに対して個別の初期化してきました<br>
+<br>
+これは、1つや2つのオブジェクトに対しては対した作業量にはなりませんが<br>
+多くのメンバ変数をもつクラスのインスタンスを複数初期化するとなると話しは別です<br>
+そこで、インスタンスの初期化には<strong>コンストラクタ</strong>を使います<br>
+<br>
+コンストラクタは、基本的にはメソッドと変わりませんが二つの特徴を持ちます<br>
+一つは<strong>クラスと同じ名前</strong>であり、クラスと同じメソッドはコンストラクタとなります<br>
+もう一つは<strong>戻り値は無い</strong>ため、コンストラクタには戻り値は指定しません<br>
+<br>
+なぜ戻り値が無いのかというと、コンストラクタの戻り値はインスタンスへの参照であり<br>
+コンストラクタはインスタンス生成時以外に呼び出されることは無いからです<br>
+これ以外の点では、基本的にメソッドと同じで内部で何をしようがプログラマの勝手です<br>
+ただし、論理的に初期化と関連のある処理を記述することが美しいプログラムへの道です<br>
+<pre class="prg">class Kitty {
+	public string strName , strSex;
+	public Kitty(string str , bool bl) {
+		strName = str;
+		strSex = bl ? "雌猫" : "雄猫";
+	}
+	public void Write() {
+		System.Console.WriteLine(
+			"名前 = " + strName + " : 性別 = " + strSex
+		);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty("RENA" , true);
+		Kitty kaimu = new Kitty("カイム" , false);
+
+		rena.Write();
+		kaimu.Write();
+	}
+}</pre>
+このプログラムの Kitty クラスは、インスタンスを生成する時に<br>
+Kitty(string , bl) 型のコンストラクタを呼び出し、メンバを初期化します<br>
+<br>
+コンストラクタの戻り値は無いので、Kitty() には戻り値の指定が無いことに注意してください<br>
+void は何も値を返さないという意味ですが、コンストラクタはそれ以前に戻り値の指定をしません<br>
+<br>
+コンストラクタが宣言されていないクラスでも、デフォルトコンストラクタが存在します<br>
+デフォルトコンストラクタは、何も引数を受け取らない public なコンストラクタです<br>
+
+<br><hr>
+<h2>フィールドの初期化</h2>
+メンバ変数はコンストラクタ以外の方法でも初期化することが可能です<br>
+それは、あらかじめ<strong>静的に</strong>デフォルトの値を与えることです<br>
+<br>
+これは、通常の変数の初期化のように代入演算子を用いて<br>
+メンバ変数に対してデフォルトの値を代入します<br>
+そうすると、インスタンスが生成されてコンストラクタが実行された直後に<br>
+そのメンバ変数に対して指定の値が代入されます<br>
+<pre class="prg">class Kitty {
+	public string name = "RENA" , sex = "雌猫";
+	public void Write() {
+		System.Console.WriteLine("名前 = " + name + " : 性別 = " + sex);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty();
+		Kitty yuki = new Kitty();
+		yuki.name = "YUKI";
+
+		rena.Write();
+		yuki.Write();
+	}
+}</pre>
+このプログラムを実行すると次のような結果が得られます<br>
+<br><b>
+名前 = RENA : 性別 = 雌猫<br>
+名前 = YUKI : 性別 = 雌猫<br>
+<br></b>
+Kitty クラスのメンバ変数 name と sex はそれぞれがデフォルトの値を持ちます<br>
+コンストラクタや明示的な代入が無ければデフォルトの値のままなので<br>
+結果として上のようなものが出力されたのです<br>
+
+
+<br><hr>
+<h2>null アクセス</h2>
+C# では、初期化されていないメンバ変数の初期値というものが割り当てられています<br>
+そのため、初期化されていないメンバ変数にアクセスしても<br>
+最低限の動作はある程度守られるようにはなっています<br>
+<br>
+ところが、クラス型のような「参照型」の変数の初期値はどうでしょう<br>
+「参照型」とは、実体が存在するメモリのアドレスを表す変数です<br>
+これは実体が存在して初めて保障されるものですから<br>
+インスタンス化される前は初期化のしようがありません<br>
+<br>
+実は、このような参照型の初期値には <strong>null リテラル</strong> が割り当てられます<br>
+null はリテラルであり、どこへの参照も持っていない状態であることを意味します<br>
+プログラムのクラス型変数の保証はコンパイル時にはわかりません<br>
+そこで、もしプログラムが null へアクセスした場合 CLR はプログラムを停止させます<br>
+<pre class="prg">class Tmp {
+	public string tmp;
+}
+
+class Kitty {
+	public Tmp obj;
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty();
+		rena.obj.tmp = "Kitty on your lap";
+	}
+}</pre>
+このプログラムを実行すると<strong>実行時例外</strong>が発生します<br>
+例外とは、コンパイルエラーと異なり実行中の動的なエラーです<br>
+<br>
+Kitty クラスにある Tmp クラス型のメンバ変数はデフォルトで null であり<br>
+これを初期化しないまま、Main() メソッドで Kitty.obj.tmp とアクセスしています<br>
+null、すなわちインスタンスが存在せず、これは実行できないので例外となるのです<br>
+<br>
+例外の生成と処理方法については、後ほど詳しく解説します<br>
+この場では、null アクセスはプログラムを停止させてしまうということを知ってください<br>
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs17.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs19.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<html>
+ <head>
+ <title>1の加減算</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>1の加減算</h1>
+<hr>
+ <h2>インクリメントとデクリメント</h2>
+プログラムの中では、繰り返し処理やグラフィックス処理などで<br>
+頻繁に<strong>変数の現在の値 + 1</strong>という計算を行います<br>
+このような計算は、通常の算術演算子で次のように求められます<br>
+<br><b>
+variable = variable + 1;<br>
+<br></b>
+これは、variable に 1 を加算した値を variable に保存しています<br>
+= 演算子は + 演算子よりも優先度が低いのでこれは正確に計算することができます<br>
+しかし、このような処理には専用の演算子<strong>インクリメント</strong>が用意されています<br>
+<br>
+インクリメント演算子は<strong>変数の前か後に ++</strong> を付加します<br>
+この違いは、演算子の優先順位に影響します<br>
+<br><b>
+++variable<br>
+variable++<br>
+<br></b>
+++variable は<strong>前置き</strong>インクリメント演算子と呼ばれ<br>
+variable++ を<strong>後置き</strong>インクリメント演算子と呼び区別します<br>
+インクリメント演算子は両方とも変数に現在の値 + 1 という結果を与えます<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i = 10;
+
+		i++;
+		System.Console.WriteLine(i);
+		++i;
+		System.Console.WriteLine(i);
+	}
+}</pre>
+コンソールには 11 と 12 という数字が表示されます<br>
+この結果からも、i++ と ++i がそれぞれ i に 1 加算していることがわかりますね<br>
+<br>
+前置きと後置きの違いは多項式でインクリメントするとわかります<br>
+前置き演算子はインクリメントしてから式を評価しますが<br>
+後置き演算子は式を評価してから変数をインクリメントするという違いがあります<br>
+<br>
+つまり、前置きの場合はインクリメントしてから値を返しますが<br>
+後置きは値を渡してからインクリメントするため、その結果は異なります<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i = 10;
+
+		System.Console.WriteLine(++i);
+		System.Console.WriteLine(i++);
+		System.Console.WriteLine(i);
+	}
+}</pre>
+この結果は、次のようになります<br>
+<br><b>
+11<br>
+11<br>
+12<br>
+<br></b>
+WriteLine(++i) は、i = i + 1 を計算してから WriteLine() メソッドに i を渡しますが<br>
+WriteLine(i++) は、WriteLine() メソッドに i を渡してから i = i + 1 の計算をします<br>
+その証拠に、WriteLine(i++) の時点では 11 ですが<br>
+その後の変数 i は 12 になっていることが確認できます<br>
+<br>
+同様に、現在の変数の値から<strong>1 減算</strong>する専用の演算子もあります<br>
+この扱いはインクリメントと同じで、これを<strong>デクリメント</strong>と呼びます<br>
+デクリメントは、変数の前後いずれかに <strong>--</strong> を付加します<br>
+<br><b>
+--variable<br>
+variable--<br>
+<br></b>
+前置きと後置きの違いは、インクリメント演算子と同じです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int i = 10;
+
+		System.Console.WriteLine(--i);
+		System.Console.WriteLine(i--);
+		System.Console.WriteLine(i);
+	}
+}</pre>
+今度は 10 の値から 1 づつ減算されています<br>
+インクリメント同様に i = i - 1 または i = i + (-1) という計算をしたい場合は<br>
+デクリメント演算子を使って計算することができます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs5.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs7.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

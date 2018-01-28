@@ -1,0 +1,94 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<project name="cs002_2" default="build" basedir=".">
+  <property environment="env" />
+  <property name="name" value="cs002_2"/>
+  <property name="target" value="cs002_2"/>
+  <property name="exe" value="${target}.exe"/>
+  <property name="source" value="main.cs"/>
+  <property name="compiler" value="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe"/>
+  <property name="csproj" value="${target}.csproj" />
+  <property name="doxygen" value="C:/Program Files/doxygen/bin/doxygen.exe" />
+  <property name="doxyfile" value="F:/WisdomSoft/framework/system/msnet/Doxyfile" />
+  <property name="script" value="F:/Programs/csscript/cscs.exe" />
+  
+  <target name="build">
+    <exec executable="cmd" spawn="false">
+      <arg value="/k" />
+      <arg value="${compiler}"/>
+      <arg value="${basedir}/${csproj}" />
+      <arg value="/rebuild" />
+    </exec>
+    <copy file="${basedir}/bin/Release/${exe}" todir="${basedir}" failonerror="false" />
+    <copy file="${basedir}/bin/Debug/${exe}" todir="${basedir}" failonerror="false" />
+  </target>
+
+  <target name="run">
+    <exec executable="${basedir}/${exe}" />
+  </target>
+
+  <target name="runscript">
+    <exec executable="cmd.exe" >
+      <arg value="/k" />
+      <arg value="${script}" />
+      <arg value="${basedir}/${source}" />
+    </exec>
+  </target>
+
+  <target name="clean">
+    <delete dir="bin" />
+    <delete dir="obj/Debug" />
+    <delete>
+      <fileset dir="." includes="*.user"/>
+      <fileset dir="." includes="*.suo"/>
+    </delete>
+  </target>
+
+  <target name="clear">
+    <delete dir="bin" />
+    <delete dir="obj/Debug" />
+    <delete dir="doxygen" />
+    <delete>
+      <fileset dir="." includes="*.user"/>
+      <fileset dir="." includes="*.suo"/>
+      <fileset dir="." includes="*.exe"/>
+      <fileset dir="." includes="*.class"/>
+      <fileset dir="." includes="*.swf"/>
+    </delete>
+  </target>
+
+  <target name="doxygen">
+    <exec executable="cmd.exe" >
+      <arg value="/k" />
+      <arg value="${doxygen}" />
+      <arg value="${doxyfile}" />
+    </exec>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage">
+    <echo message="" />
+    <echo message="" />
+    <echo message="${name} Build file" />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message=" available targets are:" />
+    <echo message="" />
+    <echo message="   build     - compiles the source code (default)" />
+    <echo message="   run       - execute the exsample" />
+    <echo message="   runscript - run script of the exsample" />
+    <!--
+    <echo message="   package   - generates the ${name}.jar file" />
+    -->
+    <echo message="   doxygen   - generates the doxygen documentation" />
+    <echo message="   clean     - cleans up the directory" />
+    <echo message="   clear     - delete all build files" />
+    <echo message="" />
+    <echo message=" See the comments inside the build.xml file for more details." />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message="" />
+  </target>
+
+</project>

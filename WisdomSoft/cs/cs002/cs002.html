@@ -1,0 +1,62 @@
+<html>
+ <head>
+ <title>Partial types</title>
+ <link rel="stylesheet" href="../../layout.css" type="text/css"></link>
+ <meta http-equiv="Content-Type" content="text/htm; charset=UTF-8"></meta>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>Partial types</h1>
+<hr>
+ <h2>クラスの分割記述</h2>
+ <p>
+	Partial types は、一つのクラス、構造体、インタフェースを複数のファイルなどに分割して記述することができる機能です。
+	従来 Objective-C や Smalltalk にはカテゴリという概念で存在していましたが、C 言語をベースに派生したオブジェクト指向言語にはなかなか実装されなかった機能です。
+ </p>
+ <p>
+	Partial types の意味はデザイン上の問題だけで、プログラムの実行にかかわるものではありません。
+	しかし、より大きな規模のプロジェクトにおいてこの機能は極めて重要で、筆者個人としては Generics と同じかそれ以上に重要な存在だと考えています。
+ </p>
+ <p>
+	例えば、GUI プログラムにおいて、Form を継承したメインウィンドウを担当するクラスを作成するときです。
+	商業レベルのツールを開発すると、高度で複雑なコントロールをいくつも作成しなければなりません。
+	これらのコントロールを動的に表示させたり、消したりするには様々なイベント処理が必要となるため、結果としてコールバックメソッドが大量に必要となります。
+ </p>
+ <p>
+	Partial types を使えば、数多くのコントロールを宣言する非公開フィールドや、イベント用メソッド、プロパティ、非公開のマクロ的性質のメソッドなどを異なるファイルに分離して記述することができます。
+	これらの全てを単一のファイルに記述すると、数千行の量になることは珍しくありません。
+ </p>
+ <p>
+	Partial types を利用するには <strong>partial</strong> 修飾子を型の宣言に指定します。
+	partial はクラス、構造体、インタフェースのいずれかに指定することができます。
+ </p>
+ <p><b>partial class 型名 { ... }</b></p>
+ <p>
+	例えばこの宣言は、Partial class を宣言しています。
+	そのため、同様にこのクラスを別の場所で宣言することで、このクラスのメンバを分離して記述することができます。
+ </p>
+ <pre class="prg">partial class Test {
+	static void Main() {
+		System.Console.WriteLine(new Test());
+	}
+}
+
+partial class Test {
+	public override string  ToString() {
+		return "Test : ふるふるふるむーーーーん";
+	}
+}</pre>
+<p>
+	このプログラムでは Test クラスを重複して宣言していますが、partial 宣言によってそれらのクラスは同一のクラスであることが分かります。
+	コンパイラは、これらの記述を同一のクラスとして認識してくれます。
+</p>
+<p>
+	極めてコード量が多くて管理が難しかったクラスなどは、partial によって複数のクラスに分割するなどして、管理しやすくするとよいでしょう。
+</p>
+
+<hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href="cs2_6.html">前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs2_8.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

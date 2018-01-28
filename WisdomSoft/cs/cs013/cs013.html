@@ -1,0 +1,146 @@
+<html>
+ <head>
+ <title>無条件ジャンプ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>無条件ジャンプ</h1>
+<hr>
+ <h2>ラベルとgoto</h2>
+これまでプログラムは上から下へ逐次実行してきました<br>
+本来の手続き型言語のプログラムは「逐次」「判断」「繰り返し」で制御できますが<br>
+場合によっては何らかの要因によって無条件に指定位置に制御を移したい場合があります<br>
+<br>
+C# はステートメントに<strong>ラベルプレフィックス</strong>をつけることができます<br>
+ラベルはステートメントに識別子を与えたものです<br>
+<br><b>
+identifier : statement<br>
+<br></b>
+identifier にはラベルの識別子を指定し、statement には名前をつけるステートメントを指定します<br>
+無条件ジャンプを行う場合、このラベルを識別子に用いてプログラムの制御を移します<br>
+無条件にプログラムの流れを変えるには <strong>goto</strong> ステートメントを使用します<br>
+<br><b>
+goto identifier;<br>
+<br></b>
+identifier には、ジャンプ先のステートメントのラベルを指定します<br>
+goto はプログラムの流れを無視して無条件に指定ラベルへ移行します<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int count = 0;
+
+		start: count++;
+		if (count &#62; 100) goto end;
+		System.Console.WriteLine("count = " + count);
+		goto start;
+
+		end: System.Console.WriteLine("End of goto loop");
+	}
+}</pre>
+これは、start ラベルから goto start までの間<br>
+count が 100 になるまで繰り返すループを goto で再現したプログラムです<br>
+実際には、後記する専用のループ処理ステートメントがあるため<br>
+goto ステートメントでこのような処理を記述することは批難にあたる行為です<br>
+<br>
+goto は無条件ジャンプであり、基本的に障害がないように思えますが<br>
+実は<strong>ブロック内にはジャンプできない</strong>という条件があります<br>
+ブロック内で宣言されたラベルは、ブロックの外からは見えないという規約があるからです<br>
+（この概念を「スコープ」と呼びます。後ほど詳しく紹介します）<br>
+<pre class="prg">class Test {
+	static void Main() {
+		goto inner;
+		{
+			inner: System.Console.WriteLine("Kitty on your lap");
+		}
+	}
+}</pre>
+このプログラムの goto はブロックの内部の inner ラベルにジャンプしようとしていますが<br>
+ブロックの外からはラベルが見えないため、コンパイルエラーが発生します<br>
+<br>
+逆に、ブロック内からブロックの外へのジャンプは可能です<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int count = 0;
+		start: {
+			count++;
+			if (count &#62; 100) goto end;
+			System.Console.WriteLine("count = " + count);
+			
+			goto start;
+		}
+		end: System.Console.WriteLine("End of goto loop");
+	}
+}</pre>
+さっきのプログラムの start ラベルを単一のブロックステートメントにまとめたプログラムです<br>
+ブロックの内部から外部のラベルにジャンプしていることがわかりますね<br>
+<br>
+因みに、ラベルは<strong>独自の宣言空間</strong>を持っています<br>
+変数やクラス名などと名前が重複しても問題はありません<br>
+例えば、次のようなプログラムの一部分があったとしても問題はありません<br>
+<br><b>
+int label;<br>
+goto label;<br>
+label:	label = 10;<br>
+<br></b>
+このような可読性の低い識別子をつけるべきではありませんが<br>
+ラベルは独自の宣言空間を持つため、変数 label と衝突することはないです<br>
+<br>
+goto はプログラムの状況に関係なく無条件にジャンプします<br>
+しかし、現代の構造化プログラムの時代において<strong>goto は禁句</strong>といってもよい<br>
+これは、1968年に Dijkstra という人物が goto の問題点を指摘した本を出版したことからはじまり<br>
+現代では goto のような無条件分岐はプログラムの制御の追跡を困難にすると考え<br>
+多くのプログラマが goto を使わない<strong>goto レス</strong>プログラムを信仰しています<br>
+
+<br><hr>
+<h2>switch と goto</h2>
+これまで、C 言語などでも goto は存在していましたが<br>
+多くのプログラマは使用することはありませんでしたし、Java ではその姿を消しています<br>
+<br>
+しかし C# では goto は無条件分岐以外に重要な利用方法があります<br>
+それは <strong>switch 文でフォールスルー</strong>を行いたい場合です<br>
+C# では goto 文を使ってジャンプする case を選択することができるのです<br>
+<br><b>
+goto case constant-expression;<br>
+goto default;<br>
+<br></b>
+case をつけた constant-expression を指定する goto 文は<br>
+constant-expression と同じ定数式を持つ case にジャンプします<br>
+goto default は switch 文の default 区にジャンプすることができます<br>
+<br>
+goto case や goto default は switch 文に包含されている必要があります<br>
+また、constant-expression と switch の制御型に互換性がない場合や<br>
+指定した定数式の case ラベルが存在しない場合もエラーになります<br>
+
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 0;
+		string str = "";
+
+		switch(x) {
+		case 0:
+			str = "Kitty on your lap\n";
+			goto case 1;
+		case 1:
+			str += "Tokyo mew mew\n";
+			goto case 2;
+		case 2:
+			str += "Di Gi Charat";
+			goto default;
+		default:
+			System.Console.WriteLine(str);
+			break;
+		}
+	}
+}</pre>
+このプログラムは、case 0 が実行され、さらに下の case 文にフォールスルーしていきます<br>
+最終的には全ての case と default を実行してプログラムは終了します<br>
+goto case の定数を変更することで、移行する順番を柔軟に変更するという威力を持ちます<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs12.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs14.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

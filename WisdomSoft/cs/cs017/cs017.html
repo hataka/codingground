@@ -1,0 +1,108 @@
+<html>
+ <head>
+ <title>メソッド</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>メソッド</h1>
+<hr>
+ <h2>クラスの動作</h2>
+前回はクラスの宣言とメンバ変数を解説しましたが<br>
+これだけでは、普通に Main() メソッドで変数を定義したほうが楽だと思うかもしれません<br>
+<br>
+クラスにメンバ変数だけを定義して、それに単純にアクセスするだけでは<br>
+たしかに、通常の変数と変わらないので意味がありません<br>
+<br>
+しかし、クラスはメンバ変数などを参考にして動作する<strong>メソッド</strong>の存在があります<br>
+メンバ変数は「名前」とか「性別」といったオブジェクトのデータを格納するものでしたが<br>
+メソッドはそれを参照してオブジェクトの動作を決定させるものです<br>
+現実をシュミレートするなら、「鳴く」とか「食べる」という動作はメソッドで行います<br>
+<br>
+メソッドは C 言語などの手続き型言語で言う「関数」に位置します<br>
+事実、C 言語に近いオブジェクト指向言語である C++ は「メンバ関数」という呼び方をします<br>
+ただし、メソッドは関数と異なり<strong>クラスの一員</strong>なのです<br>
+メソッドはクラスに動的な働きを持たせる手段であり、クラスの動作を表します<br>
+<br>
+メソッドもメンバなので、アクセス制御が可能です<br>
+この場では、変数同様に自由アクセスの public を指定します<br>
+さらにメソッドは<strong>値を受け取る</strong>ことができ、<strong>値を返す</strong>こともできます<br>
+例えば、二つの値を受けとってそれらを比較し大きいほうを返すメソッドなどを作れます<br>
+こうすれば、メソッドに値を渡すだけで計算処理はメソッドに任せることができます<br>
+<br><b>
+type method-name(param-list) { statements... }<br>
+<br></b>
+これが、基本的なメソッドの宣言方法です<br>
+type には、このメソッドが呼び出し元に返す型を指定します<br>
+method-name はメソッドの名前を、param-list はメソッドが受け取るパラメータを<br>
+そして、statements にこのメソッドの本文を記述します<br>
+<br>
+メソッドが値を返す場合、その値の型を type に指定しますが<br>
+メソッドが何も値を返す必要がない場合は <strong>void</strong> を指定します<br>
+そう、私たちがこれまで何度も書いてきた Main() メソッドに指定していた void です<br>
+また、何も値を受け取らない場合も括弧を記述する必要があることにも注意してください<br>
+<br>
+メソッドを呼び出す場合も、メンバ変数へのアクセスと同じです<br>
+<pre class="prg">class Kitty {
+	public string name;
+	public void Write() {
+		System.Console.WriteLine("名前 = " + name);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty();
+		rena.name = "RENA";
+		rena.Write();
+	}
+}</pre>
+rena.Write() で rena オブジェクトの Write() メソッドを呼び出しています<br>
+Kitty クラスの Write() メソッドは WriteLine() メソッドを呼び出し name メンバを出力します<br>
+Write メソッドはオブジェクトに関連付けられているので<br>
+メンバ変数のアクセスにオブジェクトを指定する必要はありません<br>
+<br>
+因みに、異なるクラス間でメンバの名前が衝突することはありません<br>
+Kitty クラスで WriteLine() メソッドを宣言しても<br>
+Console クラスの WriteLine() メソッドと名前が衝突することはありません<br>
+<br>
+メソッドは値を受け取り、また値を返すことが出きると書きました<br>
+受け取る値を<strong>引数</strong>またはパラメータと呼び、返す値を「戻り値」と呼びます<br>
+引数を受け取るには、メソッドの宣言時に受け取る<strong>仮引数</strong>を指定します<br>
+例えば、次のメソッドは文字列を受け取り数値を返すというものです<br>
+<br><b>
+int method(string str) { ... }<br>
+<br></b>
+method メソッドの内部では、受け取った引数にアクセスする時は変数 str を使います<br>
+複数の引数を受け取る場合は <strong>カンマ ,</strong> で引数を区切ります<br>
+<br><b>
+int method(int x , int y , int z ...)<br>
+<br></b>
+メソッドから返す値は <strong>return ステートメント</strong>で返します<br>
+以前は何も値を指定しませんでしたが、return は式を指定できましたね<br>
+<pre class="prg">class Calc {
+	public int value;
+	public int getPercent(int pc) {
+		return (int)(value * ((double)pc / 100));
+	}
+}
+
+class Test {
+	static void Main() {
+		Calc obj = new Calc();
+		obj.value = 1000;
+		System.Console.WriteLine(obj.getPercent(5));
+	}
+}</pre>
+Calc クラスは value メンバと getPercent() メソッドを持ちます<br>
+getPercent() メソッドは value の値のうち指定パーセントを返します<br>
+プログラムでは、5 を指定しているので、この関数は value の 5% の値を返します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs16.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs18.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

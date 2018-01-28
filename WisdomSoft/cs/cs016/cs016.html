@@ -1,0 +1,206 @@
+<html>
+ <head>
+ <title>クラス</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>クラス</h1>
+<hr>
+ <h2>クラスとインスタンス</h2>
+オブジェクト指向(OOP)言語は、「継承」「多様性」「カプセル化」の3つの特徴を持ち合わせます<br>
+OOP はこれらの基本的な要素を「クラス」という機能で実現します<br>
+<br>
+クラスは一連の論理的に関連性のある処理をまとめたデータ定義です<br>
+クラスは実世界の物「オブジェクト」を表すのに非常に優れた手段であるといえます<br>
+例えば、「猫」は種や性別などのデータを持ち、食べたり寝たりという基本動作を持ちます<br>
+クラスはデータを「フィールド」、動作を「メソッド」としてサポートします<br>
+<br>
+私たちは、これまでのプログラムでも一つのクラスを作ってきました<br>
+C# プログラムは、必ず一つ以上のクラスと Main() メソッドを持つ必要があるからです<br>
+そう <b>class Test</b> という一番最初の文がクラスの宣言だったのです<br>
+ここの <strong>class</strong> キーワードを使用することで、クラスを宣言できます<br>
+<br><b>
+[attributes] [modifiers] class identifier [:base-list] { class-body }[;]<br>
+<br></b>
+attributes には属性、modifiers にはクラス修飾子をそれぞれ指定します<br>
+identifier は、宣言するクラスの識別子を、base-list はこのクラスの基底クラスなどを指定します<br>
+class-body には、このクラスの本文を記述します<br>
+<br>
+attributes、modifiers、base-list に関連する技術については<br>
+現時点では説明できないので、クラスの基本を網羅してから説明します<br>
+<br>
+クラスは宣言するだけでは使用することはできません<br>
+クラスを実際に<strong>メモリに生成</strong>する必要があります<br>
+クラスの実体を<strong>インスタンス</strong>と呼び、生成することを<strong>インスタンス化</strong>と呼びます<br>
+<br>
+インスタンスの生成には <strong>new 演算子</strong>を使用します<br>
+new 演算子は指定したクラスの<strong>インスタンス型の参照</strong>を返します<br>
+インスタンス型の参照とは、すなわちインスタンスが格納されているメモリのアドレスを表します<br>
+<br><b>
+new constructor();<br>
+<br></b>
+constructor() には、そのクラスの「コンストラクタ」を指定します<br>
+コンストラクタはインスタンスを初期化するためのメソッドで<br>
+必ず<strong>クラスと同じ名前</strong>を持ち、デフォルトで存在しているメソッドです<br>
+（独自のコンストラクタの定義も可能ですが、それについては後記します)<br>
+<br>
+コンストラクタが返したインスタンスの参照、すなわちオブジェクトは<br>
+一体どのような変数に格納すれば良いのでしょうか？<br>
+それは、当然その「クラス型」に型の合う変数です<br>
+Kitty クラスのインスタンスは Kitty 型変数に格納するという形になります<br>
+<pre class="prg">class Kitty {}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		System.Console.WriteLine(obj);
+	}
+}</pre>
+このプログラムは Kitty コンストラクタを呼び出しヒープにインスタンスを生成し<br>
+その参照を Kitty 型変数 obj に格納しています<br>
+<br>
+WriteLine() メソッドは、このようなクラス型の変数を受け取ることができ<br>
+そのクラスの文字列情報をコンソールに出力します<br>
+どのような文字になるかはクラスによりますが、通常はそのクラスの名前が表示されるでしょう<br>
+
+<br><hr>
+<h2>メンバ変数</h2>
+クラスの本文は「メンバ」と呼ばれるデータの定義になります<br>
+メンバは、そのクラスが持つデータや動作そのものです<br>
+<br>
+クラスの持つデータは<strong>メンバ変数</strong>として保存します<br>
+メンバ変数は、クラスのメンバとして宣言された変数でありクラスと直接結び付けられます<br>
+メンバ変数へのアクセスは通常の変数と異なり、<strong>インスタンスを指定</strong>します<br>
+<br>
+メンバ変数を宣言するには、クラスの本文でこれまでのように変数を宣言します<br>
+ただし、メンバは<strong>セキュリティ</strong>を持っています<br>
+他のクラスからアクセス可能か、あるいは外部からのアクセスを禁止するかという具合です<br>
+<br>
+メンバへのアクセスの制御は、「アクセス修飾子」を最初に指定します<br>
+この場では、どこからでも自由にアクセスを許可する <strong>public</strong> を指定してください<br>
+例えば、次のメンバ変数はどこからでもアクセス可能な文字型の変数です<br>
+<br><b>
+public string str;<br>
+<br></b>
+アクセス修飾子は省略できますが、省略すると他のクラスからはアクセスできません<br>
+アクセス制御の詳細は、C#のクラスの基本を網羅してから詳しく説明します<br>
+<br>
+メンバ変数は、クラスのインスタンスごとに独自のメモリ領域を持ちます<br>
+何らかのメンバへアクセスするには、常に次のような形を持ちます<br>
+<br><b>
+object . member<br>
+<br></b>
+object には、そのメンバを持つオブジェクトを指定します<br>
+member は、オブジェクトのアクセスしたいメンバを指定します<br>
+<pre class="prg">class Kitty {
+	public string name;
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.name = "Rena";
+		System.Console.WriteLine(obj.name);
+	}
+}</pre>
+このプログラムは Kitty クラスのインスタンスを生成し<br>
+Kitty クラスのメンバ変数 name に文字列を代入し、それを出力しています<br>
+<br>
+これは、obj オブジェクトが持つ name というプロパティを設定したという概念になります<br>
+このプロパティをどのように使うかは、そのクラスやプログラマに委ねられます<br>
+メンバ変数は、通常は参照する前に初期化する必要があります<br>
+<br>
+しかし、上のプログラムだけでは一体何がクラスのメリットなのか理解できないかもしれません<br>
+たしかに Kitty クラスのオブジェクトを一つしか扱わないなら、クラスの意味はありません<br>
+オブジェクト指向のメリットは、これを再利用するということにあります<br>
+<br>
+例えば、あなたが猫の管理をコンピュータを使って行う場合<br>
+上のように一度 Kitty クラスを定義してしまえば、あなたが何匹猫を飼っても<br>
+ゼロからその猫のためにプログラムを記述する必要はなく<br>
+Kitty のインスタンスを一つ生成すれば、それだけで新しい猫を管理できるのです<br>
+<pre class="prg">class Kitty {
+	public string name;
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty();
+		Kitty yuki = new Kitty();
+		Kitty mimi = new Kitty();
+
+		rena.name = "RENA";
+		yuki.name = "YUKI";
+		mimi.name = "MIMI";
+
+		System.Console.WriteLine(rena.name);
+		System.Console.WriteLine(yuki.name);
+		System.Console.WriteLine(mimi.name);
+	}
+}</pre>
+rena、yuki、mimi の3つの Kitty クラスのインスタンスを生成しています<br>
+メンバはインスタンスごとにメモリの独自の領域に割り当てられているので<br>
+例えば、rena.name と yuki.name はまったく別のメモリの位置を表します<br>
+<br>
+これで、三匹の猫の名前を管理することができます<br>
+Kitty クラスを書きなおして、さらに新しいメンバ変数を追加すれば<br>
+多くの猫に関するプロパティを管理することができるのです<br>
+<br>
+このように、オブジェクトのデータを管理するメンバ変数群を<strong>フィールド</strong>とも呼びます<br>
+この辺の用語はずいぶんと入り組んでいますが、整理してください<br>
+基本的に、オブジェクトのデータとはフィールドのことであり<br>
+フィールドの実体はメンバ変数であるという感覚です<br>
+<br>
+因みに、フィールドには<strong>クラス型の変数を含める</strong>ことも可能です<br>
+その場合 A クラスのメンバ変数に B クラス型変数があるとして<br>
+A クラスのメンバ変数の B のメンバ変数 C にアクセスする時は<br>
+<b>A . B . C</b> というように記述してアクセスすることができます<br>
+<pre class="prg">class B {
+	public string str;
+}
+
+class A {
+	public B objB;
+}
+
+class Test {
+	static void Main() {
+		A objA = new A();
+		objA.objB = new B();
+
+		objA.objB.str = "Kitty on your lap";
+		System.Console.WriteLine(objA.objB.str);
+	}
+}</pre>
+このプログラムは A クラスのフィールドに B クラス型メンバ変数を持ちます<br>
+B クラスは string 型のメンバ変数を持っています<br>
+<br>
+A クラスのオブジェクト objA が持つ B クラスのオブジェクト objB にアクセスするには<br>
+objA . objB というようにし、そこからさらに objA . objB . str とすることで<br>
+objB のメンバにアクセスすることができます<br>
+この入れ子関係は、例え何段階になっても可能になっています<br>
+
+<br><hr>
+<h2>class</h2>
+<b>[attributes] [modifiers] class identifier [:base-list] { class-body }[;]<br>
+<br></b>
+クラスを宣言します<br>
+<br>
+<b>attributes</b> - 属性を指定します<br>
+<b>modifiers</b> - アクセス修飾子を指定します<br>
+<b>identifier</b> - クラスの名前を指定します<br>
+<b>base-list</b> - 基底クラスを指定します<br>
+<b>class-body</b> - クラスの本体を定義します<br>
+<br>
+<h2>new constructor()</h2>
+指定コンストラクタを呼び出しインスタンスを生成します<br>
+<br>
+<b>constructor()</b> - インスタンスを生成するクラスのコンストラクタを指定します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs15.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs17.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

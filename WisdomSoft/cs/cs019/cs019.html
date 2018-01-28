@@ -1,0 +1,127 @@
+<html>
+ <head>
+ <title>静的メンバ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>静的メンバ</h1>
+<hr>
+ <h2>インスタンスの無いメンバ</h2>
+各インスタンスは、それぞれが独自にメンバを保有するものでしたが<br>
+プログラムによっては、特定のクラスのデータを<br>
+<strong>全てのインスタンスで共有</strong>したい場合もあるでしょう<br>
+<br>
+その他にも、固有の値しか持たないメンバ変数を全てのインスタンスに持たせることも<br>
+やはりメモリの消費につながるため、資源の無駄使いと批難されるでしょう<br>
+このような場合は<strong>静的メンバ</strong>を使ってこの問題を解決します<br>
+<br>
+インスタンスを必要としないメンバには <strong>static</strong> 修飾子を指定します<br>
+そう、Main() メソッドに指定していた static キーワードがこれです<br>
+static は public などのアクセス修飾子と同様にクラス修飾子として指定します<br>
+<br>
+静的なメンバはインスタンスの数に関係なく1つしかメモリに存在しません<br>
+static を指定したメンバはインスタンスを持たないため<br>
+インスタンスではなく<strong>型を指定</strong>して静的なメンバにアクセスします<br>
+<pre class="prg">class Kitty {
+	public static string str;
+	public void Write() {
+		System.Console.WriteLine(str);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty();
+		Kitty yuki = new Kitty();
+
+		Kitty.str = "Kitty on your lap";
+
+		rena.Write();
+		yuki.Write();
+	}
+}</pre>
+Kitty クラスの str メンバ変数は静的メンバであり、Write() メソッドはインスタンスメンバです<br>
+生成された二つのインスタンスは自分の Write() メソッドを実行します<br>
+これを実行し、コンソールに出力された結果は次のようになります<br>
+<br><b>
+Kitty on your lap<br>
+Kitty on your lap<br>
+<br></b>
+Write() メソッドは静的なメンバ変数 str を出力します<br>
+この変数は全てのインスタンスで共有されるので、変数 rena と yuki のどちらからアクセスしても<br>
+得られる内容は同じなので、結果として同じ文字列が2行出力されたのです<br>
+<br>
+このように、静的メンバはインスタンスではなく直接クラスに結び付けらます<br>
+当然、静的メソッドもインスタンスメソッドと異なりインスタンスなしで動作します<br>
+ただし、静的メソッドは直接インスタンスメンバにアクセスすることはできなくなります<br>
+例えば、次のプログラムは間違っています<br>
+<pre><b>class Kitty {
+	public string str;
+	public static void Write() {
+		System.Console.WriteLine(str);
+	}
+}</pre></b>
+これは、静的メソッド Write() からインスタンスメンバ str にアクセスしています<br>
+同様にインスタンスメソッドを呼び出すことも当然ですができません<br>
+<br>
+静的メソッドは、インスタンスが必要のない処理に使用します<br>
+例えば数学的な処理を返すメソッドはインスタンスの必要性はありません<br>
+二つの数を受けとって、大きい方を返すメソッドを作る時にインスタンスなど必要ないのです<br>
+<pre class="prg">class Math {
+	public static int Max(int x , int y) {
+		return x &#62;= y ? x : y;
+	}
+}
+
+class Test {
+	static void Main() {
+		System.Console.WriteLine(Math.Max(10 , 20));
+	}
+}</pre>
+Math クラスの Max() メソッドは二つの整数から大きい方を返します<br>
+このメソッドにインスタンスは必要ないので、このメソッドは静的です<br>
+そのため、インスタンスではなく型を指定してアクセスすることができるのです<br>
+
+<br><hr>
+<h2>静的コンストラクタ</h2>
+C# には「静的コンストラクタ」と呼ばれる新しい初期化ブロックが登場した<br>
+これは、C++ プログラマにとっては真新しいものだろう<br>
+この「静的コンストラクタは」 Java で例えると「静的初期化ブロック」と同じ働きをする<br>
+<br>
+静的コンストラクタは、コンストラクタに static 修飾子を付加します<br>
+ただし、静的コンストラクタには<strong>アクセス修飾子はつけられません</strong><br>
+それは、静的コンストラクタはコンストラクタのように明示的に呼ばれるものではないからです<br>
+ついでに言うと、静的コンストラクタには引数を受け取ることもありません<br>
+<br>
+静的コンストラクタは、CLR がクラスをロードした時に実行されます<br>
+これは、静的なメンバ変数を初期化する時などに用いることができます<br>
+<pre class="prg">class Kitty {
+	static Kitty() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	public static void Temp() {}
+}
+
+class Test {
+	static void Main() {
+		Kitty.Temp();
+	}
+}</pre>
+Kitty クラスは静的コンストラクタ Kitty() を持っています<br>
+Main() メソッドが Kitty クラスの静的メソッド Temp() を呼び出そうとすると<br>
+Kitty クラスはロードされ、それと同時に静的コンストラクタが実行されます<br>
+
+
+<br><hr>
+<h2>static</h2>
+静的メンバを宣言する修飾子です<br>
+フィールド、メソッド、プロパティ、演算子、そしてコンストラクタに使えます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs18.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs20.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>
