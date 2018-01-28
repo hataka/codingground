@@ -1,0 +1,62 @@
+<html>
+ <head>
+ <title>CTS 型</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>CTS 型</h1>
+<hr>
+ <h2>構造体とエイリアス</h2>
+実は、私たちは知らないうちに .NET ライブラリの構造体を使用していた<br>
+この構造体は、.NET 開発環境となるあらゆる言語が使用できるようになっている<br>
+<br>
+C# はこれを構造体と意識せずに値型として利用できる仕組みを持っている<br>
+そう、実は int とか char というのは、<strong>CTS が定義している構造体</strong>なのです<br>
+C# は、これらを構造体の<strong>エイリアス</strong>(alies : 別名)として定義しているのです<br>
+その関係は、次のように構成されています<br>
+<br>
+<table border="1" cellspacing="0" width="400px">
+<tr><th>構造体<th>C# エイリアス
+<tr><td>System.Object<td>Object
+<tr><td>System.String<td>string
+<tr><td>System.Char<td>char
+<tr><td>System.SByte<td>sbyte
+<tr><td>System.Byte<td>byte
+<tr><td>System.Int16<td>short
+<tr><td>System.UInt16<td>ushort
+<tr><td>System.Int32<td>int
+<tr><td>System.UInt32<td>uint
+<tr><td>System.Int64<td>long
+<tr><td>System.Int64<td>ulong
+<tr><td>System.Single<td>float
+<tr><td>System.Double<td>double
+<tr><td>System.Boolean<td>bool
+<tr><td>System.Decimal<td>decimal
+</table>
+<br>
+これまでのようにエイリアスを使うか、構造体を使うかは好みの問題です<br>
+この事実がわかれば、プリミティブな値型変数も<strong>ボクシング可能</strong>であり<br>
+.NET テクノロジが強力な型の一貫性を持っていることがわかりますね<br>
+
+<pre class="prg">class Test {
+	static void Main() {
+		System.Int32 i = 10;
+		System.Object obj = i;
+		GetInt32(obj);
+	}
+	static void GetInt32(System.Object obj) {
+		System.Console.WriteLine((System.Int32)obj);
+	}
+}</pre>
+このプログラムでは、エイリアスである int の代わりに System.Int32 を使っています<br>
+これがボクシングされ、GetInt32() メソッドに渡されています<br>
+System.Int32 を int に替えてコンパイルしても意味はまったく同じです<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs32.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs34.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

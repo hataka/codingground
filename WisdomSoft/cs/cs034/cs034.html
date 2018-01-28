@@ -1,0 +1,165 @@
+<html>
+ <head>
+ <title>プロパティ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>プロパティ</h1>
+<hr>
+ <h2>暗黙のアクセッサメソッド</h2>
+オブジェクト指向のフィールドにはアクセスレベルが割り当てられていて<br>
+多くのプログラマはメンバ変数に他のクラスが直接アクセスすることはないようにプログラムします<br>
+<br>
+保護された属性を取得する場合、プログラマはアクセッサメソッドを呼び出します<br>
+画像ファイルのサイズを取得するときに getWidth() というメソッドを呼び出したり<br>
+特定の座標をオブジェクトに指定するのに setPoint() メソッドを呼び出すようにです<br>
+<br>
+なぜ、直接アクセスせずにアクセッサメソッドを通す方法が推奨されるのかというと<br>
+例えば属性値を変更する時、与えられたデータが正常なものかをメソッドで判断し<br>
+正しいものであればセットし、そうでなければ設定を拒否することができます<br>
+<br>
+ところが、プログラマによってはアクセッサメソッドに奇妙な名前をつけることがありますし<br>
+型などにおいても、アクセッサメソッドは一貫性を持ちません<br>
+C# 言語は<strong>プロパティ</strong>と呼ばれる技術でこれを見事にカバーしています<br>
+<br>
+プロパティとは、暗黙のアクセッサメソッドです<br>
+通常のメンバにアクセスするように見せかけ、内部ではメソッドを通します<br>
+クラスを作成するプログラマはこれまでのようにアクセッサメソッドを作成し<br>
+そのクラスを利用するプログラマはアクセッサメソッドを意識せずにメンバにアクセスできます<br>
+<br>
+プロパティの宣言は通常のメンバを宣言する場合とほとんど同じです<br>
+<br><b>
+[attributes] [modifiers] type identifier {accessor-declaration}<br>
+<br></b>
+attributes は属性、modifiers は修飾子<br>
+type はプロパティの型、indentifier はこのプロパティの名前です<br>
+<br>
+accessor-declaration には、プロパティのアクセッサを宣言します<br>
+このアクセッサがプロパティの本体であり、暗黙のアクセッサメソッドとなります<br>
+<br><b>
+set {accessor-body}<br>
+get {accessor-body}<br>
+<br></b>
+set はプロパティへのアクセスがあった時に呼び出されるアクセッサメソッド<br>
+get はプロパティの要求があった時に呼び出されるアクセッサメソッドです<br>
+それぞれ、<strong>set アクセッサ宣言</strong>、<strong>getアクセッサ宣言</strong>と呼びます<br>
+<br>
+アクセッサに対する代入行為があった場合、暗黙的に set アクセッサが呼び出されます<br>
+set アクセッサは、void 型の戻り値でプロパティ型のパラメータを一つ持っているメソッドに等しいです<br>
+代入された暗黙的な値は、常に <strong>value という名前</strong>を持ちます<br>
+<br>
+代入以外の形でプロパティが参照された場合は get アクセッサが呼び出されます<br>
+get アクセッサはプロパティ方の戻りとを持つノンパラメータのメソッドに等しいです<br>
+<pre class="prg">class Kitty {
+	private string strName;
+	public string StrName {
+		get {
+			System.Console.WriteLine("strName を要求");
+			return strName;
+		}
+		set {
+			System.Console.WriteLine(value + "を設定");
+			strName = value;
+		}
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.StrName = "Kitty on your lap";
+		string str = obj.StrName;
+	}
+}</pre>
+このプログラムは、Kitty クラスの strName メソッドにアクセスするために<br>
+アクセッサメソッドとなる StrName プロパティを用意しています<br>
+<br>
+それぞれ、get アクセッサが呼び出された場合も、set アクセッサが呼び出された場合も<br>
+コンソールに文字列を出力するように設計されているので<br>
+このプログラムを実行すれば、プロパティが暗黙的に働いていることを確認できます<br>
+<br>
+このプログラムを C++ や Java 形式のアクセッサメソッドで書けば次のようになるでしょう<br>
+C# のプロパティを使うか、従来のアクセッサメソッドを定義する形にするかは好みの問題でしょう<br>
+しかし、C# を使う以上は直感的に記述できるプロパティを使うべきといえるでしょう<br>
+
+<pre class="prg">class Kitty {
+	private string strName;
+	public string GetStrName() {
+		System.Console.WriteLine("strName を要求");
+		return strName;
+	}
+	public void SetStrName(string value) {
+		System.Console.WriteLine(value + "を設定");
+		strName = value;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.SetStrName("Kitty on your lap");
+		string str = obj.GetStrName();
+	}
+}</pre>
+実際に上のプロパティを使ったプログラムはこれと同じことをやっています<br>
+<br>
+MSIL レベルでは「プロパティ」という概念は存在しません<br>
+プロパティはコンパイル時にアクセッサメソッドに変換されているのです<br>
+<pre class="prg">.method private hidebysig static void  Main() cil managed
+{
+  .entrypoint
+  // Code size       25 (0x19)
+  .maxstack  2
+  .locals (class Kitty V_0,
+           string V_1)
+  IL_0000:  newobj     instance void Kitty::.ctor()
+  IL_0005:  stloc.0
+  IL_0006:  ldloc.0
+  IL_0007:  ldstr      "Kitty on your lap"
+  IL_000c:  callvirt   instance void Kitty::set_StrName(string)
+  IL_0011:  ldloc.0
+  IL_0012:  callvirt   instance string Kitty::get_StrName()
+  IL_0017:  stloc.1
+  IL_0018:  ret
+} // end of method Test::Main</pre>
+これが、先ほどのプロパティを使ったプログラムの Main() メソッドの MSIL です<br>
+set や get アクセッサ宣言は set_プロパティ名()、get_プロパティ名() メソッドﾞに変換されています<br>
+ただし、C# からアクセッサメソッドを明示的に呼び出すことはできません<br>
+（すなわち、get_StrName() を指定することはできない）<br>
+<br>
+因みに、プロパティもメソッド同様に<strong>継承</strong>されます<br>
+プロパティをオーバーライドするということも可能になっています<br>
+ただし、この時はアクセッサレベルではなくプロパティレベルでオーバーライドされるので<br>
+set アクセッサをオーバーライドした場合は、get アクセッサもオーバーライドされます<br>
+<br>
+場合によっては、メンバ変数を変更されたくないということもあるでしょう<br>
+このような場合は、set アクセッサを省略することで読み取り専用プロパティを作れます<br>
+<pre class="prg">class Kitty {
+	private string strName;
+	public string StrName {
+		get {
+			System.Console.WriteLine("strName を要求");
+			return strName;
+		}
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.StrName = "Kitty on your lap";
+		//string str = obj.StrName;	//取得できない
+	}
+}</pre>
+StrName プロパティは get アクセッサしか持たないため<br>
+このプロパティは読み取り専用となります<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs33.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs35.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

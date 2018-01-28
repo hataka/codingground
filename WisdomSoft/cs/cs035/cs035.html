@@ -1,0 +1,165 @@
+<html>
+ <head>
+ <title>配列</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>配列</h1>
+<hr>
+ <h2>配列とインスタンス</h2>
+配列は汎用的なプログラムにおいて欠かせない重要な技術です<br>
+実用プログラムでは、実行時までインスタンスの数を把握できないケースがほとんどで<br>
+実行中に必要となるメモリを監視し、それを制御する必要があります<br>
+これを行うには、配列を作成しこれに各オブジェクトを格納して制御する方法をとります<br>
+<br>
+C# の型は、全て .NET ライブラリが用意する構造体のエイリアスであることを説明しました<br>
+このことから、C# の配列は C 言語のような単純な配列とは異なります<br>
+実際には、C# 言語の配列は System.Array クラスを基底とするインスタンスを生成します<br>
+<br>
+配列を宣言するには、<strong>型の次に []</strong> を指定します<br>
+C++ は変数名の後に [] を指定しましたが、C# は型の後ろであることに注意してください<br>
+これで、<strong>宣言する変数が配列</strong>であるということを指定しす<br>
+<br>
+しかし、この時点で配列は作られていません<br>
+先ほど説明したように、配列とは System.Array クラスのインスタンスなのです<br>
+配列を作成するには、クラス同様に new 演算子を用いてインスタンスを生成します<br>
+例えば、次は x 個の int 型の配列を宣言しています<br>
+<br><b>
+int[] iValue = new int[x];<br>
+<br></b>
+これで、iValue は System.Array を継承する配列のインスタンスとなっています<br>
+x は、配列の長さを整数型で指定します<br>
+配列にアクセスするには要素アクセス式を用いてアクセスします<br>
+<br><b>
+variable[X , ...];<br>
+<br></b>
+X にはアクセスする要素番号（添え字）を指定します<br>
+もし配列が多次元の場合は、カンマ , で区切ってそれぞれの次元配列を指定します<br>
+配列の要素にアクセスする時、CLR は配列が null ではないか、添え字が不正ではないかを調べ<br>
+不正なアクセスの場合は「例外」を発生させて処理を強制的に中断します<br>
+<pre class="prg">class Test {
+	public static void Main() {
+		string[] str = new string[3];
+		str[0] = "Kitty on your lap";
+		str[1] = "Silver Gene";
+		str[2] = "Nekoneko Zoo";
+
+		for (int i = 0 ; i &#60; 3 ; i++)
+			System.Console.WriteLine(str[i]);
+	}
+}</pre>
+このプログラムでは string 型の配列 str を作成しています<br>
+この配列は 3 つの要素を持ち、それぞれに string 型の文字列を格納しています<br>
+<br>
+配列の数は new string[x] で指定しています。ここで指定しているのは配列の数です<br>
+それに対して、要素アクセス式で指定する場合は 0 から数えた要素番号です<br>
+つまり、3つの要素を持つ str は str[0] , str[1] , str[2] の3つの空間を持っているのです<br>
+<br>
+それぞれに格納した文字列を出力する時、このプログラムはループを使っています<br>
+このようにループによってまとまった処理ができるというのも、配列の魅力です<br>
+
+<br><hr>
+<h2>多次元配列</h2>
+上のプログラムは、配列が1つの直列した空間を持つ「1次元配列」でした<br>
+配列は、さらに並列した配列空間である「n次元配列」にすることが可能です<br>
+このように、複数の空間を持つ配列を<strong>多次元配列</strong>と呼びます<br>
+<br>
+一般に多次元配列は「2次元配列」となることが多いです<br>
+もちろんそれ以上の配列も可能ですが、複雑になり多くのメモリ空間を消費します<br>
+<br>
+C# で多次元配列を実現するには<strong>次元指定子にカンマ</strong>をつけます<br>
+次元指定子とは、型の後に記述した [] のことを表します<br>
+次元指定子にカンマがない場合は1次元配列であり、その後1つのカンマにつき1次元増えるのです<br>
+<br>
+<table border="1" cellspacing="0">
+<tr><th>表記<th>次元数<td>最初の要素へのアクセス方法
+<tr><th>int[] value<td>int 型の1次元配列<td>value[0]
+<tr><th>int[,] value<td>int 型の2次元配列<td>value[0 , 0]
+<tr><th>int[,,] value<td>int 型の3次元配列<td>value[0 , 0 , 0]
+</table>
+<br>
+これは従来の言語のような value[][] という多次元配列の指定方法とは違うので注意していください<br>
+value[][] というような指定は C# はで「ジャグ」と呼ばれる特殊な配列です（後記）<br>
+<pre class="prg">class Test {
+	public static void Main() {
+		string[,] str = new string[2 , 3];
+
+		str[0 , 0] = "Rena";
+		str[0 , 1] = "Yuki";
+		str[0 , 2] = "Mimi";
+
+		str[1 , 0] = "Di Gi Charat";
+		str[1 , 1] = "Petit Charat";
+		str[1 , 2] = "Rabi en Rose";
+
+		for (int i = 0 ; i &#60; 2 ; i++)
+			for (int j = 0 ; j &#60; 3 ; j++)
+				System.Console.WriteLine(str[i , j]);
+	}
+}</pre>
+これは、C# による2次元配列の例です<br>
+2次元配列を使えば、2次元的な性質を持つ要素をプログラムで表現できます<br>
+このような多次元構造を持つ情報は、実社会に多く存在しています<br>
+
+<br><hr>
+<h2>配列の初期化</h2>
+配列は、通常 new キーワードを使ってインスタンスを生成し<br>
+生成した配列に対して初期化を行います<br>
+しかし、インスタンスの生成と同時に初期化してしまう方法もあります<br>
+配列生成時に要素が決定している場合、こちらの方が効率的です<br>
+<br>
+配列を生成と同時に初期化するには<strong>配列初期化子</strong>を用います<br>
+配列初期化子は { と } に囲まれ , で区切られます<br>
+例えば、次の文は int 型の配列を配列初期化子で生成しています<br>
+<br><b>
+int[] iValue = { 1 , 2 , 4 , 8 };<br>
+int[] iValule = new int[] { 1 , 2 , 4 , 8 };<br>
+<br></b>
+これらの場合、インスタンスの長さは初期化子で指定した式の数に調整されます<br>
+配列は、インデックス 0 番から昇順に格納されていきます<br>
+つまり、上の配列初期化子は次の文と同じ処理を行っています<br>
+<br><b>
+int[] iValue = new int[4];<br>
+iValue[0] = 1; iValue[1] = 2; iValue[2] = 4; iValue[3] = 8;<br>
+<br></b>
+これを使えば、あらかじめ格納する要素が決定している場合<br>
+何行も初期化のために代入演算を行う手間を省くことができます<br>
+<pre class="prg">class Test {
+	public static void Main() {
+		string[] str = new string[] {
+			"Kitty on your lap",
+			"Silver Gene",
+			"Nekoneko Zoo"
+		};
+
+		for (int i = 0 ; i &#60; 3 ; i++)
+			System.Console.WriteLine(str[i]);
+	}
+}</pre>
+この場合 str は、指定した3つの文字列を生成と同時に格納しています<br>
+<br>
+多次元配列の場合は、{ } を配列と同じレベルでネストします<br>
+もっとも外側の { } は一番左の次元で、もっとも内側の { } は一番右側の次元です<br>
+<pre class="prg">class Test {
+	public static void Main() {
+		string[,] str = {
+			{"Rena" , "Yuki" , "Mimi"} ,
+			{"Di Gi Charat" , "Petit Charat" , "Rabi en Rose"} ,
+		};
+
+		for (int i = 0 ; i &#60; 2 ; i++)
+			for (int j = 0 ; j &#60; 3 ; j++)
+				System.Console.WriteLine(str[i , j]);
+	}
+}</pre>
+この原理がわかれば、どんな多次元配列の初期化も可能です<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs34.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs36.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

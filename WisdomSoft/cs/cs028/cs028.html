@@ -1,0 +1,87 @@
+<html>
+ <head>
+ <title>抽象クラス</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>抽象クラス</h1>
+<hr>
+ <h2>不完全なクラス</h2>
+あるオブジェクトの共通する基底クラスを生成しようとした場合<br>
+基底クラスは必要だが、インスタンス化するほど完成していない場合もあります<br>
+<br>
+このような場合は、不確定要素を宣言のみにし、定義は派生クラスで行う方法があります<br>
+これを行うには、クラスに <strong>abstract</strong> 修飾子を指定します<br>
+これが指定されたクラスは<strong>抽象クラス</strong>となります<br>
+<br>
+抽象クラスはインスタンス化できない不完全なクラスで<br>
+その実体は派生クラスで初めて活かされることになります<br>
+<pre class="prg">abstract class Kitty {
+	public void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class Taruto : Kitty {
+	new public void Write() {
+		System.Console.WriteLine("Magical nyan nyan TARUTO");
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Taruto();
+		obj.Write();
+	}
+}</pre>
+Kitty クラスは抽象クラスなのでインスタンスを生成することはできません<br>
+しかし、Kitty 型の変数は生成できるため派生クラスをキャストすることができます<br>
+上のプログラムのように隠蔽されたメンバにアクセスすることもできます<br>
+このプログラムを実行すると "Kitty on your lap" という文字列が表示されるでしょう<br>
+<br>
+必要に応じて、抽象クラスは<strong>抽象メソッド</strong>を宣言することができます<br>
+抽象メソッドはメソッドの宣言のみを行い、その実体は派生クラスに委ねるものです<br>
+同時に、抽象メソッドは仮想メソッドの性質も持っています（そのため virtual は指定できない）<br>
+<br>
+抽象メソッドを持つ基底クラスを継承した派生クラスは、抽象メソッドを再定義する必要があります<br>
+そのクラスが抽象メソッドを再定義できない場合は、そのクラスもまた抽象クラスにします<br>
+<br>
+抽象メソッドの宣言も abstract 修飾子を指定します<br>
+この場合、メソッドは<strong>本体 { } を定義できません</strong><br>
+<pre class="prg">abstract class Kitty {
+	public abstract void Write();
+}
+
+class Taruto : Kitty {
+	public override void Write() {
+		System.Console.WriteLine("Magical nyan nyan TARUTO");
+	}
+}
+
+class Test {
+	static void Main() {
+		Taruto obj = new Taruto();
+		obj.Write();
+	}
+}</pre>
+Kitty クラスの抽象メソッド Write() は実装を持ちません<br>
+これは仮想メソッドを発展させたもので、その実体は常に派生クラスにあります<br>
+抽象メソッドは抽象クラスにしか宣言することができません<br>
+<br>
+抽象クラスの抽象メソッドを宣言することで、この派生クラスは必ず抽象メソッドをオーバーライドし<br>
+独自の再定義をしなければならないという約束が発生します<br>
+抽象メソッドを持つ派生クラスは、そのメソッドの実体を保証します<br>
+
+<br><hr>
+<h2>abstract</h2>
+クラス、メソッド、プロパティに指定できる修飾子です<br>
+抽象クラス、抽象メソッド、抽象プロパティを宣言します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs27.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs29.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

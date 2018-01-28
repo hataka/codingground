@@ -1,0 +1,202 @@
+<html>
+ <head>
+ <title>継承</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>継承</h1>
+<hr>
+ <h2>クラスを拡張する</h2>
+オブジェクト指向プログラムの重要な機能の一つである「継承」は<br>
+プログラムの拡張や移植といった保守を容易にしてくれる極めて高度な技術です<br>
+今回は、この継承の基本を詳しく解説します<br>
+<br>
+継承とは、あるクラスを基底とした新しいクラスを生成することです<br>
+新たに生成されたクラスは、基底のクラスの能力をデフォルトで持っているのです<br>
+class キーワードの書式を再び思い出してください<br>
+<br><b>
+[attributes] [modifiers] class identifier [:base-list] { class-body }[;]<br>
+<br></b>
+このうちの base-list に拡張する基底のクラス名を指定します<br>
+すると、このクラスは指定した基底クラスの能力を自動的に継承するようになります<br>
+<br>
+このとき、基底となるクラスを<strong>基底クラス</strong>と呼び<br>
+基底クラスを継承した新しいクラスを<strong>派生クラス</strong>と呼びます<br>
+派生クラスは暗黙的に<strong>基底クラスのインスタンスを持つ</strong>と考えられ<br>
+派生クラスのインスタンスは暗黙的に基底クラスのメンバにアクセスすることができるのです<br>
+<br>
+これは、何らかの共通点を持つ異なる物質（オブジェクト）を表す時に使用できます<br>
+RPG ゲームを作る時、「戦士」や「魔法使い」というような異なるジョブ（職業）を設定する場合でも<br>
+お互いに共通する基底クラスを生成すれば、後はそれを拡張するだけで<br>
+作業量を大幅に削減して、多くのジョブクラスを生成することができるのです<br>
+この場合は、各ジョブ特有のパラメータや動作は派生クラスで新たに設定することになるでしょう<br>
+<pre class="prg">class Kitty {
+	public string name;
+	public void WriteName() {
+		System.Console.WriteLine(name);
+	}
+}
+
+class TokyoMM : Kitty {
+	public string ability;
+	public void Attack() {
+		WriteName();
+		System.Console.WriteLine(ability);
+	}
+	static void Main() {
+		TokyoMM ichigo = new TokyoMM();
+		ichigo.name = "いちご";
+		ichigo.ability = "リボーン・ストロベリー・チェーック!!";
+		ichigo.Attack();
+	}
+}</pre>
+このプログラムのTokyoMM クラスは Kitty クラスを基底クラスとした派生クラスです<br>
+Main() メソッドでは TokyoMM クラスのインスタンスを生成し<br>
+オブジェクト ichigo に各値を設定して Attack() メソッドを呼び出します<br>
+<br>
+ここで注目するべき点があります<br>
+TokyoMM クラスには name メンバ変数も WriteName() メソッドも定義していません<br>
+しかし、TokyoMM クラスの Attack() メソッド内で WriteName() を呼び出していますし<br>
+Main() メソッドで name メンバ変数に文字列を代入しようとしています<br>
+<br>
+これらのメンバは基底クラスである Kitty クラスのメンバであることがわかります<br>
+そして、TokyoMM クラスは Kitty の派生クラスなので<br>
+デフォルトの状態でこれらの機能、name メンバ変数や WriteName() メソッドを持つのです<br>
+このプログラムを実行した結果、次の文字列がコンソールに表示されます<br>
+<br><b>
+いちご<br>
+リボーン・ストロベリー・チェーック!!<br>
+<br></b>
+プログラムがこちらの意図どうりに動作したことが証明されました<br>
+この結果からも「基底クラスを拡張する」という継承の具体的な概念を理解していただけたでしょう<br>
+<br>
+C++ 言語では、「多重継承」と呼ばれる複雑なクラス階層を持つことがありました<br>
+多重継承は、複数の基底クラスを持つ派生クラスを生成することです<br>
+C# で記述するならば、次のような形になります<br>
+<br><b>
+class A {}<br>
+class B {}<br>
+class C : A , B {}<br>
+<br></b>
+これは、派生クラス C が A と B クラスを継承していることを表しますが<br>
+C# では<strong>多重継承はできない</strong>ため、コンパイラはエラーを出します<br>
+なぜ多重継承をできないかというと、多重継承は時に複雑な重複を生み出してしまいます<br>
+<br><b>
+class A {}<br>
+class B : A {}<br>
+class C : A {}<br>
+class D : B , C<br>
+<br></b>
+この多重継承には大きな問題があります<br>
+クラス D は B と C クラスを継承していますが、B と C クラスは A クラスを継承しています<br>
+そのため、D クラスは B クラスと C クラスが持つ二つの A クラスのインスタンスを持ってしまうのです<br>
+<br>
+C++ 言語は A クラスを仮想化することでこの重複による曖昧さを解決しましたが<br>
+Java 言語が多重継承を禁止し、より簡素な「インターフェイス」と呼ばれる方法を選択し<br>
+これによって複雑な多重継承を言語に実装しなくても<br>
+十分にオブジェクト指向プログラムができることを証明しています<br>
+<br>
+C# のこの原理に基いて、多重継承を禁止しています<br>
+インターフェイスの技術については、後ほど詳しく紹介することになるでしょう<br>
+
+<br><hr>
+<h2>派生クラスの名前の衝突</h2>
+継承を行うと、ある問題が発生します<br>
+派生クラスのメンバが、基底クラスのメンバ名と衝突した場合はどうなるのでしょうか<br>
+<br>
+オブジェクト指向の思想上、基底クラスはカプセル化され<br>
+継承した派生クラスでは基底クラスのソースを直接見なくてもプログラムできる必要があり<br>
+名前の衝突をプログラマが気にすることなくプログラムできなければなりません<br>
+<br>
+そこで、派生クラスで基底クラスと同一のメンバ名が宣言された場合<br>
+派生クラスからは基底クラスと同じメンバを「隠蔽」することになります<br>
+<pre class="prg">class Kitty {
+	public string str = "Kitty on your lap";
+}
+
+class TokyoMM : Kitty {
+	public string str = "Tokyo mew mew";
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+このプログラムを見ると Kitty クラスを継承した TokyoMM クラスのメンバで<br>
+str メンバ変数が基底クラスの str メンバ変数と衝突しています<br>
+これを実行した結果、やはり TokyoMM の str メンバ変数にアクセスされます<br>
+この結果から、Kitty クラスの str メンバ変数が隠蔽されたことを確認できます<br>
+<br>
+しかし、C# は<strong>隠蔽にも非常にうるさい</strong>プログラム言語です<br>
+プログラマが意図せずに隠蔽してしまったことによるバグを避けるために<br>
+派生クラスが基底クラスのメンバを隠蔽するには <strong>new 修飾子</strong> を指定します<br>
+そうしなければ、コンパイル時「警告」を発生させるようになっています<br>
+
+<pre class="prg">class Kitty {
+	public string str = "Kitty on your lap";
+}
+
+class TokyoMM : Kitty {
+	new public string str = "Tokyo mew mew";
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+TokyoMM クラスの str メンバ変数には new 修飾子が指定されています<br>
+これによって、コンパイラはプログラマが明示的にメンバを隠蔽していることを知り<br>
+メンバが隠蔽されているという警告を発生させなくなります<br>
+<br>
+同様の概念でメソッドを隠蔽することが可能です<br>
+ただし、これはオブジェクト指向のポリモーフィズムに深い関わりがあります<br>
+メソッドの隠蔽については「オーバーライド」を参照してください<br>
+<br><hr>
+<h2>基底クラスの参照</h2>
+インスタンスメソッドが this ポインタとしてインスタンスへの参照を持つのと同様に<br>
+派生クラスは基底クラスへのインスタンス <strong>base</strong> ポインタを持っています<br>
+派生クラスで基底クラスのメンバを隠蔽した場合、このポインタを使って<br>
+派生クラスのメソッドから基底クラスのメンバにアクセスすることができるようになります<br>
+<br><b>
+base . member<br>
+<br></b>
+base は常にそのクラスの基底クラスの参照を格納しています<br>
+基底クラスの隠蔽したメンバ変数やメソッドには、base を介してアクセスします<br>
+
+<pre class="prg">class Kitty {
+	public string str = "Kitty on your lap";
+}
+
+class TokyoMM : Kitty {
+	new public string str = "Tokyo mew mew";
+	public void Write() {
+		System.Console.WriteLine(base.str);
+		System.Console.WriteLine(str);
+	}
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+		obj.Write();
+	}
+}</pre>
+このプログラムを実行した結果、次の文字列が表示されました<br>
+<br><b>
+Kitty on your lap<br>
+Tokyo mew mew<br>
+<br></b>
+この結果から、base.str が基底クラスの str メンバ変数にアクセスできていることが確認できます<br>
+
+<br><hr>
+<h2>new</h2>
+new 修飾子は修飾したメンバが基底クラスのメンバを隠蔽していることを明示します<br>
+基底クラスのメンバを隠蔽し、かつ省略した場合はコンパイル警告が発生します<br>
+<br>
+<h2>base</h2>
+基底クラスのインスタンスへの参照です<br>
+派生クラスのインスタンスメンバで使用することができます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs23.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs25.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

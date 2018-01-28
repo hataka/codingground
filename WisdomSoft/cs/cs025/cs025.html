@@ -1,0 +1,111 @@
+<html>
+ <head>
+ <title>継承と初期化</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>継承と初期化</h1>
+<hr>
+ <h2>コンストラクタ初期化子</h2>
+派生クラスは、どのように基底クラスのインスタンスを生成しているのでしょうか？<br>
+少なくとも、前回の内容からも基底クラスのインスタンス化は暗黙的に行われているはずです<br>
+<br>
+実は、基底クラスのインスタンスは、派生クラスのインスタンスが生成される前に作られます<br>
+派生クラスのコンストラクタが呼び出されると、コンストラクタはステートメントを実行する前に<br>
+まず基底クラスのコンストラクタを呼び出しインスタンス化します<br>
+このとき呼び出すコンストラクタは、常にデフォルトコンストラクタです<br>
+<pre class="prg">class Kitty {
+	public Kitty() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class TokyoMM : Kitty {
+	public TokyoMM() {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+	}
+}</pre>
+TokyoMM は Kitty クラスの派生クラスです<br>
+TokyoMM() コンストラクタを実行してインスタンス化しようとすると<br>
+先に Kitty() コンストラクタを実行して、その後に TokyoMM() コンストラクタが実行されます<br>
+<br>
+この関係は、クラスが何段階に継承されても同じで<br>
+常にもっとも上位の基底クラスのコンストラクタから実行され派生順に実行されます<br>
+<br>
+しかし、暗黙のうちに実行されるコンストラクタは常にデフォルトコンストラクタです<br>
+派生クラスから明示的にコンストラクタに引数を渡したい場合、これでは実現できません<br>
+そこで <strong>コンストラクタ初期化子</strong> を使用します<br>
+<br><b>
+constructor() : base(...) {}<br>
+<br></b>
+constructor() は派生クラスのコンストラクタ宣言子です<br>
+base() は基底クラスの呼び出すコンストラクタを表しています<br>
+これによって、特定のシグネチャの基底コンストラクタを実行することができます<br>
+<pre class="prg">class Kitty {
+	public Kitty() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	public Kitty(string str) {
+		System.Console.WriteLine(str);
+	}
+}
+
+class TokyoMM : Kitty {
+	public TokyoMM(string str) : base(str) {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+	static void Main() {
+		TokyoMM obj = new TokyoMM("Di Gi Charat");
+	}
+}</pre>
+TokyoMM() コンストラクタは base() 初期化子を使って<br>
+コンストラクタ実行前に Kitty(string) を明示的に呼び出します<br>
+このように、コンストラクタ初期化子にはコンストラクタの仮引数値をそのまま渡せます<br>
+<br>
+この結果、コンソールは文字列 Di Gi Charat と Tokyo mew mew を出力するでしょう<br>
+このことから、Kitty(string) が実行されたことを証明できます<br>
+<br>
+また、コンストラクタ初期化子は this() というものもあります<br>
+これは、クラス内の別のコンストラクタを明示的に呼び出します<br>
+<br><b>
+constructor() : this(...) {}<br>
+<br></b>
+this で指定した引数の型に合うシグネチャのコンストラクタが呼び出されます<br>
+全てのコンストラクタに共通の処理を行いたい場合に非常に便利です<br>
+<pre class="prg">class Kitty {
+	public Kitty() : this("Kitty on your lap") {
+		System.Console.WriteLine("End of default constructor");
+	}
+	public Kitty(string str) {
+		System.Console.WriteLine(str);
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+	}
+}</pre>
+Kitty クラスのデフォルトコンストラクタ Kitty() を呼び出すと<br>
+このコンストラクタは Kitty(string) にデフォルトの文字列として "Kitty on your lap" を渡します<br>
+Kitty(string) 型のコンストラクタの処理が終了すると、制御が呼び出し元に復帰し<br>
+さらに Kitty() のステートメントが実行されます。次のような結果になりました<br>
+<br><b>
+Kitty on your lap<br>
+End of default constructor<br>
+<br></b>
+最初にデフォルトコンストラクタが呼び出され、"Kitty on your lap" という文字列で<br>
+Kitty(string) コンストラクタを呼び出していることがわかりますね<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs24.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs26.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

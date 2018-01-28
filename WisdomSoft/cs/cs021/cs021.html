@@ -1,0 +1,92 @@
+<html>
+ <head>
+ <title>オーバーロード</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>オーバーロード</h1>
+<hr>
+ <h2>同名のメソッド</h2>
+メソッドやコンストラクタといったものは<strong>シグネチャ</strong>で個別に識別されます<br>
+シグネチャとはメソッドの識別子、仮パラメータ、修飾子によって構成され<br>
+シグネチャが異なるメソッドは<strong>同名でも異なるメソッドである</strong>と判断されます<br>
+<br>
+これを利用することで、異なる引数を受け取る同名のメソッドを作れます<br>
+これはオブジェクト指向の多様性の一面で<strong>オーバーロード</strong>と呼びます<br>
+例えば、次のメソッドはそれぞれまったく別のメソッドとコンパイラは判断するでしょう<br>
+<br><b>
+void Max(int x , int y) {}<br>
+void Max(ref int x , ref int y)<br>
+void Max(float x , float y) {}<br>
+<br></b>
+これらのメソッドは名前は同じですが、シグネチャが異なっています<br>
+この恩恵は、高い保守性を必要とする膨大なシステムになるほど受けるでしょう<br>
+C言語では関数を拡張して引数をふやした場合は名前を変更する必要がありましたが<br>
+オブジェクト指向ではシグネチャさえ異なっていれば名前は衝突してもかまわないのです<br>
+<pre class="prg">class Test {
+	static void Main() {
+		int x = 0;
+		Kitty("Magical nyan nyan");
+		Kitty(ref x);
+		Kitty(x);
+		Kitty();
+	}
+	static void Kitty(string str) {
+		System.Console.WriteLine(str);
+	}
+	static void Kitty(ref int x) {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	static void Kitty(int x) {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+	static void Kitty() {
+		System.Console.WriteLine("Di Gi Charat");
+	}
+}</pre>
+このプログラムで宣言されている Kitty() メソッドは全て異なるものです<br>
+どの Kitty() メソッドが呼び出されるかは、呼び出し側のパラメータ型で決定します<br>
+次のような結果がコンソールに出力されるでしょう<br>
+<br><b>
+Magical nyan nyan<br>
+Kitty on your lap<br>
+Tokyo mew mew<br>
+Di Gi Charat<br>
+<br></b>
+例えば、Main() メソッドで呼び出した Kitty(ref x) は<br>
+Kitty(ref int x) メソッドの型に一致するのでこのメソッドが呼び出されます<br>
+メソッドをオーバーロードすることによって、同名のメソッドに異なる意味を与えられます<br>
+<br>
+もっとも、オーバーロードすることによってまったく異なるメソッドとして動作するといえ<br>
+一般的には同名のメソッドは論理的に単一の処理のために動作するべきです<br>
+<br>
+オーバーロードの代表的な例は WriteLine() メソッドでしょう<br>
+このメソッドは、数値、浮動小数、文字列などのあらゆる型を受け取ることができました<br>
+これは、WriteLine() メソッドがオーバーロードされているためです<br>
+同様にコンストラクタをオーバーロードさせることも可能です<br>
+<pre class="prg">class Test {
+	public Test() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+	public Test(string str) {
+		System.Console.WriteLine(str);
+	}
+
+	static void Main() {
+		Test obj = new Test();
+		obj = new Test("Tokyo mew mew");
+	}
+}</pre>
+Test クラスにはオーバーロードされた二つのコンストラクタがあります<br>
+パラメータを何もしていしない Test() と文字列を指定する Test(string) です<br>
+メソッド同様に、呼び出された型で実行されるコンストラクタが決定します<br>
+<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs20.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs22.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

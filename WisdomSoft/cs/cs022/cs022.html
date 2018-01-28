@@ -1,0 +1,86 @@
+<html>
+ <head>
+ <title>this キーワード</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>this キーワード</h1>
+<hr>
+ <h2>暗黙的なインスタンス</h2>
+インスタンスメソッドやコンストラクタは、実行時にインスタンスが必要です<br>
+このインスタンスにメソッドやコンストラクタ内でアクセスしたい場合、どうするのでしょうか？<br>
+<br>
+インスタンスのメンバにアクセスする場合<br>
+インスタンスメソッド内ではインスタンスを省略してメンバ名だけでアクセスできましたが<br>
+実は、これは暗黙的にインスタンスを参照しているのです<br>
+<br>
+インスタンスメソッドは、暗黙的にインスタンスの参照 <strong>this</strong> ポインタを持ちます<br>
+インスタンスメソッドが実行時に持っているインスタンスを <strong>カレントインスタンス</strong> と呼び<br>
+this ポインタはこのカレントインスタンスを表します<br>
+そのため、静的メソッドは this ポインタを持っていません<br>
+
+<pre class="prg">class Kitty {
+	public string str;
+	public void Write() {
+		str = "Kitty on your lap";
+		System.Console.WriteLine(this.str);
+	}
+}
+		
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.Write();
+	}
+}</pre>
+Kitty クラスの Write() メソッドはカレントインスタンスへの参照 this を持ちます<br>
+str メンバ変数にアクセスする時、単純に str としてもアクセスすることができますが<br>
+これは this.str の省略であるということがこのプログラムを実行するとわかるでしょう<br>
+<br>
+this ポインタを使用することで、メソッドの変数とメンバ変数の問題を解決できます<br>
+<strong>メンバ変数とメソッド内の変数名が衝突</strong>することがあると思いますが<br>
+この場合は、コンパイルエラーになることはありません<br>
+
+<pre><b>class A {
+	public int x;
+	public void method(int x) {
+		x = 10;
+	}
+}
+</pre></b>
+
+メソッドの中でメンバ変数と名前が衝突している変数にアクセスした場合<br>
+メソッドの中で定義された変数（ローカル変数）が優先となります<br>
+上の例の場合では、method() メソッドは 仮パラメータ x にアクセスしています<br>
+そこで、メンバ変数には this を使って明示的にアクセスすることができるようになります<br>
+<pre class="prg">class Kitty {
+	public string name;
+	public Kitty(string name) {
+		this.name = name;
+	}
+}
+		
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("RENA");
+		System.Console.WriteLine(obj.name);
+	}
+}</pre>
+Kitty クラスのコンストラクタ Kitty() は、仮引数で name を受け取ります<br>
+name 変数は Kitty.name メンバ変数と名前が衝突しています<br>
+そのため、メンバ変数にアクセスする時は this ポインタを使って明示的にアクセスします<br>
+
+<br><hr>
+<h2>this</h2>
+カレントインスタンスへの参照です<br>
+インスタンスメソッド、コンストラクタ、インスタンスアクセッサで使えます<br>
+ただし、静的メンバは this ポインタを保有しません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs21.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs23.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

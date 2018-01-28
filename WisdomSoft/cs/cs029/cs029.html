@@ -1,0 +1,88 @@
+<html>
+ <head>
+ <title>継承禁止</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>継承禁止</h1>
+<hr>
+ <h2>シールドクラス</h2>
+何らかの要因で、これ以上派生する必要のないクラスを生成した場合<br>
+不用意なプログラムがこのクラスを継承できないようにする方法があります<br>
+<br>
+継承を禁止したクラスを <strong>シール付きクラス</strong>または<strong>シールドクラス</strong>と呼び<br>
+このクラスを基底クラスとした場合、コンパイルエラーを出すようにします<br>
+シールドクラスの宣言には <strong>sealed</strong> 修飾子をクラスに指定します<br>
+<pre class="prg">sealed class Kitty {
+	public void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+//class Taruto : Kitty {}	//エラー、継承できない
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty();
+		obj.Write();
+	}
+}</pre>
+シールドクラス Kitty を他のクラスに継承させることはできません<br>
+シールが意味するのはそれだけで、他にとくに影響は現れません<br>
+<br>
+sealed 修飾子は abstract と同時に宣言することはできないので注意してください<br>
+abstract は何らかのクラスに継承されることが前提であるため<br>
+sealed とはまったく正反対の性質なので同時には宣言できないのです<br>
+<br>
+シールドクラスは、宣言することによってクラスが最適化されます<br>
+これによって派生クラスを持たないことが保証されるので<br>
+仮想メソッドは非仮想メソッドに最適化されるなどのメリットがあります<br>
+
+<br><hr>
+<h2>シールドメソッド</h2>
+クラスの継承を防ぐ方法と同様に、メソッドのオーバーライドを拒否することもできます<br>
+仮想メソッドのオーバーライドはクラス階層が何段続いても可能でしたが<br>
+特定のオーバーライド以降、メソッドをオーバーライドしてほしくない時に指定します<br>
+<br>
+シールドメソッドの宣言は、オーバーライドの宣言と同時でなければなりません<br>
+シールドメソッドの宣言は sealed 修飾子をメソッドに指定します<br>
+<pre class="prg">class Kitty {
+	public virtual void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class Taruto : Kitty {
+	public sealed override void Write() {
+		System.Console.WriteLine("Magical nyan nyan TARUTO");
+	}
+}
+
+class TokyoMM : Taruto {
+	//public override void Write() {}//エラー、オーバーライドできない
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Taruto();
+		obj.Write();
+	}
+}</pre>
+Taruto クラスの Write() は基底クラスの Write() メソッドをオーバーライドしています<br>
+と同時に、sealed 修飾子でこれ以上オーバーライドできないようにしています<br>
+このクラスの派生クラスは Write() メソッドをオーバーライドすることはできません<br>
+
+<br><hr>
+<h2>sealed</h2>
+シールドを宣言します<br>
+これ以上の派生、オーバーライドを防ぎます<br>
+abstract 修飾子と同時に使用することはできません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs28.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs30.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

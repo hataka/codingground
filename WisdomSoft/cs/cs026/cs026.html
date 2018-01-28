@@ -1,0 +1,181 @@
+<html>
+ <head>
+ <title>オーバーライド</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>オーバーライド</h1>
+<hr>
+ <h2>ポリモーフィズムと実行時型</h2>
+同一クラス内で同名の異なるシグネチャを持つメソッドを定義することができました<br>
+このオーバーロードに対し、派生クラスで基底クラスと同じシグネチャを持つメソッドを定義できます<br>
+こうすることで、基底クラスのメソッドを派生クラスから隠蔽することができるのです<br>
+<pre class="prg">class Kitty {
+	public void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class TokyoMM : Kitty {
+	new public void Write() {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+		obj.Write();
+	}
+}</pre>
+TokyoMM クラスは Kitty クラスを継承し、Write() メソッドを隠蔽しています<br>
+Main() メソッドで TokyoMM クラスのインスタンスを生成し Write() を呼び出しています<br>
+TokyoMM のインスタンスはそのクラスの Write() を呼び出すため "Tokyo mew mew" が表示されます<br>
+<br>
+このメソッドの隠蔽は、以前簡単に説明したメンバ変数の隠蔽と同じ考えです<br>
+呼び出すメソッドは、インスタンスの型でコンパイル時に決定されるのです<br>
+<br>
+ところが、実は<strong>参照型のキャスト</strong>が行われると話は複雑になります<br>
+以前説明したように、派生クラスは<strong>基底クラスのインスタンスを持つ</strong>ため<br>
+派生クラスのインスタンスは<strong>基底クラス型に暗黙的にキャストできます</strong><br>
+派生クラスは基底クラスのメンバを持っていることを保証しているため、問題はありません<br>
+<br>
+基底クラスにキャストされたオブジェクトは、派生クラスで新たに追加した機能を隠蔽します<br>
+これによって機能は削減されますが、基底クラスだけの共通処理を行うメソッドなどに<br>
+アップキャストして渡すことで派生クラスを共通した型で扱うことができるようになります<br>
+<br>
+因みに、基底クラス型オブジェクトを派生クラス型にキャストする場合は明示する必要があります<br>
+これは、基底クラス型のインスタンスは派生クラスのインスタンスを持つ保証がないためです<br>
+<br>
+では、次のようなプログラムはどのように動くのでしょうか？<br>
+<pre class="prg">abstract class Kitty {
+	public void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class TokyoMM : Kitty {
+	new public void Write() {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+	static void Main() {
+		Kitty obj = new TokyoMM();
+		obj.Write();
+	}
+}</pre>
+先ほどとは違い、obj オブジェクトは Kitty 型です<br>
+しかし、その実体は TokyoMM 型のインスタンスをキャストしたものです<br>
+さて、実行されるメソッドはインスタンスの型か参照型かどちらでしょうか<br>
+正解は、コンパイラは静的に型を判断するため "Kitty on your lap" が出力されます<br>
+この結果から、Kitty クラスのメソッドが実行されたことがわかります<br>
+<br>
+これは、オブジェクトが実装する固有のメソッドが実行されたためです<br>
+このような現象を <strong>アーリーバインディング</strong> と呼びます<br>
+<br>
+しかしこの方法は、コンパイル時に型が判定される静的な方法です<br>
+オブジェクトが持つ固有の実装ではなく、インスタンスが持つ実装を動的に選択するには<br>
+実行時に動的に呼び出すメソッドを判断する必要があります<br>
+このような方法を <strong>レイトバインディング</strong> と呼びます<br>
+<br>
+アップキャストされたオブジェクトの正しい実体を呼び出すには<br>
+基底クラスのメソッドを<strong>仮想化</strong>させます<br>
+メソッドを仮想化させるには <strong>virtual</strong> 修飾子を指定します<br>
+仮想メソッドは、その実体は実行時までわからないことをコンパイラに通知します<br>
+<br>
+基底クラスから継承した仮想メソッドを実体化するには<br>
+派生クラスのメソッドの宣言で <strong>override</strong> 修飾子を指定します<br>
+override は static や virtual と一緒に宣言することはできません<br>
+<br>
+このように、実行時型でメソッドを呼び出す方法を<strong>オーバーライド</strong>とよび<br>
+仮想メソッドを実体化したメソッドを<strong>オーバーライドメソッド</strong>と呼びます<br>
+<pre class="prg">class Kitty {
+	public virtual void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class TokyoMM : Kitty {
+	public override void Write() {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+	static void Main() {
+		Kitty obj;
+
+		obj = new Kitty();
+		obj.Write();
+
+		obj = new TokyoMM();
+		obj.Write();
+	}
+}</pre>
+このプログラムを実行すると、次のような結果になります<br>
+<br><b>
+Kitty on your lap<br>
+Tokyo mew mew<br>
+<br></b>
+最初の Kitty クラスは基底クラスでありどのクラスも継承していないので<br>
+Write() メソッドの実体は Kitty クラスのメソッドであるということはすぐにわかります<br>
+そのため、最初の obj.Write() は "Kitty on your lap" を出力します<br>
+<br>
+問題は、この次の Kitty 型にキャストされた TokyoMM 型のオブジェクトです<br>
+インスタンスは TokyoMM 型であり、Write() メソッドはオーバーライドされています<br>
+obj.Write() は仮想メソッドの実体を実行時に選択して適切なメソッドを呼び出します<br>
+これによって、2回目の obj.Write() が "Tokyo mew mew" を出力したのです<br>
+オーバーライドは隠蔽と異なりプログラムに高度な多様性を生み出します<br>
+<br>
+派生クラスで仮想メソッドと同一のシグネチャを持つメソッドが宣言された場合<br>
+基底クラスの仮想メソッドは隠蔽されてしまいます<br>
+<pre class="prg">class A {
+	public virtual void M() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class B : A {
+	public override void M() {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+}
+
+class C : B {
+	new public virtual void M() {
+		System.Console.WriteLine("Chobits");
+	}
+}
+
+class D : C {
+	public override void M() {
+		System.Console.WriteLine("Di Gi Charat");
+	}
+	static void Main() {
+		C objC = new D();
+		A objA = new D();
+
+		objC.M();
+		objA.M();
+	}
+}</pre>
+このプログラムを実行すると、次のようになりました<br>
+<br><b>
+Di Gi Charat<br>
+Tokyo mew mew<br>
+<br></b>
+この結果を見れば、C クラスで A クラスの仮想メソッド M() が隠蔽されていることがわかるでしょう<br>
+隠蔽とオーバーライドは曖昧になることはありません<br>
+
+<br><hr>
+<h2>virtual</h2>
+仮想メソッドを宣言し、このメソッドの実装は<br>
+実行時までわからないことをコンパイラに通知します<br>
+static、abstract、override 修飾子と同時に使用することはできません<br>
+<br>
+<h2>override</h2>
+仮想メソッドをオーバーライドします<br>
+非仮想メソッド、及び静的メソッドはオーバーライドできません<br>
+new、static、virtual、abstract 修飾子と同時に使用することはできません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs25.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs27.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

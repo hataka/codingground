@@ -1,0 +1,196 @@
+<html>
+ <head>
+ <title>構造体</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>構造体</h1>
+<hr>
+ <h2>値型のクラス</h2>
+C# 言語（より正確には .NET の共通言語仕様)は、「構造体」という概念を持ちます<br>
+C/C++ 言語を習得している方は、すでに構造体は馴染み深いものでしょう<br>
+C++ 言語の構造体はデフォルトのアクセスレベルが異なるという点以外で「クラス」と同義でした<br>
+<br>
+しかし、C# 言語において構造体はクラスと大きく異なる部分があります<br>
+.NET アプリケーションのクラスのインスタンスは必ずヒープに割り当てられました<br>
+構造体は、これに対してスタックに配置される、すなわち値型という形をとります<br>
+<br>
+構造体を用いれば、クラスとは異なりオブジェクトを配置するオーバーヘッドはなくなります<br>
+値型であるということ以外は、基本的にクラスと同じ扱いをすることが可能です<br>
+構造体の宣言には <strong>struct</strong> キーワードと次の構文を用います<br>
+<br><b>
+[attributes] [modifiers] struct identifier [:interfaces] body [;]<br>
+<br></b>
+クラスの宣言時の class キーワードが struct キーワードに変化しただけです<br>
+構造体型の変数は参照型ではないため、実体はスタックにあることを忘れないでください<br>
+<pre class="prg">struct Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("Kitty on your lap");
+		getKitty(obj);
+		System.Console.WriteLine(obj.str);
+	}
+
+	public static void GetKitty(Kitty obj) {
+		obj.str = "Tokyo mew mew";
+	}
+}</pre>
+このプログラムは、構造体とクラスの違いを知ることができます<br>
+Kitty 構造体はメンバ変数 str フィールドを持っています<br>
+Kitty 構造体の変数 obj を生成した後、getKitty() メソッドにこの変数を渡しています<br>
+ただし GetKitty(obj) で渡しているのは、参照ではなく obj のコピーなのです<br>
+<br>
+そのため、GetKitty() メソッド内で obj を変更しても Main() の obj 変数に変化はありません<br>
+また、構造体は値型なので非初期化状態でも null にはなりません<br>
+構造体の場合は、フィールドのスタック領域が 0 で埋められます<br>
+
+<pre class="prg">struct Kitty {
+	public int i;
+}
+
+class Test {
+	static Kitty obj;
+	static void Main() {
+		System.Console.WriteLine(obj.i);
+	}
+}</pre>
+Main() メソッドで呼び出された obj は初期化されていないので<br>
+構造体のフィールドは 0 で埋められた状態です<br>
+通常、初期化されていない可能性のあるコンパイルはエラー、または警告が出ます<br>
+<br>
+しつこいようですが、注意しなければならないのは「構造体は値型」ということです<br>
+クラス型変数の場合、代入は特に意識することなく行うことができました<br>
+参照型の代入は、参照先アドレスのコピーでありインスタンスをコピーすることではありません<br>
+<br>
+しかし、値型変数を代入した場合は<strong>スタック領域を丸ごとコピー</strong>してしまいます<br>
+もし巨大なフィールドを持つ構造体を代入コピーしたり<br>
+またはメソッドに値渡しする場合、膨大なスタック領域を使用してしまうかもしれません<br>
+C 言語経験者はご存知だと思いますが、これは無駄なオーバーヘッドを生み出します<br>
+<pre class="prg">struct Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj1 = new Kitty("Kitty on your lap");
+		Kitty obj2 = obj1;
+		obj2.str = "Silver gene";
+		System.Console.WriteLine(obj1.str);
+		System.Console.WriteLine(obj2.str);
+	}
+}</pre>
+このプログラムは、構造体の代入がスタックのコピーであることを表します<br>
+obj1 と obj2 に物理的な関係はないということを知ることができるでしょう<br>
+struct Kitty という文を class Kitty と変えるだけで、その違いを見ることができるはずだ<br>
+<br>
+では、構造体をメソッドに渡す時はどうすればよいでしょう<br>
+値渡しをすれば無駄なオーバーヘッドが生まれる（コピーを目的としない場合）<br>
+このとき、C 言語ではポインタを、C++ では参照を関数に渡すという方法を用いました<br>
+C# も同様に、値の参照をメソッドに渡す ref や out を用いるという方法が妥当でしょう<br>
+<pre class="prg">struct Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("Kitty on your lap");
+		GetKitty(ref obj);
+		System.Console.WriteLine(obj.str);
+	}
+	static void GetKitty(ref Kitty obj) {
+		System.Console.WriteLine(obj.str);
+		obj.str = "Silver Gene";
+	}
+}</pre>
+このプログラムは、GetKitty メソッドに Kitty 構造体を渡す手段として参照渡しを用います<br>
+GetKitty() に渡されるのは、実際には Kitty へのポインタなので実体はコピーされません<br>
+
+<br><hr>
+<h2>構造体のコンストラクタ</h2>
+構造体のコンストラクタには、クラスと異なりいくつかの制約があります<br>
+まず、構造体には値を受け取らないデフォルトコンストラクタを指定できません<br>
+デフォルトコンストラクタは最初から定義されていて、フィールドを 0 で初期化します<br>
+<br>
+このため、構造体のフィールドはデフォルトで常に 0 です<br>
+構造体のインスタンスフィールドに<strong>初期化子は許可されません</strong><br>
+構造体の初期化子は、静的フィールドにのみ指定することができます<br>
+さらに構造体のコンストラクタに base(...) を指定することはできません<br>
+<pre class="prg">struct Kitty {
+	public static string s_str = "Silver Gene";
+	public string str; <font style="color:#FF0000">	// = "Kitty on your lap"; //とするとエラー
+	//public Kitty();	//ノンパラメータのコンストラクタは作れない</font>
+	public Kitty(string str) {
+		<font style="color:#FF0000">//base();	//base() コンストラクタ初期化子は使えない</font>
+		this.str = str;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("Kitty on your lap");
+		System.Console.WriteLine(Kitty.s_str);
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+これらの構造体の規制をクラスと混同させないでほしい<br>
+もっとも、通常のプログラムでは独自の構造体を作る必要はそれほどない<br>
+
+<br><hr>
+<h2>this 変数</h2>
+クラスのインスタンスメソッドにおける this は自己のインスタンスへの参照でした<br>
+しかし、構造体の this はインスタンスの参照という点では同じですが、その性質が違います<br>
+<br>
+クラスのインスタンスメソッドにおける this は<strong>リテラル</strong>に分類されます<br>
+つまりこれは値であり、変数とは異なる「定数」であるという扱いです<br>
+しかし、構造体のインスタンスメソッドにおける this は<br>
+自己のインスタンスの参照をデフォルトとする、自己構造体型の<strong>変数</strong>である<br>
+<br>
+リテラルである this は読み込み専門であり代入はできません<br>
+ところが変数である構造体の this には、その構造体を代入することができるのです<br>
+正確には、コンストラクタにおける this は構造体型の out パラメータであり<br>
+インスタンスメソッドにおける this は ref パラメータに相当すると考えることができます<br>
+
+<pre class="prg">struct Kitty {
+	public string str;
+	public Kitty(Kitty obj) {
+		this = obj;
+		str = this.str;
+	}
+	public Kitty(string str) {
+		this.str = str;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty tmp = new Kitty("Kitty on your lap");
+		Kitty obj = new Kitty(tmp);
+		System.Console.WriteLine(obj.str);
+	}
+}</pre>
+このプログラムの処理内容については、意味のあるものではありません<br>
+重要なのは this = obj という見なれない this への代入文です<br>
+this が変数であるといって、通常は無意味に this に代入するようなことはしません<br>
+しかし、構造体のインスタンスメソッドにおける this が変数であるということを知ることは重要です<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs30.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs32.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

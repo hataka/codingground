@@ -1,0 +1,58 @@
+<html>
+ <head>
+ <title>共通基底クラス</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>共通基底クラス</h1>
+<hr>
+ <h2>System.Objectクラス</h2>
+C# 言語は言語仕様のみが制定されていて、その機能の実体は .NET に依存します<br>
+つまり、文字を出力したりウィンドウを生成したりというようなアプリケーションとしての機能は<br>
+C# の機能ではなく、.NET クラスライブラリを使用して行うことになります<br>
+<br>
+C# 言語のあらゆる型は、基底クラスとして <strong>System.Object</strong> クラスを継承します<br>
+Object クラスの継承は暗黙的に行われ、全ての型は Object に変換できるとも言えます<br>
+これは、例えば参照型の実体が何かは興味がなく、単純に参照型を受け取りたい場合<br>
+C 言語で例えるならば、汎用ポインタにあたる処理を行いたい場合にこれを用います<br>
+<br>
+Object クラスはいくつかの公開メソッドを持ちます<br>
+詳しくはリファレンスを参照してもらいたいのですが<br>
+クラス設計者は <strong>ToString()</strong> メソッドの存在を知る必要があります<br>
+<br><b>
+public virtual string ToString();<br>
+<br></b>
+このメソッドは、このインスタンスに関する文字列表現を返すメソッドです<br>
+一般的に、全てのクラスはこのメソッドをオーバーライドすることが推奨されます<br>
+<pre class="prg">class Kitty {
+	public override string ToString() {
+		return "Kitty on your lap";
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty temp = new Kitty();
+		System.Object obj = temp;
+		System.Console.WriteLine(obj);
+	}
+}</pre>
+このプログラムを実行すると Kitty on your lap という文字が出力されます<br>
+WriteLine() メソッドは、Object 型を受け取ることも可能であり<br>
+Object 型を受け取った場合はそのオブジェクトの ToString() メソッドを出力するからです<br>
+<br>
+このプログラムを見れば、暗黙的に Object クラスが継承されていることがわかります<br>
+基底クラスである Object 型へのキャストは暗黙的に行うことができますが<br>
+Object 型から派生クラス型にキャストするには、必ず明示的に行う必要があります<br>
+<br>
+C# において、全ての型は Object クラスの機能を保証しているということです<br>
+場合によっては、このクラスのメソッドをオーバーライドして独自の処理を追加することができます<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs29.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs31.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

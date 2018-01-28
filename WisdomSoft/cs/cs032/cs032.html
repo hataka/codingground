@@ -1,0 +1,100 @@
+<html>
+ <head>
+ <title>ボクシング</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ボクシング</h1>
+<hr>
+ <h2>パンチパンチドランカー</h2>
+C# 言語はネットワークで動作することを想定されているため<br>
+C 言語のポインタのようなリスクのある低水準処理を行うわけにはいきません<br>
+しかし .NET 設計者は値型と参照型の自由度を Java より汎用的に設計しました<br>
+それも、安全であり実体の型変換は暗黙的に行うという簡易さも兼ね備えてです<br>
+<br>
+値型の参照型への変換機構は、構造体とクラス型の特殊な性質にあります<br>
+.NET クラスライブラリの全ての型は Object クラスを継承することは以前話しました<br>
+これは、<strong>構造体でも同じ</strong>で、構造体は Object を継承しています<br>
+<br>
+ところが、構造体は値型であり Object クラスは参照型であるという矛盾があります<br>
+ここに、C# 言語の高度な変換技術の秘密があります<br>
+構造体型を Object 型にキャストすると、<strong>ボクシング</strong> と呼ばれる処理が行われます<br>
+当然スポーツのボクシングではなく同じ単語の「箱に詰める」という意味の Boxing です<br>
+<br>
+構造体がどのように操作されているかを本質的に理解するには<br>
+十分なハードウェアと機械語レベルの知識と経験がなければ難しいと思いますが<br>
+ボクシングは「値型を参照型に変換する処理」という簡単な説明ができます<br>
+
+<pre class="prg">struct Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public override string ToString() {
+		return str;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty obj = new Kitty("Kitty on your lap");
+		System.Object box = obj;
+		GetObject(box);
+	}
+	static void GetObject(System.Object obj) {
+		System.Console.WriteLine(obj);
+	}
+}</pre>
+Kitty クラスが Object 型にボクシングされ、参照型として扱われています<br>
+ただしその実体である Kitty 構造体は値型であることを忘れないでください<br>
+クラス型を Object にアップキャストするのは単純なキャストにすぎませんが<br>
+構造体を参照型にキャストする行為は、内部動作が異なります<br>
+<br>
+ボクシングされた参照型を、元の構造体に変換することを<strong>アンボクシング</strong>と呼びます<br>
+これはボクシングと異なり、明示的にキャストしなければいけません<br>
+<br>
+では、実際にはボクシング操作がどのように行われているかを考えてみましょう<br>
+値型を参照型にボクシングする時、まずは参照型のインスタンスが生成されます<br>
+このインスタンスに<strong>値型をコピー</strong>することでボクシングが実現されます<br>
+インスタンスは値型のコピーを含んでいるので、データが失われることはありません<br>
+<br>
+アンボクシングはこの逆で、値型に<strong>インスタンスの値をコピー</strong>します<br>
+もちろん、値型はボクシングされた参照型の元となる型と互換性がなければいけません<br>
+<br>
+このように、ボクシングによる値型と参照型の相互変換はコピーによって行われます<br>
+すなわち、ボクシング処理前とアンボクシング後の値型はまったく別の存在です<br>
+<pre class="prg">struct Kitty {
+	public string str;
+	public Kitty(string str) {
+		this.str = str;
+	}
+	public override string ToString() {
+		return str;
+	}
+}
+
+class Test {
+	static void Main() {
+		System.Object box = new Kitty("Kitty on your lap");
+		Kitty unbox = (Kitty)box;
+		unbox.str = "Silver Gene";
+
+		System.Console.WriteLine(box);
+		System.Console.WriteLine(unbox);
+	}
+}</pre>
+このプログラムを実行すれば、box と unbox は異なることがわかります<br>
+Kitty がクラスであれば、box と unbox のインスタンスは同じであることが常識でしたが<br>
+構造体はこれをコピーで実現するので、その実体はコピーされているのです<br>
+結果 box は ToString() で "Kitty on your lap" を、unbox は "Silver Gene" を返します<br>
+
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs31.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs33.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

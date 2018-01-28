@@ -1,0 +1,55 @@
+<html>
+ <head>
+ <title>ジャグ配列</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>ジャグ配列</h1>
+<hr>
+ <h2>配列の配列</h2>
+C# には、配列の中に配列を収めるという概念が存在します<br>
+配列の配列は、親の配列と子の配列という関係で結ばれ、動的なプログラムの生成を助けます<br>
+<br>
+この「配列の配列」のことを<strong>ジャグ配列</strong>と呼びます<br>
+配列の配列は、配列の要素として配列を含むことができるのです<br>
+概念的に多次元配列と類似していますが、技術的には大きな違いがあります<br>
+<br>
+親配列は、子配列への参照を要素として格納し、常に子配列へのポインタとして働くのです<br>
+この参照を別の参照にするだけで、異なる配列を参照するようになる柔軟性を持ちます<br>
+一貫したアドレスでデータを格納する多次元配列と柔軟性において違いがあります<br>
+<br>
+ジャグ配列の生成には、次元指定子 [] を二つ続けて記述します<br>
+もし、配列の配列の配列を作りたければ、三つ続けて [] を指定します<br>
+<br><b>
+int[][] iValue;	//配列の配列<br>
+int[][][] iValue;	//(配列の配列)の配列<br>
+<br></b>
+それぞれの配列には、子配列への参照を含むことができます<br>
+もちろん、型は互換性がある参照型でなければなりません<br>
+
+<pre class="prg">class Test {
+	public static void Main() {
+		string[][] str = new string[2][];
+		str[0] = new string[] {"Kitty on your lap" , "Tokyo mew mew"};
+		str[1] = new string[] {"Silver Gene" , "Di Gi Charat" , "Words Worth"};
+
+		for (int i = 0 ; i &#60; str.Length ; i++)
+			for (int j = 0 ; j &#60; str[i].Length ; j++)
+				System.Console.WriteLine(str[i][j]);
+	}
+}</pre>
+ご覧の様に、多次元配列に非常に近いものがあります<br>
+たしかに、親配列は子配列を持つという多面的な関係を持ちますが<br>
+多次元配列のようにそれぞれのアドレスは直接的な関係はないのです<br>
+<br>
+str[0] は要素として {"Kitty on your lap" , "Tokyo mew mew"} 配列への参照を持つのです<br>
+つまり str[0][1] とすれば "Tokyo mew mew" が参照されることになります<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs36.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs38.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

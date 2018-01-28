@@ -1,0 +1,65 @@
+<html>
+ <head>
+ <title>動的仮引数</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>動的仮引数</h1>
+<hr>
+ <h2>可変個のパラメータ</h2>
+プログラムの性質によっては、用途によって引数の数が変化するメソッドを求められることがあります<br>
+一般的な言語では、この場合は配列の引数を渡すことで解決することができます<br>
+しかし、より直感的に記述するために C# 言語では可変個のパラメータ処理をサポートします<br>
+<br>
+これは、C言語プログラマに <strong>printf() を思い出させる</strong>でしょう<br>
+C# 言語は C/C++ の思想を引き継いでこれを可能としています<br>
+当然 C# の型の統一性を考えれば、どのような型も可変個で受け取ることができる<br>
+printf() 関数のような自由で高度なメソッドを作成することもできるのです<br>
+<br>
+可変個の引数を受け取るには <strong>params</strong> 修飾子を指定します<br>
+この修飾子が用いられる場合、必ず<strong>最後の引数</strong>でなければなりません<br>
+また、ref や out 修飾子との併用はできません<br>
+<br><b>
+params type[] name;<br>
+<br></b>
+type には仮引数の型、name には仮引数名を指定します<br>
+これをメソッドの仮パラメータリストで指定することで、可変個のパラメータを受け取れます<br>
+取得した引数は、全てリストの配列に順に格納されています<br>
+配列は<strong>必ず1次元配列</strong>でなければなりません<br>
+<br>
+こうすれば、指定した型に互換性のある引数を動的に渡すことができます<br>
+または、指定した型の1次元配列を渡すことも可能です<br>
+<pre class="prg">class Test {
+	public static void GetString(params string[] str) {
+		for(int i = 0 ; i &#60; str.Length ; i++)
+			System.Console.WriteLine(str[i]);
+		System.Console.WriteLine("");
+	}
+	static void Main() {
+		GetString("Kitty on your lap");
+		GetString("Silver Gene" , "Tokyo mew mew");
+		GetString("Rena" , "Yuki" , "Mimi");
+		GetString(new string[] {"Di Gi Charat" , "Petit Charat"});
+	}
+}</pre>
+これは、文字列型の引数を可変個数受け取る GetString() メソッドを作っています<br>
+このメソッドは、適当な数の文字列を受け取りそれを全てコンソールに出力します<br>
+<br>
+あらゆる型を受け取るメソッドを作りたければ Object 型を可変個受け取れば良いですね<br>
+
+<br><hr>
+<h2>params</h2>
+可変個のパラメータを受け取ることを表す修飾子です<br>
+この修飾子は仮パラメータリスト内で指定します<br>
+<br>
+この修飾子を受けた仮パラメータは、必ず最後のパラメータである必要があります<br>
+また、このパラメータは常に1次元配列です<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs38.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs40.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<html>
+ <head>
+ <title>Mainメソッド</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>Mainメソッド</h1>
+<hr>
+ <h2>コマンドラインから引数を得る</h2>
+これまで幾度となく Main() メソッドを書きつづけてきました<br>
+しかし、C# の Main() メソッドは実際にはいくつかのシグネチャが存在します<br>
+エントリポイントとなる Main() メソッドは一つしか記述することができませんが<br>
+プラットフォームと連携をとる場合などは、これまでとは別のシグネチャを使います<br>
+<br><b>
+static void Main() {}<br>
+static void Main(string[] args) {}<br>
+static int Main() {}<br>
+static int Main(string[] args){}<br>
+<br></b>
+私たちが使ってきたシグネチャは static void Main() でした<br>
+しかし、実際は Main() メソッドは整数を返したり文字を受け取ったりすることができます<br>
+<br>
+コマンドラインから入力された引数を取得したい場合は文字列を受け取る Main() を用います<br>
+それぞれ、引数の数だけインデックスの 0 番から順に格納されていきます<br>
+仮引数の名前は、一般には args を用いる習慣がありますが、特に規制はされません<br>
+<br>
+数値を返す Main() メソッドは、プログラム終了時にプラットフォームに数値を返します<br>
+これは、<strong>終了ステータスコード</strong>としてプラットフォームが活用します<br>
+<pre class="prg">class Test {
+	public static int Main(string[] args) {
+		for (int i = 0 ; i &#60; args.Length ; i++)
+			System.Console.WriteLine("第" + (i + 1) + "引数  = " + args[i]);
+		return 0;
+	}
+}</pre>
+このプログラムの実行時にコマンドラインから引数を指定すれば<br>
+プログラムは各引数を順に列挙します<br>
+<br>
+メソッドは最後に 0 を終了ステータスコードとして返します<br>
+呼び出し元に返す数値の意味は、そのプラットフォームに依存します<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs37.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs39.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

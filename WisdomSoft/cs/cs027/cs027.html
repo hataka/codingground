@@ -1,0 +1,146 @@
+<html>
+ <head>
+ <title>アクセス修飾子</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>アクセス修飾子</h1>
+<hr>
+ <h2>メンバのセキュリティ</h2>
+クラスのメンバには、全て「宣言済みのアクセス可能性」を持ちます<br>
+これは、クラスのメンバが不用意に外部のクラスからアクセスされるのを防ぐためです<br>
+<br>
+便利な機能を持つライブラリは外部から操作するためのメソッドを提供すれば良いだけで<br>
+内部事情に関するメソッドなどは公開する必要はありません<br>
+このようなメソッドやメンバ変数は、不用意に操作されるとプログラムの動作に影響します<br>
+そこで、外部や派生クラスからそのメソッドにアクセスできなくすることができます<br>
+<br>
+デフォルトで、メンバは <strong>private</strong> アクセス修飾子を持ちます<br>
+private は自分が定義されているクラス以外はいかなるアクセスも許さないことを表します<br>
+これ以外に <strong>public</strong> を私たちは今まで指定してきましたが<br>
+public は private に対照で全ての位置からのアクセスを許可することを意味します<br>
+<pre class="prg">class Kitty {
+	private string name;
+	public void setName(string name) {
+		this.name = name;
+	}
+	public string getName() {
+		return name;
+	}
+}
+
+class Test {
+	static void Main() {
+		Kitty rena = new Kitty();
+		//rena.name = "RENA";	//コンパイルエラー
+		rena.setName("RENA");
+		System.Console.WriteLine(rena.getName());
+	}
+}</pre>
+Kitty クラスの name メンバ変数は private です(private はデフォルトなので省略しても良い)<br>
+name メンバ変数には、Kitty クラスからはアクセス可能ですが、外部からはアクセスできません<br>
+そのため、このクラスは name を設定する setName() と取得する getName() を提供します<br>
+<br>
+直接外部から name にアクセスした場合はコンパイラがエラーを出します<br>
+外部のクラスは setName() や getName() を使って間接的に name にアクセスします<br>
+実際にこのようなアプローチは、実用的なレベルで良く見かける設計です<br>
+なぜならば、通常メンバ変数の変更は他の何らかの動作に関連付けられることが多く<br>
+メンバ変数が変更された場合、他の処理をしなければならないことがあるからです<br>
+<br>
+例えば、GUI ウィンドウを表示するか否かを表す visible という bool 変数があるとする<br>
+これが変更されれば、当然ウィンドウの描画処理を行う必要が出てくる<br>
+そのため開発者は、visible を private にし、setVisible() メソッドを代わりに提供するだろう<br>
+<br>
+ところが、関係のない外部からはアクセスされたくないが<br>
+保守や拡張を行うのに<strong>派生クラスからのアクセスは必要</strong>とする場合はどうだろう<br>
+便利な機能は、できる限り基底クラスから受け継いでおきたいものです<br>
+このような場合は <strong>protected</strong> 修飾子を指定します<br>
+<pre class="prg">class Kitty {
+	protected void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class TokyoMM : Kitty {
+	new public void Write() {
+		base.Write();
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+}
+
+class Test {
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+		obj.Write();
+	}
+}</pre>
+Kitty クラスの Write() メソッドは protected です<br>
+TokyoMM クラスは Kitty の派生クラスであり、このクラスは Write() を隠蔽します<br>
+派生クラスである TokyoMM から Kitty.Write() にアクセスすることは可能です<br>
+ただし、Test クラスから Kitty.Write() にアクセスしようとするとコンパイラはエラーを出します<br>
+<br>
+ところで、隠蔽の時には異なるアクセス修飾子を指定することができます<br>
+ただし、オーバーライドを行う場合は<strong>アクセス修飾子は変更できません</strong><br>
+では、隠蔽の時に private を指定すると、一体どうなってしまうのでしょうか？<br>
+private は外部のクラスから見れば、そのメンバを隠蔽することに等しいです<br>
+<pre class="prg">class Kitty {
+	public void Write() {
+		System.Console.WriteLine("Kitty on your lap");
+	}
+}
+
+class TokyoMM : Kitty {
+	new private void Write() {
+		System.Console.WriteLine("Tokyo mew mew");
+	}
+}
+
+class Test {
+	static void Main() {
+		TokyoMM obj = new TokyoMM();
+		obj.Write();
+	}
+}</pre>
+このプログラムは非常に重要な意味を持っています<br>
+Test クラスの Main() メソッドから、アクセス不可の TokyoMM.Write() にアクセスしています<br>
+TokyoMM.Write() は Kitty.Write() を隠蔽しています<br>
+<br>
+驚くことに、このプログラムは問題なくコンパイルできます<br>
+private を TokyoMM.Write() に指定することで、TokyoMM.Write() は隠蔽されたのです<br>
+Test クラスからはアクセスができないため、obj.Write() は Kitty.Write() にアクセスします<br>
+<br>
+さて、これまで見てきたアクセス修飾子は C++ や Java 言語でも見られる代表的なものです<br>
+そのため、C++ や Java を学習したことがある方はよく見てきたものでしょう<br>
+しかし、C# ではこの他に <strong>internal</strong> というアクセス修飾子を持ちます<br>
+<br>
+internal は現在のコンパイル単位でのみアクセスを許可するというものです<br>
+他のアクセス修飾子は他のアクセス修飾子と同時に使用することはできませんが<br>
+internal は protected internal というように、同時に使用することができます<br>
+<br>
+「現在のコンパイル単位」という意味は、中間言語を理解するうえで重要です<br>
+この internal 修飾子は<strong>アセンブリ</strong>と呼ばれる、高度な C# 技術に関わります<br>
+これについては、C# の基礎を網羅した上で解説したいと思います<br>
+
+<br><hr>
+<h2>public</h2>
+あらゆる位置からのアクセスを許可することを表します<br>
+<br>
+<h2>protected</h2>
+クラス外部からのアクセスを拒否するが<br>
+このクラスの派生クラスからのアクセスを許可します<br>
+<br>
+<h2>private</h2>
+クラスの外部からのアクセスを全て拒否します<br>
+このメンバには同一クラス内からのみアクセスできます<br>
+<br>
+<h2>internal</h2>
+現在のコンパイル単位でのみアクセスを許可します<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs26.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs28.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

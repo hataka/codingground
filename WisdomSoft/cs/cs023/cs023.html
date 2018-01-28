@@ -1,0 +1,62 @@
+<html>
+ <head>
+ <title>変数のスコープ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>変数のスコープ</h1>
+<hr>
+ <h2>変数の有効範囲</h2>
+ここで、これまで幾分か曖昧だった変数の範囲と種類について説明したいと思います<br>
+変数には、それぞれアクセスできる範囲と破棄するタイミングがあります<br>
+<br>
+変数は、メンバ変数と<strong>ローカル変数</strong>に区別されます<br>
+メンバ変数は、クラスに直結しているメンバであり、インスタンスと静的変数に分かれます<br>
+これに対し、ローカル変数はメソッドの内部で宣言された変数です<br>
+<br>
+ローカル変数はメンバ変数と異なり<strong>メソッド終了時に破棄</strong>されます<br>
+これは参照型も同様で、破棄された参照型のインスタンスは解放の対象にセットされます<br>
+<br>
+変数のアクセス範囲は { } で表され、これを <strong>スコープ</strong> と呼びます<br>
+メソッド内部でも、スコープを利用すればさらに変数を局所化して宣言できます<br>
+スコープから外部（親スコープ）の変数にアクセスすることはできますが<br>
+スコープの外部から内部の変数にアクセスすることはできません<br>
+<pre class="prg">class Test {
+	static void Main() {
+		string str1 = "Kitty on your lap";
+		{
+			string str2 = "Tokyo mew mew";
+			System.Console.WriteLine(str1);
+			System.Console.WriteLine(str2);
+		}
+		System.Console.WriteLine(str1);
+		//System.Console.WriteLine(str2); //エラー
+	}
+}</pre>
+Main() メソッドでは、さらにブロック { } を使用して子スコープを作成しています<br>
+そこで、新たに str2 という変数を宣言していますが、この変数はスコープ内でのみ有効です<br>
+そのため、ブロックを抜け出ると str2 はメモリから破棄されてしまいます<br>
+<br>
+また、ローカル変数のスコープの場合は変数の隠蔽はできません<br>
+同一名の変数が親に存在する場合、コンパイラはエラーを発生させます<br>
+では、次のようなプログラムの場合はどうなるのでしょうか<br>
+<pre class="prg">class Test {
+	public static int x;
+	static void Main() {
+		x = 10;
+		int x;
+	}
+}</pre>
+一見すると x = 10 で静的メンバ変数 x に 10 を代入し<br>
+その後にローカル変数として x を宣言し、メンバ変数を隠蔽しそうですが<br>
+じつは、ローカル変数宣言子の位置よりも前にローカル変数を参照するとエラーになります<br>
+Main() の1行目を Test.x と明示的にメンバ変数であることを示せばエラーにはなりません<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs22.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs24.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

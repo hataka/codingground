@@ -1,0 +1,91 @@
+<html>
+ <head>
+ <title>配列基底クラス</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>配列基底クラス</h1>
+<hr>
+ <h2>System.Array</h2>
+以前、全ての配列は System.Array を継承しているといいました<br>
+つまり、全ての配列は System.Array と相互に参照することができるのです<br>
+<br>
+このクラスの機能を用いれば、配列を制御及び監視することができます<br>
+例えば、前回のサンプルプログラムは for ループの終了条件にリテラルを用いました<br>
+この値は配列の要素数であり、つまり配列の最終要素を表示したらループを抜けるという意図です<br>
+<br><b>
+string[] str = new string[3];<br>
+for (int i = 0 ; i < 3 ; i++) ...<br>
+<br></b>
+このような場合、リテラルを使うのは避けるべきです<br>
+for の終了条件の真の意味はリテラルの数ではなく配列の要素数です<br>
+もし、配列の要素数をプログラムの改良時に変更し、ループのリテラルの変更を忘れると<br>
+これは無駄なバグの原因に繋がることがあります<br>
+<br>
+System.Array は配列の要素へのアクセスや、要素数や次元数の管理を行っています<br>
+全ての配列は Array を継承しているので、デフォルトでこの機能を利用できます<br>
+Array クラスについて詳しくは .NET クラスライブラリのリファレンスで確認してください<br>
+<br>
+例えば、配列の要素数をえるには <strong>Length</strong> プロパティを使用します<br>
+<br><b>
+public int Length {get;}<br>
+<br></b>
+これは、その配列が持てる要素数（つまり配列の大きさ）を返します<br>
+つまり、前回のプログラムの for 部分はこのように解決できます<br>
+<pre class="prg">class Test {
+	public static void Main() {
+		string[] str = {
+			"Kitty on your lap",
+			"Silver Gene",
+			"Nekoneko Zoo"
+		};
+		for (int i = 0 ; i &#60; str.Length ; i++)
+			System.Console.WriteLine(str[i]);
+	}
+}</pre>
+このプログラムでは、ループの終了条件が <b>i &#60; str.Length</b> となっています<br>
+これは、カウンタ変数が配列の長さよりも小さければという意味になります<br>
+<br>
+Length プロパティは<strong>配列の最大要素数</strong>を取得します<br>
+つまり、多次元配列の場合も同様で全ての要素数を返します<br>
+例えば 3 × 3 の多次元配列ならば Length は 9 を返すでしょう<br>
+<br>
+しかし、この場合2次元目の最大要素数を取得したい場合に困ります<br>
+特定次元の要素数を得るには <strong>GetLength()</strong> メソッドを使用します<br>
+<br><b>
+public int GetLength(int dimension);<br>
+<br></b>
+dimension には、要素数を取得する次元番号を指定します<br>
+これを用いて、配列を構成する各次元の大きさを取得することができます<br>
+<pre class="prg">class Test {
+	public static void Main() {
+		string[,] str = {
+			{"Rena" , "Yuki" , "Mimi"} ,
+			{"Di Gi Charat" , "Petit Charat" , "Rabi en Rose"} ,
+		};
+
+		for (int i = 0 ; i &#60; str.GetLength(0) ; i++)
+			for (int j = 0 ; j &#60; str.GetLength(1) ; j++)
+				System.Console.WriteLine(str[i , j]);
+	}
+}</pre>
+このプログラムも前回のプログラムを改良したものです<br>
+for のループ条件が前回のリテラルを使ったものよりダイナミックになったため保守が容易になります<br>
+<br>
+因みに、配列の次元数のことを .NET では<strong>ランク</strong>と呼びます<br>
+配列のランクを取得するには Rank プロパティを用います<br>
+<br><b>
+public int Rank {get;}<br>
+<br></b>
+このように、多くの便利メソッドやプロパティが存在するので調べてください<br>
+Array クラスは配列を操作するための基本的で強力な命令セットがサポートされています<br>
+
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs35.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs37.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+ <head>
+ <title>インデクサ</title>
+ <link rel=stylesheet href='../../layout.css'type='text/css'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+ <meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</head>
+
+ <body>
+ <h1>インデクサ</h1>
+<hr>
+ <h2>配列的オブジェクト</h2>
+C# 言語は、オブジェクトを配列のように扱う方法をサポートしています<br>
+これは、特定の処理において非常に強力な機能となるでしょう<br>
+<br>
+オブジェクトを配列のように扱うこの機能を<strong>インデクサ</strong>と呼びます<br>
+ときに、プロパティが「スマートプロパティ」と呼ばれるのですが<br>
+これに対してインデクサを「スマート配列」と呼ぶことがあります<br>
+<br>
+ここから連想できるように、インデクサの機能はプロパティの仕様に類似しています<br>
+つまり、配列のようなオブジェクト操作を暗黙的にメソッドに変換する機能がインデクサです<br>
+<br>
+インデクサを使いこなすには、一定以上のオブジェクト指向の「設計」経験が必要になります<br>
+代表的な例としては、ベクトルのように内部で配列を扱うオブジェクトは<br>
+内部の配列とオブジェクトの操作をインデクサによって通信させるという方法をとります<br>
+こうすれば、メソッドの仕様を覚える必要なく、クラスの利用者は直感的にプログラムできるのです<br>
+<br>
+インデクサは、プロパティ同様にクラスのメンバとして働きます<br>
+インデクサを宣言するには<strong>インデクサ宣言子</strong>で行います<br>
+<br><b>
+[attributes] [modifiers] indexer-declarator {accessor-declarations}<br>
+<br></b>
+attributes が属性、modifiers がインデクサ修飾子<br>
+indexer-declarator がインデクサ宣言子、accessor-declarations がアクセッサ宣言子群です<br>
+インデクサ宣言子は次のような構文を用います<br>
+<br><b>
+type this [formal-index-parameter-list]<br>
+<br></b>
+type はこのインデクサの型、formal-index-parameter-list は仮パラメータリストを指定します<br>
+プロパティは名前で識別されましたが、インデクサは<strong>シグネチャで識別</strong>されます<br>
+<br>
+アクセッサ宣言子群はプロパティと基本的に同じです<br>
+get アクセッサはインデクサ型の戻り値と仮パラメータを持つメソッドに等しく<br>
+set アクセッサは void 型の戻り値と仮パラメータを持つメソッドに等しいです<br>
+さらに、set アクセッサは代入された値を暗黙的な変数 value で受け取っています<br>
+<pre class="prg">class Kitty {
+	private string[] strName;
+	private Kitty() {}
+
+	public Kitty(string[] str) {
+		strName = str;
+	}
+	public int Length {
+		get { return strName.Length; }
+	}
+
+	public string this[int index] {
+		get { return strName[index];		}
+		set { strName[index] = value;	}
+	}
+	
+}
+class Test {
+	static void Main() {
+		string[] str = new string[] {"Rena" , "Petit Charat" , "Mimi"};
+		Kitty obj = new Kitty(str);
+		GetKitty(obj);
+		obj[1] = "Yuki";
+		GetKitty(obj);
+	}
+	static void GetKitty(Kitty obj) {	
+		for (int i = 0 ; i &#60; obj.Length ; i++)
+			System.Console.WriteLine(obj[i]);
+	}
+}</pre>
+このプログラムで作成した Kitty クラスは strName という文字列型の配列を扱います<br>
+この配列にアクセスする手段として、インデクサを採用しました<br>
+<br>
+プログラムが長くなるために避けましたが<br>
+本来はアクセッサで取得した index が配列の範囲かどうかを確認し<br>
+もし不正なインデックスであれば例外を発生させるなどの処理を行うべきです<br>
+
+<br><hr><br>
+<table border="0" width="100%"><tr><td align="left"><nobr><a href='cs39.html'>前のページへ</a></nobr></td><td align="center"><nobr><a href="index.html">戻る</a></nobr></td><td align="right"><nobr><a href="cs41.html">次のページへ</a></nobr></td></tr></table>
+<br><br><br><br>
+</body>
+</html>
