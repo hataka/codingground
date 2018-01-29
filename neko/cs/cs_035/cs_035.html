@@ -1,0 +1,179 @@
+<HTML>
+<!--        cs_35.htm        -->
+<!--        2006/09/10       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３５章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３５章 ジャグ配列風インデクサ
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+今までの配列は、たとえば２次元であればどの行の列も同じでした。これを行ごとに列の
+数を変えることができます。これをジャグ配列といいます。(ジャグ(jag)とはギザギザ
+という意味です。衣服のかぎ裂きもjagといいます。)
+<P>
+<BR CLEAR="left"><BR>
+この章では、ジャグ配列風インデクサを作ってみます。<P>
+まず、最初にジャグ配列の作り方を２次元で考えてみます。<P>
+通常の２次元配列は
+<PRE>
+データ型[,] 名前 = new データ型[要素数,要素数];
+</PRE>
+のように作りました。ジャグ配列では(１次元の配列)の配列という考え方で
+<PRE>
+データ型[][] 名前 = new [要素数][];
+</PRE>
+と宣言しておき、
+<PRE>
+名前[0] = new データ型[要素数];
+名前[1] = new データ型[要素数];
+.....
+</PRE>
+のように、各行をそれぞれnewしていきます。これだと、行ごとに要素数を変えることができますね。
+また、配列の表記方法に十分注意してください。<P>
+まずは、ジャグ配列のサンプルを見てみましょう。
+<PRE>
+// jag01.cs
+
+using System;
+
+class jag01
+{
+    public static void Main()
+    {
+        string[][] name = new string[3][];
+        int i, j;
+
+        name[0] = new string[2]{"田中", "佐藤"};
+        name[1] = new string[3]{"横井", "吉田", "工藤"};
+        name[2] = new string[1]{"太田"};
+
+        for (i = 0; i < 3; i++)
+            foreach (string str in name[i])
+                Console.WriteLine(str);
+    }
+}
+</PRE>
+配列の要素の表示には、for文とforeach文を組み合わせて使っている点に注意してください。
+<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs3501.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+インデクサは、public int this[int a][int b]のようには宣言できません。<P>
+そこで、無理矢理ジャグ配列風インデクサを作ってみます。(あまり意味はありません)
+<PRE>
+// jag02.cs
+
+using System;
+
+class MyClass
+{
+    string[][] name;
+    public int i;
+
+    public int len
+    {
+        get
+        {
+            return name[i].Length;
+        }
+    }
+
+    public string this[int a]
+    {
+        get
+        {
+            return name[i][a];
+        }
+        set
+        {
+            name[i][a] = value;
+        }
+    }
+    
+    public MyClass()
+    {
+        i = 0;
+        name = new string[3][];
+        name[0] = new string[2];
+        name[1] = new string[3];
+        name[2] = new string[2];
+    }
+}
+
+class jag02
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        mc.i = 0;
+        mc[0] = "佐藤";
+        mc[1] = "田中";
+        mc.i = 1;
+        mc[0] = "太田";
+        mc[1] = "工藤";
+        mc[2] = "吉田";
+        mc.i = 2;
+        mc[0] = "加藤";
+        mc[1] = "伊藤";
+
+        for (int i = 0; i < 3; i++)
+        {
+            mc.i = i;
+            for (int j = 0; j < mc.len; j++)
+                Console.WriteLine(mc[j]);
+        }
+    }
+}
+</PRE>
+まずは、MyClassクラスの
+<PRE>
+public string this[int a]{...}
+</PRE>
+のところを見てください。<P>
+<FONT SIZE="5" COLOR="#FF0000">
+「これ、普通のインデクサじゃないの」<P>
+</FONT>
+そうです。でも、get,setアクセッサを見てください。<P>
+name[i][a]を返したり、これに値を設定したりしていますね。<P>
+iは何かというと、このクラスのインスタンスフィールドです。<P>
+コンストラクタを見ると、
+<PRE>
+name = new string[3][];
+name[0] = new string[2];
+name[1] = new string[3];
+name[2] = new string[2];
+</PRE>
+と、いうようにジャグ配列を作っています。結局インデクサでは
+(name[i])の配列に対して値を返したり、設定したりしているわけです。
+ですから、このインデクサを使う前にiの値を設定しておく必要があります。
+また、name[i]の配列の長さをプロパティlenで返しています。<P>
+要するに、このプログラムのインデクサはごく普通のインデクサです。<P>
+実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3502.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_34.htm">Previous Chapter</A>]
+[<A HREF="cs_36.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 10/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

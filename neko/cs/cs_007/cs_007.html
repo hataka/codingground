@@ -1,0 +1,178 @@
+<HTML>
+<!--        cs_07.htm        -->
+<!--        2006/08/09       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第７章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第７章 書式設定</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+書式設定は、決められた書式でデータを文字列として出力します。
+<P>
+<BR CLEAR="left"><BR>
+書式設定の方法はいろいろあります。<P>
+書式指定文字列のなかの{}を利用する方法はすでに出てきているので、これについて解説します。<P>
+<PRE>
+Console.WriteLie("{0,10}", 引数,...);
+</PRE>
+上の構文において、{}を書式指定項目といいます。これは、詳しく見ると
+<PRE>
+{index[,alignment][:formatString]}
+</PRE>
+indexは当然省略不可です。パラメータ指定子といいます。<P>
+alignmentは、省略可です。書式設定フィールドの幅を指定する符号付き整数値です。
+プラスは左揃え、マイナスは右揃えになります。<P>
+formatString は、省略可能で書式指定文字列といいます。これには、Xnnで表され、Xを書式指定子(アルファベット)、nnは精度指定子(数字)といいます。
+nnは省略可能です。<P>
+<TABLE BORDER="1">
+<TD BGCOLOR="#FFFF00">標準書式指定文字</TD><TD BGCOLOR="#FFFF00">意味</TD><TR>
+<TD>Cまたはc</TD><TD>通過を表す文字列に変換。精度指定子は、小数点以下の桁数</TD><TR>
+<TD>Dまたはd</TD><TD>整数型のみ。整数の左側に精度指定子で指定した桁に達するまで0で埋められる</TD><TR>
+<TD>Eまたはe</TD><TD>1.2555E+128(または1.2555e+128)形式に変換。精度指定子は小数点以下の桁数。指数部は常に符号付き３桁。</TD><TR>
+<TD>Fまたはf</TD><TD>固定小数点数を表す文字列に変換。精度指定子は小数点以下の桁数。</TD><TR>
+<TD>Gまたはg</TD><TD>固定小数点または指数表記のうち簡潔な方を表示。精度指定子は、変換後の文字列の有効桁数。</TD><TR>
+<TD>Nまたはn</TD><TD>整数部は３桁ごとに区切り記号がはいる。精度指定子は小数部の桁数。</TD><TR>
+<TD>Pまたはp</TD><TD>パーセント値に変換。精度指定子は小数部の桁数。</TD><TR>
+<TD>Rまたはr</TD><TD>浮動小数点型のみ。返還後の文字列が変換前の数値に戻るように解析される。精度指定子は無視される。</TD><TR>
+<TD>Xまたはx</TD><TD>整数型のみ。１６進表記の文字列に変換。精度指定子は変換後の最小桁数。桁数に達しないときは0を左側に追加。</TD>
+</TABLE><P>
+標準書式指定指定子で、希望の書式が得られないときはカスタム書式指定文字列を使います。<P>
+<TABLE BORDER="1">
+<TD BGCOLOR="#FFFF00">書式指定文字</TD><TD BGCOLOR="#FFFF00">名称</TD><TD BGCOLOR="#FFFF00">意味</TD><TR>
+<TD>0</TD><TD>Zero placeholder</TD><TD>0に対応する位置に数字がある時は、この数字が文字列にコピーされます。ない場合は0のままです。</TD><TR>
+<TD>#</TD><TD>Digit placeholder</TD><TD>#の位置に対応する数字がある時は、その数字が文字列にコピーされ、ない場合は何もコピーされない。</TD><TR>
+<TD>.</TD><TD>Decimal point</TD><TD>小数点の位置を指定。</TD><TR>
+<TD>,</TD><TD>桁区切り</TD><TD>(1)0または#の間に(,)があれば整数部が3桁ごとに(,)がはいる<BR>(2)0または#に挟まれない文字列内の整数部に(,)が1つ以上あれば、そのたびに1000で除される</TD><TR>
+<TD>%</TD><TD>Percentage placeholder</TD><TD>パーセント表示</TD><TR>
+<TD>E0,E+0,E-0</TD><TD>Scientific notation</TD><TD>小文字(e)も可。指数表記。0の数が指数部の最小の桁数。+があれば指数部に+または-がつく。-の時は指数部が負の時のみ−を表示。+も-もなければ指数部が負の時のみ-を表示。</TD><TR>
+<TD>\</TD><TD>Escape character</TD><TD>\の後ろの文字がエスケープシーケンスとして解釈される。</TD><TR>
+<TD>'abc'または"abc"</TD><TD>リテラルとして出力文字列にコピーされる。</TD><TD></TD><TR>
+<TD>その他</TD><TD><BR></TD><TD>上記以外の文字は対応する位置にそのままコピーされる。</TD>
+</TABLE><P>
+言葉で説明すると、かなり面倒なように思われますが、実際に使ってみるとたいしたことないものばかりです。
+<PRE>
+// format01.cs
+
+using System;
+
+class format01
+{
+    public static void Main()
+    {
+        double d = 1596.28;
+        int i = 123;
+        double e = 1.256E10;
+        double f = 12.3;
+        double g = 1234500000000.258;
+        double p = 0.8569;
+        double r = 12.15;
+        int x = 255;
+
+        Console.WriteLine("d = {0}", d);
+        Console.WriteLine("d = {0:c} ---c", d);
+        Console.WriteLine("d = {0:c4} ---c4", d);
+        Console.WriteLine();
+        Console.WriteLine("i = {0}", i);
+        Console.WriteLine("i = {0:d} ---d", i);
+        Console.WriteLine("i = {0:d5} ---d5", i);
+        Console.WriteLine();
+        Console.WriteLine("e = {0}", e);
+        Console.WriteLine("e = {0:e2} ---e2", e);
+        Console.WriteLine("e = {0:e5} ---e5", e);
+        Console.WriteLine();
+        Console.WriteLine("f = {0}", f);
+        Console.WriteLine("f = {0:f} ---f", f);
+        Console.WriteLine("f = {0:f5} ---f5", f);
+        Console.WriteLine();
+        Console.WriteLine("g = {0}", g);
+        Console.WriteLine("g = {0:g} ---g", g);
+        Console.WriteLine("g = {0:g7} ---g7", g);
+        Console.WriteLine();
+        Console.WriteLine("p = {0}", p);
+        Console.WriteLine("p = {0:p2} ---p2", p);
+        Console.WriteLine("p = {0:p4} ---p4", p);
+        Console.WriteLine();
+        Console.WriteLine("r = {0}", r);
+        Console.WriteLine("r = {0:r} ---r", r);
+        Console.WriteLine();
+        Console.WriteLine("x = {0}", x);
+        Console.WriteLine("x = {0:x} ---x", x);
+        Console.WriteLine("x = {0:x8} ---x8", x);
+
+    }
+}
+</PRE>
+実行結果は次の図のようになります。<P>
+<IMG SRC="../img/cs0701.gif" ALIGN="left">
+書式指定子cの場合は、整数部がコンマで区切られることに注意してください。
+<P>
+<BR CLEAR="left"><BR>
+<PRE>
+// format02.cs
+
+using System;
+
+class format02
+{
+    public static void Main()
+    {
+        int i = 123;
+        double d = 123.45;
+        double e = 10000000000;
+        double f = 1254700000;
+        int g = 01125472356;
+
+        Console.WriteLine("i = {0}", i);
+        Console.WriteLine("i = {0:0000.00} ---0000.00", i);
+        Console.WriteLine("i = {0:####.##} ---####.##", i);
+        Console.WriteLine();
+        Console.WriteLine("d = {0}", d);
+        Console.WriteLine("d = {0:.0000} ---.0000", d);
+        Console.WriteLine("d = {0:####.#} ---####.#", d);
+        Console.WriteLine();
+        Console.WriteLine("e = {0}", e);
+        Console.WriteLine("e = {0:0,0} ---0,0", e);
+        Console.WriteLine("e = {0:0,} ---0,", e);
+        Console.WriteLine("e = {0:0,0,} ---0,0,", e);
+        Console.WriteLine("e = {0:0,0,,} ---0,0,,", e);
+        Console.WriteLine("e = {0:0,0,,,} ---0,0,,,", e);
+        Console.WriteLine("e = {0:0,0,,,,} ---0,0,,,,", e);
+        Console.WriteLine("e = {0:#,#} ---#,#", e);
+        Console.WriteLine();
+        Console.WriteLine("f = {0}", f);
+        Console.WriteLine("f = {0:e} ---e", f);
+        Console.WriteLine("f = {0:0.0e+000000} ---0.0e+000000", f);
+        Console.WriteLine();
+        Console.WriteLine("g = {0}", g);
+        Console.WriteLine("g = {0:(###)####-####} ---(###)####-####", g);
+        Console.WriteLine("g = {0:(000)0000-0000} ---(000)0000-0000", g);
+    }
+}
+</PRE>
+実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs0702.gif" ALIGN="left">
+(,)の使い方がわかりにくいと思います。(実際のプログラミングではほとんど登場しないか・・・)
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_06.htm">Previous Chapter</A>]
+[<A HREF="cs_08.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 09/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,205 @@
+<HTML>
+<!--        cs_31.htm        -->
+<!--        2006/09/06       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３１章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３１章 プロパティとインデクサをもう少し詳しくみてみる
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+何とも長たらしい表題です。<A HREF="cs_30.htm">前章</A>および<A HREF="cs_29.htm">前々章</A>で大急ぎでプロパティとインデクサについて見てきました。この章では、もう少し詳しくこれらについてみてみます。さらに、フィールドとメソッドの関係にも少し触れます。
+<P>
+<BR CLEAR="left"><BR>
+プロパティやインデクサはstaticにすることができるのでしょうか。結論から言うと、プロパティはOKですが、インデクサはNOです。<P>
+さらに、staticなフィールドに対してインスタンスメソッドはアクセスできるのでしょうか。結論はできます。しかし、逆にインスタンスフィールドに対してstaticなメソッドはアクセスできません。<P>
+
+サンプルを次に示します。
+<PRE>
+// staticprop01.cs
+
+using System;
+
+class MyProp
+{
+    static int x;
+    static int[] y = new int[10];
+    public static int z;
+
+    // プロパティはstaticにできる
+    public static int age
+    {
+        get
+        {
+            return x;
+        }
+        set
+        {
+            x = value;
+        }
+    }
+
+    //インデクサはstaticにできない
+    public int this[int index]
+    {
+        get
+        {
+            return y[index];
+        }
+        set
+        {
+            y[index] = value;
+        }
+    }
+
+    // インスタンスメソッドはstaticなフィールドにアクセスできる
+    // 逆にインスタンスフィールドにstaticなメソッドはアクセスできない
+    public int show()
+    {
+        return z;
+    }
+}
+
+class staticprop01
+{
+    public static void Main()
+    {
+        MyProp.age = 20;
+        Console.WriteLine("MyProp.age = {0}", MyProp.age);
+
+        MyProp mp = new MyProp();
+        mp[0] = 100;
+        Console.WriteLine("mp[0] = {0}", mp[0]);
+
+        MyProp.z = 100;
+        Console.WriteLine("mp.show() = {0}", mp.show());
+    }
+}
+</PRE>
+プロパティはstaticにできます。しかし、このプロパティに関連したフィールドもstaticで有る必要があります。<P>
+これは、当たり前といえば当たり前です。staticなメンバはそのクラス全部に共通の性質や行動を表しています。staticなプロパティでインスタンスフィールドの値を設定できるとしたら矛盾が有りますね。<P>
+メソッドとフィールドの関係についても似ています。staticなフィールドをインスタンスメソッドでアクセスできます。たとえば、クラス全体の性質を有るインスタンスから、変更したいこともあるでしょう。しかし、インスタンスフィールドをstaticなメソッドで変更できたら、これはおかしいですね。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3101.gif">
+<P>
+<BR CLEAR="left"><BR>
+次に、インデクサのように関連したフィールドの無いプロパティというのは許されるのでしょうか。結論は大丈夫です。ただし、setアクセッサは使えません。(setされても格納するフィールとが無いので当たり前)<P>
+では、関連するフィールドを持たないプロパティの例を見てみましょう。
+<PRE>
+// nofieldprop01.cs
+
+using System;
+
+class MyProp
+{
+    public int age
+    {
+        get
+        {
+            return 20;
+        }
+    }
+}
+
+class nofield01
+{
+    public static void Main()
+    {
+        MyProp mp = new MyProp();
+
+        Console.WriteLine("mp.age = {0}", mp.age);
+    }
+}
+</PRE>
+ageプロパティは関連するフィールドがありません。getアクセッサではいつも20を返しています(年齢がいつまでも20歳という意味です)。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs3102.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+次に、getやsetアクセッサ内で勝手に変数を宣言して使ってもよいのでしょうか。これは使えます。<P>
+サンプルを次に示します。
+<PRE>
+// valprop01.cs
+
+using System;
+
+class MyClass
+{
+    int n = 2;
+    string[] arr = new string[3];
+
+    public int x
+    {
+        get
+        {
+            int val; //アクセッサ内で変数の宣言可能
+            val = n * 10;
+            return val;
+        }
+        set
+        {
+            int y;
+            y = value * 20;
+            n = y;
+        }
+    }
+
+    public string this[int n]
+    {
+        get
+        {
+            string add = "です";
+            return arr[n] + add;
+        }
+        set
+        {
+            string sama;
+            sama = value + "様";
+            arr[n] = sama;
+        }
+    }
+}
+
+class valprop01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        mc.x = 10;
+        Console.WriteLine("mc.x = {0}", mc.x);
+
+        mc[0] = "粂井";
+        Console.WriteLine("mc[0] = 「{0}」", mc[0]);
+    }
+}
+</PRE>
+このプログラムを実行するとどうなるか、想像してみてください。<P>
+実行結果は次のようになります。思っていたとおりになったでしょうか。<P>
+<IMG SRC="../img/cs3103.gif" ALIGN="left">
+プロパティでも、インデクサでもget,setアクセッサ内で変数を宣言できます。<P>
+しかし、そのすぐ外側では宣言を許されていません。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_30.htm">Previous Chapter</A>]
+[<A HREF="cs_32.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 06/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

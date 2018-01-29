@@ -1,0 +1,307 @@
+<HTML>
+<!--        cs_08.htm        -->
+<!--        2006/08/11       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第８章 string型とchar型　その１</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+string型は、文字列を取り扱います。
+<P>
+<BR CLEAR="left"><BR>
+すでに、暗黙のうちに文字列を取り扱ってきました。<P>
+文字列リテラルは、ダブルクォーテーションで囲みます。<P>
+文字列はすべてオブジェクト扱いとなります。文字列オブジェクトを作成するには、
+<PRE>
+string str = "abc";
+</PRE>
+のように、文字列リテラルを利用します。これにより、"abc"という文字列オブジェクトがメモリ上に確保され、その参照がstr変数に格納されます。<P>
+文字列型に対してchar型というのもあります。文字リテラルはシングルクォートで囲みます。
+<PRE>
+char mychar = 'a';
+</PRE>
+上のように宣言すると、char型の変数mycharが確保され、文字aのユニコードがmycharに直接格納されます。<P>
+従って<FONT COLOR="#FF0000">string型は参照型</FONT>、<FONT COLOR="#FF0000">char型は値型</FONT>であるといえます。また、C#のstring型は、.NET型のSystem.String型、char型はSystem.Char型です。もちろんusing System;とあったらSystemを省略できます。<P>
+char型の配列から、文字列を作成することもできます。char型配列の作り方は、他の型の配列の作り方と同じです。
+<PRE>
+char[] 配列名 = new char[要素数];
+</PRE>
+char型配列から文字列オブジェクトを作成するには、
+<PRE>
+string 変数名 = new string(char型配列名);
+</PRE>
+のようにします。<P>
+文字列型オブジェクトは、Lengthプロパティを利用できます。<P>
+これは、オブジェクトの文字数を取得できます。たとえば
+<PRE>
+stinrg str = "abc";
+int n = str.Length;
+</PRE>
+とすると、nには、文字列"abc"の文字数3が格納されます。<P>
+また、文字列型オブジェクトを配列のようにして
+<PRE>
+文字列型オブジェクト[n]
+</PRE>
+とすると、この文字列のn+1番目の文字を取得できます。あとの章で解説しますが「インデクサ」というものを使っています。
+<PRE>
+// string01.cs
+
+using System;
+
+class string01
+{
+    public static void Main()
+    {
+        char[] chararray = new char[3];
+        chararray[0] = 'a';
+        chararray[1] = 'b';
+        chararray[2] = 'c';
+
+        string str;
+        str = new string(chararray);
+        Console.WriteLine(str);
+
+        char[] title = {'猫', 'で', 'も', 'わ', 'か', 'る'};
+        string strTitle = new string(title);
+        Console.WriteLine(strTitle);
+
+        
+        string strx = "C#プログラム";
+        int n = strx.Length;
+        Console.WriteLine("「{0}」の文字数は{1}です", strx, n);
+
+        char c = strx[1];
+        Console.WriteLine("「{0}」の2番目の文字は「{1}」です", strx, c);
+        
+
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0801.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+文字列型オブジェクトは、さらにCopyToメソッドを利用できます。
+<PRE>
+public void CopyTo(
+   int sourceIndex,
+   char[] destination,
+   int destinationIndex,
+   int count
+);
+</PRE>
+これは、文字列型オブジェクトから任意の部分文字列をchar型の配列にコピーします。<P>
+sourceIndexは、このオブジェクトのコピー開始の位置(先頭文字が0)。<P>
+destinationは、コピー先のchar型配列。<P>
+destinationIndexは、コピー先の配列のどの位置からコピーするかを指定。<P>
+countは、コピーする文字数です。<P>
+ちょっと面倒そうに見えますが、使い方は簡単です。
+<PRE>
+// string02.cs
+
+using System;
+
+class string02
+{
+    public static void Main()
+    {
+        string str = "猫でもわかるプログラミング";
+        char[] c = new char[7];
+
+        //strの(6 + 1)番目の文字から、配列cへコピーします。
+        //コピー先はインデックス0から７文字だけ受け入れます。
+        str.CopyTo(6, c, 0, 7);
+        Console.WriteLine(c);
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0802.gif" ALIGN="left">
+
+<P>
+<BR CLEAR="left"><BR>
+これを利用して、char型配列に文字列オブジェクトをまるごとコピーすることもできます。
+<PRE>
+// string03.cs
+
+using System;
+
+class string03
+{
+    public static void Main()
+    {
+        string str = "猫でもわかるプログラミング";
+        char[] c = new char[str.Length];
+
+        str.CopyTo(0, c, 0, str.Length);
+        string str2 = new string(c);
+
+        Console.WriteLine(str2);
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0803.gif" ALIGN="left">
+配列cにstrオブジェクトの内容を全部コピーしてから、
+この配列を利用してstr2オブジェクトを作成しています。
+<P>
+<BR CLEAR="left"><BR>
+これと、似たものにSubstringメソッドがあります。これは、オブジェクトから部分文字列を取得します。これには、２つのバージョンがあります。
+<PRE>
+public string Substring(
+   int startIndex
+)
+</PRE>
+これは、指定のインデックスから最後までの文字列を取得します。
+<PRE>
+public string Substring(
+   int startIndex,
+   int length
+)
+</PRE>
+これは、startIndexからlength文字だけの部分文字列を取得します。
+<PRE>
+// string04.cs
+
+using System;
+
+class string04
+{
+    public static void Main()
+    {
+        string str = "猫でもわかるプログラミング";
+        string str2, str3;
+
+        str2 = str.Substring(6);
+        str3 = str.Substring(6, 2);
+
+        Console.WriteLine("str2 = {0}", str2);
+        Console.WriteLine("str3 = {0}", str3);
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0804.gif" ALIGN="left">
+str2はstrの(6 + 1)番目の文字から最後までです。<P>
+str3はstrの(6 + 1)番目の文字から２文字だけのコピーです。
+<P>
+<BR CLEAR="left"><BR>
+文字列を丸ごとコピーするには、もっと簡単な方法があります。<P>
+stringクラスのCopy静的メソッドを使います。<P>
+<PRE>
+public static string Copy(
+   string str
+);
+</PRE>
+ここで、ちょっと注意しなくてはいけないことは、このメソッドは静的メソッドである点です。これは、オブジェクト名.メソッド名()で呼び出すのではなく、
+クラス名.メソッド名()で呼び出します。<P>
+Console.WriteLineと同じ呼び出し方法です。この件に関しては後の章で詳しく解説する予定なので、今は呼び出し方法に違いがあるということだけを覚えておいてください。
+<PRE>
+// string05.cs
+
+using System;
+
+class string05
+{
+    public static void Main()
+    {
+        string str = "猫でもわかるプログラミング";
+        string str2, str3;
+
+        str2 = string.Copy(str);
+        Console.WriteLine("str2 = {0}", str2);
+
+        str3 = str2;
+        Console.WriteLine("str3 = {0}", str3);
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs0805.gif" ALIGN="left">
+str2はstring.Copyメソッドを利用してstrをコピーしています。<P>
+str3は、str2の参照を代入しています。結果としてはこれでもコピーと同じですね。
+<P>
+<BR CLEAR="left"><BR>
+文字列を比較するには、CompareToメソッドを利用します。
+<PRE>
+public int CompareTo(
+   string strB
+);
+</PRE>
+このオブジェクトとstrBとを比較します。同じなら0が返されます。このオブジェクトがstrBより小さい場合負の値が、大きいなら正の値が返されます。<P>
+<PRE>
+// string06.cs
+
+using System;
+
+class string06
+{
+    public static void Main()
+    {
+        string str1 = "abc", str2 = "abc", str3 = "bcd", str4 = "5";
+        str2 = "abc";
+
+        Console.WriteLine(str1.CompareTo(str2));
+        Console.WriteLine(str1.CompareTo(str3));
+        Console.WriteLine(str1.CompareTo(str4));
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs0806.gif" ALIGN="left">
++/-は、辞書式に並べた時の位置と考えてもよいですね。
+<P>
+<BR CLEAR="left"><BR>
+stringクラスには、CompareToメソッドと同じ働きをする静的メソッドもあります。
+<PRE>
+public static int Compare(
+   string strA,
+   string strB
+);
+</PRE>
+strAとstrBが等しいときは0,strAが大きいときは正、小さいときは負の値を返します。
+<PRE>
+// string07.cs
+
+using System;
+
+class string07
+{
+    public static void Main()
+    {
+        string str1 = "abc", str2 = "abc", str3 = "bcd", str4 = "5";
+
+        Console.WriteLine(string.Compare(str1, str2));
+        Console.WriteLine(string.Compare(str1, str3));
+        Console.WriteLine(string.Compare(str1, str4));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0807.gif" ALIGN="left">
+結果は、string06.csの時と同じです。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_07.htm">Previous Chapter</A>]
+[<A HREF="cs_09.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 11/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

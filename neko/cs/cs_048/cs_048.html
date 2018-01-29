@@ -1,0 +1,155 @@
+<HTML>
+<!--        cs_48.htm        -->
+<!--        2006/09/23       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４８章 もうちょっとまともなイベントの例
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、表題のごとくもうちょっとまともなイベントのプログラムを作ります。
+<P>
+<BR CLEAR="left"><BR>
+その前に、ConsoleクラスのKeyAvailableプロパティについて解説します。<P>
+このプロパティは、C#2.0から導入されたものです。
+<PRE>
+public static bool KeyAvailable { get; }
+</PRE>
+staticなプロパティなので、Console.KeyAvailableの形で使えます。<P>
+入力されたキーがストリームに存在するときはtrue、それ以外の時はfalseを返します。
+getアクセッサしかないので、自分で値を設定することはできません(当たり前ですが・・)。<P>
+また、Consoleクラスには、ReadKeyメソッドがあります。
+<PRE>
+public static ConsoleKeyInfo ReadKey (
+	bool intercept
+)
+public static ConsoleKeyInfo ReadKey ()
+</PRE>
+オーバーロードされた２つのバージョンがあります。<P>
+これは、ユーザーの押したキーを取得します。<P>
+引数なしバージョンの方は、押されたキーをコンソールに表示します。<P>
+引数付きバージョンでは、これがfalseなら画面に表示し、trueなら表示しません。
+(MSDNの日本語版の説明は逆になっているので注意)<P>
+戻り値はConsoleKeyInfo構造体型となっています。構造体については後の章で解説しますが、取り扱いはクラスとほとんど同じです。<P>
+この構造体はC#2.0から追加されました。<P>
+この構造体には３つのpublicなプロパティが存在します。それは、Key,KeyChar,Modifiers
+です。
+<PRE>
+public ConsoleKey Key { get; }
+</PRE>
+押されたConsoleKeyの値を返します。これは、ConsoleKeyは列挙体で、System名前空間で定義されています。F1とかEnterキーなども定義されています。列挙体についてはすでに<A HREF="cs_19.htm">第１９章</A>でやっていますね。
+<PRE>
+public char KeyChar { get; }
+</PRE>
+ユーザーが押したキーのUNICODE文字を返します。<P>
+<PRE>
+public ConsoleModifiers Modifiers { get; }
+</PRE>
+ConsoleModifiersも列挙体です。メンバは、Alt,Control,Shiftの３つです。<P>
+Modifiersプロパティを調べると、Altキー、コントロールキー、シフトキーの押下状態が
+わかります。<P>
+さて、これで押されたキーがわかりますね。<P>
+この章のサンプルプログラムでは、無限ループ内でキーが押されたかどうかを調べ、キーが押されたなら、イベントを送信します。イベントが送信されたら、押されたキーを画面に表示します。xキーが押されたらプログラムを終了します。シフトキーやコントロールキーやAltキーを同時に押されたかどうかも検出します。<P>
+では、サンプルのプログラムを見てみましょう。
+<PRE>
+// event02.cs
+
+using System;
+
+delegate void EventHandler(ConsoleKeyInfo c);
+
+class Key
+{
+    public event EventHandler key;
+
+    public void OnKey(ConsoleKeyInfo k)
+    {
+        if (key != null)
+        {
+            key(k);
+        }
+    }
+}
+
+
+class event02
+{
+    static void Hit(ConsoleKeyInfo ki)
+    {
+        string strMod = "";
+
+        if ((ki.Modifiers & ConsoleModifiers.Alt) != 0)
+            strMod += "Alt+";
+        if ((ki.Modifiers & ConsoleModifiers.Shift) != 0)
+            strMod += "Shift+";
+        if ((ki.Modifiers & ConsoleModifiers.Control) != 0)
+            strMod += "Control+";
+
+        Console.WriteLine("押されたキーは[ {0}{1} ]です", strMod, ki.Key);
+    }
+
+    public static void Main()
+    {
+        ConsoleKeyInfo cki;
+
+        Key k = new Key();
+
+        k.key += new EventHandler(Hit);
+
+        Console.WriteLine("xで終了します");
+
+        while (true)
+        {
+            if (Console.KeyAvailable)
+            {
+                cki = Console.ReadKey(true);
+                if (cki.KeyChar == 'x')
+                    break;
+                k.OnKey(cki);
+            }
+        }
+    }
+}
+</PRE>
+<A HREF="cs_47.htm">前章</A>と異なり、イベントにより実行されるメソッドがMainメソッドのあるクラスに存在します。<P>
+Mainメソッドのwhileループ内で、Console.KeyAvailableがtrueになったら、
+Console.ReadKeyメソッドを読んでConsoleKeyInfoを取得します。<P>
+もし、押されたキーがxならbreak文でループを抜けてプログラムは終了です。<P>
+それ以外の時は、OnKeyでイベントを発生させます。この時、引数ckiを持っていることに注意してください。<P>
+イベントハンドラのデリゲート宣言でも、ConsoleKeyInfo型引数を持っています。<P>
+イベント送信クラスであるKeyクラスもよく見てください。<P>
+public event EventHandler key;のイベントオブジェクトの宣言は前章と同じです。<P>
+次のOnKeyメソッドは、ConsoleKeyInfo型の引数kを持っています。<P>
+この引数は、key(k);というようにイベントオブジェクトに渡されます。<P>
+イベントが発生したら、Hitメソッドが実行されます。これは、Mainメソッドのあるクラスのメンバです。<P>
+Hitメソッドでは、渡されたConsoleKeyInfoのModifiersプロパティを調べ、Alt,Shift,Controlキーが押下されていたら、文字列strModに押下状態を追加していきます。<P>
+そして、押されたキーを表示します。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs4801.gif" ALIGN="left">
+「押されたキーは[ 244 ]です」とあるのは「半角/全角」キーを押したときです。
+<P>
+<BR CLEAR="left"><BR>
+
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_47.htm">Previous Chapter</A>]
+[<A HREF="cs_49.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 23/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

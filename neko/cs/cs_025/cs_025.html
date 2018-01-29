@@ -1,0 +1,117 @@
+<HTML>
+<!--        cs_25.htm        -->
+<!--        2006/08/31       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２５章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２５章 メソッドのオーバーロード
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッドの名前と引数をメソッドのシグニチャといいます。シグニチャが
+異なれば、同じクラスに複数のメソッドが存在可能です。これをメソッドの
+オーバーロードといいます。コンストラクタも
+同一の名前なのに、引数が異なれば複数存在できましたね。
+<P>
+<BR CLEAR="left"><BR>
+メソッドのオーバーロードは簡単です。同じ名前で、引数の型とか、個数を変えればよいわけです。<P>
+簡単な例を見てみましょう。
+<PRE>
+// overload01.cs
+
+using System;
+
+class Sq
+{
+    public static int sq(int x)
+    {
+        Console.WriteLine("intバージョンが呼ばれました");
+        return x * x;
+    }
+    public static double sq(double x)
+    {
+        Console.WriteLine("doubleバージョンが呼ばれました");
+        return x * x;
+    }
+}
+
+class overload01
+{
+    public static void Main()
+    {
+        Console.WriteLine("{0}の２乗は{1}です", 5, Sq.sq(5));
+        Console.WriteLine("{0}の２乗は{1}です", 0.5, Sq.sq(0.5));
+    }
+}
+</PRE>
+Sqクラスには２つのsqメソッドがあります。一つはint型の引数を１つ持ち、もう一つはdouble型の引数を１つ持っているメソッドです。シグニチャが異なるのでオーバーロード
+できます。<P>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs2501.gif" ALIGN="left">
+引数の型の違いにより、呼ばれるメソッドのバージョンが異なることがわかります。
+<P>
+<BR CLEAR="left"><BR>
+オーバーロードされたメソッドは今までも何回も使ってきました。Console.WriteLineメソッドが代表的ですね。<P>
+次も簡単な例です。引数の個数が異なるオーバーロードの例です。
+<PRE>
+// overload02.cs
+
+using System;
+
+class MyClass
+{
+    public int add(int x)
+    {
+        return x;
+    }
+    public int add(int x, int y)
+    {
+        return x + y;
+    }
+    public int add(int x, int y, int z)
+    {
+        return x + y + z;
+    }
+}
+
+class overload02
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+        Console.WriteLine("{0} = {1}", 10, mc.add(10));
+        Console.WriteLine("{0} + {1} = {2}", 10, 20, mc.add(10, 20));
+        Console.WriteLine("{0} + {1} + {2} = {3}", 10, 20, 30,
+            mc.add(10, 20, 30));
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs2502.gif" ALIGN="left">
+これは、簡単ですね。<P>ところでもっとたくさんの
+引数をもつ(何個有るかわからない)addメソッドを作るにはどうしたらよいのでしょうか。
+何百個、何千個ものオーバーロードメソッドを用意しなくてはならないのでしょうか?
+<P>
+<BR CLEAR="left">
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_24.htm">Previous Chapter</A>]
+[<A HREF="cs_26.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 31/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

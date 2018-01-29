@@ -1,0 +1,129 @@
+<HTML>
+<!--        cs_12.htm        -->
+<!--        2006/08/17       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第１２章 string型とchar型　その５
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+char型は.NET型でSystem.Char型であることは、すでに<A HREF="cs_08.htm">第８章</A>で解説しました。char型は、構造体で定義されています。C#の構造体は、C/C++の構造体とは全く異なるものなので注意してください。どちらかというと扱いはクラスに似ています。<P>
+<BR CLEAR="left"><BR>
+静的メンバは
+<PRE>
+構造体名.メンバ名
+</PRE>
+でアクセスできるのはクラスと同じです。この章では実際のプログラミングで役立ちそうな静的メソッドをいくつか紹介します。Is何とかメソッドが多数定義されています。
+<PRE>
+public static bool IsDigit (
+    char c
+)
+</PRE>
+cが10進の数字かどうかを調べます。そうならtrue、違うならfalseが返されます。<P>
+<PRE>
+public static bool IsLetter (
+    char c
+)
+</PRE>
+cがアルファベット文字かどうかを調べます。
+<PRE>
+public static bool IsLower (
+    char c
+)
+</PRE>
+cが小文字かどうかを調べます。
+<PRE>
+public static bool IsUpper (
+    char c
+)
+</PRE>
+cが大文字かどうかを調べます。
+<PRE>
+public static bool IsNumber (
+    char c
+)
+</PRE>
+cが数字かどうかを調べます。
+<PRE>
+public static bool IsPunctuation (
+    char c
+)
+</PRE>
+cが区切り文字かどうかを調べます。
+<PRE>
+public static bool IsSeparator (
+    char c
+)
+</PRE>
+cが区切り文字かどうかを調べます。あれ、IsPunctuationとどう違うの?
+サンプルを見ると少しわかると思います。
+<PRE>
+public static bool IsSymbol (
+    char c
+)
+</PRE>
+cがシンボルかどうかを調べます。<P>
+これらのメソッドには、
+<PRE>
+IsXXXX(string s, int index)
+</PRE>
+という別バージョンが存在します。文字列sの文字位置index(先頭文字が0)の文字種について調べます。<P>
+では、サンプルを見てみましょう。
+<PRE>
+// char01.cs
+
+using System;
+
+class char01
+{
+    public static void Main()
+    {
+        char a = '1', b = '=', c = 'c';
+
+        Console.WriteLine("a は制御文字か--{0}", char.IsControl(a));
+        Console.WriteLine("a は10進の数字か---{0}", char.IsDigit(a));
+        Console.WriteLine("a はアルファベット文字か---{0}", char.IsLetter(a));
+        Console.WriteLine("a は数字か---{0}", char.IsNumber(a));
+        Console.WriteLine("b は算術記号などの記号か---{0}", char.IsSymbol(b));
+        Console.WriteLine("c は大文字か---{0}", char.IsUpper(c));
+        Console.WriteLine();
+
+        string str = "ab, 01+=";
+        Console.WriteLine(char.IsLower(str, 0));
+        Console.WriteLine(char.IsLetter(str, 1));
+        Console.WriteLine(char.IsPunctuation(str, 2));
+        Console.WriteLine(char.IsSeparator(str, 3));
+        Console.WriteLine(char.IsDigit(str, 4));
+        Console.WriteLine(char.IsNumber(str, 5));
+        Console.WriteLine(char.IsSymbol(str, 6));
+        Console.WriteLine(char.IsSymbol(str, 7));
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs1201.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_11.htm">Previous Chapter</A>]
+[<A HREF="cs_13.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 17/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

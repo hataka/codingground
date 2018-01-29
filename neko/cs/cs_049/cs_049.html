@@ -1,0 +1,233 @@
+<HTML>
+<!--        cs_49.htm        -->
+<!--        2006/09/24       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４９章 超簡単アニメーション
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、イベントを利用した超簡単アニメーションを作ってみます。
+(アニメーションと言えるかどうかははなはだ疑問ですが・・・)
+<P>
+<BR CLEAR="left"><BR>
+疑似アニメーションを実現するには、カーソル位置を自由に指定できなくてはいけません。
+<P>
+C#2.0では、Consoleクラスに多数のメンバが追加されました。<P>
+この中に、カーソルに関連したプロパティがいくつかあります。<P>
+<PRE>
+public static int CursorLeft { get; set; }
+</PRE>
+カーソルの列位置を取得または設定します。
+<PRE>
+public static int CursorTop { get; set; }
+</PRE>
+カーソルに行位置を取得または設定します。<P>
+また、いっぺんにカーソル位置を設定するメソッドも用意されています。
+<PRE>
+public static void SetCursorPosition (
+	int left,
+	int top
+)
+</PRE>
+leftはカーソル位置の列、topは行の位置を指定します。<P>
+コンソールウインドウの幅とか高さを調べたり設定するプロパティも追加されました。
+<PRE>
+public static int WindowWidth { get; set; }
+public static int WindowHeight { get; set; }
+</PRE>
+コンソールウィンドウ領域の幅、高さを取得または設定します。<P>
+カーソルを可視状態かどうかを取得、設定するプロパティもあります。
+<PRE>
+public static bool CursorVisible { get; set; }
+</PRE>
+カーソルを見える状態にするにはtrue,見えなくするにはfalseにします。<P>
+取得する場合も同じです。<P>
+コンソールの前景色(文字色)を取得、設定するにはForegroundColorプロパティを使います。
+<PRE>
+public static ConsoleColor ForegroundColor { get; set; }
+</PRE>
+ConsoleColorは、System名前空間で定義されているコンソールの色(前景・背景)を表す
+列挙体です。メンバと実際の値は次のようになっています。<P>
+<TABLE BORDER="1">
+<TH BGCOLOR="#FFFF00">メンバ名</TH><TH BGCOLOR="#FFFF00">意味</TH><TH BGCOLOR="#FFFF00">値</TH><TR>
+<TD>Black</TD><TD>黒</TD><TD>0</TD><TR>
+<TD>Blue</TD><TD>青</TD><TD>9</TD><TR>
+<TD>Cyan</TD><TD>青緑(シアン)</TD><TD>11</TD><TR>
+<TD>DarkBlue</TD><TD>ダークブルー</TD><TD>1</TD><TR>
+<TD>DarkCyan</TD><TD>濃い青緑</TD><TD>3</TD><TR>
+<TD>DarkGray</TD><TD>濃い灰色</TD><TD>8</TD><TR>
+<TD>DarkGreen</TD><TD>濃い緑</TD><TD>2</TD><TR>
+<TD>DarkMagenta</TD><TD>濃い赤紫</TD><TD>5</TD><TR>
+<TD>DarkRed</TD><TD>濃い赤</TD><TD>4</TD><TR>
+<TD>DarkYellow</TD><TD>黄土色</TD><TD>6</TD><TR>
+<TD>Gray</TD><TD>灰色</TD><TD>7</TD><TR>
+<TD>Green</TD><TD>緑</TD><TD>10</TD><TR>
+<TD>Magenta</TD><TD>赤紫</TD><TD>13</TD><TR>
+<TD>Red</TD><TD>赤</TD><TD>12</TD><TR>
+<TD>White</TD><TD>白</TD><TD>15</TD><TR>
+<TD>Yellow</TD><TD>黄色</TD><TD>14</TD>
+</TABLE><P>
+コンソール画面をクリアするには、Clearメソッドを使います。
+<PRE>
+public static void Clear ()
+</PRE>
+注意すべき点は、このメソッドを実行するとカーソル位置が(0,0)に戻ってしまうことです。<P>
+このくらいConsoleクラスのメンバを知っていれば、簡単アニメーションが作れます。<P>
+繰り返し構文を使って、画面クリアをしてカーソル位置を少しずつずらしながら
+文字を表示します。これでアニメーションができます。<P>
+しかし、単純にwhile文で繰り返すと速過ぎて見えません。あるいは画面が極端にちらつきます。そこで必ずしも褒められた方法ではありませんが、スレッドを適当な時間休ませます。スレッドの詳しい説明は後の章で行います。<P>
+スレッドを休ませるには、ThreadクラスのSleepメソッドを使います。Threadクラスは
+System.Threading名前空間で定義されています。
+<PRE>
+public static void Sleep (
+	int millisecondsTimeout
+)
+</PRE>
+millisecondsTimeoutに、スレッドをブロックするミリセコンドを指定します。<P>
+では、さっそくプログラムを見てみましょう。
+<PRE>
+// event03.cs
+
+using System;
+using System.Threading;
+
+delegate void MyEventHandler(int x, int y, ConsoleColor c);
+
+class MyEvent
+{
+    public event MyEventHandler myevent;
+    
+    public void OnMyEvent(int x, int y, ConsoleColor c)
+    {
+        if (myevent != null)
+            myevent(x, y, c);
+    }
+}
+
+
+class ShowCircle
+{
+    public void show(int x, int y, ConsoleColor c)
+    {
+        Console.Clear();
+        Console.CursorLeft = x;
+        Console.CursorTop = y;
+        Console.ForegroundColor = c;
+        Console.Write("●");
+    }
+}
+
+class event03
+{
+    public static void Main()
+    {
+        int x = 0, y = 0;
+        bool dx = true, dy = true;
+        ConsoleColor c = ConsoleColor.Black;
+
+        MyEvent me = new MyEvent();
+        ShowCircle sc = new ShowCircle();
+
+        me.myevent += new MyEventHandler(sc.show);
+
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            Thread.Sleep(30);
+             me.OnMyEvent(x, y, c);
+            if (Console.KeyAvailable)
+                break;
+            if (dx)
+            {
+                x++;
+                if (x > Console.WindowWidth - 2)
+                {
+                    x = Console.WindowWidth - 2;
+                    dx = false;
+                    c++;
+                    if (c > ConsoleColor.Yellow)
+                        c = ConsoleColor.Black;
+                }
+            }
+            else
+            {
+                x--;
+                if (x < 0)
+                {
+                    x = 0;
+                    dx = true;
+                }
+            }
+
+            if (dy)
+            {
+                y++;
+                if (y > Console.WindowHeight - 1)
+                {
+                    y = Console.WindowHeight - 1;
+                    dy = false;
+                }
+            }
+            else
+            {
+                y--;
+                if (y < 0)
+                {
+                    y = 0;
+                    dy = true;
+                }
+            }
+
+        }
+    }
+}
+</PRE>
+MyEventHandlerは、イベントハンドラのデリゲートです。<P>
+MyEventクラスがイベントを送信するクラスです。型どおりに書いています。<P>
+このクラスのOnMyEventメソッドが呼ばれるとイベントが送信されます。
+引数を３つ持っている点に注意してください。<P>
+ShowCircleクラスは、画面をクリアして指定の位置に●を表示するクラスです。
+showメソッドが実際に●を表示するメソッドです。<P>
+event03クラスがMainメソッドを有するクラスです。<P>
+Mainメソッドの中のwhileループを見てください。<P>
+これは条件式が常にtrueなので、無限ループになっています。これを抜け出すのは、
+ユーザーが何かキーを打って、KeyAvailableプロパティがtrueになる時です。<P>
+最初に、スレッドを30ミリ秒休ませます。<P>
+そして、OnMyEventメソッドを呼んでイベントを送信します。x,yはカーソル位置、cは前景色です。この色で●が描画されます。<P>
+次にxやyの値を変更しておきます。<P>
+dxがtrueの時はxの値を１つ増やします。xの値が、Console.WindowWidth - 2を超えるときは、xの値をConsole.WindowWidth - 2にして、dxをfalseにします。カーソル位置のx座標は0から始まるので、右端はConsole.WindowWidth - 1となります。しかし、この座標は文字単位なので、コンソールウィンドウの幅によっては中途半端なことになる場合があります。
+安全を見越してConsole.WindowWidth - 2を採用しています。<P>
+そして、dxをfalseにして●の進むx方向を左向きにします。<P>
+この時、前景色の色を変更しています。色が白にならないようにしている点に注意してください。<P>
+dxがfalseの時は、xの値を１減らしています。xが負になってしまったときは、xの値を0にして、dxをtrueにしています。<P>
+y方向についても同様のことをしています。<P>
+これで、コンソール画面を●が動き回るはずです。右の壁に当たるごとに●の色も変わります。何かキーを打つとプログラムが終了します。<P>
+<IMG SRC="../img/cs4901.gif" ALIGN="left">
+単純なアニメーションですが、見ていると結構飽きません。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_48.htm">Previous Chapter</A>]
+[<A HREF="cs_50.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 24/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

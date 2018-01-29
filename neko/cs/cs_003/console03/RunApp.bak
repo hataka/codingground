@@ -1,0 +1,62 @@
+<package>
+<job id="console03">
+<script language="VBScript">
+    Option Explicit
+	Dim shell
+	
+	Set shell = CreateObject("WScript.Shell")
+	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+
+	if FileExists("console03.exe") then
+		shell.Run "cmd.exe /k, console03.exe",1
+	elseif FileExists("Debug\console03.exe") then
+		shell.Run "cmd.exe /k, Debug\console03.exe",1
+	elseif FileExists("\bin\Release\console03.exe") then
+		shell.Run "cmd.exe /k, bin\Release\console03.exe",1
+	end if
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+</script>
+</job>
+<XmlTreeMenu>
+</XmlTreeMenu>
+<project>
+</project>
+<ASX version = "3.0">
+  <ABSTRACT>Playlist for 8/10/2006 1:09 am</ABSTRACT>
+  <TITLE>ATTERBERG: Piano Concerto in B-flat minor, Op.37</TITLE>
+  <AUTHOR>Andersson/Gavle Symphony Orchestra; Smith, pno</AUTHOR>
+  <COPYRIGHT>STERLING: 1034</COPYRIGHT>
+  <Logo href = "http://servername/path/icon.jpg" style = "ICON" />
+  <Logo href = "http://servername/path/mark.jpg" style = "MARK" />
+  <Base href = "f:\my music\kingfm\060810\" />
+<Repeat Count = "0">
+<Entry>
+  <Abstract>Playlist for 8/10/2006 1:09 am</Abstract>
+  <Title>ATTERBERG: Piano Concerto in B-flat minor, Op.37</Title>
+  <Author>Andersson/Gavle Symphony Orchestra; Smith, pno</Author>
+  <Copyright>STERLING: 1034</Copyright>
+  <ref href = "f:\my music\kingfm\060810\20060810170109.wma" />
+  <!-- EndTime Value = "00:39:34.0" / -->
+  <StartTime Value ="00:05:22.0" />
+  <Duration value = "00:34:12" />
+  <!-- File Name:  ATTERBERG-Piano_Concerto_in_B-flat_minor_Op.37.wax  -->
+  <!-- PARAM Name = "HTMLView" VALUE = ""/ -->
+  <Banner href="F:\images\MoreInfo_s1.jpg">
+      <MoreInfo href = "" />
+      <Abstract>This is the description for this clip.</Abstract>
+  </Banner>
+</Entry>
+</Repeat>
+</ASX>
+</package>

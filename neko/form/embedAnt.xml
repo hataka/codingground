@@ -1,0 +1,755 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<project name="Neko-form from GitHub" default="usage" basedir=".">
+	<description>Embed Code and Copy Temporary Dir and build  with apache ant.</description>
+	<property name="appdata.dir" location="F:/ant/appdata"/>
+	<property name="config.dir" value="${appdata.dir}/config" />
+	
+	<import file="${config.dir}/properties.xml" />
+	<!-- import file="${config.dir}/jnlp.xml" /-->
+
+	<!-- =================================================================== -->
+	<!-- properties                                     -->
+	<!-- =================================================================== -->
+	<property environment="env" />
+	<dirname property="ant.file.dir" file="${ant.file}"/>
+	<property name="appname" value="${ant.project.name}"/>
+	<property name="target" value="${appname}"/>
+	<property name="exe" value="${target}.exe"/>
+	<property name="web.dir" value="${web.server.root}/f/codingground/java/Narshorn/"/> 
+	<property name="src.name" value="${target}.cs"/>
+	<property name="src.path" value="${basedir}/${src.name}"/>
+	<property name="src.ext" value="cs"/>
+	<property name="src.body" value="${target}"/>
+	<property name="src.dir" value="${basedir}"/>
+
+	<property name="working.dir" value="F:\codingground\java\code-sjavap2\practices\practice02-02"/>
+	<property name="web.document.root" value="${sdk.documentRoot}"/>
+	<property name="web.server.root" value="${sdk.serverRoot}"/>
+
+	<property name="sdk.path" value="${env.VS100COMNTOOLS}..\IDE\VCSExpress.exe"/>
+	<basename property="sdk.name" file="${sdk.path}"/>
+	<property name="sdk.version" value="10.0"/>
+	<property name="sdk.compiler" value="${sdk.path}" />
+	<property name="sdk.net.version" value="3.5"/>
+
+	<property name="fd.CurPath" value="${env.fd.CurPath}" />
+
+	<property name="phpcode"><![CDATA["
+			echo('hello World!');
+	"]]></property>
+
+	<property name="hello.html"><![CDATA[
+			<center><font color="red"><h1>こんにちわ hello World!</h1></font></center>
+	]]></property>
+ 
+
+	<!-- =================================================================== -->
+  <!-- condition definition                                     -->
+  <!-- =================================================================== -->
+	<available file="${basedir}/${exe}" property="have.exe" />
+	<available file="${sln}" property="have.sln" />
+	<available file="${basedir}/build.bat" property="build.bat" />
+	<available file="${basedir}/RunApp.wsf" property="RunApp.wsf" />
+	<available file="${basedir}/${target}.ppr" property="${target}.ppr" />
+	<available file="${basedir}/Sakura_MultiOpen.wsf" property="Sakura_MultiOpen.wsf" />
+	<available file="${basedir}/RunWsScript.wsf" property="RunWsScript.wsf" />
+	<available file="${basedir}/${target}.fdp" property="${target}.fdp" />
+  <condition property="is_windows_XP">
+        <os name="Windows XP"/>
+  </condition>
+  <!-- =================================================================== -->
+  <!-- initialization                                     -->
+  <!-- =================================================================== -->
+	<target name="init">
+		<script language="javascript"> <![CDATA[
+			//importPackage(java.io);
+			var File = java.io.File;
+			eval(''+project.getProperty("common_lib"));
+ 
+			var working_dir = project.getProperty("working.dir");
+			var document_root = project.getProperty("web.document.root");
+			var server_root = project.getProperty("web.server.root");
+			if(!file_exists(""+working_dir)){
+				working_dir = project.getProperty("ant.file.dir");
+			}
+			var site_dir = server_root + working_dir.replaceAll(document_root, "");
+			site_dir = site_dir.replace(/\\/g,"/");
+			project.setProperty("web.dir", site_dir);
+			var src_path = project.getProperty("src.path");
+			if(!file_exists(""+src_path)){
+				src_path = working_dir + "\\" + project.getProperty("src");
+			}
+			project.setProperty("src.path", src_path);
+			//list_environment();
+		]]></script>
+		<!--antcall target="echo-properties" / -->
+		<echo message="sit.dir = ${web.dir}" />
+	</target>
+  <target name="open-appdata-folder">
+		<exec executable="explorer.exe" spawn="true">
+			<arg value="${appdata.dir}" />
+		</exec>
+  </target>
+
+	
+	<property name="github.path" value="https://raw.githubusercontent.com/hataka/Hello-World/master/neko/form/"/>
+	<target name="form02.cs">
+ 		<get 
+			src="${github.path}form_001/form02/form02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="form03.cs">
+ 		<get 
+			src="${github.path}form_001/form03/form03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="formprop01.cs">
+ 		<get 
+			src="${github.path}form_002/formprop01/formprop01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="formprop02.cs">
+ 		<get 
+			src="${github.path}form_002/formprop02/formprop02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="formprop03.cs">
+ 		<get 
+			src="${github.path}form_002/formprop03/formprop03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="paintargs01.cs">
+ 		<get 
+			src="${github.path}form_003/paintargs01/paintargs01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="onpaint01.cs">
+ 		<get 
+			src="${github.path}form_004/onpaint01/onpaint01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="paintargs02.cs">
+ 		<get 
+			src="${github.path}form_004/paintargs02/paintargs02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="drawstring01.cs">
+ 		<get 
+			src="${github.path}form_005/drawstring01/drawstring01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="drawstring02.cs">
+ 		<get 
+			src="${github.path}form_006/drawstring02/drawstring02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="drawstring03.cs">
+ 		<get 
+			src="${github.path}form_007/drawstring03/drawstring03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="application01.cs">
+ 		<get 
+			src="${github.path}form_008/application01/application01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="messagebox01.cs">
+ 		<get 
+			src="${github.path}form_009/messagebox01/messagebox01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="scroll01.cs">
+ 		<get 
+			src="${github.path}form_010/scroll01/scroll01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="button01.cs">
+ 		<get 
+			src="${github.path}form_011/button01/button01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="button02.cs">
+ 		<get 
+			src="${github.path}form_012/button02/button02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="button03.cs">
+ 		<get 
+			src="${github.path}form_013/button03/button03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="controlcollection01.cs">
+ 		<get 
+			src="${github.path}form_015/controlcollection01/controlcollection01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="imgbtn01.cs">
+ 		<get 
+			src="${github.path}form_016/imgbtn01/imgbtn01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="backgroundimage01.cs">
+ 		<get 
+			src="${github.path}form_017/backgroundimage01/backgroundimage01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="menu01.cs">
+ 		<get 
+			src="${github.path}form_018/menu01/menu01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="menu02.cs">
+ 		<get 
+			src="${github.path}form_019/menu02/menu02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="menu03.cs">
+ 		<get 
+			src="${github.path}form_020/menu03/menu03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="menu04.cs">
+ 		<get 
+			src="${github.path}form_021/menu04/menu04.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="menu05.cs">
+ 		<get 
+			src="${github.path}form_022/menu05/menu05.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="contextmenu01.cs">
+ 		<get 
+			src="${github.path}form_023/contextmenu01/contextmenu01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="contextmenu02.cs">
+ 		<get 
+			src="${github.path}form_024/contextmenu02/contextmenu02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="contextmenu03.cs">
+ 		<get 
+			src="${github.path}form_025/contextmenu03/contextmenu03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="contextmenu04.cs">
+ 		<get 
+			src="${github.path}form_026/contextmenu04/contextmenu04.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="menuselect01.cs">
+ 		<get 
+			src="${github.path}form_027/menuselect01/menuselect01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="textbox01.cs">
+ 		<get 
+			src="${github.path}form_028/textbox01/textbox01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="textbox02.cs">
+ 		<get 
+			src="${github.path}form_029/textbox02/textbox02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="isbn01.cs">
+ 		<get 
+			src="${github.path}form_030/isbn01/isbn01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="anchor01.cs">
+ 		<get 
+			src="${github.path}form_031/anchor01/anchor01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="dock01.cs">
+ 		<get 
+			src="${github.path}form_032/dock01/dock01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="label01.cs">
+ 		<get 
+			src="${github.path}form_033/label01/label01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="checkbox01.cs">
+ 		<get 
+			src="${github.path}form_034/checkbox01/checkbox01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="radio01.cs">
+ 		<get 
+			src="${github.path}form_035/radio01/radio01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="groupbox01.cs">
+ 		<get 
+			src="${github.path}form_036/groupbox01/groupbox01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="bmpchk01.cs">
+ 		<get 
+			src="${github.path}form_037/bmpchk01/bmpchk01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="threestate01.cs">
+ 		<get 
+			src="${github.path}form_038/threestate01/threestate01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="dialog01.cs">
+ 		<get 
+			src="${github.path}form_039/dialog01/dialog01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="dialog02.cs">
+ 		<get 
+			src="${github.path}form_040/dialog02/dialog02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="dialog03.cs">
+ 		<get 
+			src="${github.path}form_041/dialog03/dialog03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="modeless02.cs">
+ 		<get 
+			src="${github.path}form_043/modeless02/modeless02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="fontdialog01.cs">
+ 		<get 
+			src="${github.path}form_044/fontdialog01/fontdialog01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="colordlg01.cs">
+ 		<get 
+			src="${github.path}form_045/colordlg01/colordlg01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="key01.cs">
+ 		<get 
+			src="${github.path}form_046/key01/key01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="key02.cs">
+ 		<get 
+			src="${github.path}form_047/key02/key02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="mouse01.cs">
+ 		<get 
+			src="${github.path}form_048/mouse01/mouse01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="mouse02.cs">
+ 		<get 
+			src="${github.path}form_049/mouse02/mouse02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="mouse03.cs">
+ 		<get 
+			src="${github.path}form_050/mouse03/mouse03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="mouse04.cs">
+ 		<get 
+			src="${github.path}form_051/mouse04/mouse04.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="status01.cs">
+ 		<get 
+			src="${github.path}form_052/status01/status01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="status02.cs">
+ 		<get 
+			src="${github.path}form_053/status02/status02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="status03.cs">
+ 		<get 
+			src="${github.path}form_054/status03/status03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="status04.cs">
+ 		<get 
+			src="${github.path}form_055/status04/status04.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="status05.cs">
+ 		<get 
+			src="${github.path}form_056/status05/status05.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="status06.cs">
+ 		<get 
+			src="${github.path}form_057/status06/status06.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="statusstrip01.cs">
+ 		<get 
+			src="${github.path}form_058/statusstrip01/statusstrip01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="toolbar01.cs">
+ 		<get 
+			src="${github.path}form_059/toolbar01/toolbar01.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="toolbar02.cs">
+ 		<get 
+			src="${github.path}form_060/toolbar02/toolbar02.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+	<target name="toolbar03.cs">
+ 		<get 
+			src="${github.path}form_061/toolbar03/toolbar03.cs"
+    	 dest="${env.TEMP}\Main.cs"/>
+    <exec executable="csws.exe">
+      <arg value="${env.TEMP}\Main.cs" />
+    </exec>
+	</target>
+
+
+
+
+
+
+
+
+	
+	<target name="echo-properties">
+		<echoproperties>
+			<propertyset>
+				<propertyref prefix="os." />
+				<propertyref prefix="pack." />
+				<propertyref prefix="ant." />
+				<propertyref prefix="src." />
+				<propertyref prefix="web." />
+				<propertyref prefix="sdk." />
+				<propertyref prefix="lib." />
+				<propertyref prefix="fd." />
+			</propertyset>
+		</echoproperties>
+		<!--<antcall target="help" /> -->
+	</target>
+
+  <target name="help" depends="init">
+		<antcall target="echo-properties" />
+		<echo message=" available targets are:" />
+		<echo message="" />
+		<exec executable="cmd.exe" >
+	  	<arg value="/c" />
+	  	<arg value="ant" />
+	  	<arg value="-p" />
+		</exec>
+  </target>
+
+	<!-- =================================================================== -->
+  <!-- Help on usage													   -->
+  <!-- =================================================================== -->
+  <target name="usage">
+	<echo message="" />
+	<echo message="" />
+	<echo message="${name} Build file" />
+	<echo message="java version ${ant.java.version}" />
+	<echo message="-------------------------------------------------------------" />
+	<echo message="" />
+	<echo message=" available targets are:" />
+	<echo message="" />
+	<echo message="   build	 - compiles the source code (default)" />
+	<echo message="   run	   - execute the exsample" />
+	<echo message="   runscript - run script of the exsample" />
+	<!--
+	<echo message="   package   - generates the ${name}.jar file" />
+	-->
+	<echo message="   doxygen   - generates the doxygen documentation" />
+	<echo message="   clean	 - cleans up the directory" />
+	<echo message="   clear	 - delete all build files" />
+	<echo message="" />
+	<echo message=" See the comments inside the build.xml file for more details." />
+	<echo message="-------------------------------------------------------------" />
+	<echo message="" />
+	<echo message="" />
+  </target>
+  
+	<!-- =================================================================== -->
+	<property name="template.dir" value="F:\ant\appdata\Templates\Form01"/>
+	<property name="target.dir" value="F:\VCSharp\FormsApplication03"/>
+	<property name="target.name" value="FormsApplication03"/>
+
+	<target name="exec_ant_in_tempdir">
+		<!--echo message="${env.TEMP}"/-->
+ 		<echo message="${buildfile.code}"  
+			file="${env.TEMP}\build.xml" encoding="UTF-8"/>
+		<ant antfile="${env.TEMP}\build.xml" dir="${ant.file.dir}" target="sslib211.exe"/>
+	</target>
+
+	<target name="get from url">
+ 		<get 
+			src="https://raw.githubusercontent.com/hataka/hataka.github.io/master/swt.snippets8/Snippet003/Snippet3.java" 
+			dest="${env.TEMP}\Main.java"/>
+		<loadfile property="javacode" 
+						srcFile="${env.TEMP}\Main.java" encoding="utf-8" />
+		<echo message="${javacode}" />
+	</target>
+
+	<target name="download_run">
+ 		<get 
+			src="http://kahata.travel.coocan.jp//Music/CHRISTMAS_SET/CHRISTMAS_SET-Singphonic_Christmas.wma"
+    	 dest="${env.TEMP}\Main.wma"/>
+    <exec executable="explorer.exe">
+      <arg value="${env.TEMP}\Main.wma" />
+    </exec>
+	</target>
+</project>

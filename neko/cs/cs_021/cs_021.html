@@ -1,0 +1,137 @@
+<HTML>
+<!--        cs_21.htm        -->
+<!--        2006/08/27       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２１章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２１章 クラスにメソッドを追加してみよう
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッドは、クラスの動作を規定します。すでにMainメソッドは何回も作っていますね。
+<P>
+<BR CLEAR="left"><BR>
+最も簡単なメソッドは、引数も戻り値もとらないメソッドです。
+<PRE>
+void メソッド名()
+{
+    ...
+}
+</PRE>
+クラスの中で定義するには、これにアクセス修飾子(private, public, protectedなど)がつきます。また、静的なメソッドにはstaticキーワードをつけます。呼び出し型はフィールドと同じです。
+<PRE>
+オブジェクト名.メソッド名();//(インスタンスメソッドの場合)
+クラス名.メソッド名();//(静的メソッドの場合)
+</PRE>
+では、簡単な例を見てみましょう。
+<PRE>
+// method01.cs
+
+using System;
+
+class MyClass
+{
+    public void Show()
+    {
+        Console.WriteLine("Showメソッドが呼ばれました");
+    }
+}
+
+class method01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        mc.Show();
+    }
+}
+</PRE>
+MyClassクラスのメンバは、インスタンスメソッドのShowメソッドのみです。インスタンスメンバなので呼び出すには、クラスのインスタンスを生成しなくてはいけません。<P>
+Mainメソッドでは、new演算子によりMyClassクラスのインスタンスmcを生成しています。そして、mc.Show();でShowメソッドを呼び出しています。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2101.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+今度は、Showメソッドをpublicにして呼び出してみましょう。
+<PRE>
+// method02.cs
+
+using System;
+
+class MyClass
+{
+    public static void Show()
+    {
+        Console.WriteLine("Showメソッドが呼ばれました");
+    }
+}
+
+class method02
+{
+    public static void Main()
+    {
+        MyClass.Show();
+    }
+}
+</PRE>
+staticなメンバは、クラス名.メンバ名で呼び出せるので、MyClass.Show()で呼び出しを行っています。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2102.gif">
+<P>
+<BR CLEAR="left"><BR>
+Mainメソッドのあるクラスにも、当然メソッドを追加することができます。
+<PRE>
+// method03.cs
+
+using System;
+
+class method03
+{
+    public static void Main()
+    {
+        method03 m3 = new method03();
+        m3.Show1();
+
+        Show2();
+    }
+
+    void Show1()
+    {
+        Console.WriteLine("Show1が呼び出されました");
+    }
+
+    static void Show2()
+    {
+        Console.WriteLine("Show2が呼び出されました");
+    }
+}
+
+</PRE>
+Show2メソッドは、自分自身のクラスにいるので、単にShow2();で呼び出すことができます。もちろんmethod03.Show2();としてもかまいません。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2103.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_20.htm">Previous Chapter</A>]
+[<A HREF="cs_22.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 27/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,144 @@
+<HTML>
+<!--        cs_54.htm        -->
+<!--        2006/09/29       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５４章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５４章 CultureInfoクラス
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+CultureInfoクラスは、言語、国、地域、暦、慣習などを表します。
+<P>
+<BR CLEAR="left"><BR>
+前章までと関連深いのは暦です。<P>
+DateTime構造体のToStringメソッドの４つのオーバーロードバージョンのうち、
+２つはすでに前章までにやりました。残り２つは次のようなものです。
+<PRE>
+public string ToString (
+	string format,
+	IFormatProvider provider
+)
+public string ToString (
+	IFormatProvider provider
+)
+</PRE>
+fromatには、書式指定文字列を指定します。<P>
+providerには、CultureInfoクラスのインスタンスを指定します。<P>
+System.GlobalizationクラスはSystem.Globalizationu名前空間で定義されています。<P>
+CultureInfoクラスには、４つのオーバーロードされたコンストラクタがあります。
+<PRE>
+public CultureInfo (
+	int culture
+)
+public CultureInfo (
+	string name
+)
+public CultureInfo (
+	int culture,
+	bool useUserOverride
+)
+public CultureInfo (
+	string name,
+	bool useUserOverride
+)
+</PRE>
+cultureには、カルチャ識別子を指定します。<P>
+nameには、カルチャ名を指定します。<P>
+useUserOverrideは、trueでユーザーが選択したカルチャ設定、falseで規定のカルチャ
+設定となります。
+カルチャ名は、たとえば日本語-日本なら"ja-JP"、英語-米国なら"en-US"、英語-英国なら"en-GB"となります。
+これらについて、それぞれ識別子がついています。ja-Jpは0x0411、en-USは0x0409、en-GBは0x0809 
+といった具合です。必要に応じてMSDNのライブラリ等で調べてみてください。<P>
+では、簡単なサンプルを見てみましょう。
+<PRE>
+// culture01.cs
+
+using System;
+using System.Globalization;
+
+class culture01
+{
+    public static void Main()
+    {
+        CultureInfo ci;
+        DateTime now = System.DateTime.Now;
+
+        string[] strcul = {
+            "ja-JP", "en-US", "de-DE","zh-CN"};
+
+        for (int i = 0; i < strcul.Length; i++)
+        {
+            ci = new CultureInfo(strcul[i]);
+            Console.WriteLine("{0}:{1}", strcul[i], now.ToString("F", ci));
+            Console.WriteLine("{0}:{1}", strcul[i], now.ToString("MMMM dd (dddd)", ci));
+            Console.Write("\n");
+        }
+    }
+}
+</PRE>
+de-DEはドイツ語-ドイツ、zh-CNは中国語-中国です。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5401.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+日本語表示の場合、西暦ではなく元号で表示したい場合も多いと思われます。<P>
+CultureInfoクラスには、DateTimeFormatプロパティがあります。このプロパティは
+このクラスのDateTimeFormatInfo型の値を取得設定します。<P>
+DateTimeFormatInfoクラスには、Calendarプロパティを持っており、カルチャで使用する
+暦の取得、設定を行います。<P>
+このCalendarプロパティに日本語の暦を設定すれば、元号表示ができます。うまい具合に
+JapaneseCalendarクラスというのがあります。このインスタンスを先ほどのCalendarプロパティに
+設定すればよいことになります。
+<PRE>
+CultureInfo ci = new CultureInfo("ja-JP");
+ci.DateTimeFormat.Calendar = new JapaneseCalendar();
+</PRE>
+と、いうような感じになります。<P>
+では、サンプルを見てみましょう。
+<PRE>
+// calendar01.cs
+
+using System;
+using System.Globalization;
+
+class calendar01
+{
+    public static void Main()
+    {
+        CultureInfo ci = new CultureInfo("ja-JP");
+        DateTime dt = DateTime.Now;
+
+        ci.DateTimeFormat.Calendar = new JapaneseCalendar();
+
+        Console.WriteLine(dt.ToString("F", ci));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5402.gif" ALIGN="left">
+年が元号で表示されていますね。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_53.htm">Previous Chapter</A>]
+[<A HREF="cs_55.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 29/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

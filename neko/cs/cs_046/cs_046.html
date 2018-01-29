@@ -1,0 +1,94 @@
+<HTML>
+<!--        cs_46.htm        -->
+<!--        2006/09/21       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４６章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４６章 デリゲートをマルチキャストする
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+前章でも書いたように、デリゲートには複数のメソッドを登録することができます。
+これをデリゲートのマルチキャストといいます。ただし、マルチキャストできるのは
+戻り値がvoid型の時のみです。
+<P>
+<BR CLEAR="left"><BR>
+マルチキャストする方法は簡単です。デリゲートのインスタンスに+=演算子で別のデリゲートのインスタンスを加えます。-=演算子で取り除くこともできます。<P>
+では、サンプルを見てみましょう。
+<PRE>
+// multicast01.cs
+
+using System;
+
+delegate void MD();
+
+class multicast01
+{
+    void show1()
+    {
+        Console.WriteLine("show1です");
+    }
+    void show2()
+    {
+        Console.WriteLine("show2です");
+    }
+    void show3()
+    {
+        Console.WriteLine("show3です");
+    }
+    public static void Main()
+    {
+        multicast01 m = new multicast01();
+
+        MD md1 = new MD(m.show1);
+        MD md2 = new MD(m.show2);
+        MD md3 = new MD(m.show3);
+
+        MD md;
+        md = md1;
+        md += md2;
+        md += md3;
+        md();
+
+        Console.WriteLine("----------");
+        md -= md2;
+        md();
+
+        Console.WriteLine("----------");
+        md -= md1;
+        md();
+
+        Console.WriteLine("----------");
+        md += md3;
+        md += md3;
+        md();
+    }
+}
+</PRE>
+サンプルからわかるように、メソッドを重複して登録することもできます。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs4601.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_45.htm">Previous Chapter</A>]
+[<A HREF="cs_47.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 21/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

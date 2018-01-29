@@ -1,0 +1,106 @@
+<HTML>
+<!--        cs_53.htm        -->
+<!--        2006/09/28       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５３章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５３章 DateTime構造体 その２
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+DateTime構造体の書式指定文字のカスタム書式について解説します。
+<P>
+<BR CLEAR="left"><BR>
+dとddは日にちを表します。このうちdは１桁の日にちは１桁で表します。ddは、
+１桁の日にちも２桁で表します(02とか03など)。<P>
+dddとddddは曜日を表します(dddは省略名)。現在のカルチャに依存します。(カルチャについては後の章で解説します。)<P>
+fを単独で用いる(他の書式指定文字列が存在しない)ときは、長い形式の日付と短い形式の時刻
+になります。その他の場合は、秒の端数の最上位となります。
+ff...ffとfをn個(最大７個)続けると秒の端数の最上位n桁が表示されます。<P>
+Fを単独で用いると長い形式の日付と長い形式の時刻が表示されます。その他の場合は、
+秒の端数の最上位桁が表示されます。その桁が0の時は何も表示されません。<P>
+FF...FFとFをn個(１から７個)続けると秒の端数の最上位n桁が表示されます。後続の0やn桁目の
+0は表示されません。<P>
+gまたはggは紀元が表示されます。(カルチャに依存)<P>
+hは、時間が1-12で表示されます。0時は午前も午後も12と表示されます。１桁の時間は１桁で表示されます。<P>
+hhまたはhh..h(n個のh)は、時間を1-12で表します。１桁の時間は02などのように0が追加されます。<P>
+Hは時間を0-23で表します。１桁の時間は１桁で表示します。<P>
+HHまたはHH..H(n個のH)は、時間を0-23で表示し、１桁の時間は前に0を追加します。<P>
+mは分を0-59で表示します。1桁の分は1桁で表示します。<P>
+mmまたはmm..m(n個のm)は、分を0-59で表します。1桁の分は前に0を追加します。<P>
+Mは月を1-12で表します。1桁の月は1桁で表します。<P>
+MMは月を1-12で表します。1桁の月には前に0が追加されます。<P>
+MMMは、月の省略名を表示します。(カルチャに依存)<P>
+MMMMは、月の完全な名前を表示します。(カルチャに依存)<P>
+sは、秒を0-59で表示します。1桁の秒は1桁で表します。<P>
+ssまたはss...s(n個のs)は、秒を1-59で表します。1桁の秒は前に0を追加します。<P>
+tが単独で(他の書式指定文字列が使用されていない)は、長い形式の時刻を表示します。
+そうでない場合は、A.M.またはP.M.の最初の文字を表示します。(カルチャ依存)<P>
+ttまたはtt..t(n個のt)は、A.M.またはP.M.が表示されます。(カルチャ依存)<P>
+yが単独で使われると短い形式の日付パターンが表示されます。
+そうでないときは年の下２桁が表示されます。先頭が0の場合は0は表示されません。<P>
+yyは年の下2桁が表示されます。先頭が0の場合0も表示されます。<P>
+yyyyは、年の4桁表示です。4桁に満たない場合は先頭に0が追加されます。<P>
+ほかにもいくつかありますが、これくらい知ってれば充分でしょう。<P>
+では、これらを確かめるためのサンプルプログラムを見てみましょう。
+<PRE>
+// datetime02.cs
+
+using System;
+
+class datetime02
+{
+    public static void Main()
+    {
+        DateTime dt;
+
+
+        string[] dtformat = new string[]{
+            "d", "dd", "ddd", "dddd", "ddddd",
+            "f", "ff", "fff", "ffff", "fffff", "ffffff", "fffffff",
+            "F", "FF", "FFF", "FFFF", "FFFFF", "FFFFFF", "FFFFFFF",
+            "g", "gg",
+            "hh",
+            "m", "mm", 
+            "M", "MM", "MMM", "MMMM",
+            "s", "ss",
+            "t", "tt", "ttt",
+            "y", "yy", "yyy", "yyyy",
+            "yy/MM/dd h:m:s",
+            "ggyyyy年MMMMdd日(dddd)"};
+
+        dt = DateTime.Now;
+
+        for (int i = 0; i < dtformat.Length; i++)
+            Console.WriteLine("{0,7}:  {1}",
+                dtformat[i], dt.ToString(dtformat[i]));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5301.gif" ALIGN="left">
+<P>
+<BR CLEAR="left">
+
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_52.htm">Previous Chapter</A>]
+[<A HREF="cs_54.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 28/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

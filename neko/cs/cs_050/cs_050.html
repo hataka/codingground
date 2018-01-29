@@ -1,0 +1,175 @@
+<HTML>
+<!--        cs_50.htm        -->
+<!--        2006/09/25       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５０章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５０章 ちゃんとしたイベント
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+「ちゃんとしたイベント」とは変な表題です。じゃあ、今までのイベントは
+ちゃんとしていなかったの?
+<P>
+<BR CLEAR="left"><BR>
+「ちゃんと」を国語辞典で調べると「完全できちんとしているさま。」とあります。<P>
+実は、実際のプログラミング(特にFormプログラミング)で、今までのようにイベントに関するものを何から何まで、自分で用意するということはほとんどありません。クラスライブラリの既存のイベントを利用することになります。<P>
+C#2.0では、Consoleクラスには、ただ一つ既存のイベントが存在します。<P>
+これは、CancelKeyPressイベントです。<P>
+コンソール・アプリケーションでは、Ctrl + Cキーが押されるとプログラムが強制的に
+終了します。Ctrl + Cキーが押されたときに発生するイベントがCancelKeyPressです。
+<PRE>
+public static event ConsoleCancelEventHandler CancelKeyPress
+</PRE>
+ConsoleCancelEventHandlerは、このイベントに対応したデリゲートです。
+<PRE>
+public delegate void ConsoleCancelEventHandler (
+	Object sender,
+	ConsoleCancelEventArgs e
+)
+</PRE>
+senderは、イベントを送信してきたオブジェクトです。<P>
+eは、イベントデータを格納しているSystem.ConsoleCancelEventArgsオブジェクトです。
+<PRE>
+Console.CancelKeyPress += new ConsoleCancelEventHandler(メソッド名);
+</PRE>
+とすると、CancelKeyPressイベントが発生すると指定のメソッドが実行されます。
+デリゲートからわかるようにこのメソッドには、ObjectとConsoleCancelEventArgs型の
+引数を持たなくてはなりません。<P>
+通常xxxxArgs型の引数を利用して、イベントが発生したときの特殊な処理ができます。<P>
+ConsoleCancelEventArgsクラスには、次の2つのプロパティが定義されています。
+<PRE>
+public bool Cancel { get; set; }
+public ConsoleSpecialKey SpecialKey { get; }
+</PRE>
+Cancelは、Ctrl + Cキーが押されたときに、現在のプロセスを終了するかどうかを表す値を取得または、設定します。trueならキャンセルし、falseなら終了します。CancelKeyPress
+イベントが来たとき、このプロパティを利用してそのままプロセスを終了してしまうのか、どうかをコントロールできますね。<P>
+ConsoleSpecialKeyは、現在のプロセスを中断した修飾子キーとコンソールキーの
+組み合わせを取得します。<P>
+では、簡単なサンプルを見てみましょう。
+<PRE>
+// event04.cs
+
+using System;
+
+class event04
+{
+    public static void Main()
+    {
+        DateTime dt;
+        int oldSecond = 0;
+        Console.CancelKeyPress += new ConsoleCancelEventHandler(MyEventHandler);
+
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            dt = DateTime.Now;
+            if (dt.Second != oldSecond)
+            {
+                Console.SetCursorPosition(0, 0);
+                Console.WriteLine("{0}年{1:00}月{2:00}日{3:00}時{4:00}分{5:00}秒",
+                    dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+                oldSecond = dt.Second;
+            }
+        }
+    }
+    protected static void MyEventHandler(object sender, ConsoleCancelEventArgs args)
+    {
+        Console.SetCursorPosition(0, 2);
+        Console.WriteLine("CancelKeyPressイベントが発生しました");
+        Console.Write("Ctrl + C を有効にしますか(Y/N)");
+        while (true)
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+                if (cki.KeyChar == 'Y')
+                {
+                    args.Cancel = false;
+                    Console.Clear();
+                    break;
+                }
+                else
+                {
+                    args.Cancel = true;
+                    Console.Clear();
+                    break;
+                }
+            }
+        }
+    }
+}
+</PRE>
+まずは、Mainメソッドを見てみましょう。<P>
+いきなり
+<PRE>
+DateTime dt;
+</PRE>
+という得体の知れないものが出てきましたDateTimeはその名の示すとおり、日付や時刻を表す構造体です。構造体はまだ解説していませんが、取り扱いはほとんどクラスと同じです。<P>
+Nowプロパティは、現在のコンピュータの日時を取得するプロパティです。
+<PRE>
+public static DateTime Now { get; }
+</PRE>
+読み取り専用で、staticなプロパティです。<P>
+現在の日時を表すDateTimeオブジェクトを取得します。<P>
+また、この構造体には年、月、日、時、分、秒、ミリセコンド、曜日をDateTimeオブジェクトから取得するプロパティがあります。
+<PRE>
+public int Year { get; }
+public int Month { get; }
+public int Day { get; }
+public int Hour { get; }
+public int Minute { get; }
+public int Second { get; }
+public int Millisecond { get; }
+public DayOfWeek DayOfWeek { get; }
+</PRE>
+DayOfWeekは、列挙体で日曜日が0で土曜日が6を表します。<P>
+<PRE>
+Console.CancelKeyPress += new ConsoleCancelEventHandler(MyEventHandler);
+</PRE>
+これで、CancelKeyPressイベントが発生したらMyEventHandlerメソッドが呼ばれることになります。<P>
+while文で永久ループに突入しています。
+<PRE>
+dt = DateTime.Now;
+</PRE>
+で、現在日時をdtに取得しています。<P>
+次がミソです。
+dtのSecondプロパティとoldSecondを比較して、異なれば(0,0)位置に現在日時を表示し、
+oldSecondに現在の秒を代入しています。<P>
+こうすることにより、１秒に1回のみ現在日時を表示することになります。<P>
+さて、MyEventHandlerメソッドではCancelKeyPressイベントが発生したことを表示して、
+Ctrl + C を有効にするかどうか尋ねています。<P>
+有効にするなら、args.Cancelをfalseにして無限ループを抜けます。<P>
+有効にしないならtrueにして無限ループを抜けます。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs5001.gif" ALIGN="left">
+Ctrl + Cが押されて、イベントが発生した旨を表示している間も
+刻々と時刻が刻まれています。<P>
+CapLocksキーが有効になっていないときは、Shiftキーを押しながらYキーを押すと
+プログラムが終了します。
+<P>
+<BR CLEAR="left"><BR>
+
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_49.htm">Previous Chapter</A>]
+[<A HREF="cs_51.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 25/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

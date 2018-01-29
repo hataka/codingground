@@ -1,0 +1,29 @@
+<job id="throw01">
+<script language="VBScript">
+    Option Explicit
+	Dim shell
+	
+	Set shell = CreateObject("WScript.Shell")
+	shell.CurrentDirectory = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+
+	if FileExists("throw01.exe") then
+		shell.Run "cmd.exe /k, throw01.exe",1
+	elseif FileExists("Debug\throw01.exe") then
+		shell.Run "cmd.exe /k, Debug\throw01.exe",1
+	elseif FileExists("\bin\Release\throw01.exe") then
+		shell.Run "cmd.exe /k, bin\Release\throw01.exe",1
+	end if
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+</script>
+</job>

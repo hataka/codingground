@@ -1,0 +1,81 @@
+<HTML>
+<!--        cs_36.htm        -->
+<!--        2006/09/11       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３６章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３６章 インスタンスフィールドとローカル変数
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッド内で宣言された変数をローカル変数といいます。これは、<A HREF="cs_22.htm">第22章</A>でちょっとだけ触れています。
+<P>
+<BR CLEAR="left"><BR>
+ローカル変数は、そのメソッドが復帰した時点で無効となります。これに対して、インスタンスフィールドはオブジェクトが有効な限り値を保有し続けます。ローカル変数にstaticをつけることは許されていません。特にC/C++に慣れた人は注意が必要です。<P>
+次に、インスタンスフィールドとローカル変数の違いについて示す簡単なプログラムを示します。
+<PRE>
+// staticlocal01.cs
+
+using System;
+
+class MyClass
+{
+    int x = 0;
+
+    public void show1()
+    {
+        int x = 0;
+        x++; // ローカル変数の値を1増やす
+        Console.WriteLine("Local x = {0}", x);
+    }
+    public void show2()
+    {
+        x++; // インスタンスフィールドの値を1増やす
+        Console.WriteLine("static x = {0}", x);
+    }
+}
+
+class staticlocal01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        Console.WriteLine("mcでshow1メソッド呼び出し");
+        for (int i = 0; i < 5; i++)
+            mc.show1();
+
+        Console.WriteLine("\nmcでshow2メソッド呼び出し");
+
+        for (int i = 0; i < 5; i++)
+            mc.show2();
+    }
+}
+</PRE>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3601.gif" ALIGN="left">
+ローカル変数は、呼び出しごとに変数の値が振り出しに戻っています。<P>
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_35.htm">Previous Chapter</A>]
+[<A HREF="cs_37.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 11/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

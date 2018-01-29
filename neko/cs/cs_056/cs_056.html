@@ -1,0 +1,103 @@
+<HTML>
+<!--        cs_56.htm        -->
+<!--        2006/10/01       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５６章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５６章 インターフェース　その１
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+インターフェースとは、クラスで実装すべきメソッド、プロパティ、インデクサ、イベントなどを示し、それ自身では一切実装しない抽象的な存在です。
+<P>
+<BR CLEAR="left"><BR>
+インターフェースの宣言は次のように行います。
+<PRE>
+interface インターフェース名
+{
+	戻り値の型 メソッド名(パラメータリスト);
+	データ型 プロパティの名前{get;set;}
+	データ型 this[データ型 インデックス]{get;set;}
+	...
+}
+</PRE>
+インターフェースの名前は好きにつけてよいのですが、慣習で大文字のIから始まる名前にすることが多いようです。<P>
+インターフェースのメンバは全部自動的にpublicとなります。(アクセス修飾子を自分でつけることはできない)<P>
+また、staticなメンバも定義することはできません。<P>
+インターフェースは、フィールドを持つことはできません。コンストラクタやデストラクタも持つことはできません。<P>
+interface自体にpublic修飾子をつけると、このインターフェースは無条件であらゆるクラスに実装できることになります。<P>
+クラスにインターフェースを実装するには、次のようにします。
+<PRE>
+class クラス名:インターフェース名
+{
+	...(実装)
+}
+</PRE>
+この場合、インターフェース中のすべてのメンバを実装しなくてはいけません。<P>
+複数のインターフェースを実装することも可能です。この場合カンマ(,)で区切ります。
+<PRE>
+class クラス名:インターフェース1, インターフェース2,...
+</PRE>
+どうして、インターフェースのようなものが必要なのでしょうか。これは、あらかじめ
+クラスがどのように振る舞うべきかを定めておくことにより、プログラミングの方向性を指し示す指針となるのです。<P>
+難しいことはさておき、インターフェースを作って、実際にこれを実装してみましょう。
+<PRE>
+// interface01.cs
+
+using System;
+
+public interface IMyInterface
+{
+    double Pulus(double a, double b);
+}
+
+class MyClass : IMyInterface
+{
+    public double Pulus(double x, double y)
+    {
+        return x + y;
+    }
+}
+
+class interface01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+        string strFormat = "{0} + {1} = {2}";
+
+        Console.WriteLine(strFormat, 100, 200, mc.Pulus(100, 200));
+        Console.WriteLine(strFormat, 10.5, 12.5, mc.Pulus(10.5, 12.5));
+    }
+}
+</PRE>
+インターフェースIMyInterfaceのメンバは、double型の引数を2つ持ち戻り値がdouble型の
+メソッドPlusを持ちます。<P>
+これを見るだけで、IMyInterefaceを実装するクラスは、double型の演算をするクラスなのだなー、と想像できます。<P>
+MyClassクラスではIMyInterefaceインターフェースを実装します。<P>
+Mainメソッドでは、MyClassのインスタンスを生成して足し算の計算をさせていますね。<P>実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5601.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_55.htm">Previous Chapter</A>]
+[<A HREF="cs_57.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 01/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

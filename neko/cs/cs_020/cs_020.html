@@ -1,0 +1,155 @@
+<HTML>
+<!--        cs_20.htm        -->
+<!--        2006/08/26       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２０章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２０章 クラスを作ってみよう
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+クラスは、オブジェクトの設計図です。実態はありませんが、この設計図から実態を持つインスタンス(オブジェクト)が作られます。
+<P>
+<BR CLEAR="left"><BR>
+クラスの構成要素をメンバといいます。代表的なメンバは、データを格納するフィールドと動作を定義するメソッドです。<P>
+フィールドはクラス変数とも呼ばれます。フィールドにデータを格納したり、ここから読み出したりするのに独自の制限を設けたいときは、「プロパティ」というものを使います。<P>
+また、インスタンスを配列のように使うことのできる「インデクサ」というのもあります。<P>
+メンバには、クラスをインスタンス化してから利用するインスタンスメンバと、そのまま使えるstatic(静的)メンバがあります。<P>
+静的メンバは
+<PRE>
+クラス名.メンバ名
+</PRE>
+で呼び出します。これに対してインスタンスメンバは
+<PRE>
+オブジェクト名.メンバ名
+</PRE>
+で呼び出します。インスタンス(オブジェクト)は
+<PRE>
+クラス名 インスタンス変数 = new クラス名(あれば引数);
+</PRE>
+で生成します。<P>
+静的メンバはstaticキーワードをつけて宣言します。<P>
+また、メンバはどこからでも呼び出せるpublicメンバと、そのクラスからしか呼び出せないprivateメンバ、自分のクラスと継承先からしか呼び出せないprotectedメンバなどがあります。これを、アクセス修飾子といいます。(このほかにもありますが、今のところこの3つを知っていれば不自由はありません。)<P>アクセス修飾子を省略するとprivateと解釈されます。<P>
+クラス定義は
+<PRE>
+class クラス名
+{
+    メンバ宣言;
+}
+</PRE>
+のように行います。フィールドやメソッドメンバは
+<PRE>
+アクセス修飾子 データ型 フィールド名;
+アクセス修飾子 戻り値のデータ型 メソッド名(パラメータリスト);
+</PRE>
+のように宣言します。<P>
+では、メンバとしてインスタンフィールドを１つだけ持つもっとも単純なクラスを定義して、このフィールドにデータを代入し、これを読み出すプログラムを作ってみましょう。
+<PRE>
+// simpleclass01.cs
+
+using System;
+
+class MyClass
+{
+    public int x;
+}
+
+class simpleclass01
+{
+    public static void Main()
+    {
+        MyClass myclass = new MyClass();
+
+        myclass.x = 10;
+
+        Console.WriteLine("myclass.x = {0}", myclass.x);
+    }
+}
+
+</PRE>
+ここでは、MyClassというクラスを自作しています。メンバはインスタンスメンバのxのみです。<P>
+Mainメソッドでは、まずMyClassクラスをインスタンス化して、その参照をmyclassに代入しています。<P>
+フィールドxに10を代入し、これを読み出しています。<P>
+こうやってみると、クラスを作るのは簡単そうですね。(作るのは簡単ですが、役に立つクラスを作るというのは別物です。)<P>
+このプログラムの実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2001.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+今度は、静的フィールドを１つだけ持つクラスを作ってみましょう。
+<PRE>
+// simpleclass02.cs
+
+using System;
+
+class MyClass
+{
+    public static int x;
+}
+
+class simpleclass02
+{
+    public static void Main()
+    {
+        MyClass.x = 10;
+
+        Console.WriteLine("MyClass.x = {0}", MyClass.x);
+    }
+}
+</PRE>
+静的メンバにアクセスするには、「クラス名.メンバ名」である点に注意してください。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2002.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+この２つの例では、Mainメソッドのあるクラスの外に新規にクラス定義をしていましたが、もちろんMainメソッドにのあるクラス内に、フィールドを定義することもできます。
+<PRE>
+// simpleclass03.cs
+
+using System;
+
+class simpleclass03
+{
+    int x;
+    static int y;
+
+    public static void Main()
+    {
+        simpleclass03 sc = new simpleclass03();
+        sc.x = 10;
+
+        simpleclass03.y = 20;
+
+        Console.WriteLine("sc.x = {0}, simpleclass03.y = {1}",
+            sc.x, simpleclass03.y);
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs2003.gif" ALIGN="left">
+インスタンスメンバとstaticメンバの呼び出し方の違いに注意してください。また、x,yの宣言をMain関数の宣言の後にしてもかまいません。<P>
+フィールドx,yにはpublic修飾子がついていないのでprivate扱いとなります。
+同じクラスからのみ呼び出し可能です。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_19.htm">Previous Chapter</A>]
+[<A HREF="cs_21.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 26/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

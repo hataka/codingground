@@ -1,0 +1,282 @@
+<HTML>
+<!--        cs_22.htm        -->
+<!--        2006/08/28       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２２章 メソッドをもう少し詳しく見てみる 
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+<A HREF="cs_21.htm">前章</A>では、引数も、戻り値もないメソッドを作りました。
+この章では、引数や戻り値を持つメソッドを作ります。
+<P>
+<BR CLEAR="left"><BR>
+作り方は簡単です。
+<PRE>
+戻り値の型 メソッド名(パラメータの並び)
+{
+    ...// メソッドの中身
+    return 戻り値;
+}
+</PRE>
+パラメータ(parameter)は仮引数とも呼ばれます。単に引数(ひきすう)と呼ぶこともあります。これは、データ型 仮引数1, データ型 仮引数2, ...というように複数の引数を取ることも珍しくありません。この引数の値は、呼び出し側からもらっています。<P>
+最後にreturnすることで、呼び出し側に戻り値を返します。戻り値の型とメソッド名の前につけた型は一致していなくてはなりません。
+<PRE>
+int func(int a, int b)
+{
+    int c = a * b;
+    return c;
+}
+</PRE>
+とあれば、呼び出し側で引数aやbの値を指定しています。この値を使ってcの値を計算して、cを返しています。<P>
+呼び出し側では、
+<PRE>
+int y = func(3, 5);
+</PRE>
+のような感じで呼び出します。yにはfuncメソッドの戻り値が格納されます。呼び出し側の3とか5を実引数(argument)、もしくは単に引数と呼びます。引数がこのようにリテラルだとわかりやすいのですが、値を格納した変数であることもあります。
+<PRE>
+int a = 3, b = 5;
+int y = func(a, b);
+</PRE>
+メソッドには、変数a,bの値を渡しているだけで変数を渡しているわけではありません。
+したがって、メソッドを実行後も変数a, bには何の影響もありません。これを<FONT COLOR="#FF0000">値呼び出し(call by value)</FONT>といいます。これは、非常に大事なことなので、是非理解しておいてください。<P>
+まずは、簡単なサンプルを見てみましょう。
+<PRE>
+// method04.cs
+
+using System;
+
+class Nijo
+{
+    public int calc(int a)
+    {
+        int b = a * a;
+        return b;
+    }
+}
+
+class method04
+{
+    public static void Main()
+    {
+        Nijo t = new Nijo();
+
+        int x = 10;
+
+        int z = t.calc(x);
+
+        Console.WriteLine("{0}の２乗は{1}です", x, z);
+        
+    }
+}
+</PRE>
+Nijoクラスは、2乗を求めるクラスです。(安直な命名法です。)<P>
+Nijoクラスのcalメソッドは、引数を２乗してこれを戻り値として返します。<P>
+caslメソッドの中で、変数bを宣言しています。このようにメソッドの中で宣言された変数を<FONT COLOR="#FF0000">ローカル変数</FONT>といいます。C/C++のローカル変数とはちょっと意味が違うので注意してください。ローカル変数は、メソッドが復帰した時点で、その値は無効となってしまいます。(次回そのメソッドが呼ばれても以前のローカル変数の値は無効)。<P>
+Mainメソッドでは、Nijoクラスのインスタンスtを生成して、calcメソッドを呼び出していいます。
+<PRE>
+int z = t.calc(x);
+</PRE>
+変数zには、calcメソッドの戻り値が格納されます。<P>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs2201.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+次に、昔からC/C++の教科書に載っている値を交換する間違ったプログラムを紹介しましょう。
+<PRE>
+// swap01.cs
+
+using System;
+
+class MySwap
+{
+    public int myswap(int x, int y)
+    {
+        int temp;
+        temp = x;
+        x = y;
+        y = temp;
+        Console.WriteLine("myswap: x = {0}, y = {1}", x, y);
+        return 0;
+    }
+}
+
+class swap01
+{
+    public static void Main()
+    {
+        MySwap ms = new MySwap();
+
+        int x = 10, y = 20;
+        ms.myswap(x, y);
+
+        Console.WriteLine("Main: x = {0}, y = {1}", x, y); 
+    }
+}
+</PRE>
+myswapメソッドでは、引数xの値を一旦tempに格納しています。次に、xにyの値を代入しています。最後に、tempの値(最初のxの値)をyに代入しています。これで、xとyの値が入れ替わったはずです。念のためConsole.WriteLineメソッドでxやyの値を表示しています。<P>
+呼び出し側のMainメソッドでは、xに10, yに20を代入してms.myswap(x, y);を実行しています。<P>先ほども書きましたように、呼び出し側ではxやyの値をメソッドに渡しているだけで、変数そのものを渡しているわけではありません。呼び出し側のxやyの値は、何の影響も受けないはずです。<P>ちなみに、myswap関数は常に0を返していますが、意味はありません。<P>
+<IMG SRC="../img/cs2202.gif" ALIGN="left">
+メソッド内では、x, yの値は入れ替わっていますが、呼び出し側では引数に何の影響もありません。
+<P>
+<BR CLEAR="left"><BR>
+これでは、おもしろくありません。C/C++ならポインタを使って値を入れ替えました。<P>
+C#でも使おうと思えばポインタは使えます。では、呼び出し側で渡した引数の値を入れ替えるプログラムを作ってみましょう。
+<PRE>
+// swap02.cs
+
+using System;
+
+class MySwap
+{
+    unsafe public void myswap(int *x, int *y)
+    {
+        int temp;
+        temp = *x;
+        *x = *y;
+        *y = temp;
+    }
+}
+
+
+class swap02
+{
+    unsafe public static void Main()
+    {
+        int x = 10, y = 20;
+
+        MySwap ms = new MySwap();
+
+        ms.myswap(&x, &y);
+        Console.WriteLine("x = {0}, y = {1}", x, y);
+
+    }
+}
+</PRE>
+呼び出し側で
+<PRE>
+ms.myswap(&x, &y);
+</PRE>
+としている点に注目してください。変数に「&」をつけると、その変数のアドレスを表します。
+メソッドの引数に、変数のアドレスを渡すとメソッド側で、直接変数に加工ができるようになります。<P>
+ただしC#では、常にアドレスを使えるわけではなくunsafeキーワードのついたブロック内等でしか利用できません。メモリのアドレスを扱うときは充分注意しないと、何が起るかわかりません。
+それで、unsafeなのかもしれません。<P>
+メソッド側の引数は
+<PRE>
+myswap(int *x, int *y)
+</PRE>
+のように、「*」がついています。これは、アドレスが示す変数の値を表します。<P>
+さらに、unsafeキーワードを使うときには、コンパイラにその旨を知らせなくてはいけません。
+VS2005なら、ソリューションエクスプローラでプロジェクト名を右クリックし、プロパティを表示させ、「アンセーフコードの許可」にチェックをつけなくてはなりません。<P>
+<IMG SRC="../img/cs2203.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs2204.gif" ALIGN="left">
+今度は、呼び出し側のx, yの値が入れ替わっていますね。
+<P>
+<BR CLEAR="left"><BR>
+C/C++では、今のような方法を頻繁に用いますが、C#ではあまり使いません。渡した変数の値に加工をしてもらいたい場合には「<FONT COLOR="#FF0000">ref</FONT>」キーワードを使います。これを「参照による呼び出し(call by reference)」と呼びます。<P>
+<PRE>
+メソッド側:データ型 メソッド名(ref データ型 変数名,....){...}
+呼び出し側:メソッド名(ref 変数名,...);
+</PRE>
+では、引数の値を交換するプログラムを作ってみましょう。
+<PRE>
+// swap03.cs
+
+using System;
+
+class MySwap
+{
+    public void myswap(ref int x, ref int y)
+    {
+        int temp;
+        temp = x;
+        x = y;
+        y = temp;
+    }
+}
+
+class swap03
+{
+    public static void Main()
+    {
+        int x = 10, y = 20;
+
+        MySwap ms = new MySwap();
+        ms.myswap(ref x, ref y);
+
+        Console.WriteLine("x = {0}, y = {1}", x, y);
+
+    }
+}
+</PRE>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs2205.gif" ALIGN="left">
+x, yの値が入れ替わっていますね。
+<P>
+<BR CLEAR="left"><BR>
+さて、refキーワードをつけた引数(変数)は、初期化されていないといけません。(引数の値を加工してもらうので、最初から値が指定されていないと加工のしようがない!)<P>
+これに対して、outキーワードは初期化しておく必要はありません。呼び出し側でも、メソッド側でも引数の前にoutキーワードをつけておく必要があります。
+<PRE>
+// method05.cs
+
+using System;
+
+class MyOut
+{
+    public void calc(int x, out int i, out int j, out int k)
+    {
+        i = x * 2;
+        j = x * x;
+        k = x * x * x;
+    }
+}
+
+class method05
+{
+    public static void Main()
+    {
+        MyOut mo = new MyOut();
+        int a = 3, x, y, z;
+
+        mo.calc(a, out x, out y, out z);
+
+        for (int i = 1; i <= 10; i++)
+        {
+            mo.calc(i, out x, out y, out z);
+            Console.WriteLine("{0}の２倍は{1}, ２乗は{2}, ３乗は{3}",
+                i, x, y, z);
+        }
+
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2206.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_21.htm">Previous Chapter</A>]
+[<A HREF="cs_23.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 28/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

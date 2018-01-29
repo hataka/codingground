@@ -1,0 +1,167 @@
+<HTML>
+<!--        cs_44.htm        -->
+<!--        2006/09/19       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４４章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４４章 抽象メソッドと抽象クラス
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+派生クラスで必ずオーバーライドしてもらう必要があるメソッドを宣言することができます。
+<P>
+<BR CLEAR="left"><BR>
+メソッドにabstract修飾子をつけるとそのメソッドは抽象メソッドといい、中身を持ちません。
+<PRE>
+abstract データ型 メソッド名(パラメータリスト);
+</PRE>
+抽象メソッドはstaticにはできません。また、抽象メソッドを持つクラスのインスタンスを生成することもできません。<P>
+一つでも抽象メソッドを有するクラスを「抽象クラス」といいます。抽象クラスは、修飾子abstractをつける必要があります。<P>
+抽象クラスから、派生したクラスは抽象メソッドを全部オーバーライドするか、もしくはそのクラスも抽象クラスにしなくてはいけません。<P>
+最も簡単な抽象クラスの例を示します。
+<PRE>
+// abstract01.cs
+
+using System;
+
+abstract class MyClassA
+{
+    public abstract void show();
+}
+
+class MyClass : MyClassA
+{
+    public override void show()
+    {
+        Console.WriteLine("showメソッドです");
+    }
+}
+
+class abstract01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        mc.show();
+    }
+}
+</PRE>
+抽象クラスMyClassAには、抽象メソッドshowがあります。当然中身はありません。<P>
+MyClassAを継承したMyClassでは、showメソッドをオーバーライドしています。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs4401.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+次の例では、抽象クラスCalcOrgをCalcが継承してメソッドをオーバーライドしています。
+CalcOrgクラスは、計算をするクラスのひな形とも考えられます。そして実際に計算をする
+クラスがCalcクラスです。
+<PRE>
+// abstract02.cs
+
+using System;
+
+abstract class MyCalcOrg
+{
+    public abstract void puls(int x);
+    public abstract int ans();
+    public abstract void minus(int x);
+}
+
+class MyCalc : MyCalcOrg
+{
+    int sum;
+
+    public override void puls(int x)
+    {
+        sum += x;
+    }
+    public override int ans()
+    {
+        return sum;
+    }
+    public override void minus(int x)
+    {
+        sum -= x;
+    }
+    public void setZero()
+    {
+        sum = 0;
+    }
+    public MyCalc()
+    {
+        setZero();
+    }
+}
+
+class abstract02
+{
+    public static void Main()
+    {
+        int num = 0;
+
+        MyCalc m = new MyCalc();
+
+
+        while (true)
+        {
+            Console.Write("整数値(*で終了,=で計算結果)--- ");
+            string strnum = Console.ReadLine();
+            if (strnum == "*")
+                break;
+            else if (strnum == "=")
+            {
+                Console.WriteLine("計算結果-- {0}", m.ans());
+                m.setZero();
+                continue;
+            }
+            else
+                num = Int32.Parse(strnum);
+            Console.Write("記号(+-)--- ");
+            string kigo = Console.ReadLine();
+
+            switch (kigo)
+            {
+                case "+":
+                    m.puls(num);
+                    break;
+                case "-":
+                    m.minus(num);
+                    break;
+                default:
+                    Console.WriteLine("入力エラー");
+                    return;
+            }
+        }
+    }
+}
+</PRE>
+ごく簡単な、加減計算機です。整数値しか扱えません。<P>
+100 + 200 の計算は、100を入力、+を入力、200を入力、+を入力、=を入力で行います。<P>100 - 30　の計算は、100,+,30,-,=の順に入力します。<P>
+100 + 30 + 200 - 50の計算は、100,+,30,+,200,+,50,-,=と入力する必要があります。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs4402.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_43.htm">Previous Chapter</A>]
+[<A HREF="cs_45.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 19/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

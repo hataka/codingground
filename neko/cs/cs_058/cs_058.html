@@ -1,0 +1,108 @@
+<HTML>
+<!--        cs_58.htm        -->
+<!--        2006/10/03       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５８章 インターフェース　その３
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、プロパティやインデクサをメンバに持つインターフェイスの例を示します。
+<P>
+<BR CLEAR="left"><BR>
+メソッドと同じ方法で実装すればよいです。
+<PRE>
+// interface03.cs
+
+using System;
+
+public interface IMyInterface
+{
+    int SetNo { set;}
+    int GetNo { get;}
+    int this[int index] { get;set;}
+}
+
+class MyClass : IMyInterface
+{
+    int x;
+    int[] arr;
+
+    public int SetNo
+    {
+        set
+        {
+            x = value;
+        }
+    }
+
+    public int GetNo
+    {
+        get
+        {
+            return x;
+        }
+    }
+
+    public int this[int index]
+    {
+        get
+        {
+            return arr[index];
+        }
+        set
+        {
+            arr[index] = value;
+        }
+    }
+
+    public MyClass(int n)
+    {
+        arr = new int[n];
+    }
+}
+
+class interface03
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass(3);
+
+        mc.SetNo = 10;
+        Console.WriteLine("mc.GetNo = {0}", mc.GetNo);
+
+        for (int i = 0; i < 3; i++)
+            mc[i] = (i + 1) * 10;
+
+        for (int i = 0; i < 3; i++)
+            Console.WriteLine("mc[{0}] = {1}", i, mc[i]);
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5801.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_57.htm">Previous Chapter</A>]
+[<A HREF="cs_59.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 03/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

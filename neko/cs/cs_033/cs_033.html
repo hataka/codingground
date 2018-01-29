@@ -1,0 +1,115 @@
+<HTML>
+<!--        cs_33.htm        -->
+<!--        2006/09/08       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３３章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３３章 インデクサオーバーロード
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+インデクサでは、インデックスの型と数がシグニチャとなります。これが異なればオーバーロードすることができます。
+<P>
+<BR CLEAR="left"><BR>
+では、また簡単なサンプルを見てみましょう。
+<PRE>
+// indexover01.cs
+
+using System;
+
+class MyIndexer
+{
+    int[] no;
+    string[] name;
+
+    public int this[string str]
+    {
+        get
+        {
+            int n = 0;
+            foreach (string s in name)
+            {
+                if (s == str)
+                    return no[n];
+                n++;
+            }
+            return 0;
+        }
+        
+    }
+
+    public string this[int index]
+    {
+        get
+        {
+            int n = 0;
+            foreach (int p in no)
+            {
+                if (p == index)
+                    return name[n];
+                n++;
+            }
+            return "知りません";
+        }
+    }
+
+    public MyIndexer()
+    {
+        no = new int[5] { 100, 145, 325, 400, 155 };
+        name = new string[5] { "田中", "佐藤", "鈴木", "池田", "吉田" };
+    }
+}
+
+class indexover01
+{
+    public static void Main()
+    {
+        MyIndexer mi = new MyIndexer();
+
+        Console.WriteLine("番号145の生徒は{0}です", mi[145]);
+        Console.WriteLine("番号400の生徒は{0}です", mi[400]);
+        Console.WriteLine("番号100の生徒は{0}です", mi[100]);
+        Console.WriteLine("佐藤の番号は{0}です", mi["佐藤"]);
+        Console.WriteLine("吉田の番号は{0}です", mi["吉田"]);
+        Console.WriteLine("田中の番号は{0}です", mi["田中"]);
+    }
+}
+</PRE>
+ちょっとわかりにくいかもしれません。<P>
+まずは、MyIndexerクラスのコンストラクタを見てください。<P>
+フィールドnoの配列に生徒の番号を格納しています。<P>
+フィールドnameの配列に生徒の名前を格納しています。<P>
+番号と名前はその順番に対応しています。(田中が100, 佐藤が145, 鈴木が325,...)<P>
+最初のインデクサはint this[string str]となっており、インデックスに生徒の名前を入れると生徒の番号を返すインデクサです。<P>
+foreach文でnameコレクションを順に添え字を入れていき、strと一致したら何回目(最初を0回として)で一致したか(n)を調べます。一致した時、no[n]がその生徒の番号となります。<P>
+次のインデクサは、string this[int index]となっており、インデックスに生徒の番号を入れると、名前を返します。<P>
+foreach文でnoコレクションを順に調べて、何回目でindexと一致するかを調べます。
+一致したらname[n]が生徒の名前です。<P>
+ちょっとひねくれた使い方ですが、インデックスはオーバーロードされているはずです。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3301.gif" ALIGN="left">
+正しく動いているようですね。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_32.htm">Previous Chapter</A>]
+[<A HREF="cs_34.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 08/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

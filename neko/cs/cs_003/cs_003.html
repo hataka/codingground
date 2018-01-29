@@ -1,0 +1,74 @@
+<HTML>
+<!--        cs_04.htm        -->
+<!--        2004/04/03       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>
+第３章 ReadLineメソッド
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+標準入力から1行分の文字を読みとるにはConsole.ReadLineメソッドを使います。
+また、前章で使ったConsole.WritLineメソッドは標準出力にデータと改行を書き込みましたが、
+改行させたくない時はConsole.Writeメソッドを使います。
+<P>
+<BR CLEAR="left"><BR>
+<PRE>
+public static string ReadLine();
+</PRE>
+Writeメソッドは
+<PRE>
+ public static void Write(***);
+</PRE>
+多数オーバーロードされているため***の部分にはいろいろな引数が来ます。<P>
+では、最も簡単なサンプルを見てみましょう。
+<PRE>
+//console03.cs
+
+using System;
+
+class Console03
+{
+    public static int Main()
+    {
+        Console.Write("あなたの名前は ");
+        string YourName = Console.ReadLine();
+        Console.Write("あなたの年齢は ");
+        string YourAge = Console.ReadLine();
+        Console.WriteLine("あなたの名前は{0}で年齢は{1}歳です",
+            YourName, YourAge);
+        
+        return 0;
+    }
+}
+
+
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0301.gif" ALIGN="left">
+今回は簡単でした。いろいろな入力を求めて表示するプログラムを作ってみてください。
+<P>
+<BR CLEAR="left">
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_02.htm">Previous Chapter</A>]
+[<A HREF="cs_04.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 24/Dec/2002 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

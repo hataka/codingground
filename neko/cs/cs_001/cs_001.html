@@ -1,0 +1,87 @@
+<HTML>
+<!--        cs_01.htm        -->
+<!--        2002/08/12       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>
+第１章 最初の1歩
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章ではC#で簡単なコンソール・アプリケーションを作ります。
+難しい理屈は抜きにして、ともかく「動く」プログラムを作ります。
+<P>
+<BR CLEAR="left"><BR>
+まず、VS.netの設定です。<P>
+<IMG SRC="../img/cs0101.gif" ALIGN="left">
+メニューの「ファイル」「新規作成」「プロジェクト」を選択すると左のようなダイアログボックスが出現します。<P>
+プロジェクトの種類は「Visual C#プロジェクト」を選択します。
+テンプレートは「空のプロジェクト」を選択します。ここで、「コンソール・アプリケーション」を選択してもよいのですが、そうするとソースが、ちょっと変わってきます。ソースをこのHPと全く同じにしたいのであれば、「空のプロジェクト」にしてください。<P>
+プロジェクト名はここでは「console01」としておきました。場所はそれぞれの環境で
+わかりやすいところにしておいてください。<P>
+必要事項を記入したら「OK」ボタンを押します。
+<P>
+<BR CLEAR="left"><BR>
+<IMG SRC="../img/cs0102.gif" ALIGN="left">
+ソリューションエクスプローラの「console01」を右クリックして「追加」「新しい項目の追加」を選択します。
+<P>
+<BR CLEAR="left"><BR>
+<IMG SRC="../img/cs0103.gif" ALIGN="left">
+「新しい項目」として「コードファイル」を選択します。<P>
+ファイル名は「console01.cs」とします。C#では、ソースファイルの拡張子は「cs」となります。
+<P>
+<BR CLEAR="left"><BR>
+さて、「開く」ボタンを押すとコードがすぐに入力できる状態となっていますので、
+次のようにタイプしてください。
+<PRE>
+// console01.cs
+
+using System;
+
+class console01
+{
+    public static int Main()
+    {
+        Console.WriteLine("猫でもわかるプログラミング!");
+
+        return 0;
+    }
+}
+</PRE>
+あとは、メニューの「ビルド」「console01のビルド」を選択すれば、できあがりです。
+デバッガを使わないのであれば、「ビルド」「構成マネージャ」を選択して「アクティブソリューション構成」を「Release」にしてください。<P>
+「ビルド」や「アクティブソリューション構成」の変更はツールバーからする方が簡単です。<P>
+さて、ソースを見てわかることは、C言語のmain関数に相当するものがMainと大文字になっていることです。また、Main関数(Mainメソッドと言った方が正しい)自体がクラス(後の章で解説)の中にあることです(Mainメソッドですからクラスの中にあるのが当たり前!)。C#ではすべてのコードがどこかのクラスに属していないといけません。<P>
+また、C#では#includeは使いません。最初にusing System;とあるのは、Systemという名前空間(後の章で解説)を参照しなさいという意味です。<P>
+このSystemには、Consoleクラスが含まれています。ConsoleクラスにはWriteLineというメソッドが含まれています。<P>
+ConsoleクラスのWriteLineメソッドを使う時はConsole.WriteLine(..);のように「.」で結びます(このピリオドのことを「分割子」といいます)。本来、System名前空間のConsoleクラスのWriteLineメソッドなので<P>
+System.Console.WriteLine(...);<P>
+と書くべきなのですが、using System;とあるので、Systemを省略できるのです。<P>
+また、お気づきのようにコメントは「//」が使えます。これよりこの行の最後までが
+コメントとして扱われます。<P>
+また、「/*   */」も使えます。これは、「/*」と「*/」の間がコメントとなります。
+複数行にまたがることも可能です。<P>
+では、次の章から少しずつC#の秘密(?)を覗いていくことにします。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+<!--[<A HREF="">Previous Chapter</A>]-->
+[<A HREF="cs_02.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 12/Aug/2002 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

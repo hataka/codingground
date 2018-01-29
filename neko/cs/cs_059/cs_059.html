@@ -1,0 +1,88 @@
+<HTML>
+<!--        cs_59.htm        -->
+<!--        2006/10/04       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５９章 インターフェース　その４
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+インターフェースのメンバにイベントを加えることができます。
+<P>
+<BR CLEAR="left"><BR>
+イベントについて忘れてしまった人は<A HREF="cs_47.htm">第４７章</A>を参照してください。<P>
+注意点としては、イベントハンドラをpublicで宣言しておく必要があります。あとは、メソッドの時と同じです。
+<PRE>
+// interface04.cs
+
+using System;
+
+public delegate void MyEventHandler();
+
+public interface IEvent
+{
+    event MyEventHandler MyEvent;
+
+    void OnMyEvent();
+}
+
+class MyClass : IEvent
+{
+    public event MyEventHandler MyEvent;
+
+    public void OnMyEvent()
+    {
+        if (MyEvent != null)
+            MyEvent();
+    }
+}
+
+class interface04
+{
+    public static void Show()
+    {
+        Console.WriteLine("イベントが発生しました");
+    }
+
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        // イベントハンドラをイベントに追加
+        mc.MyEvent += new MyEventHandler(Show);
+
+        // イベントを発生させる
+        mc.OnMyEvent();
+    }
+}
+</PRE>
+IEventインターフェースのメンバには、イベントとイベント送信メソッドが含まれています。<P>
+MyClassクラスは、IEventインターフェースを実装しています。<P>
+Mainメソッドで、イベントハンドラをイベントに追加して、OnMyEventメソッドでイベントを発生させています。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5901.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_58.htm">Previous Chapter</A>]
+[<A HREF="cs_60.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 04/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

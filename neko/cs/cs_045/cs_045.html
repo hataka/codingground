@@ -1,0 +1,110 @@
+<HTML>
+<!--        cs_45.htm        -->
+<!--        2006/09/20       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４５章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４５章 デリゲート
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッドのアドレスをわりあて、これからメソッドを呼び出す方法があります。
+<P>
+<BR CLEAR="left"><BR>
+デリゲートは、メソッドのアドレスを割り当てることができます。デリゲートを通じて
+メソッドを呼び出すことができます。デリゲートには、複数のメソッドを割り当てることにより、連続してメソッドを呼び出すことも可能です。また、デリゲートは後の章で解説する「イベント」とも深い関係があります。<P>
+デリゲートは次のように宣言します。
+<PRE>
+delegate 戻り値の型 デリゲート名(パラメータリスト);
+</PRE>
+戻り値の型とパラメータリストの一致するメソッドがデリゲートに登録することができます。具体的には、次のようにします。
+<PRE>
+delegate int MyDelegate(int x);
+....
+MyDelegate md = new MyDelegate(メソッド名);
+</PRE>
+デリゲートをインスタンス化する際、引数にメソッド名を指定すればよいのです。<P>
+デリゲートはみんなから見える位置に宣言する必要があります。<P>
+では、簡単な例を見てみましょう。
+<PRE>
+// delegate01.cs
+
+using System;
+
+delegate void MyDelegate(string str);
+
+class MyClass
+{
+
+    public void show(string s)
+    {
+        Console.WriteLine(s + "です。");
+    }
+}
+
+class delegate01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        MyDelegate md = new MyDelegate(mc.show);
+
+        md("よい天気");
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs4501.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+この例では、Mainメソッドのあるクラス外のインスタンスメソッドのアドレスを
+デリゲートに格納しましたが、staticなメソッドでも大丈夫です。<P>
+次は、Mainメソッドのあるクラスのstaticなメソッドをデリゲートで呼び出します。
+<PRE>
+// delegate02.cs
+
+using System;
+
+delegate int Add(int x, int y);
+
+class delegate02
+{
+    static int Calc(int a, int b)
+    {
+        return a + b;
+    }
+
+    public static void Main()
+    {
+        Add add = new Add(Calc);
+        Console.WriteLine("3 + 10 = {0}", add(3, 10));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs4502.gif">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_44.htm">Previous Chapter</A>]
+[<A HREF="cs_46.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 20/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

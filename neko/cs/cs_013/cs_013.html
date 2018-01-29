@@ -1,0 +1,214 @@
+<HTML>
+<!--        cs_13.htm        -->
+<!--        2006/08/20       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１３章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第１３章 bool型とif文
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では値型のひとつであるbool型と、if文について解説します。
+<P>
+<BR CLEAR="left"><BR>
+値型のデータ型については、<A HREF="cs_05.htm">第５章</A>でも解説しています。<P>
+<TABLE BORDER="1">
+<TD BGCOLOR="#FFFF00" COLSPAN="3"><BR></TD><TD BGCOLOR="#FFFF00">C#型</TD><TD BGCOLOR="#FFFF00">ビット長</TD><TD BGCOLOR="#FFFF00">.NET型</TD><TR>
+<TD BGCOLOR="#00FFFF" ROWSPAN="11">数値型</TD><TD ROWSPAN="8">整数型</TD>
+<TD ROWSPAN="4">符号付き</TD><TD>sbyte</TD><TD>8ビット</TD><TD>System.SByte</TD><TR><TD>short</TD><TD>16ビット</TD><TD>System.Int16</TD><TR>
+<TD>int</TD><TD>32ビット</TD><TD>System.Int32</TD><TR><TD>long</TD><TD>64ビット</TD><TD>System.Int64</TD><TR>
+<TD ROWSPAN="4">符号なし</TD><TD>byte</TD><TD>8ビット</TD><TD>System.Byte</TD><TR><TD>ushort</TD><TD>16ビット</TD><TD>System.UInt16</TD><TR><TD>uint</TD><TD>32ビット</TD><TD>System.UInt32</TD>
+<TR><TD>ulong</TD><TD>64ビット</TD><TD>System.UInt64</TD><TR>
+<TD ROWSPAN="3">実数型</TD>
+<TD ROWSPAN="2">浮動小数点数型</TD><TD>float</TD><TD>32ビット</TD><TD>System.Single</TD><TR>
+<TD>double</TD><TD>64ビット</TD><TD>System.Double</TD><TR>
+<TD>10進データ型</TD><TD>decimal</TD><TD>128ビット</TD><TD>System.Decimal</TD><TR>
+<TD BGCOLOR="#00FFFF" COLSPAN="3">論理型</TD>
+<TD>bool</TD><TD>8ビット</TD><TD>System.Boolean</TD><TR>
+<TD BGCOLOR="#00FFFF" COLSPAN="3">文字型</TD><TD>char</TD><TD>16ビット</TD>
+<TD>System.Char</TD>
+</TABLE><P>
+bool型はtrue(真)かfalse(偽)のいずれかを表します。C/C++のように0をfalseのかわりに使うことは許されていません。<P>
+今までのプログラムでは、書いたものはすべて順番に実行されました。これでは、困ることもあります。条件によりある部分を実行したりしなかったりできると、プログラムらしくなります。
+これには、if文を使います。
+<PRE>
+if (条件式)
+{
+    ...
+}
+</PRE>
+条件式が真なら、...が実行され、偽なら実行されません。また、...の部分が一つの文であるときは、{}は省略できます。また、次のようなelse文とセットで使うこともよく行われます。
+<PRE>
+if (条件式)
+{
+    ...(1)
+}
+else
+{
+    ...(2)
+}
+</PRE>
+条件式が真の時は...(1)が実行され、偽の時は...(2)が実行されます。それぞれの文が１つのみの時はやはり、{}は省略可能です。<P>
+また、次のような使い方もできます。
+<PRE>
+if (条件式1)
+{
+    ...(1)
+}
+else if (条件式2)
+{
+    ...(2)
+}
+else if (条件式3)
+{
+    ...(3)
+}
+...
+else if (条件式n)
+{
+    ...(n)
+}
+else
+    ...
+</PRE>
+条件式1が真なら...(1)が実行され、残りは無視されます。<P>
+条件式1が偽なら条件式2が評価されます。真なら...(2)が実行され残りは無視されます。<P>
+条件式1からnまですべて偽ならelseのところの...が実行されます。<P>
+さて、条件式によく使われる演算子は次のようなものがあります。<P>
+<TABLE BORDER="1">
+<TD>a > b</TD><TD>aがbより大きいならこの式は真、そうでないなら偽</TD><TR>
+<TD>a >= b</TD><TD>aがbより大きいか等しい時この式は真、そうでない時は偽</TD><TR>
+<TD>a < b</TD><TD>aがbより小さいならこの式は真、そうでないときは偽</TD><TR>
+<TD>a <= b</TD><TD>aがbより小さいか等しい時はこの式は真、そうでない時は偽</TD><TR>
+<TD>a == b</TD><TD>aとbが等しいならこの式は真、そうでない時は偽</TD><TR>
+<TD>a != b</TD><TD>aとbが等しくないならこの式は真、そうでない時は偽</TD><TR>
+<TD>!a</TD><TD>aが真なら偽、偽なら真</TD>
+</TABLE><P>
+また、条件式を「または」とか「かつ」で結合することもできます。「または」に相当する演算子が「&&」で、「かつ」に相当する演算子が「||」です。(注:C#では、結果として&や|でも同じ意味に使えますが、C/C++の名残で&&と||を使うことが圧倒的に多いようです。詳しくは後の章で解説します。)<P>
+では、簡単なサンプルを見てみましょう。
+<PRE>
+// bool01.cs
+
+using System;
+
+class bool01
+{
+    public static void Main()
+    {
+        int n;
+
+        Console.Write("0から9までの数字を入力---");
+        string strNum = Console.ReadLine();
+
+        if (strNum.Length >= 2)
+        {
+            Console.WriteLine("1文字だけの入力です");
+            return;
+        }
+
+        if (!Char.IsNumber(strNum, 0))
+        {
+            Console.WriteLine("数字を入力します");
+            return;
+        }
+        else
+            n = Int32.Parse(strNum);
+
+        if (n >= 5)
+            Console.WriteLine("あなたの入力した数字は5以上です");
+        else
+            Console.WriteLine("あなたの入力した数字は4以下です");
+    }
+}</PRE>
+ユーザーに、0から9までの整数値を入力してもらいます。もし、ユーザーが2文字以上入力した場合はstrNum.Lengthの値が2以上となります。
+<PRE>
+if (strNum.Length >= 2)
+{
+    Console.WriteLine("1文字だけの入力です");
+    return;
+}
+</PRE>
+strNum.Lengthが2以上なら、{}内が実行されます。注意を表示してreturn文が実行されます。Main関数内でreturn文を実行するとプログラムが終了します。<P>
+次にstrNum文字列の最初の文字が、数字かどうかを調べます。ユーザーがaとかbとか数字以外の文字を入力するとChar.IsNumber(strNum, 0)がfalseになります。これに、!がついているのでfalseの場合はtrueになります。つまり、ここのif文は数字以外の場合、{}内が実行されます。数字以外の場合は、注意を促して、プログラムは終了します。<P>
+数字ならば、
+<PRE>
+n = Int32.Parse(strNum);
+</PRE>
+で、strNum文字列をint型に変換してnに代入します。<P>
+このnについて、5以上なら(if (n >= 5))、「あなたの入力した数字は5以上です」と表示します。
+そうでない場合は、「あなたの入力した数字は4以下です」と表示します。<P>
+<IMG SRC="../img/cs1301.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+if文を使って、メニューのようなものも作れます。
+<PRE>
+// bool02.cs
+
+using System;
+
+class bool02
+{
+    public static void Main()
+    {
+        Console.WriteLine("*** Menu ***");
+        Console.WriteLine("1.ファイル");
+        Console.WriteLine("2.編集");
+        Console.WriteLine("3.表示");
+        Console.WriteLine("************");
+        Console.Write("\n");
+        Console.Write("選択--- ");
+
+        string selNo = Console.ReadLine();
+        if (selNo.Length >= 2)
+        {
+            Console.WriteLine("入力桁数が多すぎます");
+            return;
+        }
+        if (!char.IsNumber(selNo[0]))
+        {
+            Console.WriteLine("数字を入力します");
+            return;
+        }
+
+        int no = int.Parse(selNo);
+        if (no <= 0 || no >= 4)
+        {
+            Console.WriteLine("番号が不正です");
+            return;
+        }
+        if (no == 1)
+            Console.WriteLine("「ファイル」が選択されました");
+        else if (no == 2)
+            Console.WriteLine("「編集]が選択されました");
+        else
+            Console.WriteLine("「表示」が選択されました");
+
+    }
+}
+</PRE>
+実行すると、次のようになります。<P>
+<IMG SRC="../img/cs1302.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_12.htm">Previous Chapter</A>]
+[<A HREF="cs_14.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 20/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

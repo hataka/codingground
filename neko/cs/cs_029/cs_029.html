@@ -1,0 +1,154 @@
+<HTML>
+<!--        cs_29.htm        -->
+<!--        2006/09/04       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２９章 プロパティ
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+プロパティについては、今までも暗黙のうちに使っていました。
+使う側にとっては、フィールドだと思って使っても差し支え有りませんね。
+<P>
+<BR CLEAR="left"><BR>
+まずは、次の簡単なプログラムを見てください。
+<PRE>
+// prop01.cs
+
+using System;
+
+class MyClass
+{
+    int x;
+
+    public void setvalue(int y)
+    {
+        x = y;
+    }
+    public void show()
+    {
+        Console.WriteLine("x = {0}");
+    }
+}
+
+class prop01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        mc.setvalue(100);
+        mc.show();
+    }
+}
+</PRE>
+MyClassクラスには、privateなインスタンスフィールドxがあります。<P>
+xはprivateなので、クラス外からはアクセスできません。<P>
+そこで、xに値を設定するsetvalueメソッドを設置しました。xの値を見るための
+showメソッドも用意しました。<P>
+これらの、メソッドは単にフィールドに値を設定したり、値を読み出したりしている
+だけですね。このような場合、わざわざメソッドを用意したりせずに、もっと簡単な方法があります。それには、プロパティを使います。プロパティは次のように宣言します。
+<PRE>
+データ型 名前
+{
+    get
+    {
+        return フィールド名;
+    }
+    set
+    {
+        フィールド名 = value;
+    }
+}
+</PRE>
+getとか、setのことをアクセッサ(accessor)といいます。ユーザーがプロパティの名前を指定して、値を取得しようとしてきたときgetアクセッサが働きます。つまり、return フィールド名;でわかるようにフィールドの値を返します。<P>
+ユーザーが値を格納しようとしてきたときは、setアクセッサが働きフィールドに値を格納します。valueというのは、キーワードでユーザーが設定しようとしている値が格納されています。<P>
+getやsetアクセッサは常に両方無いとダメかというと、そんなことはありません。getアクセッサのみであれば読み取り専用、setアクセッサのみであれば書き込み専用となります。<P>
+アクセッサを利用して、書き込み、読み取り制限もできます。たとえば、有るフィールには負の値を設定してもらっては困る場合、ユーザーが負の値を指定してきたら、これを無視すればよいわけです。
+<PRE>
+int x; // privateなインスタンスフィールド
+
+public int myx //プロパティは通常クラス外からアクセスされるのでpublic
+{
+    get
+    {
+        return x;
+    }
+    set
+    {
+        if (value >= 0)
+            x = value;
+    }
+}
+</PRE>
+このようにすれば、ユーザーがプロパティを介してxに負の値を設定することはできません。また、xはprivateなのでクラス外から直接値を設定することもできません。<P>
+このように、フィールドに対して安全な値のみを格納することが可能となります。<P>
+次のプログラムは、今の説明を実現したものです。フィールドxは年齢を格納するものとして、ユーザーが負の値を格納できないようにしています。
+<PRE>
+// prop02.cs
+
+using System;
+
+class MyProp
+{
+    int x;
+
+    public int age
+    {
+        get
+        {
+            return x;
+        }
+        set
+        {
+            if (value >= 0)
+                x = value;
+        }
+    }
+}
+
+class prop02
+{
+    public static void Main()
+    {
+        MyProp mp = new MyProp();
+        mp.age = 20;
+
+        Console.WriteLine("年齢は{0}歳です", mp.age);
+
+        mp.age = -20;
+
+        Console.WriteLine("年齢は{0}歳です", mp.age);
+    }
+}
+</PRE>
+Mainメソッドでmp.age = -20;とわざとに負の値を格納しようとしています。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs2901.gif" ALIGN="left">
+mp.age = -20;を実行後も、「年齢は20歳です」と表示されますね。<P>
+また、使う側から見るとあたかもageというフィールドに値を設定したり、読み出したりするのと同じ感覚ですね。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_28.htm">Previous Chapter</A>]
+[<A HREF="cs_30.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 04/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

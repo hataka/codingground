@@ -1,0 +1,153 @@
+<HTML>
+<!--        cs_09.htm        -->
+<!--        2006/08/11       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第９章 string型とchar型　その２</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、文字列操作で役に立ちそうなメソッドの解説をします。
+<P>
+<BR CLEAR="left"><BR>
+stringクラスにはFormat静的メソッドがあります。これは、書式付き文字列を作成します。いくつかのバージョンがありますが、よく使うのは
+<PRE>
+string.Format("書式制御文字列", 引数,....);
+</PRE>
+です。<P>
+string str = string.Format("{0} = {1} + {2}", x, y, z);<P>
+と、いった感じで使います。
+<PRE>
+// string08.cs
+
+using System;
+
+class string08
+{
+    public static void Main()
+    {
+        string str;
+        int i = 125;
+        string name = "吉田";
+
+        str = string.Format("{0} * 100 = {1}", i, i * 100);
+        Console.WriteLine(str);
+
+        str = string.Format("{0}さんの所持金は{1:c}です", name, i);
+        Console.WriteLine(str);
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs0901.gif" ALIGN="left">
+
+<P>
+<BR CLEAR="left"><BR>
+IndexOfメソッドは、いくつかのバージョンがありますが、このオブジェクト内から、文字列や文字を検索して最初に見つかったインデックス(先頭が0)を返します。<P>
+これと逆に最後に見つかったインデックスを返すのがLastIndexOfメソッドです。
+<PRE>
+// string09.cs
+
+using System;
+
+class string09
+{
+    public static void Main()
+    {
+        string str = "今日はよい天気ですが、あしたはどうなるかわかりません";
+
+        Console.WriteLine("「あした」は、文字列中{0}番目の文字に見つかりました",
+            1 + str.IndexOf("あした"));
+        Console.WriteLine("「は」という文字が最初に見つかったのは、{0}番目の文字です。",
+            1 + str.IndexOf('は'));
+        Console.WriteLine("「は」という文字が最後に見つかったのは、{0}番目の文字です。",
+            1 + str.LastIndexOf('は'));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0902.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+
+stringクラスのToLowerメソッドは、このオブジェクトの文字をすべて小文字にします。
+ToUpperメソッドは大文字に変換します。
+<PRE>
+public string ToLower();
+public string ToUpper();
+</PRE>
+サンプルのプログラムを見てみましょう。
+<PRE>
+// string10.cs
+
+using System;
+
+class string10
+{
+    public static void Main()
+    {
+        string str = "This Is A Pen.";
+        string strSmall, strBig;
+
+        strSmall = str.ToLower();
+        Console.WriteLine(strSmall);
+
+        strBig = str.ToUpper();
+        Console.WriteLine(strBig);
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs0903.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+stringクラスのInsertメソッドは、このオブジェクトの指定されたインデックス位置に、文字列を挿入します。
+<PRE>
+public string Insert(
+   int startIndex,
+   string value
+);
+</PRE>
+startIndexは、挿入を開始するインデックス、valueは挿入する文字列です。
+<PRE>
+// string11.cs
+
+using System;
+
+class string11
+{
+    public static void Main()
+    {
+        string str = "今日は、暑い一日でした", very = "大変";
+
+        Console.WriteLine(str.Insert(4, very));
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs0904.gif" ALIGN="left">
+
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_08.htm">Previous Chapter</A>]
+[<A HREF="cs_10.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 11/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

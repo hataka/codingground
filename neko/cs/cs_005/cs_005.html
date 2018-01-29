@@ -1,0 +1,225 @@
+<HTML>
+<!--        cs_05.htm        -->
+<!--        2006/08/07       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５章 C#のデータ型</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+<P>プログラムで扱うデータは、その特性によりいずれかのデータ型に属します。
+<BR CLEAR="left"><BR>
+では、C#のデータ型にはどのようなものがあるのでしょうか。C/C++のデータ型に似ていますが、全然違う側面も持っています。<P>
+C#で取り扱うデータ型は大きく、「値型(value type)」と「参照型(reference type)」に分かれます。<P>
+<TABLE BORDER="1">
+<TD BGCOLOR="#00FFFF" ROWSPAN="2">データ型</TD>
+<TD>値型(value type)</TD><TR>
+<TD>参照型(reference type)</TD>
+</TABLE>
+<P>
+値型は、変数(valiable)を宣言すると、その変数はメモリ上に領域が確保されます。
+これに、値を代入すると(初期化すると)、確保された領域にその値が設定されます。<P>
+参照型の変数もやはり、メモリ上にその領域が確保されます。変数を初期化するとき、初期値は、ヒープ領域に確保され、変数が確保している領域にはその参照が代入されます。<P>
+「参照」とは、メモリのアドレスのことです。<P>
+値型はstructキーワードで宣言されています。(構造体です。C/C++の構造体とは全く異なります。また、列挙型をのぞきます。)<P>
+参照型はclassキーワードで宣言されています。<P>
+この他に、C/C++のポインタ(Pointer type)も扱えます。<P>
+さて、この章では比較的取り扱いが簡単な値型の中でも数値を取り扱う数値型について解説します。その他の型についてはもう少し後で解説を行います。数値型は、整数型と実数型に大別されます。<P>
+<TABLE BORDER="1">
+<TD BGCOLOR="#FFFF00" COLSPAN="3"><BR></TD><TD BGCOLOR="#FFFF00">C#型</TD><TD BGCOLOR="#FFFF00">ビット長</TD><TD BGCOLOR="#FFFF00">.NET型</TD><TR>
+<TD BGCOLOR="#00FFFF" ROWSPAN="11">数値型</TD><TD ROWSPAN="8">整数型</TD>
+<TD ROWSPAN="4">符号付き</TD><TD>sbyte</TD><TD>8ビット</TD><TD>System.SByte</TD><TR><TD>short</TD><TD>16ビット</TD><TD>System.Int16</TD><TR>
+<TD>int</TD><TD>32ビット</TD><TD>System.Int32</TD><TR><TD>long</TD><TD>64ビット</TD><TD>System.Int64</TD><TR>
+<TD ROWSPAN="4">符号なし</TD><TD>byte</TD><TD>8ビット</TD><TD>System.Byte</TD><TR><TD>ushort</TD><TD>16ビット</TD><TD>System.UInt16</TD><TR><TD>uint</TD><TD>32ビット</TD><TD>System.UInt32</TD>
+<TR><TD>ulong</TD><TD>64ビット</TD><TD>System.UInt64</TD><TR>
+<TD ROWSPAN="3">実数型</TD>
+<TD ROWSPAN="2">浮動小数点数型</TD><TD>float</TD><TD>32ビット</TD><TD>System.Single</TD><TR>
+<TD>double</TD><TD>64ビット</TD><TD>System.Double</TD><TR>
+<TD>10進データ型</TD><TD>decimal</TD><TD>128ビット</TD><TD>System.Decimal</TD>
+</TABLE><P>
+C#の型には.NET型というエイリアスがあります。これは、.NET Framework上で動作する他の言語と型を一致させるためのものです。<P>
+C#でプログラミングをする際、どちらの型を使ってもかまいません。また、プログラムの冒頭でusing System;とあれば、Systemを省略できます(System.Int32はInt32など)。
+また、これらの型はstructで宣言されているので、次のような静的フィールドを利用できます。(フィールドについては後の章で解説)
+<PRE>
+MaxValue, MinValue
+</PRE>
+使い方は至って簡単で、Int32.MaxValueが、Int32型の最大値を表します。もちろんint.MaxValueとしても同じです。<P>
+<PRE>
+// datatype01.cs
+
+using System;
+
+class datatype01
+{
+    public static void Main()
+    {
+        string format = "{0, -8}:{1}〜{2}", dot = "----------------";
+
+        Console.WriteLine(format, "sbyte",sbyte.MinValue, sbyte.MaxValue);
+        Console.WriteLine(format, "short", short.MinValue, short.MaxValue);
+        Console.WriteLine(format, "int", int.MinValue, int.MaxValue);
+        Console.WriteLine(format, "long", long.MinValue, long.MaxValue);
+        Console.WriteLine(dot);
+        Console.WriteLine(format, "byte", byte.MinValue, byte.MaxValue);
+        Console.WriteLine(format, "ushort", ushort.MinValue, ushort.MaxValue);
+        Console.WriteLine(format, "uint", uint.MinValue, uint.MaxValue);
+        Console.WriteLine(format, "ulong", ulong.MinValue, ulong.MaxValue);
+        Console.WriteLine(dot);
+        Console.WriteLine(format, "float", float.MinValue, float.MaxValue);
+        Console.WriteLine(format, "double", double.MinValue, double.MaxValue);
+        Console.WriteLine(dot);
+        Console.WriteLine(format, "decimal", decimal.MinValue, decimal.MaxValue);
+        Console.WriteLine(dot);
+    }
+}
+</PRE>
+書式制御文字列で{0, -8}とあるのは、インデックス0の引数のスペースを8つ分取って、左詰で表示しなさいという意味です。{0, 8}なら右詰になります。<P>
+結果は、次のようになります。<P>
+<IMG SRC="../img/cs0501.gif" ALIGN="left">
+xxxE+zzというのは、xxxかける10のzz乗という意味です。
+<P>
+<BR CLEAR="left"><BR>
+さて、整数の10はint型の範囲にも入りますし、byte型、sbyty型、short, ushort, uint, long, ulong, float, double, decimal型の範囲にも属します。型を調べるGetTypeメソッドというのがあります。これは、どんなオブジェクトにでも使えます。
+<PRE>
+// literal01.cs
+
+using System;
+
+class literal01
+{
+    public static void Main()
+    {
+        string format = "{0}の型は{1}";
+        
+        Console.WriteLine(format, 10, 10.GetType());
+        Console.WriteLine(format, 1.2, (1.2).GetType());
+
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0502.gif" ALIGN="left">
+これを見てわかるように単なる整数リテラルはint型(int型におさまらないときは、uint型に、それにもおさまらないときはlong, まだだめなときはulong型)とみなされます。<P>
+1.54のような小数点数はdouble型とみなされます。
+<P>
+<BR CLEAR="left"><BR>
+では、次のような場合はどうなるのでしょうか。
+<PRE>
+byte x = 10;
+</PRE>
+リテラル10はint型です。int型より小さなbyte型に代入できるのでしょうか。
+たまたま、int型の中でも小さな数字10なのでbyte型に代入してもよいのでしょうか。
+この例の場合は、コンパイラは文句を言いません。
+<PRE>
+int x = 10;
+byte b;
+b = x;
+</PRE>
+この例では、コンパイルエラーとなります。代入しても大丈夫だとわかっているときは
+型キャストをします。型キャストは
+<PRE>
+(データ型)式
+</PRE>
+で行います。
+<PRE>
+int x = 10;
+byte b;
+b = (byte)x;
+</PRE>
+とすれば、コンパイラは文句を言いません。しかし、型キャストをするときは慎重に行わないと、非常にわかりにくいバグが発生することがあります。
+<PRE>
+// cast01.cs
+
+using System;
+
+class cast01
+{
+    public static void Main()
+    {
+        byte a;
+        int b = 10;
+        a = (byte)b;
+
+        Console.WriteLine("a = {0}", a);
+
+        // 256はbyte型の範囲を超え桁あふれが起る
+        b = 256;
+        a = (byte)b;
+        Console.WriteLine("a = {0}", a);
+    }
+}
+</PRE>
+このプログラムをコンパイルしても、「警告0,エラー0」で通ってしまいます。
+しかし、実行すると<P>
+<IMG SRC="../img/cs0503.gif" ALIGN="left">
+2回目のaの値が変ですね。これは、byte型に無理矢理255を代入したため桁あふれが起きたためです。あふれた桁は無視されるので0になってしまいます。
+<P>
+<BR CLEAR="left"><BR>
+数値リテラルの型を明示的に示すこともできます。これには接尾辞をつけます。<P>
+<TABLE BORDER="1">
+<TD BGCOLOR="#FFFF00">分類</TD><TD BGCOLOR="#FFFF00">接尾辞</TD><TD BGCOLOR="#FFFF00">データ型</TD><TR>
+<TD ROWSPAN="4">整数型</TD><TD>なし</TD><TD>int</TD><TR>
+<TD>L(またはl)</TD><TD>long</TD><TR>
+<TD>U(またはu)</TD><TD>uint</TD><TR>
+<TD>UL(またはul)</TD><TD>ulong</TD><TR>
+<TD ROWSPAN="3">実数型</TD><TD>F(またはf)</TD><TD>float</TD><TR>
+<TD>D(またはd)</TD><TD>double</TD><TR>
+<TD>M(またはm)</TD><TD>decimal</TD>
+</TABLE><P>
+10Lと書くとこれは、long型の10という意味になります。<P>
+小数点数リテラルをdecimal型の変数に値を代入するときは必ずM(またはm)をつけないとエラーとなります。<P>
+二項式の内部ではデータ化を混在させることが可能です。この場合小さい型のは、大きい型に変換されます。(decimalだけは例外的で、1つがdecimalの時、他方がfloat,doubleである場合はエラーとなります。)<P>
+たとえば、int型 + byte型の時は、両方がint型とみなされます。
+<PRE>
+// cast02.cs
+
+using System;
+
+class cast02
+{
+    public static void Main()
+    {
+        int x = 10, y = 3;
+        double z;
+
+        z = x / y;
+        Console.WriteLine("{0} / {1} = {2}", x, y, z);
+
+        z = (double)(x / y);
+        Console.WriteLine("{0} / {1} = {2}", x, y, z);
+
+        z = ((double)x) / y;
+        Console.WriteLine("{0} / {1} = {2}", x, y, z);
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0504.gif" ALIGN="left">
+x / yは、xもyもint型なのでx / yもint型です。この時x / y (=3.3333...)は切り捨てられ3となります。これが、double型に変換されzに代入されます。<P>
+第２の例では、(x / y)はint型でやはり、切り捨てられ3となり、これがdouble型にキャストされzに代入されます。<P>
+第３の例では、(double)x / yは型の大きい方に、合わせるのでyもdouble型となります。全体としてはdouble型で、その値は3.333...となります。これがzに代入されます。
+<P>
+<BR CLEAR="left">
+
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_04.htm">Previous Chapter</A>]
+[<A HREF="cs_06.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 07/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

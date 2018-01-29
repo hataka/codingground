@@ -1,0 +1,184 @@
+<HTML>
+<!--        cs_42.htm        -->
+<!--        2006/09/17       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４２章 仮想メソッド
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+派生クラスで、書きかえられることを前提にしたメソッドを作ることができます。
+<P>
+<BR CLEAR="left"><BR>
+派生クラスでは、継承されたメソッドと同じシグニチャ(名前とパラメータリスト)と
+戻り値の型を持ったメソッドを定義することができます。これをメソッドのオーバーライドといいます。
+基本クラスでは、オーバーライドされるメソッドにvirtual修飾子をつけます。
+派生クラスでは、オーバーライドしたメソッドにoverride修飾子をつけます。
+オーバーライドされる基本クラスのメソッドを仮想メソッドといいます。<P>
+派生クラスでは、仮想メソッドをオーバーライドしなくてもかまいません。この場合
+基本クラスのメソッドがそのまま使われることになります。<P>
+また、staticなメソッドは仮想メソッドにすることはできません。<P>
+さて、派生クラスの参照を、基本クラスの
+参照変数に代入すると、基本クラスの隠蔽されたメンバを呼び出すことができました。<P>
+これは、オーバーライドされたメソッドについても当てはまるのでしょうか。<P>
+実験してみましょう。
+<PRE>
+// virtualmethod01.cs
+
+using System;
+
+class MyClass1
+{
+    public virtual void show()
+    {
+        Console.WriteLine("Class1のshow()");
+    }
+    public void xshow()
+    {
+        Console.WriteLine("MyClass1のxshow()");
+    }
+}
+
+class MyClass2 : MyClass1
+{
+    public override void show()
+    {
+        Console.WriteLine("MyClass2のshow()");
+    }
+
+    new public void xshow()
+    {
+        Console.WriteLine("MyClass2のxshow()");
+    }
+}
+
+
+class virtualmethod01
+{
+    public static void Main()
+    {
+        MyClass2 mc2 = new MyClass2();
+        mc2.show();
+        mc2.xshow();
+
+        Console.WriteLine("--------");
+        MyClass1 mc1;
+        mc1 = mc2;
+        mc1.show();
+        mc1.xshow();
+    }
+}
+</PRE>
+MyClass1には、仮想メソッドのshowメソッドがあります。<P>
+また、単なるインスタンスメソッドのxshowメソッドがあります。<P>
+MyClass2は、MyClass1クラスから派生してきました。<P>
+MyClass2では、showメソッドをオーバーライドしています。<P>
+また、xshowメソッドはnewキーワードで基本クラスのxshowメソッドを隠蔽しています。<P>Mainメソッドでは、まずMyClass2のインスタンス(mc2)を生成しています。
+<PRE>
+mc2.show();
+</PRE>
+では、当然オーバーライドされたshowメソッドが呼び出されますね。
+<PRE>
+mc2.xshow();
+</PRE>
+これは、newで基本クラスのxshowメソッドが隠蔽されているので書きかえられたxshowメソッドが呼び出されますね。<P>
+ここまでは、当たり前の結果が予想されます。<P>
+さて、次ですが、MyClass1の参照変数mc1にMyClass2の参照を代入しています。<P>
+<PRE>
+mc1.show();
+</PRE>
+は、何が呼ばれるのでしょうか。今までの経験ではMyClass1のshowメソッドが呼ばれそうですね。でも、本当でしょうか。
+<PRE>
+mc1.xshow();
+</PRE>
+これは、すでにやったようにMyClass1のxshowメソッドが呼ばれますね。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs4201.gif" ALIGN="left">
+ありゃ、mc1.show();ではMyClass2のshowメソッドが呼び出されていますね。<P>
+mc1.xshow();では、当然MyClass1のshowメソッドが呼び出されています。
+<P>
+<BR CLEAR="left"><BR>
+つまり、基本クラスの参照変数に代入された派生クラスの参照に応じたバージョンの
+メソッドが呼び出されます。<P>
+これが、メソッドの名前の隠蔽とは全く異なる点です。どのメソッドが呼び出されるかは
+実行時に決定されます。<P>
+次の例をみるとよりはっきりすると思います。
+<PRE>
+// virtualmethod02.cs
+
+using System;
+
+class MyClass1
+{
+    public virtual void show()
+    {
+        Console.WriteLine("MyClass1");
+    }
+}
+
+class MyClass2 : MyClass1
+{
+    public override void show()
+    {
+        Console.WriteLine("MyClass2");
+    }
+}
+
+class MyClass3 : MyClass2
+{
+    public override void show()
+    {
+        Console.WriteLine("MyClass3");
+    }
+}
+
+class virtualmethod02
+{
+    public static void Main()
+    {
+        MyClass3 mc3 = new MyClass3();
+        MyClass2 mc2 = new MyClass2();
+        MyClass1 mc1 = new MyClass1();
+
+        MyClass1 mcx;
+
+        mcx = mc1;
+        mcx.show();
+
+        mcx = mc2;
+        mcx.show();
+
+        mcx = mc3;
+        mcx.show();
+    }
+}
+</PRE>
+Mainメソッドではmcx.show();を３回実行しています。<P>
+しかし、それぞれmcxに代入されている参照が異なります。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs4202.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_41.htm">Previous Chapter</A>]
+[<A HREF="cs_43.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 17/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

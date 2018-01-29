@@ -1,0 +1,168 @@
+<HTML>
+<!--        cs_62.htm        -->
+<!--        2006/10/07       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６２章 演算子オーバーロード その１</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+自分でクラスを作成したら、演算子に独自の定義を設けることができます。
+これを演算子のオーバーロードといいます。
+<P>
+<BR CLEAR="left"><BR>
+演算子は、オペランドの数により単項演算子(例-Aのマイナス)、２項演算子(A + Bのプラス)などに分類することができます。この章では２項演算子の+と-をオーバーロードしてみます。<P>
+演算子をオーバーロードできるのは自分で作ったクラスのみです。
+<PRE>
+public static 演算後の型 operator 演算子(データ型 オペランド1, データ型 オペランド){.....}
+</PRE>
+オペランドのうち少なくとも一つは自分のクラス型でなくてはなりません。また、引数にoutやrefは使えません(outやrefについて忘れてしまった人は<A HREF="cs_22.htm">第２２章</A>を見てください)。<P>
+また、publicとstaticがついていることに注意してください。<P>
+この章では、サンプルとして２次元ベクトルもどきを使います。<P>
+(「もどき」とあるのは、数学的厳密さが全然ないからです。)<P>
+ベクトルは(2,5)のように２つのint型の数値の組み合わせで表現するものとします。<P>
+(2,5)と(5,2)は、異なるものとします。<P>
+さて、このベクトルもどき空間で+と-の演算を定義します。<P>
+(a,b) + (c,d)は(a+c, b+d)とします。<P>
+(a,b) - (c,d)は(a-c, b-d)とします。<P>
+２つのベクトル(a,b)と(c,d)が等しいのは、a=cかつb=dの時としますが、この章では
+定義していません。暗黙のうちに等しいとします。<P>
+なんだか、いい加減な定義ですが、試しにプログラムを作ってみましょう。<P>
+MyPositionクラスがベクトルもどきを表現するクラスです。(２つのint型の組み合わせは
+位置を表すとも考えられるのでこの名称を使いました。)
+<PRE>
+// opover01.cs
+
+using System;
+
+class MyPosition
+{
+    int nX, nY;
+
+    public int x
+    {
+        get
+        {
+            return nX;
+        }
+        set
+        {
+            nX = value;
+        }
+    }
+    public int y
+    {
+        get
+        {
+            return nY;
+        }
+        set
+        {
+            nY = value;
+        }
+    }
+
+    public static MyPosition operator +(MyPosition a, MyPosition b)
+    {
+        MyPosition c = new MyPosition();
+
+        c.nX = a.nX + b.nX;
+        c.nY = a.nY + b.nY;
+
+        return c;
+    }
+
+    public static MyPosition operator -(MyPosition a, MyPosition b)
+    {
+        MyPosition c = new MyPosition();
+
+        c.nX = a.nX - b.nX;
+        c.nY = a.nY - b.nY;
+
+        return c;
+    }
+
+    public MyPosition(int m, int n)
+    {
+        nX = m;
+        nY = n;
+    }
+
+    public MyPosition()
+    {
+        nX = 0;
+        nY = 0;
+    }
+}
+
+class opover01
+{
+    public static void Main()
+    {
+        MyPosition mp = new MyPosition(3, 5);
+        MyPosition np = new MyPosition(7, 3);
+
+        MyPosition A, B;
+
+        A = mp + np;
+        Console.WriteLine("A = ({0}, {1})", A.x, A.y);
+
+        B = mp - np;
+        Console.WriteLine("B = ({0}, {1})", B.x, B.y);
+        
+    }
+}
+</PRE>
+ベクトルを表すクラスMyPositionには、インスタンスフィールドとしてnX,nYを持っています。これが、(a,b)のa,bに相当するものと考えてください。<P>
+この、nX,nYに値を代入したり、読み出したりするx,yプロパティがあります。<P>
+そして、
+<PRE>
+public static MyPosition operator +(MyPosition a, MyPosition b){...}
+public static MyPosition operator -(MyPosition a, MyPosition b){...}
+</PRE>
+というように、演算子をオーバーロードしています。<P>
+<PRE>
+c.nX = a.nX + b.nX;
+</PRE>
+と、いうようにフィールドを使って演算子の定義をしていますが、
+もちろんプロパティを使って
+<PRE>
+c.x = a.x + b.x;
+</PRE>
+のように書いても問題ありません。<P>
+
+また、引数有りと無しのコンストラクタも用意しておきました。<P>
+Mainメソッドでは、
+<PRE>
+MyPosition mp = new MyPosition(3, 5);
+MyPosition np = new MyPosition(7, 3);
+</PRE>
+のように、mpとnpというベクトルを生成しています。この２つのベクトルの
+足し算、引き算をやっています。加算の結果は(3+7, 5+3)で(10,8)となります。
+減算の結果は(3-7,5-3)で(-4,2)となります。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs6201.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_61.htm">Previous Chapter</A>]
+[<A HREF="cs_63.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 07/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

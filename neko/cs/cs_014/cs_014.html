@@ -1,0 +1,120 @@
+<HTML>
+<!--        cs_14.htm        -->
+<!--        2006/08/21       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１４章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第１４章 switch文
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+switch文は複数分岐に使います。C/C++のswitch文にかなり似ています。
+<P>
+<BR CLEAR="left"><BR>
+switch文は次のような形になります。
+<PRE>
+switch (式)
+{
+    case 値1:
+        ...
+        break;
+    case 値2:
+        ...
+        break;
+    default:
+        ...
+        break;
+}
+</PRE>
+式は、整数型か文字列型(string型)です。これが、値nに相当すればcase 値n:のところの文が実行されます。そして、break文に行き当たり、switch文の{}から抜けます。caseのどれにも当てはまらない時はdefault:のところが実行されます。<P>
+また、次のような形もあります。
+<PRE>
+switch (式)
+{
+    case 値1:
+    case 値2:
+        ...
+        break;
+    ...
+}
+</PRE>
+式の値が値1が値2であれば、次の...が実行されます。<P>
+しかし、次のような形は認められません(C/C++ではOK)。
+<PRE>
+//エラー!!
+switch (式)
+{
+    case 値1:
+        ...(1)
+    case 値2:
+        ...(2)
+        break;
+    ...
+}
+</PRE>
+式の値が値1なら、...(1)が実行され、続いて...(2)を実行しようとする時、C/C++ではこのように書きますが、C#では認められていません。<P>
+では、<A HREF="cs_13.htm">前章</A>のプログラムbool02.csをswitch文を使って書き直してみましょう。
+<PRE>
+// switch01.cs
+
+using System;
+
+class switch01
+{
+    public static void Main()
+    {
+        string[] menu = new string[]{"1.ファイル",
+            "2.編集", "3.表示"};
+        string format = "「{0}」が選択されました";
+
+        Console.WriteLine("*** Menu ***");
+        Console.WriteLine(menu[0]);
+        Console.WriteLine(menu[1]);
+        Console.WriteLine(menu[2]);
+        Console.WriteLine("************");
+        Console.Write("\n");
+
+        Console.Write("選択--- ");
+        string sel = Console.ReadLine();
+
+        switch (sel)
+        {
+            case "1":
+                Console.WriteLine(format, menu[0]);
+                break;
+            case "2":
+                Console.WriteLine(format, menu[1]);
+                break;
+            case "3":
+                Console.WriteLine(format, menu[2]);
+                break;
+            default:
+                Console.WriteLine("選択が正しくありません");
+                break;
+        }
+    }
+}
+</PRE>
+ずいぶん、すっきりしてきましたね。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_13.htm">Previous Chapter</A>]
+[<A HREF="cs_15.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 21/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

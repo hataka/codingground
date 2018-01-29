@@ -1,0 +1,94 @@
+<HTML>
+<!--        cs_26.htm        -->
+<!--        2006/09/01       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２６章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２６章 可変長引数を持つメソッド
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッドに可変長の引数を持たせることができます。
+<P>
+<BR CLEAR="left"><BR>
+これにはparamsキーワードを使います。
+<PRE>
+戻り値の型 メソッド名(普通のパラメータ,..., params データ型[] 仮引数の名前){}
+</PRE>
+のように、使います。paramsキーワードのついた引数が可変長となります。<P>
+形からもわかるように可変長の引数の配列となります。従って、ここに配列の参照を
+書いても大丈夫です。また、長さ0の配列でもかまいません。params引数の後ろにさらに
+他の引数をとることはできません。<P>
+サンプルを見ると使い方は簡単であることがわかります。
+<PRE>
+// params01.cs
+
+using System;
+
+class MyAdd
+{
+    int sum;
+
+    public int add(params int[] x)
+    {
+        sum = 0;
+        for (int i = 0; i < x.Length; i++)
+            sum += x[i];
+        return sum;
+    }
+ }
+
+class params01
+{
+    public static void Main()
+    {
+        MyAdd ma = new MyAdd();
+
+        Console.WriteLine("{0} + {1} + {2} = {3}",
+            1, 10, 5, ma.add(1, 10, 5));
+        Console.WriteLine("引数なしの時 = {0}", ma.add());
+        Console.WriteLine("{0} + {1} + {2} + ({3}) + {4} = {5}",
+            2, 4, 6, -8, 10, ma.add(2, 4, 6, -8, 10));
+
+        int[] ar = new int[3] { 2, 8, 10 };
+        Console.WriteLine("配列の要素の合計 = {0}", ma.add(ar));
+    }
+}
+</PRE>
+MyAddクラスには、インスタンスフィールドのsumと、addメソッドがあります。<P>
+addメソッドの引数はparamsキーワードのついたint型引数です。これで、可変長のint型の引数を
+取ることができます。<P>
+addメソッドの中では、まずsumを0にしています。sumは、引数の合計を格納します。メソッドが呼ばれるたびに0にしておかないと、前回の合計が残っているのでまずいですね。<P>
+引数の合計を求めるには、ここではfor文を使っています。引数の個数はLengthプロパティを使えばわかりますね。<P>
+呼び出し側のMainメソッドでは、まずMyAddクラスのインスタンス化を行い、ma.add(...)で引数の合計を求めています。引数なしの場合は、0が返されるはずです。<P>
+また、最後に配列の参照を渡しています。これで、配列の要素の合計が求まるはずです。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs2601.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+さて、ここでaddメソッドをオーバーロードして、double型の数値の合計を求めるようにもしたいと思うのが人情でしょう。しかし、ちょっと困ることがあります。<P>
+引数なしの場合、どのバージョンのメソッドがわからないためコンパイルエラーとなります。
+もちろん、使う側で引数なしの呼び出しを行わなければ、問題有りません。<P>
+
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_25.htm">Previous Chapter</A>]
+[<A HREF="cs_27.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 01/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,85 @@
+<HTML>
+<!--        cs_67.htm        -->
+<!--        2006/10/12       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６７章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６７章 finally節</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+try-catch構文を抜け出すときに、必ず実行したい処理をfinallyブロックに書くことができます。
+<P>
+<BR CLEAR="left"><BR>
+tyr-catch構文の後ろに続けてfinally節を書きます。例外が発生しても、しなくてもfinally
+ブロックは実行されます。
+<PRE>
+// finally01.cs
+
+using System;
+
+class finally01
+{
+    public static void Main()
+    {
+        try
+        {
+            Console.Write("何か数字を入力してください---");
+            string str = Console.ReadLine();
+            int x = Int32.Parse(str);
+            int y = x / 2;
+            Console.WriteLine("今入力した数字を２で割ると{0}です", y);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("例外が発生しました");
+            Console.WriteLine(e.Message);
+        }
+        finally
+        {
+            Console.WriteLine("finallyです");
+        }
+    }
+}
+</PRE>
+見てわかるように、「数字を入力してください」数字以外の文字を入力すると例外が発生します。<P>
+言われたとおり、数字を入力するとその半分の値を出力します。<P>
+どちらの場合も「finallyです」という文字列が出力されます。<P>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs6701.gif" ALIGN="left">
+数字を入力しなかったために、例外が発生しています。<P>
+例外が発生しても、「finallyです」という文字列は表示されます。
+<P>
+<BR CLEAR="left"><BR>
+<IMG SRC="../img/cs6702.gif" ALIGN="left">
+今度は、例外は発生していません。<P>
+「finallyです」という文字列は表示されます。
+<P>
+<BR CLEAR="left"><BR>
+さて、このプログラムの場合最後の
+<PRE>
+Console.WriteLine("finallyです");
+</PRE>
+は、わざわざfinallyブロックに書かなくても結果は同じになります。<P>
+ただ、プログラムの見通しをよくするという意味合いですね。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_66.htm">Previous Chapter</A>]
+[<A HREF="cs_68.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 12/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

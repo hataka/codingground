@@ -1,0 +1,137 @@
+<HTML>
+<!--        cs_23.htm        -->
+<!--        2006/08/29       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２３章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２３章 インスタンスフィールドと静的フィールド
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、クラスのフィールドについてもうちょっと詳しく見ていくことにします。
+<P>
+<BR CLEAR="left"><BR>
+まずは、次のプログラムを見てください。
+<PRE>
+// field01.cs
+
+using System;
+
+class MyClass
+{
+    int x;
+
+    public void Show()
+    {
+        Console.WriteLine("x = {0}", x);
+    }
+
+    public void Set(int y)
+    {
+        x = y;
+    }
+}
+
+class field01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+        mc.Show();
+
+        mc.Set(100);
+        mc.Show();
+
+    }
+}
+</PRE>
+MyClassクラスには、インタンスフィールドのxがあります。アクセス修飾子が省略されているのでprivateとみなされ、このクラス以外からはアクセス不能です。<P>
+Showメソッドは、xの値を表示するメソッドです。<P>
+Setメソッドは、引数yをxに代入するメソッドです。<P>
+Mainメソッド側では、まずMyClassクラスのインスタンスを生成しています。<P>
+次に、いきなりmc.Show();でxの値を表示しようとしています。xには、まだ値を代入していませんね。しかし、インスタンスフィールドは、インスタンス生成の時自動的に初期化されるので問題有りません。「x = 0」と表示されるでしょう。<P>
+次に、mc.Set(100);として、xに100を代入しています。その後mc.Show();でxの値を表示させています。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs2301.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+次のプログラムの実行結果はどのようになるか、考えてみてください。
+<PRE>
+// field02.cs
+
+using System;
+
+class MyClass
+{
+    public static int x;
+    public int y;
+
+    public void Show()
+    {
+        Console.WriteLine("x = {0}, y = {1}", x, y);
+    }
+}
+
+class field02
+{
+    public static void Main()
+    {
+        MyClass.x = 10;
+
+        MyClass mc1 = new MyClass();
+        mc1.y = 20;
+        Console.WriteLine("1回目-------");
+        mc1.Show();
+
+        MyClass mc2 = new MyClass();
+        Console.WriteLine("2回目-------");
+        mc2.Show();
+
+        MyClass mc3 = new MyClass();
+        mc3.y = 500;
+        Console.WriteLine("3回目-------");
+        mc3.Show();
+
+        mc3 = mc2;
+        Console.WriteLine("4回目-------");
+        mc3.Show();
+    }
+}
+</PRE>
+MyClassクラスには、静的フィールドのxと、インスタンスフィールドのyが有ります。
+また、Showメソッドはxやyの値を表示するメソッドです。<P>
+Mainメソッドでは、MyClass.x = 10;として、静的フィールドxに10を代入しています。<P>
+
+次にMyClassのインスタンスを生成して、その参照をmc1に代入しています。<P>
+ここで、mc1.y = 20;としてインスタンスフィールドyに20を代入しています。<P>
+そこで、第１回目のmc1.Show();を実行するとどのように表示されるでしょうか。
+当然yは20ですね。xはどうでしょうか。静的フィールドは、そのクラスのすべてのインスタンスに反映されるのでxの値は10なのです。「x = 10, y = 20」と表示されるでしょう。<P>次に、またインスタンスを生成してその参照をmc2としています。ここで、いきなり第２回目の表示をさせています。インスタンスフィールドには先ほど20を代入したので「y = 20」と表示されるのでしょうか。答はノーです。インスタンスフィールドは、その名の通りそれぞれのインスタンス固有のものです。mc2のyには、まだ何も代入していないのでyは0のはずです。従って「x = 10, y = 0」と表示されるはずです。<P>
+次に、またインスタンスを生成してmc3としています。mc3.y = 500;としmc3のインスタンスフィールドyに500を代入しています。当然mc3.Show();を実行するとx = 10, y = 500」と表示されますね。<P>
+さて、次にmc3 = mc2;としています。これは、mc2の参照をmc3に代入しているのですね。
+すると、mc3.Show();はmc2.Show();と同じことになります。第４回目の表示では、「x = 10, y = 0」となるはずです。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs2302.gif" ALIGN="left">
+<P>
+<BR CLEAR="left">
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_22.htm">Previous Chapter</A>]
+[<A HREF="cs_24.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 29/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

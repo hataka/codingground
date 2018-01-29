@@ -1,0 +1,167 @@
+<HTML>
+<!--        cs_34.htm        -->
+<!--        2006/09/09       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３４章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３４章 thisとは何でしょうか
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッドは、何らかのクラスに属しています。メソッドが呼び出されると、そのオブジェクトの
+参照がthisとして渡されます。
+<P>
+<BR CLEAR="left"><BR>
+staticなメソッドでは、このようなことは起こりません。インデクサのthisも同様です。
+従ってstaticなインデクサが存在しないというのも納得できます。thisはどんなときに使うのでしょうか。次の例を見てください。
+<PRE>
+// this01.cs
+
+using System;
+
+class MyClass
+{
+    public int x;
+
+    public void show(int x)
+    {
+        Console.WriteLine("x = {0}", x);
+        Console.WriteLine("this.x = {0}", this.x);
+    }
+}
+
+class this01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+        mc.x = 100;
+        mc.show(20);
+    }
+}
+</PRE>
+MyClassクラスには、インスタンスフィールドのxがあります。<P>
+このクラスには、またxというパラメータを持つshowというインスタンスメソッドがあります。<P>
+さて、showメソッドでは最初に
+<PRE>
+Console.WriteLine("x = {0}", x);
+</PRE>
+としていますが、この時xはパラメータのxとなります。一方、
+<PRE>
+Console.WriteLine("this.x = {0}", this.x);
+</PRE>
+this.xとすると、「このオブジェクトのx」という意味になりフィールドのxを指すことになります。<P>
+この場合、show(int y)とでもすれば、わざわざthisを使うまでもないのですが・・・・。<P>
+実行結果は当然次のようになります。<P>
+<IMG SRC="../img/cs3401.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+さて、<A HREF="cs_24.htm">第２４章</A>でコンストラクタのオーバーロードをやりました。
+あるコンストラクタがthisを使って、他のバージョンのコンストラクタを呼び出すことができます。
+<PRE>
+クラス名(パラメータリスト):this(パラメータリスト){...}
+</PRE>
+こうすると、このコンストラクタが実行される前に、thisパラメータリストと一致するコンストラクタが呼び出されます。コンストラクタが多数オーバーロードされていて、似たような処理をするときには便利かもしれません。
+<PRE>
+// this02.cs
+
+using System;
+
+class MyClass
+{
+    int x, y, z;
+
+    public MyClass()
+    {
+        Console.WriteLine("引数なしコンストラクタが呼ばれました");
+        x = 1;
+        y = 1;
+        z = 1;
+    }
+    public MyClass(int a)
+        : this()
+    {
+        x = a;
+    }
+
+    public MyClass(int a, int b)
+        : this()
+    {
+        x = a;
+        y = b;
+    }
+
+    public MyClass(int a, int b, int c)
+    {
+        x = a;
+        y = b;
+        z = c;
+    }
+
+    public void show()
+    {
+        Console.WriteLine("x = {0}, y = {1}, z = {2}", x, y, z);
+    }
+}
+
+
+
+class this02
+{
+    public static void Main()
+    {
+        string strLine = "-------------------";
+
+        MyClass mc1 = new MyClass();
+        mc1.show();
+
+        Console.WriteLine(strLine);
+
+        MyClass mc2 = new MyClass(5);
+        mc2.show();
+
+        Console.WriteLine(strLine);
+
+        MyClass mc3 = new MyClass(10, 20);
+        mc3.show();
+
+        Console.WriteLine(strLine);
+
+        MyClass mc4 = new MyClass(100, 200, 300);
+        mc4.show();
+        
+    }
+}
+</PRE>
+MyClassクラスにはx, y, zというフィールドがあります。このフィールドのデフォルトの値を1にしたいとします。また、xのみ、x,yのみ、x,y,zのすべてをユーザーの指定した値に初期化もできるようにしたいとします。<P>
+コンストラクタは、４種類のオーバーロードバージョンを用意しました。<P>
+引数なしバージョンでは、x, y, zの値を全部1で初期化しています。<P>
+さて、引数を１つだけ持つバージョンでは MyClass(int a) : this()として、まず引数なしバージョンを呼んでx,y,zの値を全部1にしています。その後xの値をユーザーが指定したaに設定しています。<P>
+同様のことを引数２個バージョンでも行っています。引数３個バージョンでは、意味がないのでthis呼び出しを行っていません。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3402.gif" ALIGN="left">
+自分で値を設定していないフィールドはきちんと1になっていますね。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_33.htm">Previous Chapter</A>]
+[<A HREF="cs_35.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 09/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,110 @@
+<HTML>
+<!--        cs_19.htm        -->
+<!--        2006/08/25       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第１９章 列挙体
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+整数値に名前をつけた集合を定義することができます。これを列挙体といいます。
+<P>
+<BR CLEAR="left"><BR>
+たとえば、数字の1にone、2にtwo、などと名前をつけることができます。<P>
+列挙体は、次のように定義します。
+<PRE>
+enum 名前{識別子1, 識別子2,...};
+</PRE>
+識別子1から順に0, 1, 2,...が割り当てられます。また、途中から割り当てを変更する場合は、
+<PRE>
+enum enum-name{a, b, c=0, d, e};
+</PRE>
+のように書きます。これで、aは0、bは1, cは0, dは1, eは2が割り当てられます。<P>
+呼び出すときは
+<PRE>
+列挙体の名前.識別子
+</PRE>
+で行います。enum型をint型等の整数型に変換するときは型キャストを行う必要があります。
+<PRE>
+// enum01.cs
+
+using System;
+
+class enum01
+{
+    public enum mymonth {Jan = 1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct,
+    Nov, Dec};
+
+    public static void Main()
+    {
+        Console.WriteLine("Jan = {0}月", (int)mymonth.Jan);
+        Console.WriteLine("Feb = {0}月", (int)mymonth.Feb);
+        Console.WriteLine("Mar = {0}月", (int)mymonth.Mar);
+        Console.WriteLine("Apr = {0}月", (int)mymonth.Apr);
+        Console.WriteLine("May = {0}月", (int)mymonth.May);
+        Console.WriteLine("Jun = {0}月", (int)mymonth.Jun);
+        Console.WriteLine("Jul = {0}月", (int)mymonth.Jul);
+        Console.WriteLine("Aug = {0}月", (int)mymonth.Aug);
+        Console.WriteLine("Sep = {0}月", (int)mymonth.Sep);
+        Console.WriteLine("Oct = {0}月", (int)mymonth.Oct);
+        Console.WriteLine("Nov = {0}月", (int)mymonth.Nov);
+        Console.WriteLine("Dec = {0}月", (int)mymonth.Dec);
+    }
+        
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs1901.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+通常はint型ですが、他の整数型を割り当てることもできます。この場合
+<PRE>
+enum 名前:整数型 {識別子,...};
+</PRE>
+のように書きます。
+<PRE>
+// enum02.cs
+
+using System;
+
+class enum02
+{
+    enum myenum : sbyte {a = -20, b, c = -10, d, e = 20};
+
+    public static void Main()
+    {
+        Console.WriteLine((sbyte)myenum.a);
+        Console.WriteLine((sbyte)myenum.b);
+        Console.WriteLine((sbyte)myenum.c);
+        Console.WriteLine((sbyte)myenum.d);
+        Console.WriteLine((sbyte)myenum.e);
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs1902.gif" ALING="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_18.htm">Previous Chapter</A>]
+[<A HREF="cs_20.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 25/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

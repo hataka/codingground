@@ -1,0 +1,79 @@
+<HTML>
+<!--        cs_18.htm        -->
+<!--        2006/08/25       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第１８章 演算子の優先順位と結合法則
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、C#で取り扱う演算子について解説します。多くの演算子は今までの章ですでに登場してきています。
+<P>
+<BR CLEAR="left"><BR>
+演算子は、今更なんですが、式で実行する演算を指定するものです。演算子には優先順位があります。
+<PRE>
+a + b * c
+</PRE>
+とあれば、b * cが先に計算され(この値がdとすると)、その後a + dが評価されます。多くの演算子の優先順位は、数学のそれと同じです。優先順位が不明もしくは不安な場合は、先に評価したい部分を()でくくれば安全です。しかし、文法上優先順位がきちんと定められています。<P>
+<TABLE BORDER="1">
+<TH BGCOLOR="#FFFF00">優先順位</TH><TH BGCOLOR="#FFFF00">カテゴリー</TH><TH BGCOLOR="#FFFF00">演算子</TH><TR>
+<TD>1</TD><TD>一次式</TD><TD>x.y, f(x), a[x], x++, x--, new, typeof, checked, unchecked</TD><TR>
+<TD>2</TD><TD>単項式</TD><TD>+, -, !, ~, ++x, --x, (T)x
+</TD><TR>
+<TD>3</TD><TD>乗法式</TD><TD>*, /, %</TD><TR>
+<TD>4</TD><TD>加法式</TD><TD>+, -</TD><TR>
+<TD>5</TD><TD>シフト</TD><TD><<, >></TD><TR>
+<TD>6</TD><TD>関係式および型チェック</TD><TD><, >, <=, >=, is, as</TD><TR>
+<TD>7</TD><TD>等値式</TD><TD>==, !=</TD><TR>
+<TD>8</TD><TD>論理AND</TD><TD>&</TD><TR>
+<TD>9</TD><TD>論理XOR</TD><TD>^</TD><TR>
+<TD>10</TD><TD>論理OR</TD><TD>|</TD><TR>
+<TD>11</TD><TD>条件AND</TD><TD>&&</TD><TR>
+<TD>12</TD><TD>条件OR</TD><TD>||</TD><TR>
+<TD>13</TD><TD>条件</TD><TD>?:</TD><TR>
+<TD>14</TD><TD>代入</TD><TD>=, *=, /=, %=, +=, -=, <<=, >>=, &=, ^=, |=
+</TD>
+</TABLE><P>
+同じ順位の演算子の場合、２項演算では代入演算子をのぞき左から右に結合されます(左→右結合規則)。<P>
+たとえば、「+」と「-」は優先順位が同じなので、左→右結合が適応されます。
+<PRE>
+a + b - c
+(a + b) - c
+</PRE>
+となります。<P>
+条件AND,ORはショートサーキット評価が行われます。<P>
+たとえば、
+<PRE>
+a && b
+</PRE>
+において、aがfalseならbの真偽にかかわらず式の値は偽になります。そこで、aが偽の場合はbの評価が行われません。<P>
+同様に
+<PRE>
+a || b
+</PRE>
+において、aがtrueならbの真偽にかかわらず式の値はtrueになります。そこで、aが真の場合bの評価は行われません。<P>
+一方、a & bとか、a | bの場合はaの真偽にかかわらず、aもbも評価されます。<P>
+実際のプログラミングで、これらを使い分けなくてはならない場面は多くはないはずです。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_17.htm">Previous Chapter</A>]
+[<A HREF="cs_19.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 25/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

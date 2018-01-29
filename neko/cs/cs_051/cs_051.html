@@ -1,0 +1,128 @@
+<HTML>
+<!--        cs_51.htm        -->
+<!--        2006/09/26       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５１章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５１章 構造体
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+C#の構造体は、C/C++の構造体とは全く異なるものです。
+<P>
+<BR CLEAR="left"><BR>
+構造体(structure)は、どちらかというとクラスに近いものです。しかし、決定的に違う
+ことがいくつかあります。クラスは参照型ですが、構造体は値型です。<P>
+構造体は、構造体やクラスを継承することはできません。また、継承元になることもできません。<P>
+構造体は、次のように定義します。
+<PRE>
+struct 構造体名
+{
+...
+}
+</PRE>
+...に構造体のメンバを定義します。構造体のメンバはクラスと同様のメンバを定義できます。(引数無しコンストラクタとデストラクタをのぞく)<P>
+では、簡単な例を見てみましょう。
+<PRE>
+// struct01.cs
+
+using System;
+
+struct MyStruct
+{
+    int struct_x;
+    int[] ar;
+
+    public int Show()
+    {
+        Console.WriteLine("struct_x = {0}", struct_x);
+        return 0;
+    }
+
+    public int x
+    {
+        get
+        {
+            return struct_x;
+        }
+        set
+        {
+            struct_x = value;
+        }
+    }
+
+    public int this[int n]
+    {
+        get
+        {
+            return ar[n];
+        }
+        set
+        {
+            ar[n] = value;
+        }
+    }
+
+    public MyStruct(int a)
+    {
+        ar = new int[a];
+        struct_x = 0;
+    }
+}
+
+class struct01
+{
+    public static void Main()
+    {
+        // 独自のコンストラクタの使用
+        MyStruct ms = new MyStruct(5);
+
+        // プロパティの使用
+        ms.x = 10;
+        Console.WriteLine("struct_x = {0}", ms.x);
+
+        // メソッドの使用
+        ms.Show();
+
+        // インデクサの使用
+        for (int i = 0; i < 5; i++)
+            ms[i] = i * 10;
+
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine("ms[{0}] = {1}", i, ms[i]);
+        }
+    }
+}
+</PRE>
+構造体MyStructには、privateなインスタンスフィールド、publicなメソッド、
+プロパティ、インデクサをメンバに持っています。また、引数付きコンストラクタも
+あります。<P>
+Mainメソッドでは、MyStruct構造体のインスタンスを使って、プロパティやメソッドや
+インデクサを利用しています。使い方はクラスと全く同じですね。<P>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs5101.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_50.htm">Previous Chapter</A>]
+[<A HREF="cs_52.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 26/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

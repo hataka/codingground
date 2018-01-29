@@ -1,0 +1,162 @@
+<HTML>
+<!--        cs_63.htm        -->
+<!--        2006/10/08       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６３章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６３章 演算子オーバーロード その２</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+今回は、<A HREF="cs_62.htm">前章</A>で作ったMyPositionクラスにスカラー倍を
+定義します。スカラーとは大きさだけを持つ普通の数字です。
+<P>
+<BR CLEAR="left"><BR>
+MyPositionクラスのオブジェクトAが(a,b)で表されるとき、A * nやn * A(nはint型)を定義します。
+<PRE>
+A * n = (a * n, b * n)
+n * A = (a * n, b * n)
+</PRE>
+とします。これは、簡単ですね。
+<PRE>
+// opover02.cs
+
+using System;
+
+class MyPosition
+{
+    int nX, nY;
+
+    public int x
+    {
+        get
+        {
+            return nX;
+        }
+        set
+        {
+            nX = value;
+        }
+    }
+    public int y
+    {
+        get
+        {
+            return nY;
+        }
+        set
+        {
+            nY = value;
+        }
+    }
+
+    public static MyPosition operator +(MyPosition a, MyPosition b)
+    {
+        MyPosition c = new MyPosition();
+
+        c.nX = a.nX + b.nX;
+        c.nY = a.nY + b.nY;
+
+        return c;
+    }
+
+    public static MyPosition operator -(MyPosition a, MyPosition b)
+    {
+        MyPosition c = new MyPosition();
+
+        c.nX = a.nX - b.nX;
+        c.nY = a.nY - b.nY;
+
+        return c;
+    }
+
+    public static MyPosition operator *(MyPosition a, int b)
+    {
+        MyPosition c = new MyPosition();
+        c.x = a.x * b;
+        c.y = a.y * b;
+        return c;
+    }
+
+    public static MyPosition operator *(int b, MyPosition a)
+    {
+        MyPosition c = new MyPosition();
+        return a * b;
+    }
+
+    public MyPosition(int m, int n)
+    {
+        nX = m;
+        nY = n;
+    }
+
+    public MyPosition()
+    {
+        nX = 0;
+        nY = 0;
+    }
+}
+
+class opover01
+{
+    public static void Main()
+    {
+        MyPosition A = new MyPosition(3, 5);
+        MyPosition B = new MyPosition(4, 6);
+
+        MyPosition C = A * 3;
+        Console.WriteLine("A * 3 = ({0}, {1})", C.x, C.y);
+        MyPosition D = 3 * A;
+        Console.WriteLine("3 * A = ({0}, {1})", D.x, D.y);
+       
+
+        MyPosition E = (A + B) * 5;
+        Console.WriteLine("(A + B) * 5 = ({0}, {1})", E.x, E.y);
+
+        MyPosition F = A * 5 + B * 5;
+        Console.WriteLine("A * 5 + B * 5 = ({0}, {1})", F.x, F.y);
+    }
+}
+</PRE>
+新たに、演算子のオーバーロードを行っています。
+<PRE>
+public static MyPosition operator *(MyPosition a, int b)
+</PRE>
+次に、引数の型の順番が逆になっている
+<PRE>
+public static MyPosition operator *(int b, MyPosition a)
+</PRE>
+も、定義しています。この時a * bもb * aも同じ結果になるので、
+<PRE>
+public static MyPosition operator *(int b, MyPosition a)
+{
+    MyPosition c = new MyPosition();
+    return a * b;
+}
+</PRE>
+と、直前の演算子オーバーロードを利用しています。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs6301.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_62.htm">Previous Chapter</A>]
+[<A HREF="cs_64.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 08/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,136 @@
+<HTML>
+<!--        cs_06.htm        -->
+<!--        2006/08/08       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６章 配列</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+同じデータ型のデータの集まりを配列として扱うことができます。
+<P>
+<BR CLEAR="left"><BR>
+配列は、次のように宣言します。
+<PRE>
+データ型[] 配列名;
+</PRE>
+これだけでは、変数はメモリ上のどのオブジェクトも参照していません。
+<PRE>
+配列名 = new データ型[要素数];
+</PRE>
+new演算子を使い、指定されたデータ型を要素数分だけ格納できる配列の実体がメモリ上に確保され、その参照が「配列名」に保存されます。<P>
+このことより、配列は「参照型」です。<P>
+<PRE>
+int[] myarray;
+myarray = new int[10];
+</PRE>
+上のようにすると、int型の配列で、要素数10の配列が準備されます。<P>
+配列の要素にアクセスするには
+<PRE>
+配列名[添え字]
+</PRE>
+で行います。添え字は0から始まります。上の例ではmyarray[0], ..myarray[9]までのint型の要素があります。<P>
+これらの要素は、int型の変数と同じに扱えます。<P>
+また、次のように配列を宣言することもできます。
+<PRE>
+データ型[] 配列名 = new データ型[要素数];
+</PRE>
+配列の初期化は、配列の要素に一つずつ値を代入していってもよいのですが、宣言と同時に初期化を行うことも可能です。
+<PRE>
+データ型[] 配列名 = new データ型[要素数]{要素１, 要素２,...};
+</PRE>
+要素数を省略して
+<PRE>
+データ型[] 配列名 = new データ型[]{要素１, 要素２,...};
+</PRE>
+のように書くこともできます。<P>
+では、簡単なサンプルのプログラムを見てみましょう。<P>
+ここでは、単に配列を宣言して初期化しているだけです。
+<PRE>
+// array01.cs
+
+using System;
+
+class array01
+{
+    public static void Main()
+    {
+        // 要素に一つずつ値を代入
+        int[] myarray1 = new int[3];
+        myarray1[0] = 10;
+        myarray1[1] = 20;
+        myarray1[2] = 30;
+
+        // 宣言と同時に初期化
+        int[] myarray2 = new int[3]{10, 20, 30};
+
+        // 要素数を省略することも可能
+        int[] myarray3 = new int[]{10, 20, 30};
+
+        //別な方法
+        int[] myarray4;
+        myarray4 = new int[]{10, 20, 30};
+
+    }
+}
+</PRE>
+
+さて、2次元以上の多次元配列も利用することができます。
+２次元配列は、次のように宣言します。
+<PRE>
+データ型[,] 配列名 = new データ型[要素数1, 要素数2];
+</PRE>
+初期化の方法も1次元配列に準じます。<P>
+配列名.Lengthでその配列のすべての要素の個数がわかります。(ArrayクラスのLengthプロパティ。後の章で解説)<P>
+配列名.Rank(これもArrayクラスのRankプロパティ)でその配列の次元がわかります。
+
+<PRE>
+// array02.cs
+
+using System;
+
+class array02
+{
+    public static void Main()
+    {
+        int[,] myarray = new int[2, 3]{{1, 2, 3}, {10, 11, 12}};
+
+        Console.WriteLine("myarray[0, 0] = {0}", myarray[0, 0]);
+        Console.WriteLine("myarray[0, 1] = {0}", myarray[0, 1]);
+        Console.WriteLine("myarray[0, 2] = {0}", myarray[0, 2]);
+        Console.WriteLine("myarray[1, 0] = {0}", myarray[1, 0]);
+        Console.WriteLine("myarray[1, 1] = {0}", myarray[1, 1]);
+        Console.WriteLine("myarray[1, 2] = {0}", myarray[1, 2]);
+
+        Console.WriteLine("myarray.Length = {0}", myarray.Length);
+        Console.WriteLine("myarray.Rank = {0}", myarray.Rank);
+    }
+}
+</PRE>
+
+では、結果を見てみましょう。<P>
+<IMG SRC="../img/cs0601.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_05.htm">Previous Chapter</A>]
+[<A HREF="cs_07.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 08/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

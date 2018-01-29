@@ -1,0 +1,77 @@
+<HTML>
+<!--        cs_68.htm        -->
+<!--        2006/10/13       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６８章 try-catch-finally構文の変形</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+C#では、try-catch-finally構文でcatchブロックを省略することが許されています。
+<P>
+<BR CLEAR="left"><BR>
+catchブロックを省略すると例外が発生した場合どうなるのでしょうか。<P>
+例外が補足されないので、そのままプログラムが終了してしまうのでしょうか。<P>
+これは、論より証拠試してみるのが一番です。
+<PRE>
+// tryfinally01.cs
+
+using System;
+
+class tryfinally01
+{
+    public static void Main()
+    {
+        int no;
+
+        Console.Write("整数値を入力してください--- ");
+        string strNo = Console.ReadLine();
+
+        try
+        {
+            no = Int32.Parse(strNo);
+        }
+        finally
+        {
+            Console.WriteLine("入力が終わりましたね");
+        }
+        Console.WriteLine("try-finallyを抜けました");
+    }
+}
+</PRE>
+まずは、言われたとおり整数値を入力してみます。<P>
+<IMG SRC="../img/cs6801.gif" ALIGN="left">
+finally節も、それ以降も全部実行されていますね。
+<P>
+<BR CLEAR="left"><BR>
+次に、わざとに整数値以外を入力して例外を発生させます。<P>
+すると、<A HREF="cs_65.htm">第６５章</A>に出ているような、いやなダイアログボックスが出現します。<P>
+このダイアログを閉じると・・・<P>
+<IMG SRC="../img/cs6802.gif" ALIGN="left">
+finally節の「入力が終わりましたね」は表示されますが、
+「try-finallyを抜けました」は、表示されません。
+<P>
+<BR CLEAR="left"><BR>
+例外を補足しないと、finally節は実行されますが、それ以降は実行されずに強制終了させられていることがわかります。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_67.htm">Previous Chapter</A>]
+[<A HREF="cs_69.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 13/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,149 @@
+<HTML>
+<!--        cs_60.htm        -->
+<!--        2006/10/05       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６０章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６０章 インターフェース　その５
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+複数のインターフェースを実装するとき、シグニチャが同じメソッドなどが存在したら
+どうなるのでしょうか。エラーになるのでしょうか。
+<P>
+<BR CLEAR="left"><BR>
+実験してみるのが手っ取り早いですね。
+<PRE>
+// interface05.cs
+
+using System;
+
+public interface IInterface1
+{
+    void Show();
+}
+
+public interface IInterface2
+{
+    void Show();
+}
+
+class MyClass : IInterface1, IInterface2
+{
+    public void Show()
+    {
+        Console.WriteLine("Showメソッドです");
+    }
+}
+
+class interface05
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        mc.Show();
+    }
+}
+</PRE>
+IInterface1もIInterface2もメンバは全く同じシグニチャを持つメソッドです。<P>
+MyClassは、この２つのインターフェースを実装しています。<P>
+これをコンパイルしても、コンパイラは何も文句を言いません。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs6001.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+このように、インターフェース間で同じシグニチャを持つメンバが存在したとき、曖昧さをなくすために、明示的な実装(Explicit interface implementation)を行うことができます。メソッドの場合は
+<PRE>
+インターフェース名.メソッド名(パラメータリスト)
+{実装内容}
+</PRE>
+インターフェースを明示的に実装すると、そのクラスの参照からはアクセスできなくなります。さらに、publicなどのアクセス修飾子をつけることができなくなります。<P>
+じゃあ、どうやってアクセスするの?<P>
+と、いうことになりますが、これはインターフェース参照変数を使います。
+この変数に、実装したクラスの参照を代入することになります。
+<PRE>
+// interface06.cs
+
+using System;
+
+public interface IInterface1
+{
+    void Show(string s);
+}
+
+public interface IInterface2
+{
+    void Show(string s);
+}
+
+class MyClass : IInterface1, IInterface2
+{
+    void IInterface1.Show(string s)
+    {
+        Console.WriteLine(s + "です");
+    }
+
+    void IInterface2.Show(string s)
+    {
+        Console.WriteLine(s + "だ");
+    }
+}
+
+class interface06
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+
+        IInterface1 i1 = mc;
+        
+        i1.Show("テスト");
+
+        IInterface2 i2 = mc;
+
+        i2.Show("テスト");
+
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs6002.gif" ALIGN="left">
+どのバージョンの実装が実行されるかは、どのインターフェースの型に実装クラスの
+参照を代入したかによって決まります。
+<P>
+<BR CLEAR="left"><BR>
+インターフェースの参照変数には、それを実装したクラスの参照を代入できることが
+わかりました。実は、これはすでに暗黙のうちに<A HREF="cs_54.htm">第５４章</A>で行っていました。
+<PRE>
+public string ToString (
+	string format,
+	IFormatProvider provider
+)
+</PRE>
+DateTime構造体のToStringメソッドで、providerはIFormatProviderインターフェースの
+参照変数です。したがって、これを実装したCultureInfoクラスの参照を代入できるのですね。<P>
+せっかく覚えた明示的実装ですが、なるべく避けてくださいとMSDNに書いてあります。
+(セキュリティ面で問題有り)
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_59.htm">Previous Chapter</A>]
+[<A HREF="cs_61.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 05/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

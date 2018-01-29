@@ -1,0 +1,166 @@
+<HTML>
+<!--        cs_17.htm        -->
+<!--        2006/08/24       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第１７章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第１７章 foreach文
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+C/C++では、あまりなじみがありません(C++のアルゴリズム関数にfor_eachメソッドというのがありますが・・・)がVBではおなじみのforeach文がC#では使えます。
+<P>
+<BR CLEAR="left"><BR>
+foreach文は次のような形になります。
+<PRE>
+foreach (データ型 変数名 in 配列名)
+{
+    ...
+}
+</PRE>
+foreach文では、添え字のもっとも小さいものから順番に調べていき、変数に代入されます。<P>
+...が１つの文だけであれば{}は省略できます。
+<PRE>
+// foreach01.cs
+
+using System;
+
+class foreach01
+{
+    public static void Main()
+    {
+        string[] st = new string[] {"猫でも", "わかる", "プログラミング"};
+
+        foreach (string s in st)
+            Console.Write(s);
+        Console.Write("\n");
+    }
+}
+</PRE>
+この例では、string型の配列stに対してforeach文が適応されています。
+st[0]から順に変数sに代入され、Console.Write(s)で画面に表示されます。
+結局画面には「猫でもわかるプログラミング」と表示されるはずです。<P>
+<IMG SRC="../img/cs1701.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+次は、もうちょっと実用的な例です。<P>
+その前に、ArrayListクラスについて、ちょっと説明しておきます。<P>
+<A HREF="cs_06.htm">第６章</A>で解説した配列について不満はありませんか。ここで解説した配列は、最初から要素数が決まっていました。途中で配列の要素数を加減できませんでした。
+ユーザー入力により、自由に配列の長さが伸張すれば便利ですね。それを実現するのがArrayListクラスです。(ただし、C#2.0の出現によりもっと効率的なものが出てきました。ジェネリックListクラスというものです。ジェネリックについては後の章で解説します。)<P>
+ArrayListクラスは、サイズが動的に増加する配列を実現します。<P>
+System.Collections名前空間で定義されてるので、using System.Collections;をプログラムの冒頭に書いておくと便利です。<P>
+さしあたって必要なメソッドはAddメソッドです。
+<PRE>
+public virtual int Add (
+    Object value
+)
+</PRE>
+配列の末尾にデータ(value)を追加します。<P>
+Countプロパティは要素の数を返します。<P>
+<PRE>
+ArrayList インスタンス名 = new ArrayList();
+</PRE>
+で、オブジェクトを生成してから使います。
+<PRE>
+// foreach02.cs
+
+using System;
+using System.Collections;
+
+class foeach02
+{
+    public static void Main()
+    {
+        ArrayList al = new ArrayList();
+
+        while (true)
+        {
+            Console.Write("(xで終了)データ:");
+ 
+            string strData = Console.ReadLine();
+
+            if (strData == "")
+                return;
+
+            if (!char.IsDigit(strData[0]) && strData[0] != '-')
+                break;
+
+            double dData = double.Parse(strData);
+            al.Add(dData);
+        }
+
+        double sum = 0.0;
+
+        if (al.Count == 0)
+        {
+            Console.WriteLine("データが有りません");
+            return;
+        }
+
+        foreach (double d in al)
+        {
+            sum += d;
+        }
+
+        Console.WriteLine("データ数:{0, 6}\n合計:{1, 10}\n平均:{2, 10}",
+            al.Count, sum, sum / al.Count);
+    }
+}
+</PRE>
+まず、ArrayListクラスのインスタンスを作成しておきます。<P>
+無限ループで、ユーザーにデータを入力させます。<P>
+ユーザーが何も入力せずにいきなり、エンターキーを押したときは、
+<PRE>
+if (strData == "")
+    return;
+</PRE>
+で、プログラムを終了してしまいます。<P>
+入力された文字列を解析して、最初の文字が10進数でも、マイナス記号でも無いときはbreak文で無限ループを脱出します。
+<PRE>
+if (!char.IsDigit(strData[0]) && strData[0] != '-')
+    break;
+</PRE>
+charクラスのIsDigitプロパティについては、<A HREF="cs_12.htm">第12章</A>で解説がありますので忘れた人は読んでみてください。<P>
+ここまで、進んでこれたら文字列をdouble型に変換してdDataに格納します。<P>
+(本当はユーザー入力をもうちょっと検査しないと、実行時エラーが出ることがありますが、煩雑になるので省略しています。たとえば2pなど２文字目以降に数字以外が入力されたときなど)<P>
+double型に変換したデータを
+<PRE>
+al.Add(dData);
+</PRE>
+で、配列の末尾に追加しています。<P>
+ユーザーがいきなり、xとか数字以外を入力してしまったときは、配列には何も格納されていないので「データが有りません」と表示してプログラムを終了させます。<P>
+データが存在する場合は、foreach文で各要素の合計を求めます。
+<PRE>
+foreach (double d in al)
+{
+    sum += d;
+}
+</PRE>
+これは、簡単ですね。alの添え字の最小値(0)から最大値までが順にdに入力され、sum +=d;で合計が計算されます。もちろんfor文を使って合計を計算することも可能です。<P>
+合計が出たら、平均値を出すのは簡単ですね。<P>
+<IMG SRC="../img/cs1702.gif" ALIGN="left">
+データ入力を終了するには'x'に限らず、数字以外を入力してエンターキーを押せばよいですね。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_16.htm">Previous Chapter</A>]
+[<A HREF="cs_18.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 24/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

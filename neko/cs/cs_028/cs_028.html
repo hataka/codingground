@@ -1,0 +1,145 @@
+<HTML>
+<!--        cs_28.htm        -->
+<!--        2006/09/03       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２８章 メソッドの再帰呼び出し
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+メソッドは自分自身を呼び出すことができます。Mainメソッドも例外ではありません。
+<P>
+<BR CLEAR="left"><BR>
+メソッドが自分自身を呼び出すことを再帰(的)呼び出し(recrusive call)といいます。<P>
+昔からCでは、この再帰呼び出しを行う例には、階乗の計算が取り上げられています。<P>
+C#でも、階乗を求めるプログラムを作ってみましょう。<P>
+その前に、「階乗って何?」という人のために階乗の説明をしておきます。<P>
+0または正のの整数nに対して、n * (n - 1) * (n - 2) *...* 2 * 1をnの階乗といいます。さて、nが0の時は困ってしまいますが、これは1と定義されています。記号ではn!と書きます。<P>
+どんな感じになるのでしょうか。<P>
+とりあえず階乗を求めるメソッドをint kai(int n)としておきます。
+もし、nが1以下であれば、1を返して終了します。1より大きい場合は、n * kai(n - 1)を返してはどうでしょうか。自分自身を呼び出すたびにnは1ずつ減っていき、ついにはnが1になりますね。これで、n * (n - 1) * (n - 2) *...* 2 * 1の計算ができたことになるはずです。
+<PRE>
+// kaijo01.cs
+
+using System;
+
+class Kaijo
+{
+    public int kai(int n)
+    {
+        if (n <= 1)
+            return 1;
+        else
+            return n * kai(n - 1);
+    }
+}
+
+class kaijo01
+{
+    public static void Main()
+    {
+        Kaijo k = new Kaijo();
+
+        for (int i = 0; i < 10; i++)
+            Console.WriteLine("{0}! = {1}", i, k.kai(i));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs2801.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+しかし、階乗の計算はわざわざ再帰呼び出しをしなくても、次のようにすれば求まりますね。
+<PRE>
+// kaijo02.cs
+
+using System;
+
+class Kaijo
+{
+    public int calc(int n)
+    {
+        int seki = 1;
+
+        if (n == 0)
+            return 1;
+
+        for (int i = 1; i <= n; i++)
+            seki *= i;
+
+        return seki;
+    }
+}
+
+class kaijo02
+{
+    public static void Main()
+    {
+        Kaijo kai = new Kaijo();
+
+        for (int i = 0; i < 10; i++)
+            Console.WriteLine("{0}! = {1}", i, kai.calc(i));
+    }
+}
+</PRE>
+実行結果はkaijo01.csのものと全く同じです。<P>
+では、似たようなことを加算でやってみましょう。<P>
+0以上の整数についてf(n)= 0 + 1 +...+nの計算をするプログラムです。
+(これも、for文で簡単にできますがあえて再帰呼び出しで作ってみます。)
+<PRE>
+// kyusu01.cs
+
+using System;
+
+class Kyusu
+{
+    public int calc(int n)
+    {
+        if (n == 0)
+            return 0;
+        else
+            return n + calc(n - 1);
+
+    }
+}
+
+class kyusu01
+{
+    public static void Main()
+    {
+        Kyusu ks = new Kyusu();
+        
+        for (int i = 0; i <= 20; i++)
+            Console.WriteLine("f({0, 2}) = {1, 3}", i, ks.calc(i));
+    }
+}
+</PRE>
+実行結果は、次のようになります。<P>
+<IMG SRC="../img/cs2802.gif" ALIGN="left">
+再帰呼び出しを行うメソッドでは、引数が有る条件になったら、再帰をやめなくてはいけません。そうしないと、永久に自分自身を呼び出し続けることになり、スタックを使い切ってしまいますね。
+
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_27.htm">Previous Chapter</A>]
+[<A HREF="cs_29.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 03/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,161 @@
+<HTML>
+<!--        cs_69.htm        -->
+<!--        2006/10/14       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６９章 独自の例外クラスを作る</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+既存の例外クラスを継承して独自の例外クラスを作ることができます。
+<P>
+<BR CLEAR="left"><BR>
+この場合、独自の例外クラスのオブジェクトを明示的に投げる必要があります。
+<PRE>
+throw 例外オブジェクト;
+</PRE>
+では、サンプルを見てみましょう。
+<PRE>
+// throw01.cs
+
+using System;
+
+class MyException : ApplicationException
+{
+    public override string Message
+    {
+        get
+        {
+            return "例外が発生しました";
+        }
+    }
+}
+
+class throw01
+{
+    public static void Main()
+    {
+        try
+        {
+            throw new MyException();
+        }
+        catch (MyException me)
+        {
+            Console.WriteLine(me.Message);
+        }
+        Console.WriteLine("try-catchを抜けました");
+    }
+}
+</PRE>
+MyExceptionクラスは、ApplicationExceptionクラスから派生しており、Messageプロパティをオーバーライドしています。<P>
+Mainメソッドのtry節ではいきなりMyExceptionクラスのオブジェクトを投げて人為的に例外を発生させています。<P>
+この、投げられた例外をcatch節で捕まえています。<P>
+<IMG SRC="../img/cs6901.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+実際に、独自の例外クラスを利用する場合は、一旦既存の例外クラスのオブジェクトを捕まえて、そこから独自クラスのオブジェクトを投げるようにします。しかし、この場合例外オブジェクトは、外側のcatch節に向かって投げられる点に注意してください。<P>
+では、簡単なサンプルを見てみましょう。
+<PRE>
+// helplink01.cs
+
+using System;
+
+public class MyException : ApplicationException
+{
+    string help = "http://www.kumei.ne.jp/c_lang/";
+
+    public override string HelpLink
+    {
+        get
+        {
+            return help;
+        }
+        set
+        {
+            help = value;
+        }
+    }
+}
+
+class helplink01
+{
+    public static int MyInput()
+    {
+        int no;
+        Console.Write("整数値を入力--- ");
+        string strNo = Console.ReadLine();
+        try
+        {
+            no = Int32.Parse(strNo);
+        }
+        catch (Exception)
+        {
+            throw new MyException();
+        }
+        return no;
+    }
+
+    public static void Main()
+    {
+        int no;
+
+        try
+        {
+            no = MyInput();
+        }
+        catch (MyException me)
+        {
+            Console.WriteLine("入力が不正です\n" + 
+                me.HelpLink + "を参照してください");
+            no = 0;
+        }
+        Console.WriteLine("no = {0}", no);
+        
+    }
+}
+</PRE>
+MyExceptionクラスは、ApplicationExceptionクラスから派生しています。<P>
+ApplicationExceptionクラスのHelpLinkプロパティをオーバーライドしています。
+HelpLinkは、Exceptionクラスからの継承です。
+<PRE>
+public virtual string HelpLink { get; set; }
+</PRE>
+プロパティの値は、例外を説明するURLなどです。<P>
+さて、Mainメソッドを有するhelplink01クラスを見てみましょう。<P>
+ここには、staticなMyInputメソッドがあります。<P>
+このメソッドの中にtry-catch構文があります。<P>
+catch節で例外が捕まったら、ここでMyExeceptionのオブジェクトを投げています。
+この例外オブジェクトは、この外側のtry-catch構造に向かって投げられます。<P>
+Mainメソッドでは、MyInputメソッドをtry節の中から呼び出しています。MyInputメソッドで発生すると、ここのcatchブロックで捕まるはずです。<P>
+では、入力時にわざとに例外を発生させて、正しく動作するか試してみましょう。<P>
+<IMG SRC="../img/cs6902.gif" ALIGN="left">
+MyInputメソッドで発生した例外が、そこのcatch節で捕まり、そこから投げられた独自の例外オブジェクトが、外側のcatch節で捕まっているのがわかります。
+<P>
+<BR CLEAR="left"><BR>
+さて、catch節から、例外を投げる場合catch節で捕まえた例外オブジェクトと同じオブジェクトを投げることも可能です。この場合単に
+<PRE>
+throw;
+</PRE>
+とだけ書けばよいのです。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_68.htm">Previous Chapter</A>]
+[<A HREF="cs_70.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 14/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

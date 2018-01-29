@@ -1,0 +1,161 @@
+<HTML>
+<!--        cs_24.htm        -->
+<!--        2006/08/30       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２４章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２４章 コンストラクタとデストラクタ
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+インスタンスが生成される時に、自動的に呼び出されて初期化処理を行う一種のメソッドが「コンストラクタ」です。明示的にプログラマがコンストラクタを書かなくても自動的にデフォルトのコンストラクタが呼び出されています。
+<P>
+<BR CLEAR="left"><BR>
+コンストラクタの作り方は簡単です。クラス名と同じメソッドで、戻り値の型を記載しません。また、コンストラクタは、他のクラスから呼ばれるのでpublicとなります。
+<PRE>
+クラス名と同じ名前(有れば引数){}
+</PRE>
+引数は、有っても無くてもかまいません。引数が異なれば、複数のコンストラクタを書いてもかまいません。<P>
+インスタンスを生成するとき、
+<PRE>
+MyClass mc = new MyClass();
+</PRE>
+のように書いたと思いますが、この場合は引数なしのコンストラクタが呼び出されます。
+プログラマがコンストラクタを書いていなければ、デフォルトのコンストラクタが呼び出されています。引数を持つコンストラクタを呼び出したければ、
+<PRE>
+MyClass mc = new MyClass(3);
+</PRE>
+のように書きます。もちろん、MyClassクラスには、プログラマが引数付きのコンストラクタを書いていなければエラーとなります。(従ってデフォルトのコンストラクタは、引数なしのコンストラクタということになります。また、デフォルトのコンストラクタは何をやっているかというと、フィールドを初期化しているのです。(<A HREF="cs_23.htm">前章</A>を参照))<P>
+では、サンプルを見てみましょう。
+<PRE>
+// constructor01
+
+using System;
+
+class MyClass
+{
+    int x;
+    int y;
+
+    public void Show()
+    {
+        Console.WriteLine("x = {0}, y = {1}", x, y);
+    }
+
+    public MyClass(int a, int b)
+    {
+        x = a;
+        y = b;
+    }
+    public MyClass()
+    {
+        x = 1;
+        y = 1;
+    }
+}
+
+class constructor01
+{
+    public static void Main()
+    {
+        MyClass mc1 = new MyClass(3, 4);
+        mc1.Show();
+
+        MyClass mc2 = new MyClass();
+        mc2.Show();
+    }
+}
+</PRE>
+MyClassクラスには、xとyのprivateなインスタンスメンバがあります。<P>
+Showメソッドは、xやyの値を表示します。<P>
+また、int型の引数を２つ持つコンストラクタと、引数なしのコンストラクタがあります。
+引数付きのコンストラクタは、引数の値をxやyに代入しています。引数なしのコンストラクタはxやyの値を1に設定しています。<P>
+Mainメソッドでは、最初にnew MyClass(3, 4);というように、書いています。こうすると、引数付きのコンストラクタが呼ばれ、xに3、yに4が設定されます。<P>
+次に、new MyClass();としてインスタンスを生成しています。こうすることにより、引数なしのコンストラクタが呼ばれるはずです。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs2401.gif" ALIGN="left">
+new MyClass(3, 4)でインスタンスを生成したときは、xが3, yが4になっています。<P>
+new MyClass()でインスタンスを生成したときは、xもyも1で初期化されていますね。
+<P>
+<BR CLEAR="left"><BR>
+さて、C#では、不要になったオブジェクトは、自動的にメモリ上から解放されます。C/C++では、プログラマが自分で解放しなくてはなりませんでした。(うっかり忘れると、メモリーリークとなりユーザーから怒られます。)<P>
+C#では、自動的に不要なオブジェクトを解放することを「ガベージコレクション」といいます。メモリ上に散らばっている不要物(ゴミ=ガベージ)を集めるという意味でしょうか。<P>この、ガベージコレクションが起る直前に、デストラクタという一種のメソッドが呼び出されます。しかし、ガベージコレクションがいつ起るのかは予測不能で、デストラクタを自分で書いても、それがいつ実行されるのかわからないのでは、困りますね。C++では、デストラクタには、メモリの解放関係のコードを書きます。しかし、C#では自動でメモリが解放されるので、わざわざデストラクタを自分で書く必要性はほとんどないかもしれません。<P>
+一応デストラクタは、
+<PRE>
+~クラス名(){...}
+</PRE>
+のように書きます。また、デストラクタは引数をとりません。publicも不要です。
+<PRE>
+// destructor01.cs
+
+using System;
+
+class MyClass
+{
+    public int x;
+
+    ~MyClass()
+    {
+        Console.WriteLine("デストラクタが呼ばれました({0})", x);
+    }
+    public MyClass(int a)
+    {
+        x = a;
+    }
+}
+
+class destructor01
+{
+    public static void Main()
+    {
+        MyClass[] mc = new MyClass[10];
+
+        for (int i = 0; i < 10; i++)
+        {
+            mc[i] = new MyClass(i);
+            Console.WriteLine("インスタンスを生成しましたmc[{0}]", i);
+        }
+
+    }
+}
+</PRE>
+MyClassクラスには、インスタンスフィールドxがあります。<P>
+デストラクタ(~MyClass)が呼ばれると、その時のxの値を表示します。<P>
+コンストラクタは、呼ばれるときの引数でxを初期化しています。<P>
+さて、Mainメソッドを見てください。<P>
+<PRE>
+MyClass[] mc = new MyClass[10];
+</PRE>
+は、ちょっと見慣れない形ですね。でも
+<PRE>
+int[] arr = new int[10];
+</PRE>
+ならどうでしょうか。これと同じです。参照変数の配列を10個用意しているのですね。<P>
+mc[0]からmc[9]に、MyClassオブジェクトの参照を代入しています。それぞれのインスタンスはフィールドxの値が0, 1, ...9です。<P>
+これで、プログラムは終了です。プログラム終了時にオブジェクトのメモリを解放するはずなのでデストラクタも呼ばれるはずです。<P>
+<IMG SRC="../img/cs2402.gif" ALIGN="left">
+必ずしも、オブジェクトが生成された順番にデストラクタが呼ばれるというものでもありません。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_23.htm">Previous Chapter</A>]
+[<A HREF="cs_25.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 30/Aug/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,153 @@
+<HTML>
+<!--        cs_41.htm        -->
+<!--        2006/09/16       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４１章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４１章 プロパティやインデクサの隠蔽
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+クラスの継承に際して、フィールドやメソッドと同様に、プロパティやインデクサもnew修飾子で隠蔽できます。
+<P>
+<BR CLEAR="left"><BR>
+では、簡単なサンプルを見てみましょう。
+<PRE>
+// hideprop01.cs
+
+using System;
+
+class MyClass1
+{
+    int x;
+    int[] arr = new int[3];
+
+    public int setx
+    {
+        get
+        {
+            Console.WriteLine("MyClass1です。xの値を返します。");
+            return x;
+        }
+        set
+        {
+            Console.WriteLine("MyClass1です。xに値を代入します。");
+            x = value;
+        }
+    }
+    public int this[int index]
+    {
+        get
+        {
+            Console.WriteLine("MyClass1です。arr[{0}]の値を返します。",
+                index);
+            return arr[index];
+        }
+        set
+        {
+            Console.WriteLine("MyClass1です。arr[{0}]に値を代入します。",
+                index);
+            arr[index] = value;
+        }
+    }
+}
+
+class MyClass2 : MyClass1
+{
+    int x;
+    int[] arr = new int[3];
+
+    new public int setx
+    {
+        get
+        {
+            Console.WriteLine("MyClass2です。xの値を返します。");
+            return x;
+        }
+        set
+        {
+            Console.WriteLine("MyClass2です。xに値を代入します。");
+            x = value;
+        }
+    }
+
+    new public int this[int index]
+    {
+        get
+        {
+            Console.WriteLine("MyClass2です。arr[{0}]の値を返します。",
+                index);
+            return arr[index];
+        }
+        set
+        {
+            Console.WriteLine("MyClass2です。arr[{0}]の値に代入します。",
+                index);
+            arr[index] = value;
+        }
+    }
+}
+
+class hideprop01
+{
+    public static void Main()
+    {
+        MyClass2 mc2 = new MyClass2();
+
+        mc2.setx = 10;
+
+        for (int i = 0; i < 3; i++)
+            mc2[i] = i * 10;
+
+        MyClass1 mc1;
+        mc1 = mc2;
+
+        mc1.setx = 20;
+        for (int i = 0; i < 3; i++)
+            mc1[i] = i * 2;
+
+        Console.WriteLine("mc2.setx = {0}", mc2.setx);
+        Console.WriteLine("mc1.setx = {0}", mc1.setx);
+
+        for (int i = 0; i < 3; i++)
+            Console.WriteLine("mc2[{0}] = {1}", i, mc2[i]);
+        for (int i = 0; i < 3; i++)
+            Console.WriteLine("mc1[{0}] = {1}", i, mc1[i]);
+            
+    }
+}
+
+</PRE>
+ちょっと長めですが、どうということもないですね。<P>
+MyClass2クラスは、MyClass1クラスから派生したクラスです。このクラスの
+プロパティとインデクサにはnew修飾子がついており、基本クラスのプロパティと
+インデクサを隠蔽しています。<P>
+Mainメソッドでは、MyClass2のインスタンスを生成して、プロパティを通じて
+フィールドxに値を代入しています。インデクサにも値を代入しています。<P>
+次に、MyClass2インスタンスの参照をMyClass1の参照変数に代入し、やはり値を代入しています。<P>
+次に値を読み出しています。プログラムと、次の実行結果を注意深く照らし合わせてみてください。<P>
+<IMG SRC="../img/cs4101.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_40.htm">Previous Chapter</A>]
+[<A HREF="cs_42.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 16/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

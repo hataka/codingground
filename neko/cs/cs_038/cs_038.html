@@ -1,0 +1,87 @@
+<HTML>
+<!--        cs_38.htm        -->
+<!--        2006/09/13       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３８章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３８章 クラスの継承と参照
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+クラスを継承するといろいろな疑問がわいてきます。また、予想外の性質があったりします。その一つに、「派生クラスの参照は、基本クラスの参照変数に代入可能」というのがあります。
+<P>
+<BR CLEAR="left"><BR>
+クラスAからクラスBが派生したとします。この時クラスBのインスタンスの参照をクラスAの参照変数に代入できます。しかし、このようにすると、アクセスできるのはクラスAがアクセスできるメンバに限定されます。クラスBで新規に作成したメンバにはアクセスできません。<P>
+これは、非常に重要な性質です。<P>
+まずは、例題を見てください。
+<PRE>
+// inheritance02.cs
+
+using System;
+
+class MyClass1
+{
+    public int x = 0;
+}
+
+class MyClass2 : MyClass1
+{
+    public int y = 1;
+}
+
+class MyClass3 : MyClass2
+{
+    public int z = 2;
+}
+
+class inheritance02
+{
+    public static void Main()
+    {
+        MyClass3 mc3 = new MyClass3();
+
+        MyClass1 mc1;
+        mc1 = mc3;
+        Console.WriteLine("x = {0}", mc1.x);
+
+        MyClass2 mc2;
+        mc2 = mc3; //同じものを代入しているのにできることが増えている
+        Console.WriteLine("x = {0}, y = {1}", mc2.x, mc2.y);
+
+        Console.WriteLine("x = {0}, y = {1}, z = {2}", mc3.x, mc3.y, mc3.z);
+    }
+}
+</PRE>
+MyClass3はMyClass2から派生しています。MyClass2はMyClass1から派生しています。<P>
+MyClass1から見るとMyClass3は孫に当たります。<P>
+Mainメソッドでは、MyClass3のインスタンスのみを生成しています。この参照をMyClass1の参照変数mc1に代入しています。mc1はMyClass1がアクセスできるメンバのみにアクセス可能です。この場合、インスタンスフィールドのxのみにアクセス可能です。<P>
+次に、MyClass2の参照変数mc2にMyClass1の参照を代入しています。こうすると、MyClass2でアクセス可能なメンバx,yにアクセス可能となります。同じ参照を代入しているのに、参照変数の型によりできることが違ってきますね。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3801.gif" ALIGN="left">
+MyClass1の参照変数に代入するとMyClass1ができることしかできない。<P>
+MyClass2の参照変数に代入するとMyClass2ができることしかできない。<P>
+と、いうことをいろいろ試してみてください。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_37.htm">Previous Chapter</A>]
+[<A HREF="cs_39.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 13/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

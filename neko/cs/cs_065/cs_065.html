@@ -1,0 +1,95 @@
+<HTML>
+<!--        cs_65.htm        -->
+<!--        2006/10/10       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６５章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６５章 最も簡単な例外処理</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+C#のプログラムを作っていると、無事にビルドできたのに、いざ実行すると
+例外が発生したと言われて、強制的に終了させられることがあります。
+<P>
+<BR CLEAR="left"><BR>
+プログラム実行中に、しばらく空白の時間があって<P>
+<IMG SRC="../img/cs6501.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+これは、いやですね。何としても避けたいものです。<P>
+<FONT COLOR="#FF0000" SIZE="4">
+自分の作ったプログラムの欠陥がいちいちマイクロソフトに報告されるのか!?
+</FONT>
+と、思ってしまいますね。<P>
+例外とは、一種のエラーです。ある状況でまずいことになるとき、例外が発生します。
+たとえばint型の変数x,yを用意してx/yの演算をするプログラムを作ったとします。<P>
+多くの場合、何ともないのですがyの値が0になってしまうと、まずい状況になりますね。
+この時、例外が発生します。<P>
+例外が、発生したときシステムに任せるのではなく、プログラム内で何とか対処したいものです。<P>
+これには、try-catch構文を使います。<P>
+最も、単純なtry-catch構文は次のようになります。
+<PRE>
+try
+{
+    //例外が発生するかも知れない処理
+}
+catch
+{
+    //例外が発生したときの処理
+}
+</PRE>
+例外が発生するとcatchブロック内の処理が実行され、それが終了すると何事もなかったかのように、次の処理に移ることになります。
+<PRE>
+// exception01.cs
+
+using System;
+
+class exception01
+{
+    public static void Main()
+    {
+        int x, y, z;
+
+        try
+        {
+            x = 100;
+            y = 0;
+            z = x / y;
+        }
+        catch
+        {
+            Console.WriteLine("例外が発生しました");
+        }
+
+        Console.WriteLine("何事もなかったように続きの処理をします");
+    }
+}
+</PRE>
+tryブロックでyに0が代入され、x/yのところで例外が発生します。<P>
+すると、catchブロックの処理(「例外が発生しました」と表示)が行われ、
+これが、終了するとブロックを抜けて、次の処理に取りかかれます。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs6502.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_64.htm">Previous Chapter</A>]
+[<A HREF="cs_66.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 10/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

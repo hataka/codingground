@@ -1,0 +1,67 @@
+<HTML>
+<!--        cs_70.htm        -->
+<!--        2006/10/15       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第７０章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/form/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第７０章 フォームを作ってみよう</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+コンソール・アプリケーションばかりでうんざりしていませんか?<P>
+この章ではGUIのプログラミングを紹介します。<P>
+C#では、ウィンドウをフォームと称します。
+<P>
+<BR CLEAR="left"><BR>
+C+Win32APIでウィンドウを作るのは、結構面倒くさいです。しかし、C#ではあっという間にフォームを作ることができます。<P>
+まずは、前準備ですがVS2005を使っているときの例を示します。
+<PRE>
+１．コンソールアプリケーションと全く同じ方法でプロジェクトを作成します。
+２．ソリューション・エクスプローラで「参照設定」を右クリックし「参照の追加」を選択します。
+３．System.dll, System.Windows.Forms.dll, System.Drawing.dllを追加します。(本章の
+プログラムではSystem.Drawing.dllは不要ですが一般的なFormプログラミングでは必要なので追加しておきます)
+４．ソリューション・エクスプローラでプロジェクト名を右クリックして「プロパティ」を選択します。
+５．出力の種類を「Windowsアプリケーション」に設定します。
+</PRE>
+前準備はこれだけです。さっそくソースプログラムを書いてみましょう。
+<PRE>
+// form01.cs
+
+using System.Windows.Forms;
+
+class form01
+{
+    public static void Main()
+    {
+        Form f = new Form();
+        Application.Run(f);
+    }
+}
+</PRE>
+たったこれだけです。実行すると、次のようなフォームが出現します。<P>
+<IMG SRC="../img/cs7001.gif" ALIGN="left">
+これは、最も簡単な方法でのフォームの作り方ですが、一般的ではありません。<P>
+詳しくは、別な編で詳細に解説します。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_69.htm">Previous Chapter</A>]
+<!--[<A HREF="cs_71.htm">Next Chapter</A>]-->
+<P>
+<ADDRESS>
+Update 15/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

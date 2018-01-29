@@ -1,0 +1,193 @@
+<HTML>
+<!--        cs_30.htm        -->
+<!--        2006/09/05       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３０章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３０章 インデクサ
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+<A HREF="cs_29.htm">前章</A>でフィールドが配列になっていたとき、プロパティは使えません。
+<P>
+<BR CLEAR="left"><BR>
+C#では、インデクサ(indexer)というものが利用できます。これを使うとオブジェクトを配列のように扱うことができます。インデクサは次のように宣言します。
+<PRE>
+要素のデータ型 this[int Index]
+{
+	get
+	{
+		return フィールド名[Index]
+	}
+	set
+	{
+		フィールド名[Index] = value;
+	}
+}
+</PRE>
+ちょっと注意すべき点は、インデクサには名前がありません。かわりにthisキーワードを
+使っています。Indexはユーザーからもらってきた番号で名前は自由です。またIndexのデータ型はほとんどの場合int型ですが、絶対int型でないとダメだというわけでもありません。<P>
+通常インデクサは、他のクラスから利用するのでpublicとなります。<P>
+あれこれ説明するより、例を見た方がわかりやすいです。
+<PRE>
+// indexer01.cs
+
+using System;
+
+class MyIndexer
+{
+    string[] name;
+
+    public string this[int n]
+    {
+        get
+        {
+            return name[n];
+        }
+        set
+        {
+            name[n] = value;
+        }
+    }
+
+    public MyIndexer(int a)
+    {
+        name = new string[a];
+    }
+}
+        
+
+class indexer01
+{
+    public static void Main()
+    {
+        MyIndexer mi = new MyIndexer(5);
+
+        string[] myname = new string[5]
+            { "一郎", "次郎", "三郎", "四郎", "五郎"};
+
+        for (int i = 0; i < 5; i++)
+            mi[i] = myname[i];
+
+        for (int i = 0; i < 5; i++)
+            Console.WriteLine("mi[{0}] = {1}", i, mi[i]);
+    }
+}
+</PRE>
+MyIndexerクラスには、string型配列のnameフィールドがあります。<P>
+インデクサは、次のように宣言していますね。
+<PRE>
+public string this[int n]
+{
+	...
+}
+</PRE>
+そして、アクセッサは次のように宣言しています。
+<PRE>
+get
+{
+	return name[n];
+}
+set
+{
+	name[n] = value;
+}
+</PRE>
+プロパティのアクセッサと同様です。ただ違うのは、nという配列の添え字が有る点です。<P>
+さて、呼び出し側では、まずMyIndexerクラスをインスタンス化しています。
+この時
+<PRE>
+MyIndexer mi = new MyIndexer(5);
+</PRE>
+と、いうようにコンストラクタを利用して、５個分の要素を確保しています。<P>
+次に、このフィールドの配列に値を代入するわけですが、いきなり
+<PRE>
+オブジェクト名[添え字]
+</PRE>
+でアクセスしています。決して「オブジェクト名.name[添え字]」ではありません。
+インデクサに名前が無いことからも推測できますね。これが、オブジェクトをあたかも配列のように扱えると書いた意味です。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3001.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+さて、最初にも書きましたが、インデクサの添え字は必ずしもint型である必要はありません。また、絶対に対応した配列のフィールドが必要というわけでもありません。<P>
+次の例を見てください。
+<PRE>
+// indexer02.cs
+
+using System;
+
+class MyIndexer
+{
+   public string this[string str]
+    {
+        get
+        {
+            switch (str)
+            {
+                case "一郎":
+                    return "いちろう";
+                case "次郎":
+                    return "じろう";
+                case "三郎":
+                    return "さぶろう";
+                case "四郎":
+                    return "しろう";
+                case "五郎":
+                    return "ごろう";
+                default:
+                    return "読めません";
+            }
+        }
+    }
+}
+
+class indexer02
+{
+    public static void Main()
+    {
+        string strFormat = "「{0}」の読み方は「{1}」です";
+        MyIndexer mi = new MyIndexer();
+
+        Console.WriteLine(strFormat, "次郎", mi["次郎"]);
+        Console.WriteLine(strFormat, "五郎", mi["五郎"]);
+        Console.WriteLine(strFormat, "猫", mi["猫"]);
+    }
+}
+</PRE>
+MyIndexerクラスには、フィールドはありません。インデクサのみです。
+しかも、インデクサの添え字はstring型です。<P>
+このインデクサのgetアクセッサでは、ユーザーが指定した添え字に対して、switch文で場合分けをして、文字列をreturnしています。setアクセッサはありません。<P>
+どうも、このインデクサは漢字の添え字に対して、その読みをreturnしているようです。
+こんなことをしてもよいのでしょうか。<P>
+結論はよいのです。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3002.gif" ALIGN="left">
+なるほど、うまくいっていますね。
+<P>
+<BR CLEAR="left"><BR>
+さて、インデクサやプロパティはそれ自身記憶領域を持ちません。従ってrefやoutとして
+メソッドの引数として渡すことはできません。<P>
+では、インデクサは配列のように高次元にすることができるのでしょうか。また添え字のデータ型が異なれば、メソッドのようにオーバーロードできるのでしょうか。さらに、インスタンスではなく、staticにして呼び出せるのでしょうか。いろいろ疑問がわいてきますね。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_29.htm">Previous Chapter</A>]
+[<A HREF="cs_31.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 05/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

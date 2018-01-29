@@ -1,0 +1,140 @@
+<HTML>
+<!--        cs_57.htm        -->
+<!--        2006/10/02       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５７章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５７章 インターフェース　その２
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+この章では、２つのインターフェースを実装する例を見てみます。
+<P>
+<BR CLEAR="left"><BR>
+しかも、２つのインターフェースには同じ名前のメソッドが含まれています。
+<PRE>
+// interface02.cs
+
+using System;
+
+public interface IDateCalc1
+{
+    DateTime CalcDate(DateTime dt, TimeSpan ts, string h);
+}
+
+public interface IDateCalc2
+{
+    DateTime CalcDate(DateTime dt, int n);
+}
+
+class MyCalcDate : IDateCalc1, IDateCalc2
+{
+    public DateTime CalcDate(DateTime d, TimeSpan t, string s)
+    {
+        if (s == "+")
+            return d + t;
+        else if (s == "-")
+            return d - t;
+        else
+            return DateTime.Now;
+    }
+
+    public DateTime CalcDate(DateTime d, int n)
+    {
+        return d.AddHours((double)n);
+    }
+}
+
+class interface02
+{
+    public static void Main()
+    {
+        MyCalcDate cd = new MyCalcDate();
+
+        DateTime dt = DateTime.Today;
+        TimeSpan ts = new TimeSpan(100, 0, 0, 0);
+
+        Console.WriteLine("今日から100日後は{0}です",
+            cd.CalcDate(dt, ts, "+").ToString("D"));
+        Console.WriteLine("今日の100日前は{0}です",
+            cd.CalcDate(dt, ts, "-").ToString("D"));
+
+        dt = DateTime.Now;
+        ts = new TimeSpan(100, 0, 0);
+
+        Console.WriteLine("今から100時間後は{0}です",
+            cd.CalcDate(dt, ts, "+").ToString("F"));
+        Console.WriteLine("今から100時間前は{0}です",
+            cd.CalcDate(dt, ts, "-").ToString("F"));
+
+        Console.WriteLine("今から10時間後は{0}です",
+            cd.CalcDate(dt, 10).ToString("F"));
+
+    }
+}
+</PRE>
+IDateCalc1とIDateCalc2には、CalcDateというメソッドが含まれています。
+でも、シグニチャが異なるので大丈夫でしょう。<P>
+MyCalcDateクラスは、この２つのインターフェイスを実装しています。<P>
+引数を２つ持つCalcDateメソッドの実装を見てください。DateTime構造体のAddHoursメソッドを利用しています。
+<PRE>
+public DateTime AddHours (
+	double value
+)
+</PRE>
+このインスタンスの日時にvalueで表された時間を加えたDateTime値を返します。<P>
+同じようなメソッドに次のようなものがあります。
+<PRE>
+public DateTime AddMinutes (
+	double value
+)
+public DateTime AddSeconds (
+	double value
+)
+public DateTime AddMilliseconds (
+	double value
+)
+public DateTime AddDays (
+	double value
+)
+public DateTime AddMonths (
+	int months
+)
+public DateTime AddYears (
+	int value
+)
+</PRE>
+Mainメソッドを見ると
+<PRE>
+DateTime.Today
+</PRE>
+とあります。これは、本日の日付を取得するプロパティです。
+<PRE>
+public static DateTime Today { get; }
+</PRE>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs5701.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_56.htm">Previous Chapter</A>]
+[<A HREF="cs_58.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 02/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

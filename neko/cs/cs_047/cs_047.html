@@ -1,0 +1,140 @@
+<HTML>
+<!--        cs_47.htm        -->
+<!--        2006/09/22       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４７章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４７章 イベント
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+イベントとは何でしょうか。
+<P>
+<BR CLEAR="left"><BR>
+GUIプログラミングでは、イベントが重要な働きをします。イベントなしでは、
+GUIのプログラムは作れません。ここでは、コンソールアプリケーションでGUIの
+プログラムを作るわけではありませんが、イベントの基礎について解説します。<P>
+まずは、イベントが発生したときに反応するイベントハンドラーをデリゲートで
+定義しておきます。
+<PRE>
+delegate 戻り値の型 イベントハンドラの名前(パラメータリスト);
+</PRE>
+これは、処理するイベントの種類だけ用意しておく必要があります。<P>
+次に、イベントを発生させるメソッドとイベントオブジェクトを準備しておく必要があります。たとえば、Clickに対して発生するイベントをclickとし、このイベントを発生させるメソッドをOnClickとします。イベント送信クラスは次のようになります。
+<PRE>
+class 送信クラス名
+{
+	public event イベントハンドラ名 イベント名;
+	public 戻り値の型 Onイベント名(パラメータリスト)
+	{
+		if (イベント名 != null)
+			イベント名(パラメータリスト);
+	}
+}
+</PRE>
+これを、具体的に書き直すと
+<PRE>
+class Click
+{
+	public event EventHandler click;
+	public void OnClick()
+	{
+		if (click != null)
+			click();
+	}
+}
+</PRE>
+という感じになります。イベントを送信するメソッドは通常On+イベント名で表しますが、
+好きな名前でかまいません。<P>
+利用する側ではOnClickメソッドを呼び出すとclickイベントが送信され、これに対応した処理が実行されます。<P>
+イベントに対応する処理は、次のようにして決めます。
+<PRE>
+イベント名 += new イベントハンドラ名(メソッド名);
+</PRE>
+イベントもマルチキャストすることができます。<P>
+ちょっと複雑ですが、実際の例を見てみましょう。
+<PRE>
+// event01.cs
+
+using System;
+
+// イベント用デリゲート(イベントハンドラ)
+delegate void EventHandler();
+
+// イベント送信用のクラス
+class MyClick
+{
+    // イベントオブジェクトの宣言
+    public event EventHandler myclick;
+
+    // イベント送信用メソッド
+    public void OnMyClick()
+    {
+        if (myclick != null)
+            myclick();
+    }
+}
+
+class Show
+{
+    public void show1()
+    {
+        Console.WriteLine("show1");
+    }
+
+    public void show2()
+    {
+        Console.WriteLine("show2");
+    }
+}
+
+class event01
+{
+    public static void Main()
+    {
+        MyClick mc = new MyClick();
+        Show s = new Show();
+
+        // イベント名 += new イベントハンドラ(実行するメソッド);
+        mc.myclick += new EventHandler(s.show1);
+
+        // イベントを発生させる
+        mc.OnMyClick();
+
+        Console.WriteLine("----------");
+
+        mc.myclick += new EventHandler(s.show2);
+
+        mc.OnMyClick();
+    }
+}
+</PRE>
+コメントと、解説と、プログラムを照らし合わせてみると、
+それほど難しくはないですね。<P>
+このプログラムでは、イベントをマルチキャストしている点に注意してください。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs4701.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_46.htm">Previous Chapter</A>]
+[<A HREF="cs_48.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 22/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

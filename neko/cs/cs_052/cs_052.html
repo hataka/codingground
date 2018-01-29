@@ -1,0 +1,96 @@
+<HTML>
+<!--        cs_52.htm        -->
+<!--        2006/09/27       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第５２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第５２章 DateTime構造体 その１
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+DateTime構造体は、System名前空間で定義されている構造体で、日付や時刻として表現される瞬間を表します。 
+<P>
+<BR CLEAR="left"><BR>
+この構造体は、頻繁に使われると思います。すでに、このHPでも<A HREF="cs_50.htm">第５０章</A>で使っています。<P>
+<A HREF="cs_50.htm">第５０章</A>で紹介したプロパティや列挙体の他に非常によく使われるものにToStringメソッドがあります。これは、C#2.0では４つのオーバーロードバージョンがあります。
+<PRE>
+public override string ToString ()
+</PRE>
+これは、インスタンス値を文字列に変換しますが、後述の"G"書式指定をした書式で日時を表します。
+<PRE>
+public string ToString (
+	string format
+)
+</PRE>
+formatに、指定された書式の文字列を返します。日時の書式指定には標準書式指定と、カスタム書式指定があります。<P>
+この章では標準書式指定の方法を解説します。<P>
+多くの場合、書式はコントロールパネルの「地域と言語のオプション」の設定の影響を
+受けます。従って必ずしも「例」の通りには表示されません。<P>
+<TABLE BORDER="1">
+<TH BGCOLOR="#FFFF00">書式指定子</TH><TH BGCOLOR="#FFFF00">名前</TH><TH BGCOLOR="#FFFF00">例</TH><TR>
+<TD>d</TD><TD>短い形式の日付</TD><TD>2006/09/27</TD><TR>
+<TD>D</TD><TD>長い形式の日付</TD><TD>2006年9月27日</TD><TR>
+<TD>t</TD><TD>短い形式の時刻</TD><TD>21:03</TD><TR>
+<TD>T</TD><TD>長い形式の時刻</TD><TD>21:03:12</TD><TR>
+<TD>f</TD><TD>完全な日時と短い形式の時刻</TD><TD>2006年9月27日 21:03</TD><TR>
+<TD>F</TD><TD>完全な日時と長い形式の時刻</TD><TD>2006年9月27日 21:03:12</TD><TR>
+<TD>g</TD><TD>短い形式の日付と短い形式の時刻</TD><TD>2006/09/27 21:03</TD><TR>
+<TD>G</TD><TD>短い形式の日付と長い形式の時刻</TD><TD>2006/09/27 21:03:12</TD><TR>
+<TD>Mまたはm</TD><TD>月日</TD><TD>9月27日</TD><TR>
+<TD>Rまたはr</TD><TD>RFC1123 パターン</TD><TD>"ddd, dd MMM yyyy HH:mm:ss G\MT"(後の章で説明)</TD><TR>
+<TD>s</TD><TD>並べ替え可能な日付と時刻のパターン (ISO 8601 準拠)</TD><TD>"yyyy-MM-ddTHH:mm:ss"</TD><TR>
+<TD>u</TD><TD>並べ替え可能な日付と時刻のパターン (世界時刻)</TD><TD>"yyyy-MM-dd HH:mm:ssZ"</TD><TR>
+<TD>U</TD><TD>並べ替え可能な日付と時刻のパターン (世界時刻)</TD><TD></TD><TR>
+<TD>Yまたはy</TD><TD>年月</TD><TD>2006年9月</TD><TR>
+</TABLE><P>
+では、日付時刻の書式指定の例を見てみましょう。
+<PRE>
+// datetime01.cs
+
+using System;
+
+class datetime01
+{
+    public static void Main()
+    {
+        DateTime dt;
+        string[] dtformat = new string[]{
+            "D", "d", "F", "f", "G", "g", "U", "u", "Y", "y", "M", "m",
+            "T", "t"};
+
+        dt = DateTime.Now;
+
+        for (int i = 0; i < dtformat.Length; i++)
+            Console.WriteLine("{0}:  {1}",
+                dtformat[i], dt.ToString(dtformat[i]));
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs5201.gif" ALIGN="left">
+書式指定は単なる書式指定であり、日時を変換まではしてくれません。
+uとかUでは、あらかじめ日時を世界協定時に変換しておくことが必要です。
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_51.htm">Previous Chapter</A>]
+[<A HREF="cs_53.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 27/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

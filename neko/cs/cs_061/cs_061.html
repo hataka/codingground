@@ -1,0 +1,104 @@
+<HTML>
+<!--        cs_61.htm        -->
+<!--        2006/10/06       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６１章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６１章 インターフェース　その６
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+インターフェースはクラスと同じ方法で継承することができます。
+<P>
+<BR CLEAR="left"><BR>
+また、継承先のインターフェースで継承元のインターフェースと同じシグニチャを持つメンバを隠蔽することもできます。<P>
+継承元と継承先のインターフェース参照変数も利用できます。当然継承元では、継承先の
+ことはわかりません。
+<PRE>
+// interface07.cs
+
+using System;
+
+public interface IInterface1
+{
+    void Pulus(int x, int y, out int z);
+}
+
+public interface IInterface2 : IInterface1
+{
+    void Minus(int x, int y, out int z);
+}
+
+class MyClass : IInterface2
+{
+    public void Pulus(int x, int y, out int z)
+    {
+        z = x + y;
+    }
+
+    public void Minus(int x, int y, out int z)
+    {
+        z = x - y;
+    }
+}
+
+class interface07
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass();
+        int ans;
+
+        mc.Pulus(3, 5, out ans);
+        Console.WriteLine("{0} + {1} = {2}", 3, 5, ans);
+
+        mc.Minus(3, 5, out ans);
+        Console.WriteLine("{0} - {1} = {2}", 3, 5, ans);
+
+        Console.WriteLine("IInterface1の参照変数を利用");
+        IInterface1 i1 = mc;
+
+        i1.Pulus(3, 5, out ans);
+        Console.WriteLine("{0} + {1} = {2}", 3, 5, ans);
+
+        Console.WriteLine("IInterface2の参照変数を利用");
+        IInterface2 i2 = mc;
+
+        i2.Pulus(3, 5, out ans);
+        Console.WriteLine("{0} + {1} = {2}", 3, 5, ans);
+
+        i2.Minus(3, 5, out ans);
+        Console.WriteLine("{0} - {1} = {2}", 3, 5, ans);
+
+    }
+}
+</PRE>
+IInterface2はIInterface1を継承しています。MyClassクラスはIInterface2を実装しています。結果的に、MyClassは、IInterface1とIInterface2のメンバのすべてを実装しています。<P>
+MyClassのインスタンスmcは、IInterface1, IInterface2のすべてのメンバを利用できます。IInterface1の参照変数I1にmcを代入した場合、IInterface1のメンバしか利用できません。IInterface2の参照変数I2にmcを代入するとIInterface1, IInterface2の両方のメンバを利用できます。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs6101.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_60.htm">Previous Chapter</A>]
+[<A HREF="cs_62.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 06/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

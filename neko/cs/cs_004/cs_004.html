@@ -1,0 +1,96 @@
+<HTML>
+<!--        cs_04.htm        -->
+<!--        2004/04/03       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４章 文字列の数値への変換</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+表題は「文字列」の数値への変換となっていますが、C#での
+「文字列」は、C/C++の文字列とはちょっと意味が違います。
+詳しくは、後の章で解説しますが、今は漠然と「文字列」と思ってかまいません。
+<P>
+<BR CLEAR="left"><BR>
+さて、<A HREF="cs_03.htm">前章</A>では１行分の文字列を読み込むのに
+ReadLineメソッドを用いました。返される値はstring型です。
+データ型についても後の章で詳細に解説する予定です。さて、これを計算に
+使うには、そのままでは都合が悪いですね。C#では、数字を表す文字列を数値に
+変換するようなメソッドは存在しません。<P>
+<FONT SIZE="5" COLOR="#FF0000">えーーっ!!じゃあ、どうするの??</FONT><P>
+はい、double,float,intなどの構造体のParseメソッドを利用します。
+ここで言う「構造体」とはC/C++の構造体とは異なります。構造体についても
+後の章で解説します。<P>
+<PRE>
+n = int.Parse("100");
+</PRE>
+とするとnには、整数値の100が代入されます。C/C++を知っている人には非常に
+奇妙に思えるかもしれません。これも、後の章で解説します。いまは、理屈はともかく
+文字列を数値に変換する方法を覚えましょう。これだけで、ずいぶんいろんなプログラムが書けるようになります。<P>
+それと、C#では変数名に２バイト文字を使うことができます。<P>
+今までの知識を利用して、三角形の面積を求めるプログラムを作ってみましょう。
+<PRE>
+// triangle.cs
+
+using System;
+
+class triangle
+{
+    public static void Main()
+    {
+        double 底辺, 高さ, 面積;
+        string teihen, takasa;
+        while (true)
+        {
+            Console.Write("高さ= ");
+            takasa = Console.ReadLine();
+            高さ = double.Parse(takasa);
+            if (高さ == 0.0)
+                break;
+            Console.Write("底辺= ");
+            teihen = Console.ReadLine();
+            底辺 = double.Parse(teihen);
+            面積 = 底辺 * 高さ / 2.0;
+            Console.WriteLine("高さ{0}、底辺{1}の三角形の面積は{2}です。",
+                高さ, 底辺, 面積);
+        }
+    }
+}
+</PRE>
+変数名に漢字を使ってみました。こんなこともできる、というだけで漢字を使うことは
+あまりお奨めしません。プログラムが大変見にくくなります。<P>
+while()は、()内が真の間ずっと次のブロックを繰り返し実行します。<P>
+ここでは、while(true)なので、()内は常に真です。ユーザーが高さに0を入力すると
+break文でループを脱出します。C/C++を知っている人にはどうということもないものですが知らない人のために、後の章でC#の制御文について解説します。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs0401.gif" ALIGN="left">
+ユーザー入力が、反映されるので少しはプログラムらしくなりました。<P>
+ユーザーが、数値ではなくabcのような文字を入力したり、何も入力せずにエンター
+キーを押すとどうなるのでしょうか。実は、このプログラムでは、そのような
+ことは一切考慮していません。実際、どうなるかは実験してみてください。
+これを解決するには、例外処理について知らないといけません。これも後の章で解説します。
+<P>
+<BR CLEAR="left"><BR>
+何でもかんでも「後の章」で片付けてしまいました。今までの知識では、このプログラムを解説するには、ちょっと無理がありますね。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_03.htm">Previous Chapter</A>]
+[<A HREF="cs_05.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 03/Apr/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

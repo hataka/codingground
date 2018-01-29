@@ -1,0 +1,99 @@
+<HTML>
+<!--        cs_40.htm        -->
+<!--        2006/09/15       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第４０章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第４０章 名前を隠そう
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+クラスの継承先で、基本クラスと同じ名前のメンバを定義したらどうなるのでしょうか。
+内容が書きかえられてしまうのでしょうか。
+<P>
+<BR CLEAR="left"><BR>
+これも実験してみるとすぐにわかります。<P>
+基本クラスと同じ名前のメンバを派生クラスで定義すると、コンパイル時に警告がでます。派生クラスで基本クラスのメンバを書きかえたいときはnew修飾子をつけます。これを「<FONT COLOR="#FF0000">名前の隠蔽</FONT>」といいます。情報開示の時代で、「隠蔽」というと何となく、うさんくさい感じがしますが、OOPでは重要な概念の一つです。<P>
+クラスのインスタンスを生成するときに使っていたnewとは意味が全く異なるので注意してください。<P>
+派生クラスで、new修飾子でメンバを定義し直すと、派生クラスからはもう元のメンバを呼び出せないのかというと、そんなことはありません。これには、baseキーワードを使います。<A HREF="cs_39.htm">前章</A>で基本クラスのコンストラクタを呼び出すときにもbaseを使いましたね。<P>
+さて、new修飾子で書きかえたメンバを持つクラスのインスタンスの参照を、基本クラスの参照変数に代入すると、これは書きかえ前の基本クラスのメンバをそのまま使えます。<P>
+では、簡単なサンプルを見てみましょう。
+<PRE>
+// hidename01.cs
+
+using System;
+
+class MyClass1
+{
+    public int x = 10;
+
+    public int show()
+    {
+        Console.WriteLine("MyClass1のshowメソッドです");
+        return 0;
+    }
+}
+
+class MyClass2 : MyClass1
+{
+    new public int x = 20;
+
+    new public int show()
+    {
+        Console.WriteLine("x = {0}", x);
+        return 0;
+    }
+
+    public int callold()
+    {
+        Console.WriteLine("MyClass1のshowメソッドを呼び出します");
+        base.show();
+        Console.WriteLine("MyClass1のx = {0}", base.x);
+        return 0;
+    }
+}
+
+class hidename01
+{
+    public static void Main()
+    {
+        MyClass2 mc2 = new MyClass2();
+        mc2.show();
+        mc2.callold();
+
+        Console.WriteLine("---------------");
+
+        MyClass1 mc1; //MyClass1のインスタンスは生成していない
+        mc1 = mc2;
+        mc1.show();
+        Console.WriteLine("MyClass1のxは{0}です", mc1.x);
+    }
+}
+</PRE>
+この、プログラムを眺めて実行結果がどうなるか想像してみてください。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs4001.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_39.htm">Previous Chapter</A>]
+[<A HREF="cs_41.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 15/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

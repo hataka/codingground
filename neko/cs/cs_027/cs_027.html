@@ -1,0 +1,124 @@
+<HTML>
+<!--        cs_27.htm        -->
+<!--        2006/09/02       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２７章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第２７章 オーバーロードされたMainメソッド
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+<A HREF="cs_25.htm">第２５章</A>でメソッドのオーバーロードについて解説しました。
+実は、Mainメソッドもオーバーロードされていていくつかのバージョンを持っています。
+<P>
+<BR CLEAR="left"><BR>
+当HPでは、Mainメソッドは、
+<PRE>
+void Main()
+</PRE>
+で、戻り値無し、仮引数無しのバージョンを使っていました。この他に
+<PRE>
+int Main(), void Main(string[] args), int Main(string[] args)
+</PRE>
+と、合計４つのオーバーロードバージョンがあります。<P>
+「引数は、誰からもらうの?」<P>
+という疑問が有ると思いますが、これは、コマンドラインからもらうことが多いと思われます。コマンドラインから
+<PRE>
+プログラム名(xxxx.exe) 引数１ 引数2
+</PRE>
+という感じで引数をもらいます。MS-DOSの時代にはよく用いられました。また、他のプログラムから呼び出されるときにも、同じ呼び出し方で行えます。<P>
+VS2005環境から、実行する時は、ソリューションエクスプローラで、プロジェクト名を右クリックして「プロパティ」を選択します。その中の「デバッグ」というタブをクリックして「コマンドライン引数」の欄に引数を書き込んでおきます。デバッグ版のみならず、リリース版でも有効です。<P>
+<IMG SRC="../img/cs2701.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+
+次のサンプルは、Mainメソッドの引数を全部表示するプログラムです。
+<PRE>
+// main01.cs
+
+using System;
+
+class main01
+{
+    public static void Main(string[] str)
+    {
+        for (int i = 0; i < str.Length; i++)
+            Console.WriteLine("引数{0}は{1}です。", i + 1, str[i]);
+    }
+}
+</PRE>
+先ほどのように、コマンドライン引数を設定して実行すると次のように表示されます。<P>
+<IMG SRC="../img/cs2702.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+実際のプログラミングでは、引数にファイル名を指定して、プログラム実行と同時にファイルの中身を表示するというようなことが、よく行われます。<P>
+サンプルのプログラムでは、簡単のため中で引数の個数をチェックしていませんが、
+実際のプログラミングではまず引数の個数をチェックすることが重要です。
+引数がない場合と、有る場合で動作を変える必要が有る場合が多いでしょう。<P>
+さて、int型の戻り値があるバージョンでは、だれが戻り値を利用するのでしょうか。
+これは、OSであったり、呼び出し元のプログラムであったりします。バッチファイルでも
+戻り値を利用できます。<P>
+MS-DOSの時代には、誰もがバッチファイルを書いていましたが、Windows時代になってからはあまりいなくなってしまいました。<P>
+たとえば、複数のプログラムを毎日特定の時刻に実行したい場合、これをバッチに記載し、バッチファイルをタスクに登録しておくと簡単に実現できます。<P>
+バッチファイルは、拡張子がbatである単なるテキストファイルです。これに、
+<PRE>
+(ABC.exeのパス)ABC.exe
+</PRE>
+と書いておき、test.batという名前で保存します。このtest.batファイルのアイコンをクリック(またはダブルクリック)すると、ABC.exeが実行されます。
+<PRE>
+// main02.cs
+
+using System;
+
+class main02
+{
+    public static int Main(string[] x)
+    {
+        if (x.Length == 0)
+            return -1;
+        else
+            return 0;
+    }
+}
+
+</PRE>
+この例では、コマンドライン引数が無い時は-1を、有る時は0を返します。
+<P>
+これを確かめるバッチファイルの例を次に示します。
+<PRE>
+echo off
+
+"H:\MyDocument2\Visual Studio2005 Projects\cs\HP用\main02\bin\Release\main02.exe" a
+echo 戻り値は%errorlevel%です
+
+"H:\MyDocument2\Visual Studio2005 Projects\cs\HP用\main02\bin\Release\main02.exe" 
+echo 戻り値は%errorlevel%です
+
+pause
+</PRE>
+適当な名前(xxxx.bat)をつけて保存してください。パスの部分はご自分の環境に合わせて変えてください。このバッチをクリックすると、引数付きのmain02呼び出しと、引数無しの呼び出しが起ります。<P>
+<IMG SRC="../img/cs2703.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_26.htm">Previous Chapter</A>]
+[<A HREF="cs_28.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 02/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

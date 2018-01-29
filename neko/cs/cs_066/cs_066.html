@@ -1,0 +1,174 @@
+<HTML>
+<!--        cs_66.htm        -->
+<!--        2006/10/11       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第６６章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第６６章 例外の種類を知る</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+<A HREF="cs_65.htm">前章</A>のプログラムでは、例外が発生したことはわかってもその種類まではわかりませんでした。この章では、もう少し詳しい例外処理について解説します。<P>
+<BR CLEAR="left"><BR>
+例外はクラスとして表現されます。その大元はExceptionクラスでSystem名前空間で定義されています。<P>
+すべての例外クラスはExceptionクラスから派生しています。また、このクラスからApplicationExceptionとSystemExceptionクラスが派生しています。ApplicationExceptionクラスは、ユーザープログラムによって例外がスローされます。スローとは例外を表すオブジェクトがプログラムに送信されることで、俗に「投げる」とも言います。<P>
+SystemExceptionクラスは、共通言語ランタイムが生成します。<P>
+この2つは、単にシステム定義の例外と、アプリケーション定義の例外を区別するだけの働きしかありません。<P>
+まずは、<A HREF="cs_65.htm">前章</A>を少し発展させたtry-catch構文を見てみましょう。
+<PRE>
+try
+{
+    //例外が発生するかも知れない処理
+}
+catch (例外クラス型 変数)
+{
+	//例外処理
+}
+</PRE>
+catch節に例外クラス型とその変数が加わっています。変数は無くてもかまいません。そのかわり、変数を利用した便利な処理ができません。<P>
+このように、書くとcatch節で指定した例外以外は捕捉することができません。<P>
+ますは、これにException型を指定してみましょう。これなら、すべての例外が捕捉されます。
+<PRE>
+// exception02.cs
+
+using System;
+
+class exception02
+{
+    public static void Main()
+    {
+        int x = 100, z;
+
+        for (int i = 10; i > -11; i--)
+        {
+            try
+            {
+                z = x / i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Message = {0}", e.Message);
+                Console.WriteLine("Source = {0}", e.Source);
+                Console.WriteLine("GetType = {0}", e.GetType());
+                Console.WriteLine("TargetSite = {0}", e.TargetSite);
+                z = 99999;
+            }
+            Console.WriteLine("{0} / {1} = {2}", x, i, z);
+        }
+    }
+}
+</PRE>
+ExceptionクラスのプロパティにはMessage,Source,TargetSiteなどがあります。
+<PRE>
+public virtual string Message { get; }
+</PRE>
+これは、現在の例外の説明文を取得します。
+<PRE>
+public virtual string Source { get; set; }
+</PRE>
+例外発生の原因となったアプリケーション、オブジェクトの名前を設定もしくは取得します。
+<PRE>
+public MethodBase TargetSite { get; }
+</PRE>
+現在の例外をスローしたメソッドを取得します。<P>
+MethodBaseクラスは、メソッドとコンストラクタに関する情報を表します。多数のメンバが
+存在します。<P>
+Exceptionクラスのメソッドには、GetTypeなどがあります。
+<PRE>
+public override sealed Type GetType ()
+</PRE>
+現在のインスタンスの型を取得します。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs6601.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+実行結果を見ると、投げられた例外はDivideByZeroExceptionで
+あることがわかります。<P>
+主な例外クラスには、次のようなものがあります。<P>
+<TABLE BORDER="1">
+<TH BGCOLOR="#FFFF00">例外クラス</TH><TH BGCOLOR="#FFFF00">内容</TH><TR>
+<TD>ArgumentException</TD><TD>メソッドに渡された引数に無効なものがある場合にスローされます</TD><TR>
+<TD>ArgumentNullException</TD><TD>nullを引数として受け付けないメソッドにnullを渡したときスローされます</TD><TR>
+<TD>ArgumentOutOfRangeException</TD><TD>パラメータが指定の範囲を超えたときスローされます</TD><TR>
+<TD>DivideByZeroException</TD><TD>整数値または実数値を0で除算しようとした場合スローされます</TD><TR>
+<TD>IndexOutOfRangeException</TD><TD>配列の境界を越えてアクセスしようとしたときにスローされます</TD><TR>
+<TD>InvalidOperationException</TD><TD>無効なメソッド呼び出しが行われた場合にスローされます</TD>
+</TABLE><P>
+catch節を複数設けることも可能です。
+<PRE>
+try
+{
+	//例外が発生するかもしれない処理
+}
+catch (例外クラス型1 変数)
+{
+	//例外処理
+}
+catch (例外クラス型2 変数)
+{
+	//例外処理
+}
+...
+</PRE>
+この場合、例外が発生して最初に捕獲されたcatch節以降は、捕獲されません。
+<PRE>
+// exception03.cs
+
+using System;
+
+class exception03
+{
+    public static void Main()
+    {
+        int[] ar = new int[3] { 1, 2, 3 };
+
+        for (int i = 0; i < 5; i++)
+        {
+            try
+            {
+                Console.WriteLine("ar[{0}] = {1}", i, ar[i]);
+                Console.WriteLine("ar[{0}] / {1} = {2}", i, i, ar[i] / i);
+            }
+            catch (IndexOutOfRangeException o)
+            {
+                Console.WriteLine(o.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        Console.WriteLine("try-catchを抜けました");
+    }
+}
+</PRE>
+try-catch構文がfor文で何回も繰り返されます。<P>
+最初にi = 0の時、ar[i] / iの計算で、０での除算例外が発生します。
+これは、catch (Exception e)で捕獲されます。<P>
+次にi = 3とi = 4の時、catch (IndexOutOfRangeException o)で捕獲されます。その後の
+catch (Exception e)では、捕獲されません。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs6602.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_65.htm">Previous Chapter</A>]
+[<A HREF="cs_67.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 11/Oct/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

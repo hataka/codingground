@@ -1,0 +1,157 @@
+<HTML>
+<!--        cs_32.htm        -->
+<!--        2006/09/07       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３２章 多次元インデクサ
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+インデクサも、配列のにように２次元、３次元、...と多次元のものを作ることができます。
+<P>
+<BR CLEAR="left"><BR>
+宣言の仕方は、次のように行います。
+<PRE>
+要素のデータ型 this[int index1, int index2,...]{}
+</PRE>
+では、早速２次元の場合のサンプルをみてみましょう。
+<PRE>
+// mindexer01.cs
+
+using System;
+
+class MyClass
+{
+    int[,] array;
+
+    public int this[int x, int y]
+    {
+        get
+        {
+            return array[x, y];
+        }
+        set
+        {
+            array[x, y] = value;
+        }
+    }
+    public MyClass(int a, int b)
+    {
+        array = new int[a, b];
+    }
+}
+
+class mindexer01
+{
+    public static void Main()
+    {
+        MyClass mc = new MyClass(4, 4);
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                mc[i, j] = i + j;
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                Console.WriteLine("{0} + {1} = {2}", i, j, mc[i, j]);
+            }
+        }
+    }
+}
+</PRE>
+使い方は１次元の時と全く同じです。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs3201.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+もちろん、多次元インデクサでもインデックスにint型以外のものを使えます。<P>
+次の例は、インデックスにstring型とint型を使ったかなり変なプログラムです。
+(なお、このプログラムの地名や市外局番は架空のものです)
+<PRE>
+// mindexer02.cs
+
+using System;
+
+class MyTelephone
+{
+    public string this[string address, int phone]
+    {
+        get
+        {
+            switch (address)
+            {
+                case "北海道":
+                    switch (phone)
+                    {
+                        case 166:
+                            return "旭川市";
+                        case 11:
+                            return "札幌市";
+                        default:
+                            return "知りません";
+                    }
+                case "東京都":
+                    switch (phone)
+                    {
+                        case 3:
+                            return "２３区";
+                        case 422:
+                            return "小金井市";
+                        default:
+                            return "知りません";
+                    }
+                default:
+                    return "知りません";
+            }
+        }
+    }
+}
+
+class mindexer02
+{
+    public static void Main()
+    {
+        string strFormat = "{0}で市外局番が{1}は{2}です";
+        MyTelephone mt = new MyTelephone();
+
+        Console.WriteLine(strFormat, "東京都", 3, mt["東京都", 3]);
+        Console.WriteLine(strFormat, "北海道", 166, mt["北海道", 166]);
+        Console.WriteLine(strFormat, "九州", 114, mt["九州", 114]);
+    }
+}
+</PRE>
+これは、変なプログラムですね。まさか、インデクサに電話帳みたいなことをさせるとは
+あまり思いつく人はいないでしょう。<P>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs3202.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_31.htm">Previous Chapter</A>]
+[<A HREF="cs_33.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 07/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

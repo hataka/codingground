@@ -1,0 +1,67 @@
+<HTML>
+<!--        cs_02.htm        -->
+<!--        2002/12/09       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第２章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>
+第２章 WriteLineメソッドとインデックス
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+<A HREF="cs_01.htm">前章</A>で出てきたWriteLineメソッドについてもう少し詳しく
+見ていくことにします。
+<P>
+<BR CLEAR="left"><BR>
+WriteLineメソッドはC言語のprintf関数に似ています。C言語では次のような書き方ができました。
+<PRE>
+char *cat = "猫", *dog = "犬";
+printf("%sはアホですが、%sは賢いです\n", cat, dog);
+</PRE>
+こんな感じのプログラムはC#ではどのように書けばよいのでしょうか。<P>
+これにはインデックスを使います。
+<PRE>
+string cat = "猫", dog = "犬";
+WriteLine("{0}はアホですが、{1}は賢いです", cat, dog);
+</PRE>
+WriteLineメソッドのダブルクォーテーション以降のパラメーターに0,1,...という
+インデックス番号がついています。これを{0},{1},...で表すことができます。<P>
+string は文字列型と呼ばれる物で後の章で解説します。ここでは単に文字列を
+表す型とだけ理解しておいてもかまいません。<P>
+<IMG SRC="../img/cs0201.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs0202.gif" ALIGN="left">
+WriteLin("{1}はアホですが、{0}は賢いです", cat, dog);<P>
+というようにインデックスの順番は0から昇順になっている必要はありません。<P>
+しかし、<P>
+WriteLine("{0}はアホですが、{2}は賢いです", cat, dog);<P>
+のように実際には存在しないインデックスを指定してはいけません。
+<P>
+<BR CLEAR="left"><BR>
+あまり意味はありませんが、使わないインデックスがあっても構いません。
+(上のプログラムでたとえば0のインデックスを使用しなくてもよい。)
+また、同じインデックスを複数使ってもよいです。
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_01.htm">Previous Chapter</A>]
+[<A HREF="cs_03.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 09/Dec/2002 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

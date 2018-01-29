@@ -1,0 +1,174 @@
+<HTML>
+<!--        cs_39.htm        -->
+<!--        2006/09/14       -->
+<HEAD>
+<LINK REL=STYLESHEET HREF="../neko.css" TYPE="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>第３９章 </TITLE>
+<base href='http://www.kumei.ne.jp/c_lang/cs/'>
+<meta http-equiv='Content-Type'content='text/htm; charset=UTF-8'>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<H1>第３９章 クラスの継承とコンストラクタ
+</H1>
+</CENTER>
+<HR>
+<IMG SRC="../img/my10x.gif" ALIGN="left">
+クラスを継承した場合、派生クラスの初期化はどうしたらよいのでしょうか。派生クラスのコンストラクタで、基本クラスのメンバも初期化しなくてはいけないのでしょうか。
+<P>
+<BR CLEAR="left"><BR>
+あれこれ、考えるより実際にプログラムを作ってみればすぐにわかります。<P>
+では、MyClass1からMyClass2を派生して、さらにMyClass2からMyClass3を派生するプログラムを作って実験してみます。
+<PRE>
+// inheritance03.cs
+
+using System;
+
+class MyClass1
+{
+    protected int x;
+
+    public MyClass1()
+    {
+        Console.WriteLine("xを初期化します");
+        x = 10;
+    }
+}
+
+class MyClass2 : MyClass1
+{
+    protected int y;
+
+    public MyClass2()
+    {
+        Console.WriteLine("yを初期化します");
+        y = 100;
+    }
+}
+
+class MyClass3 : MyClass2
+{
+    protected int z;
+
+    public MyClass3()
+    {
+        Console.WriteLine("zを初期化します");
+        z = 1000;
+    }
+
+    public void show()
+    {
+        Console.WriteLine("x = {0}, y = {1}, z = {2}",
+            x, y, z);
+    }
+}
+
+class inheritance03
+{
+    public static void Main()
+    {
+        MyClass3 mc3 = new MyClass3();
+
+        mc3.show();
+            
+    }
+}
+</PRE>
+各クラスは、それぞれのコンストラクタで、自分のメンバであるフィールドの初期化を行っています。MyClass3では、x, y, zの値を表示するshowメソッドを持っています。<P>
+MyClass3のインスタンスmc3.show()メソッドを実行すると、x, y, zの値はどうなっているのでしょうか。mc3のコンストラクタではzのみを初期化しています。<P>
+では、実行結果を見てみましょう。<P>
+<IMG SRC="../img/cs3901.gif" ALIGN="left">
+実行結果を見ると、基本クラスのコンストラクタから順番に実行されているのがわかります。もちろんMyClass2のコンストラクタでxを初期化することも可能ですが、非常にわかりにくいプログラムとなってしまいます。<P>
+コンストラクタは自分のクラスで定義したメンバの初期化をするのがわかりやすく、あとからバグをさがすのも楽ですね。
+<P>
+<BR CLEAR="left"><BR>
+さて、基本クラスに引数付きのコンストラクタがあった場合はどうなるのでしょうか。<P>
+実は、派生クラスのコンストラクタは、まず、基本クラスの引数無しコンストラクタを呼び出しているのです。基本クラスのコンストラクタが引数を持っている場合は、話が変わってきます。<P>
+もし、MyClass1が次のように定義されていたとします。引数なしのコンストラクタは
+定義されていませんね。
+<PRE>
+class MyClass1
+{
+    protected int x;
+
+    public MyClass1(int a)
+    {
+        Console.WriteLine("xを初期化します");
+        x = a;
+    }
+}
+</PRE>
+このクラスを基本クラスとした派生クラスで、引数なしのコンストラクタを定義しようとすると、「引数を0個指定できるMyClass1のオーバーロードはありません」というエラーが生じます。派生クラスのコンストラクタは、基本クラスの引数無しコンストラクタを呼び出そうとしても、定義されていないのでこのようなエラーメッセージが出されるのです。<P>
+では、解決方法はあるのでしょうか。これにはbaseキーワードを使い派生クラス(MyClass2とする)のコンストラクタを次のように定義します。
+<PRE>
+public MyClass2() : base(10){...}
+</PRE>
+base(10)が、MyClass1のコンストラクタに引数10を渡して呼び出します。baseはすぐ上の基本クラスのコンストラクタを引数付きで呼び出す、と覚えておきましょう。<P>
+では、逆に基本クラスのコンストラクタが引数なしで、派生クラスのコンストラクタで
+<PRE>
+public MyClass2() : base(){...}
+</PRE>
+としても、エラーにはなりません。が、意味はありません。base()が無くても自動的に一つ上の基本クラスの引数無しコンストラクタが呼び出されるからです。<P>
+では、base()を使った例題を見てみましょう。
+<PRE>
+// inheritance04.cs
+
+using System;
+
+class MyClass1
+{
+    protected int x;
+
+    public MyClass1(int a)
+    {
+        Console.WriteLine("xを初期化します");
+        x = a;
+    }
+}
+
+class MyClass2 : MyClass1
+{
+    protected int y;
+
+    public MyClass2() : base(10) 
+    {
+        Console.WriteLine("yを初期化します");
+        y = 100;
+    }
+
+    public void show()
+    {
+        Console.WriteLine("x = {0}, y = {1}", x, y);
+    }
+}
+
+class inheritance04
+{
+    public static void Main()
+    {
+        MyClass2 mc2 = new MyClass2();
+
+        mc2.show();
+    }
+}
+</PRE>
+実行結果は次のようになります。<P>
+<IMG SRC="../img/cs3902.gif" ALIGN="left">
+<P>
+<BR CLEAR="left"><BR>
+<HR>
+[<A HREF="../index_cs.html">C# Index</A>]
+[<A HREF="../index.html">総合Index</A>]
+[<A HREF="cs_38.htm">Previous Chapter</A>]
+[<A HREF="cs_40.htm">Next Chapter</A>]
+<P>
+<ADDRESS>
+Update 14/Sep/2006 By Y.Kumei<BR>
+<FONT COLOR="#FF0000">
+当ホーム・ページの一部または全部を無断で複写、複製、
+転載あるいはコンピュータ等のファイルに保存することを禁じます。
+</FONT>
+</ADDRESS>
+</BODY>
+</HTML>
