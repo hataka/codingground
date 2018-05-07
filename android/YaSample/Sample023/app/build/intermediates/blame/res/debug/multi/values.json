@@ -1,0 +1,45 @@
+[
+    {
+        "outputFile": "F:\\GitHub\\hataka\\codingground\\android\\YaSample\\Sample023\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 65,
+                    "endOffset": 116
+                },
+                "from": {
+                    "file": "F:\\GitHub\\hataka\\codingground\\android\\YaSample\\Sample023\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 118,
+                        "endColumn": 65,
+                        "endOffset": 179
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 121,
+                    "endColumn": 57,
+                    "endOffset": 174
+                },
+                "from": {
+                    "file": "F:\\GitHub\\hataka\\codingground\\android\\YaSample\\Sample023\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 57,
+                        "endOffset": 112
+                    }
+                }
+            }
+        ]
+    }
+]
