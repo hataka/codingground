@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        applicationId "ya.Sample021"
+        applicationId "ya.Sample031"
         minSdkVersion 13
         targetSdkVersion 13
     }

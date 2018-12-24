@@ -1,0 +1,7 @@
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\obj\FDTreeMenu.xml
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\build.gradle
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\app\src\main\AndroidManifest.xml
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\app\src\main\res\values\strings.xml
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\app\src\main\res\layout\main.xml
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\app\src\main\java\ya\Sample036\Sample036.java
+F:\GitHub\hataka\codingground\android\YaSample\Sample036\obj\antPluginData.txt

@@ -1,0 +1,6 @@
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\win003\win003_1\bin\Debug\main.exe
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\win003\win003_1\bin\Debug\main.pdb
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\win003\win003_1\obj\Debug\main.csprojAssemblyReference.cache
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\win003\win003_1\obj\Debug\main.csproj.CoreCompileInputs.cache
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\win003\win003_1\obj\Debug\main.exe
+F:\GitHub\hataka\codingground\WisdomSoft\msnet\win003\win003_1\obj\Debug\main.pdb
