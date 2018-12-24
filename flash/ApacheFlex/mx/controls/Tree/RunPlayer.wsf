@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run "F:\Flash\flex4\mxml\ApacheFlex\mx\controls\Tree\TreeExample.swf"
+</script>
+</job>

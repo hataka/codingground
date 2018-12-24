@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run """" & "C:\Program Files\Internet Explorer\iexplore.exe" & """" & "http://hata2/Flash/ApacheFlex/mx/charts/PieChart//PieChartExample.swf",1
+</script>
+</job>

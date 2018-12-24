@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run """" & "C:\Documents and Settings\kazuhiko\Local Settings\Application Data\Google\Chrome\Application\chrome.exe" & """" & "http://hata2/Flash/ApacheFlex/mx/controls/Alert//SimpleAlert.swf",1
+</script>
+</job>

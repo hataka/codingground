@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <project version="2">
   <!-- Output SWF options -->
   <output>
@@ -79,11 +79,23 @@
   <hiddenPaths>
     <hidden path="download" />
     <hidden path="obj" />
+    <hidden path="LaunchChrome.wsf" />
+    <hidden path="LaunchFireFox.wsf" />
+    <hidden path="LaunchIE.wsf" />
+    <hidden path="LaunchMSHTA.wsf" />
+    <hidden path="RunAir.wsf" />
+    <hidden path="RunPlayer.wsf" />
+    <hidden path="Sakura_MultiOpen.wsf" />
+    <hidden path="Viewer_mxml.php" />
+    <hidden path="Viewer_mxml_ui.tab.php" />
+    <hidden path="ButtonExample.ppr" />
+    <hidden path="ButtonExample.fdp" />
+    <hidden path="ButtonExample-app.xml" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="True">rm -rf obj</postBuildCommand>
+  <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

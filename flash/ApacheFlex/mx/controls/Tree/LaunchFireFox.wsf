@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run """" & "C:\Program Files\Mozilla Firefox\firefox.exe" & """" & "http://hata2/Flash/flex4/mxml/ApacheFlex/mx/controls/Tree//TreeExample.swf",1
+</script>
+</job>

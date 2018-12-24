@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <project version="2">
   <!-- Output SWF options -->
   <output>
@@ -12,7 +12,7 @@
     <movie minorVersion="9" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
-    <movie preferredSDK="Apache Flex 4.11.0 FP11.1 AIR3.8 en_US;4.11.0;" />
+    <movie preferredSDK="Flex 4.6.0, AIR 3.9;4.6.0, 3.9;" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -83,7 +83,7 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="True">rm -rf obj</postBuildCommand>
+  <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
