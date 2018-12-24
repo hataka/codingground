@@ -1,0 +1,156 @@
+<job id="build">
+<script language="VBScript">
+	Option Explicit
+	Dim mxml
+	Dim currentDir
+	Dim shell
+	'Dim objFSO          ' FileSystemObject
+	Dim objExecCmd
+
+	mxml = "F:\Programs\FlashDevelop\Tools\flexsdk\bin\mxmlc.exe"	'Ver 4.6
+	'mxml = "F:\Flash\flex4\flex_sdk_4.1.0.16076\bin\mxmlc.exe"		'Ver 4.1
+	'mxml = "F:\Flash\flex3.4\flex_sdk_3.4.0.9271_mpl\bin\mxmlc.exe"	'Ver 3.4
+	'mxml = "F:\Flash\flex3\flex3sdk\bin\mxmlc.exe"					'Ver 3.0
+
+	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+	Set shell = CreateObject("WScript.Shell")
+	'Set objFSO = WScript.CreateObject("Scripting.FileSystemObject")
+
+	shell.CurrentDirectory = currentDir
+	Set objExecCmd = shell.Exec(mxml & " F:\Flash\ApacheFlex\mx\containers\Form\FormExample.mxml -default-size 800 600")
+
+	Do While objExecCmd.Status = 0
+		' ???????
+		WScript.Sleep(1000)
+	Loop
+	Set objExecCmd = Nothing
+
+</script>
+
+<!-- Ver.1
+<script language="VBScript">
+    Option Explicit
+	Dim shell
+	Dim compiler
+	Dim compilerXp
+	Dim compiler81
+	Dim currentDir
+	Dim objExecCmd
+	Dim objFSO          ' FileSystemObject
+	Dim strCopyFile     ' ?????????
+	Dim strCopyFolder   ' ?????????
+
+
+	compilerXp = "C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
+	compiler81 = "C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
+	
+	if FileExists(compilerXp) then
+		compiler = compilerXp
+	end if
+	if FileExists(compiler81) then
+		compiler = compiler81
+	end if
+	
+	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+	strCopyFile = currentDir & "bin\Debug\main.exe"
+	strCopyFolder = currentDir
+
+	Set shell = CreateObject("WScript.Shell")
+	Set objFSO = WScript.CreateObject("Scripting.FileSystemObject")
+
+	shell.CurrentDirectory = currentDir
+
+	if FileExists("main.csproj") then
+    	Set objExecCmd = shell.Exec(compiler & " main.csproj /rebuild ")
+         Do While objExecCmd.Status = 0
+            ' ???????
+            WScript.Sleep(1000)
+        Loop
+	end if
+
+   ' ???????
+	if FileExists(strCopyFile) then
+     objFSO.CopyFile strCopyFile, strCopyFolder, True
+	end if
+
+   ' ???????
+    objFSO.DeleteFolder currentDir & "bin", True
+   	objFSO.DeleteFolder currentDir & "obj", True
+
+	Set objFSO = Nothing
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+</script>
+-->
+<!-- Ver.2
+<SCRIPT
+	language="VBScript"
+	src="http://lightbox.on.coocan.jp/webwsh/GetOSVersion.vbs"></SCRIPT>
+<script language="VBScript">
+    Option Explicit
+	Dim shell
+	Dim compiler
+	Dim currentDir
+	Dim objExecCmd
+	Dim objFSO          ' FileSystemObject
+	Dim strCopyFile     ' ?????????
+	Dim strCopyFolder   ' ?????????
+	
+	if GetOSVersion() < 6.0 then
+		compiler = "C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
+	else
+		compiler = "C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"
+	end if
+	
+	currentDir = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
+	strCopyFile = currentDir & "bin\Debug\main.exe"
+	strCopyFolder = currentDir
+
+	Set shell = CreateObject("WScript.Shell")
+	Set objFSO = WScript.CreateObject("Scripting.FileSystemObject")
+
+	shell.CurrentDirectory = currentDir
+
+	if FileExists("main.csproj") then
+    	Set objExecCmd = shell.Exec(compiler & " main.csproj /rebuild ")
+         Do While objExecCmd.Status = 0
+            ' ???????
+            WScript.Sleep(1000)
+        Loop
+	end if
+
+   ' ???????
+	if FileExists(strCopyFile) then
+     objFSO.CopyFile strCopyFile, strCopyFolder, True
+	end if
+
+   ' ???????
+    objFSO.DeleteFolder currentDir & "bin", True
+   	objFSO.DeleteFolder currentDir & "obj", True
+
+	Set objFSO = Nothing
+
+	Function FolderExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FolderExists = objFileSys.FolderExists(strFilePath)
+	End Function
+
+	Function FileExists(strFilePath)
+		Dim objFileSys
+		Set objFileSys = CreateObject("Scripting.FileSystemObject")
+		FileExists = objFileSys.FileExists(strFilePath)
+	End Function
+</script>
+-->
+</job>

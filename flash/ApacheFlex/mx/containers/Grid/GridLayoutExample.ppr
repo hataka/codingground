@@ -1,0 +1,62 @@
+[Config]
+Compilator.FileName=F:\Flash\flex4\flex_sdk_4.1.0.16076\bin\mxmlc.exe
+Compilator.PSPar=%File%
+Compilator.Log=%Name%.log
+Compilator.Run=%WinDir%\system32\wscript.exe //nologo %Dir%RunAir.wsf
+Compilator.DefaultDir=%Dir%
+Compilator.SaveAll=1
+Compilator.Capture=1
+Compilator.HideOutput=1
+Compilator.LogType=0
+Prog1=RunAir,%WinDir%\system32\wscript.exe //nologo %Dir%RunAir.wsf?
+Prog2=RunPlayer,%WinDir%\system32\wscript.exe //nologo %Dir%RunPlayer.wsf?
+Prog3=Chrome???(swf),"C:\Documents and Settings\kazuhiko\Local Settings\Application Data\Google\Chrome\Application\chrome.exe" %Dir%%Name%.swf?
+Prog4=Chrome???(inex.html),"C:\Documents and Settings\kazuhiko\Local Settings\Application Data\Google\Chrome\Application\chrome.exe" %Dir%index.html?
+Prog5=index.html?mshta???,%WinDir%\system32\mshta.exe %Dir%index.html?
+DefaultCPIndex=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+[Project tree]
+GridLayoutExample
+	-bin
+		GridLayoutExample.swf
+	-Header
+	+Source
+		GridLayoutExample.mxml
+	-Resource
+		GridLayoutExample-app.xml
+	-Dist
+		index.html
+		RunAir.wsf
+		LaunchChrome.wsf
+		LaunchFireFox.wsf
+		LaunchIE.wsf
+		RunPlayer.wsf
+		Sakura_MultiOpen.wsf
+	-Makefile
+		build.bat
+		build.wsf
+	-Documentation
+		Viewer_mxml.php
+		Viewer_mxml_ui.tab.php
+		make_doxydoc.bat
+		Doxyfile
+		doxydoc.hta
+	-Project
+		GridLayoutExample.ppr
+		GridLayoutExample.fdp
+		GridLayoutExample.as3proj
+		FDProject.ini
+		FDTreeMenu.xml
+	-Links
+[Open project files]
+0=GridLayoutExample.mxml
+[Selected Project Files]
+Main=GridLayoutExample.mxml
+Selected=GridLayoutExample.mxml
+[GridLayoutExample.mxml]
+TopLine=1
+Caret=1,1

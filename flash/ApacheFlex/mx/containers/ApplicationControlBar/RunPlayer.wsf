@@ -1,0 +1,6 @@
+<job id="Alert">
+<script language="VBScript">
+    Option Explicit
+	CreateObject("WScript.Shell").Run "F:\Flash\ApacheFlex\mx\containers\ApplicationControlBar\SimpleApplicationControlBarExample.swf"
+</script>
+</job>

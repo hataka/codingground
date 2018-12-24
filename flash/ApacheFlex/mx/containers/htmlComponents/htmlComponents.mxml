@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" 
+	initialize="initProc()"
+>
+<!--
+	<mx:Label x="114" y="20" text="HTMLコンポーネント" fontSize="13"/>
+	<mx:Label x="436" y="20" text="HTMLコントロール" fontSize="13"/>
+	<mx:HTML x="28" y="50" width="295" height="390" id="web1"/>
+-->	
+	
+	<mx:HTML width="100%" height="100%" id="web1"/>
+	
+	
+	<mx:Script>
+	<![CDATA[
+		  // http://blog.netandfield.com/shar/2011/01/htmlhtmlloader.html
+	import flash.net.URLRequest;
+
+	private function initProc():void {
+		//------------------------------------------
+		// HTML コンポーネント
+		//------------------------------------------
+		web1.location	= "http://www.google.co.jp/";
+
+/*
+		//------------------------------------------
+		// HTML コントロール
+		//------------------------------------------
+		var url:URLRequest	= new URLRequest("http://www.google.co.jp/");
+
+		var web2:HTMLLoader   = new HTMLLoader();
+		web2.x	= 340;
+		web2.y	= 70;
+		web2.width	= 295;
+		web2.height   = 390;
+		web2.load(url);
+		this.nativeWindow.stage.addChild(web2);
+*/
+	}
+
+	]]>
+	</mx:Script>
+</mx:WindowedApplication>
