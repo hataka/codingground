@@ -1,17 +1,52 @@
-## Sample023 Android SDK p.26
-* クラスライブラリーを利用する
-Androidアプリでは、さまざまなくらすを利用していくことになります。これまでみてきたように、文字を表示するクラスからオブジェクトを作成したり、画面をあらわすクラスを拡張して、新しいアプリのクラスを定義していくわけです。  
-これらのクラスは、
-
-> > クラスライブラリ (class library)
-
-と呼ばれるクラスの集まりとして提供されています。  
-Androidの基本機能を提供するクラスライブラリがAndroid SDKです。このほかに、Javaの標準的なクラスを提供するクラスライブラリであるJDK(Java SE Development Kit)も利用していきます。  
-私たちはこうした各種クラスライブラリを利用して、アプリを開発していくことになります。
-* クラスライブラリを調べる
-* もう一つオブジェクトを作成する
-* クラスを調べる
-* Javaを使いこなす
+# 3.2 イベント p.46
+## Sample035 ボタンのタッチを記述する p.51
+	package ya.Sample035;
+	
+	import android.app.*;
+	import android.os.*;
+	import android.view.*;
+	import android.view.View.*;
+	import android.widget.*;
+	
+	public class Sample035 extends Activity
+	{
+	   TextView tv;
+	   Button bt;
+		
+	   public void onCreate(Bundle savedInstanceState)
+	   {
+	      super.onCreate(savedInstanceState);
+	      LinearLayout ll = new LinearLayout(this); 
+	      ll.setOrientation(LinearLayout.VERTICAL);
+	      setContentView(ll);
+	      
+	      tv = new TextView(this);
+	      tv.setText("いらっしゃいませ。");
+	      bt = new Button(this);
+	      bt.setText("購入");
+	
+	      ll.addView(tv);
+	      ll.addView(bt);
+	 
+	      bt.setOnTouchListener(new SampleTouchListener());
+	   }
+	   
+	   class SampleTouchListener implements OnTouchListener
+	   {
+	      public boolean onTouch(View v, MotionEvent e)
+	      {
+	         if(e.getAction() == MotionEvent.ACTION_DOWN)
+	         {
+	            tv.setText("こんにちは");
+	         }
+	         else if(e.getAction() == MotionEvent.ACTION_UP)
+	         {
+	            tv.setText("さようなら");
+	         }
+	         return true;
+	      }
+	   }  
+	}
 
 ## Links
 ### 高橋麻奈
