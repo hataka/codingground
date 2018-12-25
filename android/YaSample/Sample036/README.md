@@ -1,10 +1,10 @@
 # 3.2 イベント p.46
 ## Sample036 画面のタッチを処理する p.53
 1.[Sample036.java](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/java/ya/Sample036/Sample036.java)
-1.[layout/main.xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/res/layout/main.xml)
-1.[values/strings,xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/res/values/strings.xml)
-1.[layout/main.xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/res/layout/main.xml)
-1.[AndroidManifest.xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/AndroidManifest.xml)
+2.[layout/main.xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/res/layout/main.xml)
+3.[values/strings,xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/res/values/strings.xml)
+4.[layout/main.xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/res/layout/main.xml)
+5.[AndroidManifest.xml](https://github.com/hataka/codingground/blob/master/android/YaSample/Sample036/app/src/main/AndroidManifest.xml)
 ## Links
 ### 高橋麻奈
 * [高橋麻奈 Google検索](https://www.google.co.jp/search?source=hp&ei=_mYhXLuCCY3v-Qbvi5W4CA&q=%E9%AB%98%E6%A9%8B%E9%BA%BB%E5%A5%88&btnK=Google+%E6%A4%9C%E7%B4%A2&oq=%E9%AB%98%E6%A9%8B%E9%BA%BB%E5%A5%88&gs_l=psy-ab.3.0.0l8.74600.99966..112509...8.0..0.1230.5517.7j28j7-1......0....1..gws-wiz.....0..0i4j0i131j0i131i4j0i131i4i37j0i4i37j0i4i10i37j0i10j0i131i23j0i23j0i10i23.YmWTmcQU4BY)
