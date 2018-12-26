@@ -1,19 +1,13 @@
 # Lesson 04 いろいろなビュー 
 ## Sample043  ボタンの種類を知る p.65
 * 表4.3 ボタンの種類
-
-[@nifty](http://www.nifty.com)|[メール一覧](https://mail.nifty.com/mailer/)|[会員サポート](http://support.nifty.com/support/)|[会員向けービス](http://csoption.nifty.com/)|[路線情報](http://www.nifty.com/#prvTrain)|[天気](http://www.nifty.com/#prvWeather)|[]()|
-
-
 <table>
-  <tr><td>スタイル</td><td>説明</td></tr>
+  <th><td>スタイル</td><td>説明</td></th>
+  <tr><td>ボタン(Button)</td><td>通常のボタン</td<<></tr>
+  <tr><td>チェックボックス(CheckBox)</td><td>「はい」または「いいえ」を選択するボタン</td></tr>
+  <tr><td>ラジオボタン(RadioButton)</td><td>複数項目から１つだけを選択するボタン</td></tr>
  </table>
- 
-|ボタン(Button)|通常のボタン|
-|チェックボックス(CheckBox)|「はい」または「いいえ」を選択するボタン|
-|ラジオボタン(RadioButton)|複数項目から１つだけを選択するボタン|
-
-<ol>
+ <ol>
 <li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample043/app/src/main/java/ya/Sample043/Sample043.java" target="_blank">Sample043.java</a></li>
 <li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample043/app/src/main/res/layout/main.xml" target="_blank">layout/main.xml</a></li>
 <li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample043/app/src/main/res/values/strings.xml" target="_blank">values/strings,xml</a></li>
