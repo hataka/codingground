@@ -1,6 +1,0 @@
-<job id="Alert">
-<script language="VBScript">
-    Option Explicit
-	CreateObject("WScript.Shell").Run "F:\HomePage\travel.coocan\Flash\ApacheFlex\mx\charts\AreaChart\AreaChartExample.swf"
-</script>
-</job>

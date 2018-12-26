@@ -1,1 +1,0 @@
-F:\Flash\ApacheFlex\mx\controls\ColorPicker\build.xml

@@ -1,6 +1,0 @@
-<job id="Alert">
-<script language="VBScript">
-    Option Explicit
-	CreateObject("WScript.Shell").Run """" & "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" & """" & "http://hata/f/Flash/ApacheFlex/mx/core/Application/SimpleApplicationExample.swf",1
-</script>
-</job>

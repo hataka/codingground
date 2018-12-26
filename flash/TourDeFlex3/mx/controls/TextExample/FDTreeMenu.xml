@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root title="PanelExample" icon="" expand="true">
+  <folder title="Menu">
+    <record title="ツリーデーターを開く" action="menu" command="OpenTreeDataDialog" />
+    <record title="XmlTreeMenu" action="menu" path="$(BaseDir)\SettingData\XmlTreeMenu.xml" />
+    <record title="Projoectメニュー" action="menu" path="$(BaseDir)\SettingData\FlashProject.xml" />
+    <record title="ビルド実行環境" action="menu" path="$(BaseDir)\SettingData\FDTreeMenu_work.xml" />
+  </folder>
+  <folder title="LocalSite">
+    <record title="PukiWki2016" path="http://hata/pukiwiki2016/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="FrameWork" path="http://hata/FrameWork/FrameWork.html" />
+    <record title="Apache Flex API REference" path="http://hata/Flash/ApacheFlex/asdoc/index.html" icon="F:\icons\apache.ico" />
+  </folder>
+  <folder title="WebSite">
+    <record title="Google" path="http://www.google.co.jp/" icon="http://www.google.co.jp/favicon.ico" />
+    <record title="PukiWki2016" path="http://kahata.travel.coocan.jp/pukiwiki2016/index.php" icon="F:\icons\pukiwiki.ico" />
+    <record title="Tour de Flex" path="http://flex.apache.org/tourdeflex/" />
+    <record title="ActionScriptR 3.0 リファレンスガイド" path="http://help.adobe.com/ja_JP/FlashPlatform/reference/actionscript/3/index.html" />
+    <record title="ひろしサーバ" path="http://hkpr.info/" />
+    <record title=" Apache Flex" path="http://flex.apache.org/" icon="F:\icons\apache.ico"/>
+  </folder>
+
+<!--
+			// HACK bug fixed 
+			retVal = retVal.Replace("$(CurProjectDir)",
+				Path.GetDirectoryName(PluginBase.CurrentProject.ProjectPath));
+			retVal = retVal.Replace("$(CurProjectName)",
+				Path.GetFileNameWithoutExtension(PluginBase.CurrentProject.ProjectPath));
+			retVal = retVal.Replace("$(CurProjectUrl)",
+				Lib.Path2Url(Path.GetDirectoryName(PluginBase.CurrentProject.ProjectPath)));
+
+			retVal = retVal.Replace("$(Quote)", "\"");
+			retVal = retVal.Replace("$(Dollar)", "$");
+			retVal = retVal.Replace("$(AppDir)", PathHelper.AppDir);
+			retVal = retVal.Replace("$(BaseDir)", PathHelper.BaseDir);
+			// 追加 2013-03-01 BugFix <Time-stamp: <2013-12-01 13:29:18 hata>
+				retVal = retVal.Replace("$(CurFileUrl)",
+					Lib.Path2Url(PluginBase.MainForm.CurrentDocument.FileName));
+-->
+
+  <folder title="ビルド" expand="false">
+    <record title="build.xml" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="/k ant -f $(CurProjectDir)\build.xml" />
+<!--
+    <record title="build.xml" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" args="/k F:\ant\apache-ant-1.8.3\bin\ant -f $(CurProjectDir)\build.xml" />
+    <record title="build.bat" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" path="/k $(CurProjectDir)\build.bat" />
+    <record title="build.wsf" action="RunProcess" command="C:\WINDOWS\system32\cmd.exe" path="/k $(CurProjectDir)\bild.wsf" />
+-->
+
+  </folder>
+  
+  
+  
+  <folder title="実行">
+    <record title="Browser" path="$(CurProjectUrl)/index.html" />
+
+    <record title="RunAir" action="RunProcess" command="F:\Programs\FlashDevelop\Tools\flexsdk\bin\adl" path="-nodebug $(CurProjectDir)\$(CurProjectName)-app.xml" />
+    
+    <record title="RunPlayer" action="RunProcess" path="$(CurProjectDir)\$(CurProjectName).swf" />
+
+    <record title="LaunchMSHTA" action="RunProcess" command="C:\WINDOWS\system32\mshta.exe" path="$(CurProjectUrl)/index.html" />
+
+    <record title="Chrome(swf)" action="RunProcess" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" path="$(CurProjectDir)\$(CurProjectName).swf" />
+
+    <record title="Chrome(page)" action="RunProcess" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" path="$(CurProjectDir)\index.html" />
+    
+    <record title="Chrome(web-swf)" action="RunProcess" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" path="$(CurProjectUrl)/$(CurProjectName).swf" />
+    <record title="Chrome(web-page)" action="RunProcess" command="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" path="$(CurProjectUrl)/index.html" />
+
+    <record title="FireFox(web-page)" action="RunProcess" command="C:\Program Files\Mozilla Firefox\firefox.exe" path="$(CurProjectUrl)/index.html" />
+    <record title="IE(web-page)" action="RunProcess" command="C:\Program Files\Internet Explorer\iexplore.exe" path="$(CurProjectUrl)/index.html" />
+
+  </folder>
+  <folder title="Source" expand="true">
+    <record title="$(CurProjectName).mxml" path="$(CurProjectDir)\$(CurProjectName).mxml" />
+  </folder>
+  <folder title="Documentation">
+    <record title="CodeViewer" path="$(CurProjectUrl)/Viewer_mxml.php" />
+    <record title="CodeViewer ui.tab" path="$(CurProjectUrl)/Viewer_mxml_ui.tab.php" />
+    <record title="ViewSource" path="$(CurProjectUrl)/srcview/index.html" />
+  </folder>
+  <folder title="Links" expand="false">
+  </folder>
+
+
+</root>

@@ -67,7 +67,7 @@ public class Sample036 extends Activity
 			case 0:
 				//Uri uri = Uri.parse("http://android.roof-balcony.com/");
 				try {
-					Uri uri = Uri.parse("http://localhost/f/android/YASample/Sample036/src/ya/Sample/Sample036.java");
+					Uri uri = Uri.parse("https://github.com/hataka/codingground/raw/master/android/YaSample/Sample036/app/src/main/java/ya/Sample036/Sample036.java");
 					Intent intent = new Intent(Intent.ACTION_VIEW,uri);
 					startActivity(intent);
 				}catch (Exception e) {

@@ -1,6 +1,0 @@
-<job id="Alert">
-<script language="VBScript">
-    Option Explicit
-	CreateObject("WScript.Shell").Run """" & "C:\Program Files\Internet Explorer\iexplore.exe" & """" & "http://hata2/Flash/ApacheFlex/mx/controls/DateField/DateFieldExample.swf",1
-</script>
-</job>

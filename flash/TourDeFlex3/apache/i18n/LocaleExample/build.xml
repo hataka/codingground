@@ -1,0 +1,264 @@
+<!--// -*- mode: xml -*-  Time-stamp: 2017/01/04 19:19
+/*================================================================
+ * title: 
+ * file: build.xml
+ * path: F:\Flash\ApacheFlex\mx\controls\Alert\SimpleAlert.mxml
+ * url:  
+ * created: Time-stamp: 2017/01/04 19:19 //<2016-01-26 14:25:26 kahata>
+ * revision: $Id$
+ * Programmed By: kahata
+ * To compile: F:\VCSharp\Flashdevelop5.1.1-LL\FlashDevelop\Bin\Debug\Apps\flexairsdk\4.6.0+21.0.0
+ * To run: 
+ * link: 
+ * description: 
+ *================================================================*/ -->
+<project basedir="." default="build" name="LocaleExample">
+	<description>
+		build flex application with apache ant.
+	</description>
+ <!-- 
+  <import file="${config.dir}/properties.xml" />
+  <import file="${config.dir}/jnlp.xml" />
+
+  <condition property="have.resources">
+    <available file="${res.dir}" />
+  </condition>
+--> 
+  
+  <!-- =================================================================== -->
+  <!-- properties                                     -->
+  <!-- =================================================================== -->
+	<property name="appname" value="LocaleExample"/>
+	<dirname property="antfile.dir" file="${ant.file}"/>
+	<basename property="antfile.name" file="${ant.file}"/>
+	<basename property="antfile.body" file="${ant.file}" suffix="xml"/>
+	<property name="apppath" value="${antfile.dir}\{appname}.mxml"/>
+	<property name="server.root" value="file:///"/>
+	<!-- property name="server.root" value="http://kahata.travel.coocan.jp"/ -->
+<!--
+<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+<propertyregex name="aaa" property="pack.name"
+              input="package.ABC.name"
+              regexp="package\.([^\.]*)\.name"
+              select="\1"
+              casesensitive="false" />
+	<propertyregex property="base.name"
+    input="file.name"
+    regexp="(.*)\.(.*)"
+    select="\1" override="true"/>
+	<propertyregex property="suffix.name"
+    input="file.name"
+    regexp="(.*)\.(.*)"
+    select="\2" override="true"/>
+	
+<propertyregex 
+    property="current.target.dir"
+      input="com.element.subelement"
+      regexp="\."
+      replace="/"
+      global="true" />	
+-->
+	<property name="site.dir" value="${server.root}/${antfile.dir}/"/> 
+<!--
+	<property name="sdk.version" value="4.1.0"/>
+	<property name="sdk.dir" value="${eclipse.home}/sdks/${sdk.version}"/>
+	<property name="FLEX_HOME" value="${sdk.dir}"/>
+-->
+  <property name="FD_HOME" value="F:/VCSharp/Flashdevelop5.1.1-LL/FlashDevelop/Bin/Debug/" />
+	<property name="FLEX_HOME" value="${FD_HOME}/Tools/flexsdk"></property>
+	<property name="APP_ROOT" value="."></property>
+	<!--<property file="build.properties"/>-->
+	<property name="src.dir" value="${basedir}"/>
+	<property name="doc.dir" value="${basedir}/doc"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<!--
+	<property name="DEPLOY_DIR" value="c:/jrun4/servers/default/default-war"/> 
+	<property name="COMPONENT_ROOT" value="components"/> 
+	-->
+  <property name="appname_main" value="${appname}"/>
+  <property name="swfOut" value="${appname}.swf" />
+  <!-- point this to your local copy of the flash player -->
+  <property name="flash.player" location="${FLEX_HOME}/runtimes/player/11.1/win/FlashPlayerDebugger.exe" />
+	<!-- ant task definition -->
+	<taskdef classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" resource="flexTasks.tasks">
+	</taskdef>
+
+	<!-- initialization -->
+	<target name="init">
+		<script language="javascript">
+			var working_dir = project.getProperty("working.dir");
+			var document_root = project.getProperty("document.root");
+			var server_root = project.getProperty("server.root");
+			var site_dir = server_root + working_dir.replaceAll(document_root, "");
+			site_dir = site_dir.replace(/\\/g,"/");
+			project.setProperty("site.dir", site_dir);
+		</script>
+		<echo>site.dir=${site.dir}</echo>
+	</target>
+
+	<target name="pwd">
+		<echo message="antfile.dir = ${antfile.dir}"></echo>
+		<echo message="ant.file = ${ant.file}"></echo>
+		<echo message="antfile.name = ${antfile.name}"></echo>
+		<echo message="antfile.body = ${antfile.body}"></echo>
+	<!--
+		<echo message="base,name = ${base.name}"></echo>
+		<echo message="suffix.name = ${suffix.name}"></echo>
+<echo>${current.target.dir}</echo>
+	-->
+	</target>
+
+	<!-- execution -->
+	<target name="build">
+		<mxmlc 
+				file="${APP_ROOT}/${appname}.mxml" 
+				output="${APP_ROOT}/${swfOut}"
+				static-link-runtime-shared-libraries="true"
+				actionscript-file-encoding="UTF-8" 
+				keep-generated-actionscript="true">
+	<!--			incremental="true"> -->
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"></load-config>
+			<!-- List of path elements that form the roots of ActionScript 
+				class hierarchies. --> 
+			<source-path path-element="${FLEX_HOME}/frameworks"/> 
+			<compiler.source-path path-element="${FLEX_HOME}/frameworks"></compiler.source-path>
+			<compiler.source-path path-element="${APP_ROOT}"></compiler.source-path>
+			<!-- Set size of output SWF file. --> 
+			<default-size width="800" height="600"/> 
+			<!-- List of SWC files or directories that contain SWC files. --> 
+<!--
+			<compiler.library-path dir="${FLEX_HOME}/frameworks" append="true"> 
+				<include name="libs" /> 
+				<include name="../bundles/{locale}" /> 
+			</compiler.library-path> 
+ 			<compiler.library-path dir="${APP_ROOT}/libs" append="true">
+				<include name="*.swc" />
+			</compiler.library-path>
+-->
+		</mxmlc>
+	</target>
+
+	<target name="run" depends="build">
+		<exec executable="cmd">
+			<arg line="/c" />
+			<arg line="${swfOut}" />
+		</exec>
+	</target>
+
+	<target name="player" depends="build">
+		<exec executable="${flash.player}">
+			<arg line="${APP_ROOT}/${swfOut}" />
+		</exec>
+	</target>
+
+	<target name="chrome" depends="build">
+		<exec executable="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe">
+			<arg line="${site.dir}/${swfOut}" />
+		</exec>
+	</target>
+
+	<target name="firefox" depends="build">
+		<exec executable="C:\Program Files\Mozilla Firefox\firefox.exe">
+			<arg line="${site.dir}/${swfOut}" />
+		</exec>
+	</target>
+
+	<target name="ie" depends="build">
+		<exec executable="C:\Program Files\Internet Explorer\iexplore.exe">
+			<arg line="${site.dir}/${swfOut}" />
+		</exec>
+	</target>
+
+	<target name="hta" depends="build">
+		<exec executable="C:\WINDOWS\system32\mshta.exe">
+			<arg line="${site.dir}/index.html" />
+		</exec>
+	</target>
+
+	<target name="air" depends="build">
+		<exec executable="${FD_HOME}/Tools/flexsdk/bin/adl.exe">
+			<arg line="-nodebug" />
+			<arg line="${APP_ROOT}/${appname}-app.xml" />
+		</exec>
+	</target>
+
+	<target name="doxygen">
+		<exec executable="doxygen.exe">
+			<arg line="F:/Flash/Doxyfile" />
+		</exec>
+	</target>
+
+	<target name="asdoc">
+	<!-- タスク定義 -->
+<!--
+		<available property="flexTasksJar" value="${sdk.dir}/lib/flexTasks.jar" file="${sdk.dir}/lib/flexTasks.jar"/>
+		<available property="flexTasksJar" value="${sdk.dir}/ant/lib/flexTasks.jar" file="${sdk.dir}/ant/lib/flexTasks.jar"/>
+		<taskdef resource="flexTasks.tasks" classpath="${flexTasksJar}"/>
+-->
+	<!-- ASDoc -->
+		<asdoc output="${doc.dir}"
+			lenient="true" failonerror="true"
+			warnings="false" strict="false" locale="ja_JP" fork="true"
+			main-title="ドキュメントタイトル"
+			window-title="ウインドウタイトル"
+			footer="フッター">
+		<doc-sources path-element="${src.dir}"/>
+
+		<!-- 外部ライブラリ（必要に応じて) -->
+		<!--
+		<external-library-path dir="${lib.dir}">
+			<include name="mylib.swc" />
+		</external-library-path>
+		<external-library-path dir="${sdk.dir}//frameworks/libs/air">
+			<include name="airglobal.swc" />
+		</external-library-path>
+		-->
+		<!--
+		<jvmarg line="${asdoc.jvm.args}"/>
+		-->
+		</asdoc>
+	</target>
+
+	<target name="swc"> 
+		<compc  
+			output="${DEPLOY_DIR}/MyComps.swc" 
+			include-classes="custom.MyButton custom.MyLabel"> 
+			<source-path path-element="${basedir}/components"/> 
+			<include-file name="f1-1.jpg" path="assets/images/f1-1.jpg"/> 
+			<include-file name="f1-2.jpg" path="assets/images/f1-2.jpg"/> 
+			<include-file name="f1-3.jpg" path="assets/images/f1-3.jpg"/> 
+			<include-file name="f1-4.jpg" path="assets/images/f1-4.jpg"/> 
+			<include-file name="main.css" path="assets/css/main.css"/> 
+		</compc> 
+	</target> 
+
+	<target name="wrapper" depends="build"> 
+		<mkdir dir="${APP_ROOT}/dist"/>
+		<copy file="${APP_ROOT}/${swfOut}" tofile="${APP_ROOT}/dist/${swfOut}"/>
+		<html-wrapper 
+			title="Welcome to My Flex App" 
+			file="index.html" 
+			height="600" 
+			width="800" 
+			application="app" 
+			swf="${appname}" 
+			history="true" 
+			express-install="true" 
+			version-detection="true" 
+			output="${APP_ROOT}/dist"/> 
+	</target> 
+
+	<target name="clean">
+		<delete dir="${APP_ROOT}/obj"/>
+		<delete dir="${APP_ROOT}/dist"/>
+		<delete dir="${APP_ROOT}/generated"/>
+		<delete dir="${APP_ROOT}/doc"/>
+		<delete file="${APP_ROOT}/${swfOut}"/>
+		<!--
+		<delete> 
+			<fileset dir="${DEPLOY_DIR}" includes="Main.swf"/> 
+		</delete> 
+	-->
+	</target>
+
+</project>

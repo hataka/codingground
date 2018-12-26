@@ -1,0 +1,2 @@
+F:\codingground\flash\TourDeFlex3\mx\charts\CandlestickChartExample\build.xml
+F:\codingground\flash\TourDeFlex3\mx\charts\CandlestickChartExample\obj\CandlestickChartExampleConfig.xml
