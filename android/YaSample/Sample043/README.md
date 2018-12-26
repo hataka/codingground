@@ -3,7 +3,7 @@
 * 表4.3 ボタンの種類
 <table>
   <th><td>スタイル</td><td>説明</td></th>
-  <tr><td>ボタン(Button)</td><td>通常のボタン</td<<></tr>
+  <tr><td>ボタン(Button)</td><td>通常のボタン</td></tr>
   <tr><td>チェックボックス(CheckBox)</td><td>「はい」または「いいえ」を選択するボタン</td></tr>
   <tr><td>ラジオボタン(RadioButton)</td><td>複数項目から１つだけを選択するボタン</td></tr>
  </table>
