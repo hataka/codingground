@@ -1,6 +1,10 @@
 # Lesson 04 いろいろなビュー 
 ## Sample043  ボタンの種類を知る p.65
 * 表4.3 ボタンの種類
+
+|[@nifty](http://www.nifty.com)|[メール一覧](https://mail.nifty.com/mailer/)|[会員サポート](http://support.nifty.com/support/)|[会員向けービス](http://csoption.nifty.com/)|[路線情報](http://www.nifty.com/#prvTrain)|[天気](http://www.nifty.com/#prvWeather)|[]()|
+
+
 |スタイル|説明|
 |ボタン(Button)|通常のボタン|
 |チェックボックス(CheckBox)|「はい」または「いいえ」を選択するボタン|
