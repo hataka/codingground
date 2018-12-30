@@ -1,4 +1,4 @@
-package ya.Sample087;
+package ya.sample;
 
 import java.util.*;
 import android.app.*;
@@ -9,7 +9,7 @@ import android.view.View.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
 
-public class Sample087 extends Activity
+public class Sample7 extends Activity
 {
     public static int SAMPLE_APP = 1;
     ListView lv;
@@ -56,13 +56,13 @@ public class Sample087 extends Activity
             if(v == bt1)
             {
                 Intent it = new Intent(getApplicationContext(), SampleInput.class);
-            	int pos = data.size();
+                int pos = data.size();
                 String title = "タイトル";
                 String todo = "TODO";
                 it.putExtra("Title", title);
                 it.putExtra("Todo", todo);
                 it.putExtra("Pos", pos);
-            	startActivityForResult(it, SAMPLE_APP);
+                startActivityForResult(it, SAMPLE_APP);
             }
             else if(v == bt2)
             {
