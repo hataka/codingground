@@ -7,7 +7,7 @@
   <tr><td>チェックボックス(CheckBox)</td><td>「はい」または「いいえ」を選択するボタン</td></tr>
   <tr><td>ラジオボタン(RadioButton)</td><td>複数項目から１つだけを選択するボタン</td></tr>
  </table>
- <ol>
+<ol>
 <li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample043/app/src/main/java/ya/Sample043/Sample043.java" target="_blank">Sample043.java</a></li>
 <li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample043/app/src/main/res/layout/main.xml" target="_blank">layout/main.xml</a></li>
 <li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample043/app/src/main/res/values/strings.xml" target="_blank">values/strings,xml</a></li>
