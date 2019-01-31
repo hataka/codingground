@@ -28,7 +28,7 @@ import android.widget.Toast;
 public class Sample011 extends Activity {
 	public final static String GIT_SITE   = "https://github.com/hataka/codingground/tree/master/android/YaSample/";
 	public final static String RAW_SITE   = "https://raw.githubusercontent.com/hataka/codingground/master/android/YaSample/";
-	public final static String LOCAL_SITE = "http://192.168.1.53/f/android/YASample/";
+	public final static String LOCAL_SITE = "http://192.168.0.13/mnt/sdcard/www/public/android/YaSample/";
 	public static String className;
 
 	/** Called when the activity is first created. */

@@ -22,9 +22,9 @@ public class Sample033 extends Activity
     	  tr[i] = new TableRow(this);
     	  
     	  tv[i] = new TextView(this);
-    	  tv[i].setText("¤•i”Ô†"+ i + "-------");
+    	  tv[i].setText("å•†å“ç•ªå·"+ i + "-------");
     	  bt[i] = new Button(this);
-    	  bt[i].setText("w“ü");
+    	  bt[i].setText("è³¼å…¥");
           
     	  tr[i].addView(tv[i]);
           tr[i].addView(bt[i]);

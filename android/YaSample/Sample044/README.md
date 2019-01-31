@@ -1,21 +1,19 @@
-# Lesson 04 いろいろなビュー 
-## Sample044  ボタンの種類を知る p.65
+## やさしいAndroidプログラミング 高橋麻奈 第３版 SB Creative
+### Sample011
+#### 解説
 
-<ol>
-<li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample044/app/src/main/java/ya/Sample044/Sample044.java" target="_blank">Sample044.java</a></li>
-<li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample044/app/src/main/res/layout/main.xml" target="_blank">layout/main.xml</a></li>
-<li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample044/app/src/main/res/values/strings.xml" target="_blank">values/strings,xml</a></li>
-<li><a href="https://github.com/hataka/codingground/blob/master/android/YaSample/Sample044/app/src/main/AndroidManifest.xml" target="_blank">AndroidManifest.xml</a></li>
-</ol>
+### Links
+* [やさしいAndroidプログラミング  第三版　高橋麻奈](http://mana.on.coocan.jp/yasaa.html,favicon)
+* [コマンドラインからのアプリ作成  |  Android Developers](https://developer.android.com/studio/build/building-cmdline?hl=ja,favicon)
+* [SBクリエイティブ:【正誤情報】『やさしいAndroidプログラミング 第3版』](https://www.sbcr.jp/support/14003.html,favicon)
 
-## Links
-### 高橋麻奈
-* [高橋麻奈 Google検索](https://www.google.co.jp/search?source=hp&ei=_mYhXLuCCY3v-Qbvi5W4CA&q=%E9%AB%98%E6%A9%8B%E9%BA%BB%E5%A5%88&btnK=Google+%E6%A4%9C%E7%B4%A2&oq=%E9%AB%98%E6%A9%8B%E9%BA%BB%E5%A5%88&gs_l=psy-ab.3.0.0l8.74600.99966..112509...8.0..0.1230.5517.7j28j7-1......0....1..gws-wiz.....0..0i4j0i131j0i131i4j0i131i4i37j0i4i37j0i4i10i37j0i10j0i131i23j0i23j0i10i23.YmWTmcQU4BY)
-* [高橋麻奈 ホームページ](http://mana.on.coocan.jp/)
+* [[Android] ImageView:画像を表示する | Programming Style](http://www.programing-style.com/android/android-api/android-imageview/,favicon)
 
+### Gradle
 
 ### Git
 * [Git - リモートでの作業](https://git-scm.com/book/ja/v1/Git-%E3%81%AE%E5%9F%BA%E6%9C%AC-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%A7%E3%81%AE%E4%BD%9C%E6%A5%AD)
+* [Git で変更を取り消して、元に戻す方法 (事例別まとめ)](http://www-creators.com/archives/1290)
 * [Git - Book](https://git-scm.com/book/ja/v1/)
 - [Learn Git Branching(本家)](http://learngitbranching.js.org/)
 - [Learn Git Branching(日本語)](http://k.swd.cc/learnGitBranching-ja/)

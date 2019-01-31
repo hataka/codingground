@@ -25,7 +25,7 @@ public class SampleService extends Service
     }
     public void onStart(Intent it, int id)
     {
-        Intent i = new Intent(this, Sample8.class);
+        Intent i = new Intent(this, Sample088.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
         Notification nf = new Notification.Builder(this)
                 .setContentTitle("サンプル")
