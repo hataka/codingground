@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<style name="app_theme" parent="android:Theme">
-	<!--	<item name="android:windowBackground">@drawable/backimage</item> -->
-		<item name="android:windowBackground">@raw/backimage</item>
-		<item name="android:windowNoTitle">true</item>
-	</style>
-</resources>
